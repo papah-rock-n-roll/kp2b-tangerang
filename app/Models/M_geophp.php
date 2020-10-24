@@ -72,7 +72,7 @@ class M_geophp extends Model
         return false;
       }
 
-      return json_encode($geojson,JSON_NUMERIC_CHECK);
+      return json_encode($geojson, JSON_UNESCAPED_SLASHES);
 
     } else {
       return false;
