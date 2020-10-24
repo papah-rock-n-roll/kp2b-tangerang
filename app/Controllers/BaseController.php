@@ -41,6 +41,8 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
+
+		$this->M_geophp = model('App\Models\M_geophp');
 	}
 
 }
