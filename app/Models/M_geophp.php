@@ -7,7 +7,7 @@ class M_geophp extends Model
 {
   protected $table = 'tgr_petak';
   protected $primaryKey = 'FID';
-  
+
   // geoPHP library
   public function get_geojson($table, $id_field, $geom_field, $info_fields)
   {
@@ -21,7 +21,7 @@ class M_geophp extends Model
 
       // Break fields array
       $fields = '';
-      
+
       if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
 
       // Untuk tipe geometry polygon
@@ -40,13 +40,14 @@ class M_geophp extends Model
           $features = array();
 
           foreach ($query->getResultArray() as $row){
+            $features = json_decode($row['GEOM']);
             $polygon = array(
               'type' => 'Feature',
               'id' => $row['FID'],
               'properties' => array(),
-              'geometry' => $row['GEOM']
+              'geometry' => $features
             );
-            
+
             $properties = array();
             $properties['FID'] = $row['FID'];
             for ($x = 0; $x < count($info_fields); $x++){
@@ -72,7 +73,7 @@ class M_geophp extends Model
         return false;
       }
 
-      return json_encode($geojson,JSON_NUMERIC_CHECK);
+      return json_encode($geojson,JSON_UNESCAPED_UNICODE);
 
     } else {
       return false;
