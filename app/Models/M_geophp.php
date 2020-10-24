@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
+//use geoPHP;
 
 class M_geophp extends Model
 {
