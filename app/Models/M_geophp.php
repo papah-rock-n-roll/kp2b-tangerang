@@ -73,11 +73,7 @@ class M_geophp extends Model
         return false;
       }
 
-<<<<<<< HEAD
       return json_encode($geojson, JSON_UNESCAPED_SLASHES);
-=======
-      return json_encode($geojson,JSON_UNESCAPED_UNICODE);
->>>>>>> e0bc42e5b57f09e5a63268711a0ed74cf0fc9a19
 
     } else {
       return false;
