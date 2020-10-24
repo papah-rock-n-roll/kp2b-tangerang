@@ -1,7 +1,6 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
-use phayes\geoPHP\geoPHP;
 
 class M_geophp extends Model
 {
@@ -26,7 +25,7 @@ class M_geophp extends Model
           // Untuk tipe geometry polygon
           if($data_type == 'polygon'){
             // query untuk megambil data
-            $sql = "SELECT `".$id_field."` AS `FID`, AsText(`".$geom_field."`) as `GEOM`".$fields." FROM `".$table."`;";
+            $sql = "SELECT `".$id_field."` AS `FID`, ST_AsGeoJSON(`".$geom_field."`) as `GEOM`".$fields." FROM `".$table."`;";
             $query = $ci->db->query($sql);
             if($query->num_rows() > 0){
               // var geojson untuk return
@@ -34,17 +33,13 @@ class M_geophp extends Model
                 'type' => 'FeatureCollection',
                 'features' => array()
               );
-              $features = array();
 
               foreach ($query->result() as $row){
-                $geom = geoPHP::load($row['GEOM'],'wkt');
-                $json = $geom->out('json');
-                $features = json_decode($json);
                 $polygon = array(
                   'type' => 'Feature',
                   'id' => $row['FID'],
                   'properties' => array(),
-                  'geometry' => $features
+                  'geometry' => $row['GEOM']
                 );
 
                 $properties = array();
