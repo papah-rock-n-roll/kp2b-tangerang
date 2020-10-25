@@ -30,8 +30,27 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
+// Public Home
 $routes->get('/', 'Home::index');
 
+// Auth login
+$routes->get('/login', 'Auth::index');
+$routes->get('/logout', 'Auth::logout');
+
+// Events
+$routes->get('dashboard', 'Dashboard::index');
+
+
+/**
+ * --------------------------------------------------------------------
+ * API Base URL
+ * 
+ * Lihat Config App Baseurl
+ * 
+ * Lihat Controller Api
+ * --------------------------------------------------------------------
+ */
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
 
 	$routes->resource('geo');

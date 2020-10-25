@@ -1,12 +1,25 @@
 <?php namespace App\Controllers\Api;
 
+/**
+ * --------------------------------------------------------------------
+ * Show geojson
+ * 
+ * https://localhost/kp2b-tangerang/api/geo
+ * 
+ * Custom Info Fields
+ * 
+ * https://localhost/kp2b-tangerang/api/geo/info?fields=a,b,c,d
+ * 
+ * --------------------------------------------------------------------
+ */
+
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\HTTP\RequestInterface;
 
 class Geo extends ResourceController
 {
   protected $modelName = 'App\Models\M_geophp';
-  // protected $format    = 'json';
+  protected $format    = 'json';
   protected $request;
 
   public function index()
@@ -34,26 +47,34 @@ class Geo extends ResourceController
     }
   }
 
-  public function show($data = null)
+  public function show($segment = null)
   {
-    $data = $this->model
-    ->where('category_id', $data)
-    ->orWhere('category_name', $data)
-    ->first();
+    switch ($segment) {
 
-    if(!empty($data)) {
-      return $this->respond($data);
+      case 'info':
+
+        $fields = $this->request->getGet('fields');
+        $info_fields = explode(',', $fields);
+        $data = $this->model->get_geojson('tgr_petak', 'FID', 'Shape', $info_fields);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }
+        else
+        {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+        
+      break;
+
     }
-    else
-    {
-      $code = '404';
-      $this->response->setStatusCode($code);
-      $message = [
-        'status' => $code,
-        'message' => $this->response->getReason(),
-      ];
-      return $this->respond($message, $code);
-    }
+    
   }
 
 }
