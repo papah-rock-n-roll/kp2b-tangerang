@@ -1,5 +1,5 @@
 <footer class="main-footer">
-  <strong>--- <a href='/'>KP2B</a></strong> ---.
+  <strong>--- <a href='/'>KP2B</a></strong> ---
   <div class="float-right d-none d-sm-inline">
   ---
   </div>

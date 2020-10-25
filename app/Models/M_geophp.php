@@ -28,15 +28,25 @@ class M_geophp extends Model
       if($data_type == 'polygon'){
 
         // query untuk megambil data
-        $sql = "SELECT `".$id_field."` AS `FID`, ST_AsGeoJSON(`".$geom_field."`) AS `GEOM`".$fields." FROM `".$table."`;";
+        $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL;";
         $query = $this->query($sql);
 
         if(!empty($query)){
           // var geojson untuk return
+          $crs = array(
+            'type' => 'name',
+            'properties' => [
+              'name' => 'urn:ogc:def:crs:OGC:1.3:CRS84'
+            ]
+          );
+
           $geojson = array(
             'type' => 'FeatureCollection',
+            'name' => 'kec_sukadiri',
+            'crs' => $crs,
             'features' => array()
           );
+
           $features = array();
 
           foreach ($query->getResultArray() as $row){
@@ -73,7 +83,7 @@ class M_geophp extends Model
         return false;
       }
 
-      return json_encode($geojson, JSON_UNESCAPED_SLASHES);
+      return json_encode($geojson, JSON_NUMERIC_CHECK);
 
     } else {
       return false;

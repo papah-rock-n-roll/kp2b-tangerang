@@ -21,7 +21,9 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = 'http://localhost/kp2b-tangerang/';
+	//public $baseURL = 'http://localhost/kp2b-tangerang/'; //KP2B
+
+	public $baseURL = 'https://kp2b-tangerang.ga'; //Ardi
 
 	/*
 	|--------------------------------------------------------------------------
