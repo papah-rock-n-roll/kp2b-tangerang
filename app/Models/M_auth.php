@@ -4,30 +4,39 @@ use CodeIgniter\Model;
   
 class M_auth extends Model
 {
-  protected $table = "tgr_petak";
-  protected $primaryKey = 'FID';
+  protected $table = "mstr_users";
+  protected $primaryKey = 'userid';
  
   public function userLogin($email, $password)
   {
-    $data = array(
-      'email' => $email,
-      'password' => password_hash($password, PASSWORD_DEFAULT),
-      'status' => 'active'
-    );
-    
+    $query = $this->query("SELECT
+      userid,name,email,password,role,sts
+      FROM
+      mstr_users
+      WHERE email = '{$email}'
+    ");
+    $data = $query->getRowArray();
+
     if(!empty($data)) {
 
       //Akun anda belum aktif
-      if($data['status'] == 'Inactive') {
+      if($data['sts'] == 'Inactive') {
         return 2;
       }
-
+      
       //Akun access granted
       if(password_verify($password, $data['password'])) 
       {
+        $dataSession = [
+          'userid' => $data['userid'],
+          'role' => $data['role'],
+          'name' => $data['name'],
+          'email' => $data['email'],
+          'sts' => $data['sts'],
+        ];
+        session()->set($dataSession);
         return 200;
       }
-
       //Akun password salah
       else
       {
@@ -35,7 +44,6 @@ class M_auth extends Model
       }
 
     }
-
     //Akun tidak terdaftar
     else 
     {

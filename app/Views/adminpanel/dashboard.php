@@ -63,16 +63,16 @@
   <div class="col-lg-6">
     <div class="card">
       <div class="card-header">
-        <h5 class="m-0">Sales Graph</h5>
+        <h5 class="m-0">Graph Status</h5>
       </div>
       <div class="card-body">
         <?php
           $total = array();
-          $bulan = array();
+          $arentatus = array();
 
           foreach($graph as $v) :
             $total[] = $v['total'];
-            $bulan[] = ucfirst($v['bulan']);
+            $arentatus[] = $v['arentatus'];
           endforeach;
         ?>
         <canvas id="graph" width="100%" height="45"></canvas>
@@ -91,18 +91,18 @@
             <thead>
               <tr>
               <th>No</th>
+              <th>Poktan</th>
               <th>Pemilik</th>
               <th>Penggarap</th>
-              <th>Poktan</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach($list as $k => $v) : ?>
                 <tr>
                 <td><?= ++$k ?></td>
-                <td><?= $v['Pemilik'] ?></td>
-                <td><?= $v['Penggarap'] ?></td>
-                <td><?= ucfirst($v['Poktan']) ?></td>
+                <td><?= $v['poktan'] ?></td>
+                <td><?= $v['pemilik'] ?></td>
+                <td><?= $v['penggarap'] ?></td>
                 </tr>
               <?php endforeach ?>
             </tbody>
@@ -122,7 +122,7 @@ $chart = [
   'id' => 'graph',
   'type' => 'bar',
   'title' => 'Grafik Poktan',
-  'labels' => $bulan,
+  'labels' => $arentatus,
   'values' => $total,
   'xlabels' => 'Bulan',
   'ylabels' => 'Jumlah',

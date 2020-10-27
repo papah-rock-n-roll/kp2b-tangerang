@@ -4,42 +4,42 @@ use CodeIgniter\Model;
   
 class M_Dashboard extends Model
 {
-  protected $table = 'tgr_petak';
+  protected $table = 'v_observations';
 
   public function countPemilik()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT Pemilik) AS count FROM tgr_petak;");
+    $query = $this->query("SELECT COUNT(DISTINCT pemilik) AS count FROM {$this->table};");
     return $query->getRow();
   }
 
   public function countPenggarap()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT Penggarap) AS count FROM tgr_petak;");
+    $query = $this->query("SELECT COUNT(DISTINCT penggarap) AS count FROM {$this->table};");
     return $query->getRow();
   }
 
   public function countPoktan()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT POKTAN) AS count FROM tgr_petak;");
+    $query = $this->query("SELECT COUNT(DISTINCT farmname) AS count FROM {$this->table};");
     return $query->getRow();
   }
 
   public function countDesa()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT Nama_Desa) AS count FROM tgr_petak;");
+    $query = $this->query("SELECT COUNT(DISTINCT vlname) AS count FROM {$this->table};");
     return $query->getRow();
   }
 
   public function getGrafik()
   {
     $data = array();
-    $query = $this->query("SELECT
-      COUNT(FID) as total,
-      LCASE(BT_1) as bulan
-      FROM tgr_petak WHERE BT_1 <> '' 
-      GROUP BY bulan ORDER BY bulan ASC");
+    $query = $this->query("SELECT DISTINCT
+    COUNT(obscode) AS total,
+    COALESCE(areantatus,'NO DATA') AS arentatus
+    FROM {$this->table}
+    GROUP BY arentatus");
 
-    if(!empty($query)){
+    if(!empty($query)) {
       foreach($query->getResultArray() as $row) {
         $data[] = $row;
       }
@@ -50,17 +50,12 @@ class M_Dashboard extends Model
   public function getTable()
   {
     $query = $this->query("SELECT
-      Pemilik, 
-      Penggarap, 
-      LCASE(POKTAN) as Poktan
-      FROM tgr_petak 
-      WHERE 
-      Pemilik <> '' AND
-      Penggarap <> '' AND
-      Penggarap <> Pemilik AND
-      BT_1 <> ''
-      GROUP BY Poktan
-      ORDER BY Poktan ASC");
+    farmname as poktan,
+    COUNT(DISTINCT pemilik) AS pemilik,
+    COUNT(DISTINCT penggarap) AS penggarap
+    FROM {$this->table}
+    GROUP BY farmname
+    HAVING pemilik > 50 AND penggarap > 50");
     return $query->getResultArray();
   }
 }
