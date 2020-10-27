@@ -2,8 +2,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<link rel="stylesheet" href="<?php echo base_url('themes/plugins') ?>/chart.js/Chart.min.css">
-
 <link rel="stylesheet" href="<?php echo base_url('themes/plugins') ?>/fontawesome-free/css/all.min.css">
 
 <link rel="stylesheet" href="<?php echo base_url('themes/dist') ?>/css/adminlte.min.css">

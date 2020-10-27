@@ -7,7 +7,7 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="/"><b>POSIT</b></a>
+      <a href="/"><b>KP2B</b></a>
     </div>
     <div class="card">
       <div class="card-body login-card-body">
@@ -76,6 +76,9 @@
           <div class="col-8">
             <p class="mb-0">
               <a href="<?= esc($register) ?>" class="text-center">Register</a>
+            </p>
+            <p class="mb-0">
+              <a href="/" class="text-center">Back</a>
             </p>
           </div>
           <div class="col-4">

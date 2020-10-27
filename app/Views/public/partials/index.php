@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <?= $this->include('public/partials/head') ?>
+<?= $this->renderSection('link') ?>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">  

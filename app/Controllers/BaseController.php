@@ -26,7 +26,7 @@ class BaseController extends Controller
 	 *
 	 * @var array
 	 */
-	protected $helpers = [];
+	protected $helpers = ['form'];
 
 	/**
 	 * Constructor.
@@ -40,9 +40,16 @@ class BaseController extends Controller
 		// Preload any models, libraries, etc, here.
 		//--------------------------------------------------------------------
 		// E.g.:
-		// $this->session = \Config\Services::session();
+		$this->session = \Config\Services::session();
+		$this->validation = \Config\Services::validation();
 
+		// Public
 		$this->M_geophp = model('App\Models\M_geophp');
+		$this->M_auth = model('App\Models\M_auth');
+
+		// Admin Panel
+		$this->M_dashboard = model('App\Models\Adminpanel\M_dashboard');
+		
 	}
 
 }

@@ -36,11 +36,16 @@ $routes->get('/', 'Home::index');
 
 // Auth login
 $routes->get('/login', 'Auth::index');
+$routes->match(['get', 'post'], '/login', 'Auth::login');
+$routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
 
-// Events
-$routes->get('dashboard', 'Dashboard::index');
+// Admin Panel
+$routes->group('administrator', function($routes) {
+	
+	$routes->get('dashboard', 'Adminpanel\Dashboard::index');
 
+});
 
 /**
  * --------------------------------------------------------------------
