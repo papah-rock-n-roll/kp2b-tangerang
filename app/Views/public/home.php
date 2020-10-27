@@ -25,7 +25,7 @@
     "esri/widgets/BasemapGallery"
   ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, Editor, BasemapGallery) {
 
-    const url = "<?= esc($url) ?>";
+    const url = "<?= $url ?>";
     let editor, features;
 
     const editThisAction = {
