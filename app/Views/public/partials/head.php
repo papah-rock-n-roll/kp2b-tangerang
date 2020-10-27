@@ -2,14 +2,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-<link rel="stylesheet" href="<?php echo base_url('themes/plugins') ?>/chart.js/Chart.min.css">
-
 <link rel="stylesheet" href="<?php echo base_url('themes/plugins') ?>/fontawesome-free/css/all.min.css">
 
 <link rel="stylesheet" href="<?php echo base_url('themes/dist') ?>/css/adminlte.min.css">
-
-<style>html, body, #viewDiv {padding:0;margin:0;height:100%;width:100%;}</style>
-<link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/themes/light/main.css" />
 
 <style type="text/css" id="debugbar_dynamic_style"></style>
 <style>

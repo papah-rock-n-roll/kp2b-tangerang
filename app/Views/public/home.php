@@ -1,4 +1,10 @@
 <?= $this->extend('public/partials/index') ?>
+
+<?= $this->section('link') ?>
+<style>html, body, #viewDiv {padding:0;margin:0;height:100%;width:100%;}</style>
+<?= \App\Libraries\Link::style()->arcgis ?>
+<?= $this->endSection() ?>
+
 <?= $this->section('content') ?>
 
 <div id="viewDiv"></div>
@@ -6,6 +12,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
+<?= \App\Libraries\Link::script()->arcgis ?>
 <script>
   require([
     "esri/Map",
