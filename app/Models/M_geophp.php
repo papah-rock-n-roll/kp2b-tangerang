@@ -5,10 +5,8 @@ use CodeIgniter\Model;
 
 class M_geophp extends Model
 {
-  protected $table = 'tgr_petak';
-  protected $primaryKey = 'FID';
 
-  // geoPHP library
+  // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields)
   {
     // query untuk mengambil tipe data geometry (ada 3 tipe data geometry yaitu polygon, point dan line)

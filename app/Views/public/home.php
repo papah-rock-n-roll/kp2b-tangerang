@@ -1,7 +1,7 @@
 <?= $this->extend('public/partials/index') ?>
 
 <?= $this->section('link') ?>
-<style>html, body, #viewDiv {padding:0;margin:0;height:100%;width:100%;}</style>
+<style>html, body, #viewDiv {padding:0;margin:0;height:calc(100vh - 57px);width:100%;}</style>
 <?= \App\Libraries\Link::style()->arcgis ?>
 <?= $this->endSection() ?>
 
@@ -24,28 +24,28 @@
     "esri/widgets/Editor",
     "esri/widgets/BasemapGallery"
   ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, Editor, BasemapGallery) {
-  
+
     const url = "<?= esc($url) ?>";
     let editor, features;
-    
+
     const editThisAction = {
       title: "Edit feature",
       id: "edit-this",
       className: "esri-icon-edit"
     };
-    
+
     const template = {
       title: "Detail Petak : {KODE}",
       content: "Kode Petak: {KODE}<br>Kelompok Tani: {POKTAN}",
       actions: [editThisAction]
     };
-    
+
     const renderer = {
       type: "simple",
       field: "POKTAN",
       symbol: {
         type: "simple-fill",
-        color: "orange",
+        color: "green",
         outline: {
           color: "white"
         }
@@ -71,19 +71,19 @@
       zoom: 12,
       map: map
     });
-    
+
     view.when(function () {
       var layerList = new LayerList({
         view: view
       });
-      
+
       var lsExpand = new Expand({
         view: view,
         content: layerList
       });
-      
+
       view.ui.add(lsExpand, "top-left");
-      
+
       editor = new Editor({
         view: view,
         container: document.createElement("div"),
@@ -103,18 +103,18 @@
           deleteEnabled: false
         }]
       });
-      
+
       function editThis() {
         if (!editor.viewModel.activeWorkFlow) {
           view.popup.visible = false;
-          
+
           editor.startUpdateWorkflowAtFeatureEdit(
             view.popup.selectedFeature
           );
           view.ui.add(editor, "top-right");
           view.popup.spinnerEnabled = false;
         }
-        
+
         setTimeout(function () {
           let arrComp = editor.domNode.getElementsByClassName(
             "esri-editor__back-button esri-interactive"
@@ -134,14 +134,14 @@
           }
         }, 150);
       }
-      
+
       view.popup.on("trigger-action", function (event) {
         if (event.action.id === "edit-this") {
           editThis();
         }
       });
     });
-    
+
     view.popup.watch("visible", function (event) {
       if (editor.viewModel.state === "editing-existing-feature") {
         view.popup.close();
@@ -152,28 +152,28 @@
 
     geojsonLayer.on("apply-edits", function () {
       view.ui.remove(editor);
-      
+
       features.forEach(function (feature) {
         feature.popupTemplate = template;
       });
-      
+
       if (features) {
         view.popup.open({
           features: features
         });
       }
-      
+
       editor.viewModel.cancelWorkflow();
     });
-    
+
     const locateBtn = new Locate({
       view: view
     });
-    
+
     view.ui.add(locateBtn, {
       position: "top-left"
     });
-    
+
     const basemapGallery = new BasemapGallery({
       source: {
         query: {
@@ -183,14 +183,14 @@
       view: view,
       container: document.createElement("div")
     });
-    
+
     var bgExpand = new Expand({
       view: view,
       content: basemapGallery
     });
 
     view.ui.add(bgExpand, 'bottom-left');
-    
+
   });
 </script>
 <?= $this->endSection() ?>

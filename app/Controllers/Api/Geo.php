@@ -3,13 +3,13 @@
 /**
  * --------------------------------------------------------------------
  * Show geojson
- * 
+ *
  * https://localhost/kp2b-tangerang/api/geo
- * 
+ *
  * Custom Info Fields
- * 
- * https://localhost/kp2b-tangerang/api/geo/info?fields=a,b,c,d
- * 
+ *
+ * https://localhost/kp2b-tangerang/api/geo/info?table=a&fid=a&shape=a&fields=a,b,c,d
+ *
  * --------------------------------------------------------------------
  */
 
@@ -25,12 +25,9 @@ class Geo extends ResourceController
   public function index()
   {
     $info_fields = array(
-      'Penggarap','Pemilik','POKTAN','Luas_pokta','KODE','Nama_Desa',
-      'Status_Lah','Irigasi','IP','Pola','BT_1','BT_2','BT_3',
-      'Var_1','Var_2','Produktivi','Hama','Permasalah',
-      'Saprotan','Jual','Luas_ha_','Land_use','ADA','luas_new','list'
+      'areantatus', 'broadnrea'
     );
-    $data = $this->model->get_geojson('tgr_petak', 'FID', 'Shape', $info_fields);
+    $data = $this->model->get_geojson('observations_frmobservations', 'obscode', 'obsshape', $info_fields);
 
     if(!empty($data)) {
       return $this->respond($data);
@@ -53,9 +50,13 @@ class Geo extends ResourceController
 
       case 'info':
 
+        $table = $this->request->getGet('table');
+        $fid = $this->request->getGet('fid');
+        $shape = $this->request->getGet('shape');
         $fields = $this->request->getGet('fields');
+
         $info_fields = explode(',', $fields);
-        $data = $this->model->get_geojson('tgr_petak', 'FID', 'Shape', $info_fields);
+        $data = $this->model->get_geojson($table, $fid, $shape, $info_fields);
 
         if(!empty($data)) {
           return $this->respond($data);
@@ -70,11 +71,11 @@ class Geo extends ResourceController
           ];
           return $this->respond($message, $code);
         }
-        
+
       break;
 
     }
-    
+
   }
 
 }

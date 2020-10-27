@@ -4,12 +4,12 @@
 <?= $this->include('public/partials/head') ?>
 <?= $this->renderSection('link') ?>
 </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">  
+<body class="layout-top-nav">
+<div class="wrapper">
   <?= $this->include('public/partials/nav') ?>
-  <?= $this->include('public/partials/sidebar') ?>
+  <!-- <? // $this->include('public/partials/sidebar') ?> -->
   <div class="content-wrapper">
-  <!-- 
+  <!--
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -23,13 +23,9 @@
       </div>
     </div>
   -->
-    <div class="content">
-      <div class="container-fluid">
-      <?= $this->renderSection('content') ?>
-      </div>
-    </div>
+    <?= $this->renderSection('content') ?>
   </div>
-  <?= $this->include('public/partials/footer') ?>
+  <!-- <? // $this->include('public/partials/footer') ?> -->
 </div>
 <?= $this->include('public/partials/script') ?>
 <?= $this->renderSection('script') ?>

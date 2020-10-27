@@ -13,7 +13,7 @@ class Home extends BaseController
 		echo view('public/home', $data);
 	}
 
-	
+
 
 	//--------------------------------------------------------------------
 
