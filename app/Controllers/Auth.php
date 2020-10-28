@@ -50,6 +50,7 @@ class Auth extends BaseController
           break;
 
         case 200:
+
           return redirect()->to('administrator/dashboard');
           break;
 
@@ -75,24 +76,26 @@ class Auth extends BaseController
     }
     else
     {
-      $rules = $this->M_Auth->validationRegister();
+      $rules = $this->M_auth->validationRegister();
 
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
-      $data = [
-        'email' => $this->request->getPost('email'),
+      $data = (object) array(
+        'usernik' => $this->request->getPost('usernik'),
         'name' => $this->request->getPost('name'),
-        'username' => $this->request->getPost('username'),
+        'email' => $this->request->getPost('email'),
         'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-        'status' => "Inactive",
-        'level' => "User",
-      ];
-      $simpan = $this->M_Auth->register($data);
+        'realpassword' => $this->request->getPost('password'),
+        'role' => 0,
+        'sts' => 'Inactive',
+        'timestamp' => date('y-m-d H:i:s'),
+      );
+      $simpan = $this->M_auth->register($data);
 
       if($simpan) {
         $this->session->setFlashdata('success_register', 'Register Successfully');
-        return redirect()->to('/');
+        return redirect()->to('/login');
       }
     }
   }

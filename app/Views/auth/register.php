@@ -7,7 +7,7 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="/"><b>POSIT</b></a>
+    <a href="/"><b><strong>KP2B</strong> Tangerang</b></a>
     </div>
     <div class="card">
       <div class="card-body login-card-body">
@@ -16,24 +16,24 @@
         <?php echo form_open($action) ?>
         <div class="input-group mb-3">
           <?php
-            $username = [
+            $usernik = [
               'type'  => 'text',
-              'class' => $validation->hasError('username') ? 'form-control is-invalid' : 'form-control',
-              'name'  => 'username',
-              'value' => old('username') == null ? '' : old('username'),
-              'placeholder' => 'Username'
+              'class' => $validation->hasError('usernik') ? 'form-control is-invalid' : 'form-control',
+              'name'  => 'usernik',
+              'value' => old('usernik') == null ? '' : old('usernik'),
+              'placeholder' => 'Enter Your NIK'
             ];
-            echo form_input($username); 
+            echo form_input($usernik); 
           ?>
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-user"></span>
+              <span class="fas fa-address-card"></span>
             </div>
           </div>
           <div class="invalid-feedback">
-          <?= $validation->getError('username') ?>
+          <?= $validation->getError('usernik') ?>
           </div>
-        </div><?php echo form_open($action) ?>
+        </div>
         <div class="input-group mb-3">
           <?php
             $name = [

@@ -7,7 +7,7 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="/"><b>KP2B</b></a>
+      <a href="/"><b><strong>KP2B</strong> Tangerang</b></a>
     </div>
     <div class="card">
       <div class="card-body login-card-body">
