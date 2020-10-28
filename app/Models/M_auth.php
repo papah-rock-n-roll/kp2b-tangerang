@@ -30,7 +30,7 @@ class M_auth extends Model
         $query = $this->query("SELECT rolename FROM mstr_role WHERE roleid = {$data['role']}");
         $rolename = $query->getRow()->rolename;
 
-        $dataSession = [
+        $dataSession['privilage'] = (object) [
           'userid' => $data['userid'],
           'rolename' => $rolename,
           'name' => $data['name'],

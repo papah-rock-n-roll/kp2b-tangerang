@@ -1,6 +1,7 @@
 <?php 
-$panel = 'administrator';
-$nav = array_keys(session('menus'));
+$uri = service('uri');
+$adminpanel = $uri->getSegment(1);
+$nav = array_keys(session('privilage')->menus);
 ?>
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -10,7 +11,7 @@ $nav = array_keys(session('menus'));
     </li>
     <?php foreach ($nav as $v): ?>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?= base_url($panel.'/'.$v)?>" class="nav-link"><?= ucfirst($v) ?></a>
+        <a href="<?= base_url($adminpanel.'/'.$v)?>" class="nav-link"><?= ucfirst($v) ?></a>
       </li>
     <?php endforeach ?>
   </ul>
