@@ -27,14 +27,19 @@ class M_auth extends Model
       //Akun access granted
       if(password_verify($password, $data['password'])) 
       {
+        $query = $this->query("SELECT rolename FROM mstr_role WHERE roleid = {$data['role']}");
+        $rolename = $query->getRow()->rolename;
+
         $dataSession = [
           'userid' => $data['userid'],
-          'role' => $data['role'],
+          'rolename' => $rolename,
           'name' => $data['name'],
           'email' => $data['email'],
           'sts' => $data['sts'],
+          'menus' => \App\Libraries\Role::modules($data['role']),
         ];
         session()->set($dataSession);
+
         return 200;
       }
       //Akun password salah

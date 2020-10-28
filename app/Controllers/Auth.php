@@ -50,7 +50,6 @@ class Auth extends BaseController
           break;
 
         case 200:
-
           return redirect()->to('administrator/dashboard');
           break;
 
