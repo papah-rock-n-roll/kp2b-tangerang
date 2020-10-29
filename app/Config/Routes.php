@@ -53,7 +53,7 @@ $routes->group('administrator', function($routes) {
 	// Access Module
 	$routes->group('access', function($routes) {
 	
-		$routes->get('management', 'Adminpanel\Access::access');
+		$routes->get('management', 'Adminpanel\Access::management');
 		$routes->get('setting', 'Adminpanel\Access::setting');
 		$routes->get('log', 'Adminpanel\Access::log');
 

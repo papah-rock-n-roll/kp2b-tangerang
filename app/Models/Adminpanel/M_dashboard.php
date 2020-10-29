@@ -4,29 +4,27 @@ use CodeIgniter\Model;
   
 class M_dashboard extends Model
 {
-  protected $table = 'v_observations';
-
   public function countPemilik()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT pemilik) AS count FROM {$this->table};");
+    $query = $this->query("SELECT COUNT(DISTINCT pemilik) AS count FROM v_observations");
     return $query->getRow();
   }
 
   public function countPenggarap()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT penggarap) AS count FROM {$this->table};");
+    $query = $this->query("SELECT COUNT(DISTINCT penggarap) AS count FROM v_observations");
     return $query->getRow();
   }
 
   public function countPoktan()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT farmname) AS count FROM {$this->table};");
+    $query = $this->query("SELECT COUNT(DISTINCT farmname) AS count FROM v_observations");
     return $query->getRow();
   }
 
   public function countDesa()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT vlname) AS count FROM {$this->table};");
+    $query = $this->query("SELECT COUNT(DISTINCT vlname) AS count FROM v_observations");
     return $query->getRow();
   }
 
@@ -36,7 +34,7 @@ class M_dashboard extends Model
     $query = $this->query("SELECT DISTINCT
     COUNT(obscode) AS total,
     COALESCE(areantatus,'NO DATA') AS arentatus
-    FROM {$this->table}
+    FROM v_observations
     GROUP BY arentatus");
 
     if(!empty($query)) {
@@ -50,12 +48,13 @@ class M_dashboard extends Model
   public function getTable()
   {
     $query = $this->query("SELECT
-    farmname as poktan,
+    farmname AS poktan,
     COUNT(DISTINCT pemilik) AS pemilik,
     COUNT(DISTINCT penggarap) AS penggarap
-    FROM {$this->table}
+    FROM v_observations
     GROUP BY farmname
     HAVING pemilik > 50 AND penggarap > 50");
     return $query->getResultArray();
   }
+  
 }
