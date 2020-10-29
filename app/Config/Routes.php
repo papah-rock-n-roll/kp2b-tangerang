@@ -50,6 +50,15 @@ $routes->group('administrator', function($routes) {
 	$routes->get('geo', 'Adminpanel\Geo::index');
 	$routes->get('report', 'Adminpanel\Report::index');
 
+	// Access Module
+	$routes->group('access', function($routes) {
+	
+		$routes->get('management', 'Adminpanel\Access::access');
+		$routes->get('setting', 'Adminpanel\Access::setting');
+		$routes->get('log', 'Adminpanel\Access::log');
+
+	});
+
 });
 
 /**

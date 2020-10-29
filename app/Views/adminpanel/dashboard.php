@@ -8,46 +8,46 @@
   <div class="col-lg-3 col-6">
     <div class="small-box bg-info">
       <div class="inner">
-        <h3><?php echo $total_pemilik ?></h3>
+        <h3><?= $total_pemilik ?></h3>
         <p>Pemilik</p>
       </div>
       <div class="icon">
         <i class="fas fa-user-secret"></i>
       </div>
-      <a href="/transaction" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
   <div class="col-lg-3 col-6">
     <div class="small-box bg-success">
       <div class="inner">
-        <h3><?php echo $total_penggarap?></h3>
+        <h3><?= $total_penggarap?></h3>
         <p>Penggarap</p>
       </div>
       <div class="icon">
         <i class="fas fa-users"></i>
       </div>
-      <a href="/product" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
   <div class="col-lg-3 col-6">
     <div class="small-box bg-warning">
       <div class="inner">
-        <h3><?php echo $total_poktan ?></h3>
+        <h3><?= $total_poktan ?></h3>
         <p>Poktan</p>
       </div>
       <div class="icon">
         <i class="fa fa-tractor"></i>
       </div>
-      <a href="/category" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
   <div class="col-lg-3 col-6">
     <div class="small-box bg-danger">
       <div class="inner">
-        <h3><?php echo $total_desa ?></h3>
+        <h3><?= $total_desa ?></h3>
         <p>Desa</p>
       </div>
       <div class="icon">

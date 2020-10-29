@@ -2,7 +2,7 @@
 
 use CodeIgniter\Model;
   
-class M_Dashboard extends Model
+class M_dashboard extends Model
 {
   protected $table = 'v_observations';
 
