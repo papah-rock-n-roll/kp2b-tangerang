@@ -27,7 +27,7 @@ class Geo extends ResourceController
     $info_fields = array(
       'areantatus', 'broadnrea'
     );
-    $data = $this->model->get_geojson('observations_frmobservations', 'obscode', 'obsshape', $info_fields);
+    $data = $this->model->get_geojson('v_observations', 'obscode', 'obsshape', $info_fields);
 
     if(!empty($data)) {
       return $this->respond($data);

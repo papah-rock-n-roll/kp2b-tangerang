@@ -10,9 +10,8 @@ class Role
     $data = $db->query($query)->getRowArray();
 
     $module = explode(',', $data['rolemodules']);
-    $modules = array_values($module);
 
-    $menus = array(
+    $menu = array(
       'access' => ['management','setting','log'],
       'user' => ['account','profile'],
       'data' => ['owner','farmer','responden'],
@@ -20,8 +19,9 @@ class Role
       'report' => ['graph','table'],
     );
 
-    $count = min(count($modules), count($menus));
-    $menus = array_combine(array_slice($modules, 0, $count), array_slice($menus, 0, $count));
+    $offset = array_search($module[0], array_keys($menu));
+    $count = min(count($module), count($menu));
+    $menus = array_combine(array_slice($module, 0, $count), array_slice($menu, $offset, $count));
 
     return $menus;
   }

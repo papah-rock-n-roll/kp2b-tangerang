@@ -44,11 +44,11 @@ $routes->get('/logout', 'Auth::logout');
 $routes->group('administrator', function($routes) {
 	
 	$routes->get('dashboard', 'Adminpanel\Dashboard::index');
-	$routes->get('access', 'Adminpanel\Dashboard::access');
-	$routes->get('user', 'Adminpanel\Dashboard::user');
-	$routes->get('data', 'Adminpanel\Dashboard::data');
-	$routes->get('geo', 'Adminpanel\Dashboard::geo');
-	$routes->get('report', 'Adminpanel\Dashboard::report');
+	$routes->get('access', 'Adminpanel\Access::index');
+	$routes->get('user', 'Adminpanel\User::index');
+	$routes->get('data', 'Adminpanel\Data::index');
+	$routes->get('geo', 'Adminpanel\Geo::index');
+	$routes->get('report', 'Adminpanel\Report::index');
 
 });
 

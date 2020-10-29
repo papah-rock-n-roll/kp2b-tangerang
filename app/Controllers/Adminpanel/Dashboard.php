@@ -15,29 +15,4 @@ class Dashboard extends \App\Controllers\BaseController
     echo view('adminpanel/dashboard', $data);
   }
 
-  public function access()
-  {
-    echo view('adminpanel/access');
-  }
-
-  public function user()
-  {
-    echo view('adminpanel/user');
-  } 
-
-  public function data()
-  {
-    echo view('adminpanel/data');
-  } 
-
-  public function geo()
-  {
-    echo view('adminpanel/geo');
-  } 
-
-  public function report()
-  {
-    echo view('adminpanel/report');
-  } 
-
 }
