@@ -4,7 +4,7 @@
 <?= $this->include('partials/head') ?>
 <?= $this->renderSection('link') ?>
 </head>
-<body class="sidebar-mini">
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">  
   <?= $this->include('partials/nav') ?>
   <?= $this->include('partials/sidebar') ?>

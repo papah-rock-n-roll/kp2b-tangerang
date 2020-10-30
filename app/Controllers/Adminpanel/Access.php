@@ -1,9 +1,14 @@
 <?php namespace App\Controllers\Adminpanel;
-
-const VIEW_ACCESS_MANAGEMENT = 'adminpanel/access/management/';
  
 class Access extends \App\Controllers\BaseController
 {
+/**
+ * --------------------------------------------------------------------
+ *
+ * Access Main
+ *
+ * --------------------------------------------------------------------
+ */
   public function index()
   {
     $data = [
@@ -15,41 +20,64 @@ class Access extends \App\Controllers\BaseController
     echo view('adminpanel/access/main', $data);
   }
 
-  public function management()
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Access Management
+ *
+ * --------------------------------------------------------------------
+ */
+  public function management_index()
   {
-    $pager = \Config\Services::pager();
-    
     $where = [];
     $like = [];
     $orLike = [];
 
-    $categories = array('' => 'Choose Category') + array_column($this->M_access->getRoleModules(), 'rolename', 'roleid');
-    $data['categories'] = $categories;
+    $data['roles'] = array('' => 'Choose Role') + array_column($this->M_access->getRoleModules(), 'rolename', 'roleid');
 
-    $category = $this->request->getGet('category');
+    $role = $this->request->getGet('role');
     $keyword = $this->request->getGet('keyword');
 
-    $data['category'] = $category;
+    $data['role'] = $role;
     $data['keyword'] = $keyword;
 
-    if(! empty($category)) {
-      $where = ['mstr_users.role' => $category];
+    if(!empty($role)) {
+      $where = ['mstr_users.role' => $role];
     }
 
-    if(! empty($keyword)) {
+    if(!empty($keyword)) {
       $like = ['mstr_users.name' => $keyword];
-      $orLike = ['mstr_users.nik' => $keyword, 'mstr_users.email' => $keyword];
+      $orLike = ['mstr_users.usernik' => $keyword, 'mstr_users.email' => $keyword];
     }
 
     $data += [
       'list' => $this->M_access->getUsers($where, $like, $orLike),
       'pager' => $this->M_access->pager,
-      'create' => '/product/create',
-      'read' => '/product/read/',
-      'update' => '/product/update/',
-      'delete' => '/product/delete/',
+      'create' => '/administrator/access/management/create',
+      'read' => '/administrator/access/management/read/',
+      'update' => '/administrator/access/management/update/',
+      'delete' => '/administrator/access/management/delete/',
     ];
-    echo view(VIEW_ACCESS_MANAGEMENT.'list', $data);
+    echo view('adminpanel/access/management/list', $data);
+  }
+
+  public function management_create($id)
+  {
+    $data = [
+      'v' => $this->M_access->getUser($id),
+      'back' => '/administrator/access/management',
+    ];
+    echo view('adminpanel/access/management/read', $data);
+  }
+
+  public function management_read($id)
+  {
+    $data = [
+      'v' => $this->M_access->getUser($id),
+      'back' => '/administrator/access/management',
+    ];
+    echo view('adminpanel/access/management/read', $data);
   }
 
 }

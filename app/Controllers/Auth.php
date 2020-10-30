@@ -4,8 +4,8 @@ class Auth extends BaseController
 {
   public function index()
   {
-    if($this->session->has('id')) {
-      return redirect()->route('dashboard');
+    if($this->session->has('privilage')) {
+      return redirect()->to('administrator/dashboard');
     }
     else
     {

@@ -53,7 +53,12 @@ $routes->group('administrator', function($routes) {
 	// Access Module
 	$routes->group('access', function($routes) {
 	
-		$routes->get('management', 'Adminpanel\Access::management');
+		$routes->get('management', 'Adminpanel\Access::management_index');
+		$routes->match(['get', 'post'], '/management/create', 'Adminpanel\Access::management_create');
+		$routes->get('management/read/(:any)', 'Adminpanel\Access::management_read/$1');
+		$routes->match(['get', 'post'], '/management/update/(:any)', 'Adminpanel\Access::management_update/$1');
+		$routes->get('/management/delete/(:any)', 'Adminpanel\Access::management_delete/$1');
+
 		$routes->get('setting', 'Adminpanel\Access::setting');
 		$routes->get('log', 'Adminpanel\Access::log');
 

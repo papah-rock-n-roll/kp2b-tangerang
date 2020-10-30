@@ -6,7 +6,7 @@ class Role
   {
     $db = \Config\Database::connect();
 
-    $query = "SELECT rolemodules FROM mstr_role WHERE roleid = {$roleid};";
+    $query = "SELECT rolemodules FROM mstr_role WHERE roleid = {$roleid}";
     $data = $db->query($query)->getRowArray();
 
     $module = explode(',', $data['rolemodules']);
@@ -24,6 +24,26 @@ class Role
     $menus = array_combine(array_slice($module, 0, $count), array_slice($menu, $offset, $count));
 
     return $menus;
+  }
+
+  public static function actions($roleid)
+  {
+    $db = \Config\Database::connect();
+
+    $query = "SELECT `create`,`read`,`update`,`delete` FROM mstr_role WHERE roleid = {$roleid}";
+    $data = $db->query($query)->getRowArray();
+
+    $acts = array();
+
+    foreach($data as $k => $v) {
+      if($v == 1) { 
+        next($data); 
+      } else {
+        $acts[] = $k;
+      }
+    }
+
+    return $acts;
   }
 
 }

@@ -37,6 +37,7 @@ class M_auth extends Model
           'email' => $data['email'],
           'sts' => $data['sts'],
           'menus' => \App\Libraries\Role::modules($data['role']),
+          'acts' => \App\Libraries\Role::actions($data['role']),
         ];
         session()->set($dataSession);
 
