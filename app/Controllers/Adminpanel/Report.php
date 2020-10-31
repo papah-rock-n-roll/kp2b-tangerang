@@ -1,6 +1,6 @@
 <?php namespace App\Controllers\Adminpanel;
  
-class Geo extends \App\Controllers\BaseController
+class Report extends \App\Controllers\BaseController
 {
   public function index()
   {

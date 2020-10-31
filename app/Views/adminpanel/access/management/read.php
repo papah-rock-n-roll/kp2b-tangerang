@@ -7,7 +7,7 @@
   <div class="card-body box-profile">
     <div class="text-center">
       <img class="profile-user-img img-fluid img-rounded"
-            src="<?= base_url('themes/dist/img/user2-160x160.jpg') ?>"
+            src="<?= site_url('uploads/users/') . $v['image'] ?>"
             alt="User profile picture">
     </div>
 

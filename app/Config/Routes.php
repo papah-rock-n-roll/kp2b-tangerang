@@ -42,6 +42,8 @@ $routes->get('/logout', 'Auth::logout');
 
 // Admin Panel
 $routes->addRedirect('administrator', 'administrator/dashboard');
+$routes->addRedirect('management/update', 'administrator/access/management');
+
 $routes->group('administrator', function($routes) {
 	
 	$routes->get('dashboard', 'Adminpanel\Dashboard::index');
@@ -56,9 +58,6 @@ $routes->group('administrator', function($routes) {
 	
 		// Access Management
 		$routes->group('management', function($routes) {
-
-
-
 			$routes->get('', 'Adminpanel\Access::management_index');
 			$routes->get('read/(:num)', 'Adminpanel\Access::management_read/$1');
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Access::management_create');
@@ -66,7 +65,14 @@ $routes->group('administrator', function($routes) {
 			$routes->get('delete/(:num)', 'Adminpanel\Access::management_delete/$1');
 		});
 
-		$routes->get('setting', 'Adminpanel\Access::setting');
+		// Access Setting
+		$routes->group('setting', function($routes) {
+			$routes->get('', 'Adminpanel\Access::setting_index');
+			$routes->match(['get', 'post'], 'create', 'Adminpanel\Access::setting_create');
+			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Access::setting_update/$1');
+			$routes->get('delete/(:num)', 'Adminpanel\Access::setting_delete/$1');
+		});
+
 		$routes->get('log', 'Adminpanel\Access::log');
 
 	});

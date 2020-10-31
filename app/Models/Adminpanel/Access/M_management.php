@@ -7,19 +7,19 @@
  *
  * --------------------------------------------------------------------
  */
-
-const ACTS = 'administrator/access/management/';
-const VIEW = 'adminpanel/access/management/';
-const BACK = '/administrator/access/management';
-
-const CREATE = 'management/create';
-const READ   = 'management/read/';
-const UPDATE = 'management/update/';
-const DELETE = 'management/delete/';
-
   
 class M_management extends \App\Models\Adminpanel\Access\M_access
 {
+  const ACTS = 'administrator/access/management/';
+  const VIEW = 'adminpanel/access/management/';
+  const BACK = '/administrator/access/management';
+
+  const CREATE = 'management/create';
+  const READ   = 'management/read/';
+  const UPDATE = 'management/update/';
+  const DELETE = 'management/delete/';
+
+
   protected $table = 'mstr_users';
   protected $primaryKey = 'userid';
 
@@ -49,30 +49,30 @@ class M_management extends \App\Models\Adminpanel\Access\M_access
     $data += [
       'list' => $this->getUsers($where, $like, $orLike),
       'pager' => $this->pager,
-      'create' => CREATE,
-      'read' => READ,
-      'update' => UPDATE,
-      'delete' => DELETE,
+      'create' => self::CREATE,
+      'read' => self::READ,
+      'update' => self::UPDATE,
+      'delete' => self::DELETE,
     ];
-    echo view(VIEW.'list', $data);
+    echo view(self::VIEW.'list', $data);
   }
 
   public function read($id)
   {
     $data = [
       'v' => $this->getUser($id),
-      'back' => BACK,
+      'back' => self::BACK,
     ];
-    echo view(VIEW.'read', $data);
+    echo view(self::VIEW.'read', $data);
   }
 
   public function create_new($data)
   {
     $data += [
-      'action' => ACTS.'create',
-      'back' => BACK,
+      'action' => self::ACTS.'create',
+      'back' => self::BACK,
     ];
-    echo view(VIEW.'/create', $data);
+    echo view(self::VIEW.'/create', $data);
   }
 
   public function create_post($file, $data)
@@ -105,11 +105,11 @@ class M_management extends \App\Models\Adminpanel\Access\M_access
   public function update_new($id, $data)
   {
     $data += [
-      'action' => ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id,
       'v' => $this->getUser($id),
-      'back' => BACK,
+      'back' => self::BACK,
     ];
-    echo view(VIEW.'/update', $data);
+    echo view(self::VIEW.'/update', $data);
   }
 
   public function update_post($file, $id, $data)

@@ -124,4 +124,9 @@ class Access extends \App\Controllers\BaseController
  * --------------------------------------------------------------------
  */
 
+  public function setting_index()
+  { 
+    //$this->M_setting->list();
+  }
+
 }
