@@ -2,6 +2,7 @@
  
 class Access extends \App\Controllers\BaseController
 {
+
 /**
  * --------------------------------------------------------------------
  *
@@ -11,13 +12,7 @@ class Access extends \App\Controllers\BaseController
  */
   public function index()
   {
-    $data = [
-      'total_users' => $this->M_access->countUsers()->count,
-      'total_administrator' => $this->M_access->countRole(1)->count,
-      'total_user' => $this->M_access->countRole(2)->count,
-      'total_surveyor' => $this->M_access->countRole(3)->count,
-    ];
-    echo view('adminpanel/access/main', $data);
+    $this->M_access->dashboard();
   }
 
 
@@ -30,54 +25,52 @@ class Access extends \App\Controllers\BaseController
  */
   public function management_index()
   {
-    $where = [];
-    $like = [];
-    $orLike = [];
-
-    $data['roles'] = array('' => 'Choose Role') + array_column($this->M_access->getRoleModules(), 'rolename', 'roleid');
-
     $role = $this->request->getGet('role');
     $keyword = $this->request->getGet('keyword');
 
-    $data['role'] = $role;
-    $data['keyword'] = $keyword;
+    $module = $this->M_setting->getRoleModules();
 
-    if(!empty($role)) {
-      $where = ['mstr_users.role' => $role];
-    }
+    $data['roles'] = array('' => 'Choose Role') + array_column($module, 'rolename', 'roleid');
 
-    if(!empty($keyword)) {
-      $like = ['mstr_users.name' => $keyword];
-      $orLike = ['mstr_users.usernik' => $keyword, 'mstr_users.email' => $keyword];
-    }
-
-    $data += [
-      'list' => $this->M_access->getUsers($where, $like, $orLike),
-      'pager' => $this->M_access->pager,
-      'create' => '/administrator/access/management/create',
-      'read' => '/administrator/access/management/read/',
-      'update' => '/administrator/access/management/update/',
-      'delete' => '/administrator/access/management/delete/',
-    ];
-    echo view('adminpanel/access/management/list', $data);
-  }
-
-  public function management_create($id)
-  {
-    $data = [
-      'v' => $this->M_access->getUser($id),
-      'back' => '/administrator/access/management',
-    ];
-    echo view('adminpanel/access/management/read', $data);
+    $this->M_management->list($role, $keyword, $data);
   }
 
   public function management_read($id)
   {
-    $data = [
-      'v' => $this->M_access->getUser($id),
-      'back' => '/administrator/access/management',
-    ];
-    echo view('adminpanel/access/management/read', $data);
+    $this->M_management->read($id);
+  }
+
+  public function management_create()
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $module = $this->M_setting->getRoleModules();
+
+      $data['roles'] = array('' => 'Choose Role') + array_column($module, 'rolename', 'roleid');
+      $data['validation'] = $this->validation;
+
+      $this->M_management->create_new($data);
+    }
+    else
+    {
+      $rules = $this->M_management->validationRules();
+
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $file = $this->request->getFile('image');
+      $data = $this->request->getPost();
+      
+      $post = $this->M_management->create_post($file, $data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Create User '.$data['name'].' Successfully');
+        return redirect()->back();
+      }
+ 
+    }
+
   }
 
 }

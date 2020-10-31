@@ -80,16 +80,7 @@ class Auth extends BaseController
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
-      $data = (object) array(
-        'usernik' => $this->request->getPost('usernik'),
-        'name' => $this->request->getPost('name'),
-        'email' => $this->request->getPost('email'),
-        'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-        'realpassword' => $this->request->getPost('password'),
-        'role' => 0,
-        'sts' => 'Inactive',
-        'timestamp' => date('y-m-d H:i:s'),
-      );
+      $data = $this->request->getPost();
       $simpan = $this->M_auth->register($data);
 
       if($simpan) {

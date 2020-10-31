@@ -60,8 +60,21 @@ class M_auth extends Model
  
   public function register($data)
   {
-    $query = "CALL p_insertUser ('{$data->usernik}','{$data->name}','{$data->email}','{$data->password}',
-    '{$data->realpassword}',{$data->role},'{$data->sts}','{$data->timestamp}');";
+    $p = (object) array(
+      'usernik' => $data['usernik'],
+      'name' => $data['name'],
+      'phone' => null,
+      'email' => $data['email'],
+      'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+      'realpassword' => $data['password'],
+      'role' => 0,
+      'image' => 'default.png',
+      'sts' => 'Inactive',
+      'timestamp' => date('y-m-d H:i:s'),
+    );
+
+    $query = "CALL p_insertUser ('{$p->usernik}','{$p->name}','{$p->phone}','{$p->email}','{$p->password}',
+    '{$p->realpassword}',{$p->role},'{$p->image}','{$p->sts}','{$p->timestamp}');";
 
     return $this->query($query);
   }

@@ -49,7 +49,12 @@ class BaseController extends Controller
 
 		// Admin Panel
 		$this->M_dashboard = model('App\Models\Adminpanel\M_dashboard');
-		$this->M_access = model('App\Models\Adminpanel\M_access');
+
+		// Access Panel
+		$this->M_access = model('App\Models\Adminpanel\Access\M_access');
+		$this->M_management = model('App\Models\Adminpanel\Access\M_management');
+		$this->M_setting = model('App\Models\Adminpanel\Access\M_setting');
+		$this->M_log = model('App\Models\Adminpanel\Access\M_log');
 		
 	}
 
