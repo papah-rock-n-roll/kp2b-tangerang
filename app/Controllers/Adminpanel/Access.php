@@ -61,7 +61,7 @@ class Access extends \App\Controllers\BaseController
 
       $file = $this->request->getFile('image');
       $data = $this->request->getPost();
-      
+
       $post = $this->M_management->create_post($file, $data);
 
       if($post) {
@@ -70,7 +70,58 @@ class Access extends \App\Controllers\BaseController
       }
  
     }
-
   }
+
+  public function management_update($id)
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $module = $this->M_setting->getRoleModules();
+
+      $data['roles'] = array('' => 'Choose Role') + array_column($module, 'rolename', 'roleid');
+      $data['validation'] = $this->validation;
+
+      $this->M_management->update_new($id, $data);
+    }
+    else
+    {
+      $rules = $this->M_management->validationRules($id);
+
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $file = $this->request->getFile('image');
+      $data = $this->request->getPost();
+      
+      $post = $this->M_management->update_post($file, $id, $data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Update User '.$data['name'].' Successfully');
+        return redirect()->back();
+      }
+ 
+    }
+  }
+
+  public function management_delete($id)
+  {
+    $data = $this->M_management->getUser($id);
+    $delete = $this->M_management->delete_post($id, $data);
+    
+    if($delete) {
+      $this->session->setFlashdata('warning', 'Delete Name '.$data['name'].' Successfully');
+      return redirect()->back();
+    }
+  }
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Access Setting
+ *
+ * --------------------------------------------------------------------
+ */
 
 }

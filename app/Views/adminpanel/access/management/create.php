@@ -166,7 +166,7 @@ if(! empty(session()->getFlashdata('success'))) {
   'class' => 'bg-success',
   'autohide' => 'true',
   'delay' => '5000',
-  'title' => 'Create Product',
+  'title' => 'Create',
   'subtitle' => '',
   'body' => session()->getFlashdata('success'),
   'icon' => 'icon fas fa-file-alt',
