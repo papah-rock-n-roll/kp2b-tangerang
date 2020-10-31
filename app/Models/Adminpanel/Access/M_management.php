@@ -204,7 +204,7 @@ class M_management extends \App\Models\Adminpanel\Access\M_access
 
   public function getUser($id = null)
   {
-    $query = $this->select('usernik,name,phone,email,password,realpassword,roleid,image,sts')
+    $query = $this->select('usernik,name,phone,email,password,realpassword,roleid,rolename,image,sts')
     ->join('mstr_role', 'mstr_users.role = mstr_role.roleid')
     ->where('mstr_users.userid', $id);
 

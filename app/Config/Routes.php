@@ -41,6 +41,7 @@ $routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
 
 // Admin Panel
+$routes->addRedirect('administrator', 'administrator/dashboard');
 $routes->group('administrator', function($routes) {
 	
 	$routes->get('dashboard', 'Adminpanel\Dashboard::index');
@@ -55,6 +56,9 @@ $routes->group('administrator', function($routes) {
 	
 		// Access Management
 		$routes->group('management', function($routes) {
+
+
+
 			$routes->get('', 'Adminpanel\Access::management_index');
 			$routes->get('read/(:num)', 'Adminpanel\Access::management_read/$1');
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Access::management_create');
