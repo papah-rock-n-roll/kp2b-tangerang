@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<?= $this->include('partials/head') ?>
 <?= $this->renderSection('link') ?>
+<?= $this->include('partials/head') ?>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">  

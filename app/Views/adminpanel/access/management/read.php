@@ -25,6 +25,12 @@
       <li class="list-group-item">
         <b>Role</b> <a class="float-right"><?= $v['rolename'] ?></a>
       </li>
+      <li class="list-group-item">
+        <b>Password</b> <a class="float-right"><?= $v['realpassword'] ?></a>
+      </li>
+      <li class="list-group-item">
+        <b>Status</b> <a class="float-right"><?= $v['sts'] ?></a>
+      </li>
     </ul>
 
     <a href="<?= $back ?>" class="btn btn-primary btn-block"><b>Okay</b></a>

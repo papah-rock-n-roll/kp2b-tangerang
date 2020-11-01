@@ -19,9 +19,19 @@ class Role
       'report' => ['graph','table'],
     );
 
-    $offset = array_search($module[0], array_keys($menu));
-    $count = min(count($module), count($menu));
-    $menus = array_combine(array_slice($module, 0, $count), array_slice($menu, $offset, $count));
+    $menus = array();
+    
+    foreach ($menu as $k => $v) {
+      foreach ($module as $mv) {
+        if($k == $mv) {
+          $menus[$mv] = $v;
+        }
+      }
+    }
+
+    //$offset = array_search($module[0], array_keys($menu));
+    //$count = min(count($module), count($menu));
+    //$menus = array_combine(array_slice($module, 0, $count), array_slice($menu, $offset, $count));
 
     return $menus;
   }

@@ -126,7 +126,87 @@ class Access extends \App\Controllers\BaseController
 
   public function setting_index()
   { 
-    //$this->M_setting->list();
+    $this->M_setting->list();
   }
+
+  public function setting_create()
+  { 
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_setting->create_new($data);
+    }
+    else
+    {
+      $rules = $this->M_setting->validationRules();
+
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $data = $this->request->getPost();
+      $post = $this->M_setting->create_post($data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Create Role '.$data['rolename'].' Successfully');
+        return redirect()->back();
+      }
+    }
+
+  }
+
+  public function setting_update($id)
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_setting->update_new($id, $data);
+    }
+    else
+    {
+      $rules = $this->M_setting->validationRules($id);
+
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $data = array(
+        'rolename' => $this->request->getPost('rolename'),
+        'rolemodules' => $this->request->getPost('rolemodules'),
+        'create' => $this->request->getVar('create') == null ? 0 : 1,
+        'read' => $this->request->getVar('read') == null ? 0 : 1,
+        'update' => $this->request->getVar('update') == null ? 0 : 1,
+        'delete' => $this->request->getVar('delete') == null ? 0 : 1,
+      );
+      $post = $this->M_setting->update_post($id, $data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Update Role '.$data['rolename'].' Successfully');
+        return redirect()->back();
+      }
+ 
+    }
+  }
+
+  public function setting_delete($id)
+  {
+    $data = $this->M_setting->getRole($id);
+    $delete = $this->M_setting->delete_post($id);
+    
+    if($delete) {
+      $this->session->setFlashdata('warning', 'Delete Name '.$data['rolename'].' Successfully');
+      return redirect()->back();
+    }
+  }
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Access Log
+ *
+ * --------------------------------------------------------------------
+ */
 
 }

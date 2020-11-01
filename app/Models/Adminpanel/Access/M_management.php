@@ -8,7 +8,7 @@
  * --------------------------------------------------------------------
  */
   
-class M_management extends \App\Models\Adminpanel\Access\M_access
+class M_management extends M_access
 {
   const ACTS = 'administrator/access/management/';
   const VIEW = 'adminpanel/access/management/';
@@ -72,7 +72,7 @@ class M_management extends \App\Models\Adminpanel\Access\M_access
       'action' => self::ACTS.'create',
       'back' => self::BACK,
     ];
-    echo view(self::VIEW.'/create', $data);
+    echo view(self::VIEW.'create', $data);
   }
 
   public function create_post($file, $data)
@@ -109,7 +109,7 @@ class M_management extends \App\Models\Adminpanel\Access\M_access
       'v' => $this->getUser($id),
       'back' => self::BACK,
     ];
-    echo view(self::VIEW.'/update', $data);
+    echo view(self::VIEW.'update', $data);
   }
 
   public function update_post($file, $id, $data)
