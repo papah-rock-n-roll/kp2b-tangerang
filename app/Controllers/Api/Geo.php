@@ -91,7 +91,7 @@ class Geo extends ResourceController
   {
     if($this->getHeader()) 
     {
-      $rules = $this->model->validationRules();
+      $rules = $this->model->validationRules($id);
 
       if(! $this->validate($rules)) {
         $code = '406';
@@ -108,7 +108,7 @@ class Geo extends ResourceController
       $post = $this->model->putGeo($id, $data);
 
       if($post) {
-        $code = '201';
+        $code = '202';
         $this->response->setStatusCode($code);
         $message = [
           'status' => $code,

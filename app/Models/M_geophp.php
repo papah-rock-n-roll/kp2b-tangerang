@@ -105,4 +105,42 @@ class M_geophp extends Model
     return $this->update($id, $data);
   }
 
+  public function validationRules($id = null)
+  {
+    return [
+      'vl_code' => [
+      'label' => 'Kode Desa',
+      'rules' => 'required|max_length[10]',
+      'errors' => [
+        'required' => 'Diperlukan {field}',
+        'max_length' => '{field} Maximum {param} Character',
+        ]
+      ],
+      'farmcode' => [
+        'label' => 'Kode Desa',
+        'rules' => 'required|max_length[10]',
+        'errors' => [
+          'required' => 'Diperlukan {field}',
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
+      'pemilik' => [
+        'label' => 'ID Pemilik',
+        'rules' => 'required|max_length[10]',
+        'errors' => [
+          'required' => 'Diperlukan {field}',
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
+      'penggarap' => [
+        'label' => 'ID Penggarap',
+        'rules' => 'required|max_length[10]',
+        'errors' => [
+          'required' => 'Diperlukan {field}',
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
+
+    ];
+  }
 }
