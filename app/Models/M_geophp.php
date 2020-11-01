@@ -5,6 +5,9 @@ use CodeIgniter\Model;
 
 class M_geophp extends Model
 {
+  protected $table = 'observations_frmobservations';
+  protected $primaryKey = 'obscode';
+  protected $allowedFields = ['vl_code','farmcode','pemilik','penggarap'];
 
   // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields)
@@ -86,6 +89,20 @@ class M_geophp extends Model
     } else {
       return false;
     }
+  }
+
+/*
+
+  public function postGeo($data) 
+  {
+    return $this->insert($data);
+  }
+
+*/
+
+  public function putGeo($id, $data)
+  {
+    return $this->update($id, $data);
   }
 
 }

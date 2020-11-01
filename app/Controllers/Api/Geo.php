@@ -78,4 +78,55 @@ class Geo extends ResourceController
 
   }
 
+  public function getHeader()
+  {
+    $password = 123;
+    $token = \App\Libraries\Crypto::encrypt($password);
+
+    $this->request->getHeaderLine('KP2B-TOKEN') == $token ? $sts = true : $sts = false;
+    return $sts;
+  }
+
+  public function update($id = null)
+  {
+    if($this->getHeader()) 
+    {
+      $rules = $this->model->validationRules();
+
+      if(! $this->validate($rules)) {
+        $code = '406';
+        $this->response->setStatusCode($code);
+        $message = [
+          'status' => $code,
+          'message' => $this->response->getReason(),
+          'errors' => $this->validation->getErrors(),
+        ];
+        return $this->respond($message, $code);
+      }
+
+      $data = $this->request->getRawInput();
+      $post = $this->model->putGeo($id, $data);
+
+      if($post) {
+        $code = '201';
+        $this->response->setStatusCode($code);
+        $message = [
+          'status' => $code,
+          'message' => $this->response->getReason(),
+        ];
+        return $this->respond($message, $code);
+      }
+    }
+    else
+    {
+      $code = '401';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+      ];
+      return $this->respond($message, $code);
+    }
+  }
+
 }
