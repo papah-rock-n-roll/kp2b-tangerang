@@ -7,7 +7,7 @@ class M_geophp extends Model
 {
   protected $table = 'observations_frmobservations';
   protected $primaryKey = 'obscode';
-  protected $allowedFields = ['vl_code','farmcode','pemilik','penggarap'];
+  protected $allowedFields = ['obscode','vl_code','farmcode','pemilik','penggarap'];
 
   // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields)
@@ -110,9 +110,10 @@ class M_geophp extends Model
     return [
       'vl_code' => [
       'label' => 'Kode Desa',
-      'rules' => 'required|max_length[10]',
+      'rules' => 'required|max_length[10]|is_unique[observations_frmobservations.obscode,obscode,'.$id.']',
       'errors' => [
         'required' => 'Diperlukan {field}',
+        'is_unique' => 'Data {field} {value} Sudah Ada',
         'max_length' => '{field} Maximum {param} Character',
         ]
       ],

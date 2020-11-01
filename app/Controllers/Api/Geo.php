@@ -22,6 +22,13 @@ class Geo extends ResourceController
   protected $format    = 'json';
   protected $request;
 
+  protected $validation;
+
+  public function __construct()
+  {
+    $this->validation = \Config\Services::validation();
+  }
+
   public function index()
   {
     $info_fields = array(
