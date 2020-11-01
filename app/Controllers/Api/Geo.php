@@ -79,6 +79,20 @@ class Geo extends ResourceController
           return $this->respond($message, $code);
         }
 
+      case 'kecamatan':
+        $data = $this->model->get_kecamatan();
+        if(!empty($data)) {
+          return $this->respond($data);
+        } else {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
       break;
 
     }
@@ -96,7 +110,7 @@ class Geo extends ResourceController
 
   public function update($id = null)
   {
-    if($this->getHeader()) 
+    if($this->getHeader())
     {
       $rules = $this->model->validationRules($id);
 

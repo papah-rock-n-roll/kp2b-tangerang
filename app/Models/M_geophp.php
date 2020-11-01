@@ -9,6 +9,16 @@ class M_geophp extends Model
   protected $primaryKey = 'obscode';
   protected $allowedFields = ['obscode','vl_code','farmcode','pemilik','penggarap'];
 
+  // get kecamatan
+  public function get_kecamatan(){
+    $sql = "SELECT `v_observations`.`sdcode`, `v_observations`.`sdname` FROM `v_observations` GROUP BY `v_observations`.`sdcode`, `v_observations`.`sdname`;";
+    $query = $this->query($sql);
+    if(!empty($query)){
+      $rows = $query->getResultArray();
+      return json_encode($rows);
+    }
+  }
+
   // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields)
   {
@@ -93,7 +103,7 @@ class M_geophp extends Model
 
 /*
 
-  public function postGeo($data) 
+  public function postGeo($data)
   {
     return $this->insert($data);
   }

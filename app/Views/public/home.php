@@ -22,11 +22,19 @@
     "esri/widgets/Locate",
     "esri/widgets/Expand",
     "esri/widgets/Editor",
-    "esri/widgets/BasemapGallery"
-  ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, Editor, BasemapGallery) {
+    "esri/widgets/BasemapGallery",
+    "esri/widgets/Fullscreen",
+    "dojo/dom-construct",
+    "dojo/dom",
+    "dojo/on",
+    "esri/core/watchUtils"
+  ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, Editor, BasemapGallery, Fullscreen, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
+    const url_kec = "<?= $url_kec ?>";
     let editor, features;
+    var dataKec = [];
+    var kecDom = '';
 
     const editThisAction = {
       title: "Edit feature",
@@ -166,13 +174,49 @@
       editor.viewModel.cancelWorkflow();
     });
 
-    const locateBtn = new Locate({
-      view: view
+    view.ui.add(
+      new Fullscreen({
+        view: view,
+        element: viewDiv
+      }),
+      "top-right"
+    );
+
+    view.ui.add(
+      new Locate({
+        view: view,
+        element: viewDiv
+      }),
+      "top-right"
+    );
+
+    $.ajax({
+      async : false,
+      url : url_kec,
+      type : 'GET',
+      success : function(response){
+        dataKec = JSON.parse(response);
+      }
     });
 
-    view.ui.add(locateBtn, {
-      position: "top-left"
+    for (var i = 0; i < dataKec.length; i++) {
+      var opt = '<div class="checkbox"><label><input type="checkbox" value="' + dataKec[i].sdcode + '"> ' + dataKec[i].sdname + ' </label></div>';
+      kecDom = kecDom + opt;
+  	}
+
+    var node = domConstruct.create("div", {
+      className: "esri-layer-list esri-widget esri-widget--panel",
+      innerHTML: kecDom
     });
+
+    const addAttach = new Expand({
+      view: view,
+      expanded: false,
+      expandTooltip: "Tambah layer petak sawah",
+      content: node
+     });
+
+    view.ui.add(addAttach, "top-left");
 
     const basemapGallery = new BasemapGallery({
       source: {
