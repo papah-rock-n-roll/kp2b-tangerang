@@ -5,6 +5,7 @@
 
 <?= $this->section('content') ?>
 <div class="row">
+
   <div class="col-lg-3 col-6">
     <div class="small-box bg-info">
       <div class="inner">
@@ -14,48 +15,43 @@
       <div class="icon">
         <i class="fas fa-users"></i>
       </div>
-      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="access/management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
   <div class="col-lg-3 col-6">
     <div class="small-box bg-success">
       <div class="inner">
-        <h3><?= $total_administrator ?></h3>
-        <p>Administrator</p>
+        <h3><?= $total_roles ?></h3>
+        <p>Roles</p>
       </div>
       <div class="icon">
-        <i class="fas fa-user-ninja"></i>
+        <i class="fas fa-cog"></i>
       </div>
-      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="access/setting" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
-  <div class="col-lg-3 col-6">
-    <div class="small-box bg-warning">
-      <div class="inner">
-        <h3><?= $total_user ?></h3>
-        <p>User</p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-user-tie"></i>
-      </div>
-      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-    </div>
-  </div>
+</div>
 
-  <div class="col-lg-3 col-6">
-    <div class="small-box bg-danger">
-      <div class="inner">
-        <h3><?= $total_surveyor ?></h3>
-        <p>Surveyor</p>
+<div class="row">
+  <?php foreach ($list as $v) : ?>
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="info-box">
+        <span class="info-box-icon bg-gray elevation-1"><i class="fas fa-cog"></i></span>
+
+        <div class="info-box-content">
+          <span class="info-box-text"><?= ucfirst($v['rolename']) ?></span>
+          <span class="info-box-number">
+            <?= ucfirst($v['count']) ?>
+            <small>User</small>
+          </span>
+        </div>
+        <!-- /.info-box-content -->
       </div>
-      <div class="icon">
-        <i class="fas fa-user-secret"></i>
-      </div>
-      <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <!-- /.info-box -->
     </div>
-  </div>
+  <?php endforeach ?>
 </div>
 <?= $this->endSection() ?>
 

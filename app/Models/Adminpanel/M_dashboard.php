@@ -6,13 +6,13 @@ class M_dashboard extends Model
 {
   public function countPemilik()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT pemilik) AS count FROM v_observations");
+    $query = $this->query("SELECT COUNT(DISTINCT ownerid) AS count FROM v_observations");
     return $query->getRow();
   }
 
   public function countPenggarap()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT penggarap) AS count FROM v_observations");
+    $query = $this->query("SELECT COUNT(DISTINCT cultivatorid) AS count FROM v_observations");
     return $query->getRow();
   }
 
@@ -24,7 +24,7 @@ class M_dashboard extends Model
 
   public function countDesa()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT vlname) AS count FROM v_observations");
+    $query = $this->query("SELECT COUNT(DISTINCT vl_code) AS count FROM v_observations");
     return $query->getRow();
   }
 
@@ -49,8 +49,8 @@ class M_dashboard extends Model
   {
     $query = $this->query("SELECT
     farmname AS poktan,
-    COUNT(DISTINCT pemilik) AS pemilik,
-    COUNT(DISTINCT penggarap) AS penggarap
+    COUNT(DISTINCT ownerid) AS pemilik,
+    COUNT(DISTINCT cultivatorid) AS penggarap
     FROM v_observations
     GROUP BY farmname
     HAVING pemilik > 50 AND penggarap > 50");

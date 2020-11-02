@@ -27,12 +27,13 @@ class Access extends \App\Controllers\BaseController
   {
     $role = $this->request->getGet('role');
     $keyword = $this->request->getGet('keyword');
+    $paginate = $this->request->getGet('paginate');
 
     $module = $this->M_setting->getRoleModules();
 
     $data['roles'] = array('' => 'Choose Role') + array_column($module, 'rolename', 'roleid');
 
-    $this->M_management->list($role, $keyword, $data);
+    $this->M_management->list($role, $keyword, $data, $paginate);
   }
 
   public function management_read($id)

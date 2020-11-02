@@ -1,4 +1,5 @@
 <?= $this->extend('partials/index') ?>
+
 <?= $this->section('content') ?>
 <div class="row">
 <div class="col-lg-12">
@@ -8,16 +9,35 @@
     <h5 class="card-title"><i class="fas fa-search"></i> Filter Data</h5>
     <div class="card-tools" style="width: 50%">
       <div class="input-group input-group-sm">
+        <?php
+          $paginate = [
+            'type'  => 'number',
+            'list'  => 'defaultPaginate',
+            'class' => 'form-control',
+            'name'  => 'paginate',
+            'id'    => 'paginate',
+            'min'   => 1,
+            'max'   => 100,
+            'value' => $paginate,
+            'placeholder' => 'Paginate...'
+          ];
+          echo form_input($paginate);
+        ?>
+        <datalist id="defaultPaginate">
+          <option value="5">
+          <option value="25">
+          <option value="50">
+        </datalist>
         <?php echo form_dropdown('role', $roles, $role, ['class' => 'custom-select', 'id' => 'roles']) ?>
         <?php
-        $form_keyword = [
+          $form_keyword = [
             'type'  => 'text',
             'class' => 'form-control',
             'name'  => 'keyword',
             'id'    => 'keyword',
             'value' => $keyword,
             'placeholder' => 'Enter keyword ...'
-        ];
+          ];
         echo form_input($form_keyword);
         ?>
         <div class="input-group-append">
@@ -129,7 +149,8 @@ if(! empty(session()->getFlashdata('warning'))) {
   let filter = function() {
     var role = $("#roles").val();
     var keyword = $("#keyword").val();
-    window.location.replace("?role="+ role +"&keyword="+ keyword);
+    var paginate = $("#paginate").val();
+    window.location.replace("?paginate="+ paginate +"&role="+ role +"&keyword="+ keyword);
   };
 
   $("#filterSubmit").click(function() {
@@ -141,6 +162,12 @@ if(! empty(session()->getFlashdata('warning'))) {
   });
 
   $("#keyword").keypress(function(event) {
+    if(event.keyCode == 13) {
+      filter();
+    }
+  });
+
+  $("#paginate").keypress(function(event) {
     if(event.keyCode == 13) {
       filter();
     }
