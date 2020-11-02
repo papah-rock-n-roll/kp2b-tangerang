@@ -21,14 +21,14 @@
     "esri/widgets/LayerList",
     "esri/widgets/Locate",
     "esri/widgets/Expand",
-    "esri/widgets/Editor",
     "esri/widgets/BasemapGallery",
     "esri/widgets/Fullscreen",
+    "esri/widgets/Search",
     "dojo/dom-construct",
     "dojo/dom",
     "dojo/on",
     "esri/core/watchUtils"
-  ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, Editor, BasemapGallery, Fullscreen, domConstruct, dom, on, watchUtils) {
+  ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, BasemapGallery, Fullscreen, Search, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
@@ -36,21 +36,13 @@
     var dataKec = [];
     var kecDom = '';
 
-    const editThisAction = {
-      title: "Edit feature",
-      id: "edit-this",
-      className: "esri-icon-edit"
-    };
-
     const template = {
-      title: "Detail Petak : {KODE}",
-      content: "Kode Petak: {KODE}<br>Kelompok Tani: {POKTAN}",
-      actions: [editThisAction]
+      title: "Kode Petak: {FID}"
     };
 
     const renderer = {
       type: "simple",
-      field: "POKTAN",
+      field: "FID",
       symbol: {
         type: "simple-fill",
         color: "green",
@@ -76,122 +68,83 @@
     const view = new MapView({
       container: "viewDiv",
       center: [106.518852, -6.120213],
-      zoom: 12,
+      zoom: 11,
       map: map
     });
 
     view.when(function () {
+      var searchWidget = new Search({
+        view: view,
+        includeDefaultSources: false,
+        sources: [
+          {
+            layer: geojsonLayer,
+            searchFields: ["FID"],
+            suggestionTemplate: "Kode Petak: {FID}",
+            displayField: "FID",
+            exactMatch: false,
+            outFields: ["FID"],
+            name: "Kode petak",
+            placeholder: "Cari kode petak"
+          }
+        ]
+      });
+
+      view.ui.add(searchWidget, {
+        position: "top-right"
+      });
+
       var layerList = new LayerList({
         view: view
       });
 
-      var lsExpand = new Expand({
-        view: view,
-        content: layerList
-      });
+      view.ui.add(
+        new Expand({
+          view: view,
+          content: layerList
+        }),
+        "top-left"
+      );
 
-      view.ui.add(lsExpand, "top-left");
+      view.ui.add(
+        new Fullscreen({
+          view: view,
+          element: viewDiv
+        }),
+        "top-right"
+      );
 
-      editor = new Editor({
-        view: view,
-        container: document.createElement("div"),
-        layerInfos: [{
-          title: "Detail Petak : {KODE}",
-          layer: geojsonLayer,
-          fieldConfig: [{
-            name: "KODE",
-            label: "Kode petak",
-            editable: false
-          },{
-            name: "POKTAN",
-            label: "Nama Kelompok Tani",
-            hint: "Pilih atau isikan nama kelompok tani"
-          }],
-          addEnabled: false,
-          deleteEnabled: false
-        }]
-      });
+      view.ui.add(
+        new Locate({
+          view: view,
+          element: viewDiv
+        }),
+        "top-right"
+      );
 
-      function editThis() {
-        if (!editor.viewModel.activeWorkFlow) {
-          view.popup.visible = false;
-
-          editor.startUpdateWorkflowAtFeatureEdit(
-            view.popup.selectedFeature
-          );
-          view.ui.add(editor, "top-right");
-          view.popup.spinnerEnabled = false;
-        }
-
-        setTimeout(function () {
-          let arrComp = editor.domNode.getElementsByClassName(
-            "esri-editor__back-button esri-interactive"
-          );
-          if (arrComp.length === 1) {
-            arrComp[0].setAttribute(
-              "title",
-              "Cancel edits, return to popup"
-            );
-            arrComp[0].addEventListener("click", function (evt) {
-              evt.preventDefault();
-              view.ui.remove(editor);
-              view.popup.open({
-              features: features
-              });
-            });
+      const basemapGallery = new BasemapGallery({
+        source: {
+          query: {
+            id: '702026e41f6641fb85da88efe79dc166'
           }
-        }, 150);
-      }
-
-      view.popup.on("trigger-action", function (event) {
-        if (event.action.id === "edit-this") {
-          editThis();
-        }
-      });
-    });
-
-    view.popup.watch("visible", function (event) {
-      if (editor.viewModel.state === "editing-existing-feature") {
-        view.popup.close();
-      } else {
-        features = view.popup.features;
-      }
-    });
-
-    geojsonLayer.on("apply-edits", function () {
-      view.ui.remove(editor);
-
-      features.forEach(function (feature) {
-        feature.popupTemplate = template;
+        },
+        view: view,
+        container: document.createElement("div")
       });
 
-      if (features) {
-        view.popup.open({
-          features: features
-        });
-      }
+      view.ui.add(
+        new Expand({
+          view: view,
+          content: basemapGallery
+        }),
+        "bottom-left"
+      );
 
-      editor.viewModel.cancelWorkflow();
     });
-
-    view.ui.add(
-      new Fullscreen({
-        view: view,
-        element: viewDiv
-      }),
-      "top-right"
-    );
-
-    view.ui.add(
-      new Locate({
-        view: view,
-        element: viewDiv
-      }),
-      "top-right"
-    );
 
     $.ajax({
       async : false,
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
       url : url_kec,
       type : 'GET',
       success : function(response){
@@ -209,31 +162,15 @@
       innerHTML: kecDom
     });
 
-    const addAttach = new Expand({
-      view: view,
-      expanded: false,
-      expandTooltip: "Tambah layer petak sawah",
-      content: node
-     });
-
-    view.ui.add(addAttach, "top-left");
-
-    const basemapGallery = new BasemapGallery({
-      source: {
-        query: {
-          id: '702026e41f6641fb85da88efe79dc166'
-        }
-      },
-      view: view,
-      container: document.createElement("div")
-    });
-
-    var bgExpand = new Expand({
-      view: view,
-      content: basemapGallery
-    });
-
-    view.ui.add(bgExpand, 'bottom-left');
+    view.ui.add(
+      new Expand({
+        view: view,
+        expanded: false,
+        expandTooltip: "Tambah layer petak sawah",
+        content: node
+      }),
+      "top-left"
+    );
 
   });
 </script>
