@@ -67,12 +67,12 @@
       <thead>
         <tr>
           <th style="width: 5%">No</th>
-          <th style="width: 30%">Kode Petak</th>
-          <th style="width: 25%">Desa</th>
-          <th style="width: 25%">Poktan</th>
-          <th style="width: 10%">Pemilik</th>
-          <th style="width: 5%">Penggarap</th>
-          <th style="width: 25%">Action</th>
+          <th style="width: 20%">Kode Petak</th>
+          <th style="width: 20%">Desa</th>
+          <th style="width: 20%">Poktan</th>
+          <th style="width: 20%">Pemilik</th>
+          <th style="width: 20%">Penggarap</th>
+          <th style="width: 20%">Action</th>
         </tr>
       </thead>
       <tbody>

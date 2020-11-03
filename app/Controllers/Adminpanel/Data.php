@@ -30,7 +30,7 @@ class Data extends \App\Controllers\BaseController
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
 
-    $farms = $this->M_farmer->getFarms();
+    $farms = $this->M_farmer->getFarmers();
     $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
 
     $this->M_observation->list($farm, $keyword, $data, $paginate);
