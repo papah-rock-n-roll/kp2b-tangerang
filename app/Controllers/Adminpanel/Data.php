@@ -3,6 +3,7 @@
 class Data extends \App\Controllers\BaseController
 {
 
+
 /**
  * --------------------------------------------------------------------
  *
@@ -30,7 +31,7 @@ class Data extends \App\Controllers\BaseController
     $paginate = $this->request->getGet('paginate');
 
     $farms = $this->M_farmer->getFarms();
-    $data['farms'] = array('' => 'Choose farmer') + array_column($farms, 'farmname', 'farmcode');
+    $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
 
     $this->M_observation->list($farm, $keyword, $data, $paginate);
   }
@@ -40,25 +41,39 @@ class Data extends \App\Controllers\BaseController
     $this->M_observation->read($id);
   }
 
+  public function observation_create()
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data = $this->fetchDropdown();
+      $data['validation'] = $this->validation;
+
+      $this->M_observation->create_new($data);
+    }
+    else
+    {
+      $rules = $this->M_observation->validationRules();
+
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $data = $this->request->getPost();
+      $post = $this->M_observation->create_post($data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Create Observation Successfully');
+        return redirect()->back();
+      }
+ 
+    }
+  }
+
   public function observation_update($id)
   {
     if($this->request->getMethod() === 'get')
     {
-      $subdistricts = $this->M_data->getSubdistricts();
-      $data['subdistricts'] = array('' => 'Choose Subdistricts') + array_column($subdistricts, 'sdname', 'sdcode');
-      
-      $villages = $this->M_data->getVillages();
-      $data['villages'] = array('' => 'Choose Villages') + array_column($villages, 'vlname', 'vlcode');
-
-      $farms = $this->M_farmer->getFarmers();
-      $data['farm'] = array('' => 'Choose Farm') + array_column($farms, 'farmname', 'farmcode');
-
-      $owners = $this->M_owner->getOwners();
-      $data['owners'] = array('' => 'Choose Owner') + array_column($owners, 'ownername', 'ownerid');
-
-      $cultivators = $this->M_owner->getOwners();    
-      $data['cultivators'] = array('' => 'Choose Cultivator') + array_column($cultivators, 'ownername', 'ownerid');
-
+      $data = $this->fetchDropdown();
       $data['validation'] = $this->validation;
 
       $this->M_observation->update_new($id, $data);
@@ -80,7 +95,69 @@ class Data extends \App\Controllers\BaseController
       }
  
     }
+  }
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Owner
+ *
+ * --------------------------------------------------------------------
+ */
+
+
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data farmer
+ *
+ * --------------------------------------------------------------------
+ */
+
+
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Responden
+ *
+ * --------------------------------------------------------------------
+ */
+
+  function fetchDropdown()
+  {
+    $subdistricts = $this->M_data->getSubdistricts();
+    $data['subdistricts'] = array('' => 'Choose Subdistrict') + array_column($subdistricts, 'sdname', 'sdcode');
     
+    $villages = $this->M_data->getVillages();
+    $data['villages'] = array('' => 'Choose Village') + array_column($villages, 'vlname', 'vlcode');
+
+    $respondens = $this->M_responden->getRespondens();
+    $data['respondens'] = array('' => 'Choose Responden') + array_column($respondens, 'respName', 'respId');
+    
+    $farms = $this->M_farmer->getFarmers();
+    $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
+
+    $owners = $this->M_owner->getOwners();
+    $newowners = array();
+
+    foreach ($owners as $k => $v) {
+      foreach ($v as $nk => $nv) {
+        if ($nk == 'ownername') {
+          $newowners[$k]['newowners'] = $v['ownernik'] . ' - ' . $v['ownername'];
+        }
+        $newowners[$k][$nk] = $nv;
+      }
+    }
+
+    $data['owners'] = array('' => 'Choose Owner') + array_column($newowners, 'newowners', 'ownerid');   
+    $data['cultivators'] = array('' => 'Choose Cultivator') + array_column($newowners, 'newowners', 'ownerid');
+
+    return $data;
   }
 
 

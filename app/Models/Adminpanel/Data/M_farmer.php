@@ -15,12 +15,12 @@ class M_farmer extends M_data
 
   protected $allowedFields = ['farmname','farmmobile','farmhead'];
 
-  public function getFarms()
+  public function getFarmers()
   {
     return $this->findAll();
   }
 
-  public function getFarm($id)
+  public function getFarmer($id)
   {
     return $this->where('farmcode', $id)->first();
   }

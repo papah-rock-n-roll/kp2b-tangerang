@@ -21,9 +21,10 @@ class M_owner extends M_data
     return $this->findAll();
   }
 
-  public function getOwner($id, $nik)
+  public function getOwner($id, $nik = null)
   {
     return $this->where('ownerid', $id)->orWhere('ownernik', $nik)->first();
   }
+
 
 }

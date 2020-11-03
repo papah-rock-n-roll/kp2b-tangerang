@@ -21,7 +21,7 @@ class M_observation extends M_data
   const DELETE = 'observation/delete/';
 
 
-  protected $table = 'observations_frmobservations';
+  protected $table = 'v_observations';
   protected $primaryKey = 'obscode';
 
   protected $allowedFields = ['obsshape','areantatus','broadnrea','broadnrea','typeirigation',
@@ -105,8 +105,7 @@ class M_observation extends M_data
 
   public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
   {
-    $query = $this->from('v_observations')->where($where)->like($like)->orLike($orLike);
-    dd($this);
+    $query = $this->where($where)->like($like)->orLike($orLike);
     return $query->paginate($paginate, 'observations');
   }
 

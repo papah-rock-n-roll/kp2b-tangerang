@@ -146,10 +146,10 @@ if(! empty(session()->getFlashdata('warning'))) {
 <script type="text/javascript">
 
   let filter = function() {
-    var role = $("#roles").val();
+    var farm = $("#farms").val();
     var keyword = $("#keyword").val();
     var paginate = $("#paginate").val();
-    window.location.replace("?paginate="+ paginate +"&role="+ role +"&keyword="+ keyword);
+    window.location.replace("?paginate="+ paginate +"&farm="+ farm +"&keyword="+ keyword);
   };
 
   $("#filterSubmit").click(function() {
