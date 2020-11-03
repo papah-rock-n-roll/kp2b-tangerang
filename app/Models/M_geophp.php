@@ -9,27 +9,28 @@ class M_geophp extends Model
   protected $primaryKey = 'obscode';
   protected $allowedFields = ['obscode','vl_code','farmcode','pemilik','penggarap'];
 
-  // geojson converter
-  public function get_geojson($table, $id_field, $geom_field, $info_fields)
-  {
-    // query untuk mengambil tipe data geometry (ada 3 tipe data geometry yaitu polygon, point dan line)
-    $sql = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '".$table."' AND COLUMN_NAME = '". $geom_field."';";
+  // get kecamatan
+  public function get_kecamatan(){
+    $sql = "SELECT `v_observations`.`sdcode`, `v_observations`.`sdname` FROM `v_observations` GROUP BY `v_observations`.`sdcode`, `v_observations`.`sdname`;";
     $query = $this->query($sql);
-    $row = $query->getRow();
+    if(!empty($query)){
+      $rows = $query->getResultArray();
+      return json_encode($rows);
+    }
+  }
 
-    if(isset($row)){
-      $data_type = $row->DATA_TYPE;
+  // geojson converter
+  public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null){
 
       // Break fields array
       $fields = '';
-
       if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
 
-      // Untuk tipe geometry polygon
-      if($data_type == 'polygon'){
+      $cond = '';
+      if(!empty($sdcode)){ $cond = " AND sdcode = '".$sdcode."'"; }
 
         // query untuk megambil data
-        $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL;";
+        $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$cond};";
         $query = $this->query($sql);
 
         if(!empty($query)){
@@ -52,48 +53,33 @@ class M_geophp extends Model
 
           foreach ($query->getResultArray() as $row){
             $features = json_decode($row['GEOM']);
+
+            $properties['FID'] = $row['FID'];
+            if(!empty($info_fields)){
+              for ($x = 0; $x < count($info_fields); $x++){
+                $properties[$info_fields[$x]] = $row[$info_fields[$x]];
+              }
+            }
+
             $polygon = array(
               'type' => 'Feature',
-              'id' => $row['FID'],
-              'properties' => array(),
-              'geometry' => $features
+              'properties' => $properties,
+              'geometry' => $features,
+              'id' => $row['FID']
             );
-
-            $properties = array();
-            $properties['FID'] = $row['FID'];
-            for ($x = 0; $x < count($info_fields); $x++){
-              $properties[$info_fields[$x]] = $row[$info_fields[$x]];
-            }
-            array_push($polygon['properties'], $properties);
+            
             array_push($geojson['features'], $polygon);
           }
         } else {
           return false;
         }
 
-      // Untuk tipe geometry point. Belum beres
-      } else if($data_type == 'point'){
-        return false;
-
-      // Untuk tipe geometry line. Belum beres
-      } else if($data_type == 'line'){
-        return false;
-
-      // Untuk tipe geometry lain. return false aja
-      } else {
-        return false;
-      }
-
-      return $geojson;
-
-    } else {
-      return false;
-    }
+      return json_encode($geojson,JSON_NUMERIC_CHECK);
   }
 
 /*
 
-  public function postGeo($data) 
+  public function postGeo($data)
   {
     return $this->insert($data);
   }
