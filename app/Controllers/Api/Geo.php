@@ -62,10 +62,11 @@ class Geo extends ResourceController
         $shape = $this->request->getGet('shape');
         $fields = $this->request->getGet('fields');
         $sdcode = $this->request->getGet('sdcode');
+        $vlcode = $this->request->getGet('vlcode');
 
         $info_fields = null;
         if(!empty($fields)) { $info_fields = explode(',', $fields); }
-        $data = $this->model->get_geojson($table, $fid, $shape, $info_fields, $sdcode);
+        $data = $this->model->get_geojson($table, $fid, $shape, $info_fields, $sdcode, $vlcode);
 
         if(!empty($data)) {
           return $this->respond($data);
@@ -83,6 +84,21 @@ class Geo extends ResourceController
 
       case 'kecamatan':
         $data = $this->model->get_kecamatan();
+        if(!empty($data)) {
+          return $this->respond($data);
+        } else {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
+      case 'desa':
+        $sdcode = $this->request->getGet('sdcode');
+        $data = $this->model->get_desa($sdcode);
         if(!empty($data)) {
           return $this->respond($data);
         } else {

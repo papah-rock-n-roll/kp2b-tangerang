@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<?= $this->include('public/partials/head') ?>
 <?= $this->renderSection('link') ?>
+<?= $this->include('public/partials/head') ?>
 </head>
 <body class="layout-top-nav">
 <div class="wrapper">

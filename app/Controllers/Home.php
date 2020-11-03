@@ -7,8 +7,9 @@ class Home extends BaseController
 	public function index()
 	{
 		$data = [
-      'url' => base_url('api/geo/info?table=v_observations&fid=obscode&shape=obsshape&sdcode=360310'),
-			'url_kec' => base_url('api/geo/kecamatan')
+      'url' => base_url('api/geo/'),
+			'url_kec' => base_url('api/geo/kecamatan'),
+      'url_desa' => base_url('api/geo/desa')
 		];
 
 		echo view('public/home', $data);

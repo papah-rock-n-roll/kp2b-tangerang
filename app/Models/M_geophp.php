@@ -19,18 +19,38 @@ class M_geophp extends Model
     }
   }
 
+  // get desa
+  public function get_desa($sdcode){
+    if($sdcode != ''){
+      $cond = "WHERE `v_observations`.`sdcode` = '{$sdcode}'";
+    }
+    $sql = "SELECT `v_observations`.`vl_code`, `v_observations`.`vlname`
+      FROM `v_observations`
+      {$cond}
+      GROUP BY `v_observations`.`vl_code`, `v_observations`.`vlname`
+      ORDER BY `v_observations`.`vlname`;";
+    $query = $this->query($sql);
+    if(!empty($query)){
+      $rows = $query->getResultArray();
+      return json_encode($rows);
+    }
+  }
+
   // geojson converter
-  public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null){
+  public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null, $vlcode = null){
 
       // Break fields array
       $fields = '';
       if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
 
-      $cond = '';
-      if(!empty($sdcode)){ $cond = " AND sdcode = '".$sdcode."'"; }
+      $condSd = '';
+      if(!empty($sdcode)){ $condSd = " AND sdcode = '".$sdcode."'"; }
+
+      $condVl = '';
+      if(!empty($vlcode)){ $condVl = " AND vl_code = '".$vlcode."'"; }
 
         // query untuk megambil data
-        $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$cond};";
+        $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
         $query = $this->query($sql);
 
         if(!empty($query)){
@@ -44,7 +64,7 @@ class M_geophp extends Model
 
           $geojson = array(
             'type' => 'FeatureCollection',
-            'name' => 'kec_sukadiri',
+            'name' => 'Layer Petak',
             'crs' => $crs,
             'features' => array()
           );
@@ -67,7 +87,7 @@ class M_geophp extends Model
               'geometry' => $features,
               'id' => $row['FID']
             );
-            
+
             array_push($geojson['features'], $polygon);
           }
         } else {

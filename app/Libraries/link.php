@@ -1,5 +1,5 @@
 <?php namespace App\Libraries;
- 
+
 class Link
 {
   public static function style()
@@ -20,7 +20,7 @@ class Link
   public static function script()
   {
     $public = (object) array();
-    
+
     $local = (object) array(
       'arcgis' => '<script src="https://js.arcgis.com/4.17/"></script>',
       'chartjs' => '<script src="'.base_url('themes/plugins/chart.js/Chart.bundle.min.js').'"></script>',
