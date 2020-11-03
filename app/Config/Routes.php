@@ -156,6 +156,12 @@ $routes->group('administrator', function($routes) {
 
 	});
 
+});
+
+
+$routes->group('restapi', function($routes) {
+	$routes->resource('farmer');
+		
 
 });
 
