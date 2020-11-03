@@ -82,6 +82,8 @@ class Geo extends ResourceController
           return $this->respond($message, $code);
         }
 
+        break;
+
       case 'kecamatan':
         $data = $this->model->get_kecamatan();
         if(!empty($data)) {
@@ -96,7 +98,10 @@ class Geo extends ResourceController
           return $this->respond($message, $code);
         }
 
+        break;
+
       case 'desa':
+
         $sdcode = $this->request->getGet('sdcode');
         $data = $this->model->get_desa($sdcode);
         if(!empty($data)) {

@@ -39,62 +39,64 @@ class M_geophp extends Model
   // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null, $vlcode = null){
 
-      // Break fields array
-      $fields = '';
-      if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
+  // Break fields array
+  $fields = '';
+  if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
 
-      $condSd = '';
-      if(!empty($sdcode)){ $condSd = " AND sdcode = '".$sdcode."'"; }
+  $condSd = '';
+  if(!empty($sdcode)){ $condSd = " AND sdcode = '".$sdcode."'"; }
 
-      $condVl = '';
-      if(!empty($vlcode)){ $condVl = " AND vl_code = '".$vlcode."'"; }
+  $condVl = '';
+  if(!empty($vlcode)){ $condVl = " AND vl_code = '".$vlcode."'"; }
 
-        // query untuk megambil data
-        $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
-        $query = $this->query($sql);
+    // query untuk megambil data
+    $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
+    $query = $this->query($sql);
 
-        if(!empty($query)){
-          // var geojson untuk return
-          $crs = array(
-            'type' => 'name',
-            'properties' => [
-              'name' => 'urn:ogc:def:crs:OGC:1.3:CRS84'
-            ]
-          );
+    if(!empty($query)){
+      // var geojson untuk return
+      $crs = array(
+        'type' => 'name',
+        'properties' => [
+          'name' => 'urn:ogc:def:crs:OGC:1.3:CRS84'
+        ]
+      );
 
-          $geojson = array(
-            'type' => 'FeatureCollection',
-            'name' => 'Layer Petak',
-            'crs' => $crs,
-            'features' => array()
-          );
+      $geojson = array(
+        'type' => 'FeatureCollection',
+        'name' => 'Layer Petak',
+        'crs' => $crs,
+        'features' => array()
+      );
 
-          $features = array();
+      $features = array();
 
-          foreach ($query->getResultArray() as $row){
-            $features = json_decode($row['GEOM']);
+      foreach ($query->getResultArray() as $row){
+        $features = json_decode($row['GEOM']);
 
-            $properties['FID'] = $row['FID'];
-            if(!empty($info_fields)){
-              for ($x = 0; $x < count($info_fields); $x++){
-                $properties[$info_fields[$x]] = $row[$info_fields[$x]];
-              }
-            }
-
-            $polygon = array(
-              'type' => 'Feature',
-              'properties' => $properties,
-              'geometry' => $features,
-              'id' => $row['FID']
-            );
-
-            array_push($geojson['features'], $polygon);
+        $properties['FID'] = $row['FID'];
+        if(!empty($info_fields)){
+          for ($x = 0; $x < count($info_fields); $x++){
+            $properties[$info_fields[$x]] = $row[$info_fields[$x]];
           }
-        } else {
-          return false;
         }
 
-      return json_encode($geojson,JSON_NUMERIC_CHECK);
+        $polygon = array(
+          'type' => 'Feature',
+          'properties' => $properties,
+          'geometry' => $features,
+          'id' => $row['FID']
+        );
+
+        array_push($geojson['features'], $polygon);
+
+      }
+    } else {
+      return false;
+    }
+
+    return json_decode(json_encode($geojson ,JSON_NUMERIC_CHECK), true);
+
   }
 
 /*
