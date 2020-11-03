@@ -177,6 +177,7 @@ $routes->group('restapi', function($routes) {
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
 
 	$routes->resource('geo');
+	$routes->resource('owners');
 	
 });
 
