@@ -10,8 +10,9 @@
   
 class M_management extends M_access
 {
-  const ACTS = 'administrator/access/management/';
   const VIEW = 'adminpanel/access/management/';
+
+  const ACTS = 'administrator/access/management/';
   const BACK = '/administrator/access/management';
 
   const CREATE = 'management/create';

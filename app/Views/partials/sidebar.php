@@ -43,7 +43,7 @@ else
             <li class="nav-item">
               <a href="<?= base_url($adminpanel.'/'.$urisegment.'/'.$v) ?>" class="nav-link">
                 <i class="nav-icon far fa-circle text-default"></i>
-                <p class="text"><?= ucfirst($v) ?></p>
+                <p class="text"><?= ucwords($v) ?></p>
               </a>
             </li>
             <?php endforeach ?>

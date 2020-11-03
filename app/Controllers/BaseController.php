@@ -55,6 +55,16 @@ class BaseController extends Controller
 		$this->M_management = model('App\Models\Adminpanel\Access\M_management');
 		$this->M_setting = model('App\Models\Adminpanel\Access\M_setting');
 		$this->M_log = model('App\Models\Adminpanel\Access\M_log');
+
+		// User Panel
+		// ---
+
+		// Data Panel
+		$this->M_data = model('App\Models\Adminpanel\Data\M_data');
+		$this->M_observation = model('App\Models\Adminpanel\Data\M_observation');
+		$this->M_owner = model('App\Models\Adminpanel\Data\M_owner');
+		$this->M_farmer = model('App\Models\Adminpanel\Data\M_farmer');
+		$this->M_responden = model('App\Models\Adminpanel\Data\M_responden');
 		
 	}
 

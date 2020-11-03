@@ -28,7 +28,7 @@
           <option value="25">
           <option value="50">
         </datalist>
-        <?php echo form_dropdown('role', $roles, $role, ['class' => 'custom-select', 'id' => 'roles']) ?>
+        <?php echo form_dropdown('farm', $farms, $farm, ['class' => 'custom-select', 'id' => 'farms']) ?>
         <?php
           $form_keyword = [
             'type'  => 'text',
@@ -67,11 +67,11 @@
       <thead>
         <tr>
           <th style="width: 5%">No</th>
-          <th style="width: 30%">Nama</th>
-          <th style="width: 25%">NIK</th>
-          <th style="width: 25%">Email</th>
-          <th style="width: 10%">Role</th>
-          <th style="width: 5%">Status</th>
+          <th style="width: 30%">Kode Petak</th>
+          <th style="width: 25%">Desa</th>
+          <th style="width: 25%">Poktan</th>
+          <th style="width: 10%">Pemilik</th>
+          <th style="width: 5%">Penggarap</th>
           <th style="width: 25%">Action</th>
         </tr>
       </thead>
@@ -80,20 +80,19 @@
         <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
-          <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
             <td><?= ++$k ?></td>
-            <td><?= $v['name'] ?></td>
-            <td><?= $v['usernik'] ?></td>
-            <td><?= $v['email'] ?></td>
-            <td><?= $v['rolename'] ?></td>
-            <td><?= $v['sts'] ?></td>
+            <td><?= $v['obscode'] ?></td>
+            <td><?= $v['vlname'] ?></td>
+            <td><?= $v['farmname'] ?></td>
+            <td><?= $v['ownername'] ?></td>
+            <td><?= $v['cultivatorname'] ?></td>
             <td>
               <div class="btn-group">
-                <button type="button" class="tmb-read btn btn-primary btn-sm" title="View - <?= $v['name'] ?>" onclick="window.location.href='<?= esc($read . $v['userid']) ?>'">
+                <button type="button" class="tmb-read btn btn-primary btn-sm" title="View - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($read . $v['obscode']) ?>'">
                 <i class="fa fa-eye"></i></button>
-                <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['name'] ?>" onclick="window.location.href='<?= esc($update . $v['userid']) ?>'">
+                <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($update . $v['obscode']) ?>'">
                 <i class="fa fa-edit"></i></button>
-                <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete - <?= $v['name'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
+                <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete - <?= $v['obscode'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
                 <i class="fa fa-trash-alt"></i></button>
               </div>
               <?php
@@ -102,8 +101,8 @@
                   'size' => 'modal-sm',
                   'class' => 'bg-warning',
                   'title' => 'Delete',
-                  'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['name'],
-                  'action' => esc($delete . $v['userid']),
+                  'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['obscode'],
+                  'action' => esc($delete . $v['obscode']),
                   ];
                 echo view('events/modals', $modals);
               ?>
@@ -117,7 +116,7 @@
   </div>
   <div class="card-footer clearfix">
     <div class="pagination pagination-md m-0 float-right">
-      <?= $pager->links('users', 'bootstrap-pager') ?>
+      <?= $pager->links('observations', 'bootstrap-pager') ?>
     </div>
   </div>
 </div>
@@ -157,7 +156,7 @@ if(! empty(session()->getFlashdata('warning'))) {
     filter();
   });
 
-  $("#roles").change(function() {
+  $("#farms").change(function() {
     filter();
   });
 

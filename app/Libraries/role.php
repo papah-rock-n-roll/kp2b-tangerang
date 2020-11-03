@@ -14,9 +14,9 @@ class Role
     $menu = array(
       'access' => ['management','setting','log'],
       'user' => ['account','profile'],
-      'data' => ['owner','farmer','responden'],
-      'geo' => ['subdistrict','village'],
-      'report' => ['graph','table'],
+      'data' => ['observation','owner','farmer','responden'],
+      'geo' => ['observation','village','subdistrict'],
+      'report' => ['grafik','tabel'],
     );
 
     $menus = array();

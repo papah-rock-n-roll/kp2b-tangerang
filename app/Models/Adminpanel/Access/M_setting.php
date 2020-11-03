@@ -10,8 +10,9 @@
 
 class M_setting extends M_access
 {
-  const ACTS = 'administrator/access/setting/';
   const VIEW = 'adminpanel/access/setting/';
+
+  const ACTS = 'administrator/access/setting/';
   const BACK = '/administrator/access/setting';
 
   const CREATE = 'setting/create';
