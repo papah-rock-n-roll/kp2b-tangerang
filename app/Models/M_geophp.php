@@ -9,10 +9,18 @@ class M_geophp extends Model
   protected $primaryKey = 'obscode';
   protected $allowedFields = ['obscode','vl_code','farmcode','pemilik','penggarap'];
 
+  protected $db;
+
+  public function __construct()
+  {
+    // init config database
+    $this->db = \Config\Database::connect();
+  }
+
   // get kecamatan
   public function get_kecamatan(){
     $sql = "SELECT `v_observations`.`sdcode`, `v_observations`.`sdname` FROM `v_observations` GROUP BY `v_observations`.`sdcode`, `v_observations`.`sdname`;";
-    $query = $this->query($sql);
+    $query = $this->db->query($sql);
     if(!empty($query)){
       $rows = $query->getResultArray();
       return json_encode($rows);
@@ -21,15 +29,24 @@ class M_geophp extends Model
 
   // get desa
   public function get_desa($sdcode){
-    if($sdcode != ''){
+    if(!empty($sdcode))
+    {
       $cond = "WHERE `v_observations`.`sdcode` = '{$sdcode}'";
-    }
-    $sql = "SELECT `v_observations`.`vl_code`, `v_observations`.`vlname`
+
+      $sql = "SELECT `v_observations`.`vl_code`, `v_observations`.`vlname`
       FROM `v_observations`
       {$cond}
       GROUP BY `v_observations`.`vl_code`, `v_observations`.`vlname`
       ORDER BY `v_observations`.`vlname`;";
-    $query = $this->query($sql);
+
+      $query = $this->db->query($sql);
+
+    }
+    else
+    {
+      $query = null;
+    }
+
     if(!empty($query)){
       $rows = $query->getResultArray();
       return json_encode($rows);
@@ -43,8 +60,8 @@ class M_geophp extends Model
       other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,timestamp,vl_code,sdcode,
       sdname,vlname,farmname,pemilik,penggarap,respId
       FROM v_observations WHERE obscode = {$obscode};";
-    $query = $this->query($sql)->getRowArray();
-      return json_encode($query);
+    $query = $this->db->query($sql)->getRowArray();
+    return json_encode($query);
   }
 
   // geojson converter
@@ -62,7 +79,7 @@ class M_geophp extends Model
 
     // query untuk megambil data
     $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
-    $query = $this->query($sql);
+    $query = $this->db->query($sql)->getResultArray();
 
     if(!empty($query)){
       // var geojson untuk return
@@ -82,8 +99,8 @@ class M_geophp extends Model
 
       $features = array();
 
-      foreach ($query->getResultArray() as $row){
-        $features = json_decode($row['GEOM']);
+      foreach ($query as $row){
+        $features = json_decode($row['GEOM'], true);
 
         $properties['FID'] = $row['FID'];
         if(!empty($info_fields)){
@@ -101,12 +118,14 @@ class M_geophp extends Model
 
         array_push($geojson['features'], $polygon);
 
+        $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
+
       }
     } else {
       return false;
     }
-
-    return json_decode(json_encode($geojson ,JSON_NUMERIC_CHECK), true);
+    
+    return json_decode($result, true);
 
   }
 
