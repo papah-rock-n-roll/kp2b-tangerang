@@ -36,6 +36,17 @@ class M_geophp extends Model
     }
   }
 
+  // get desa
+  public function get_obs_detail($obscode){
+    $sql = "SELECT obscode,areantatus,broadnrea,typeirigation,distancefromriver,
+      distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,
+      other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,timestamp,vl_code,sdcode,
+      sdname,vlname,farmname,pemilik,penggarap,respId
+      FROM v_observations WHERE obscode = {$obscode};";
+    $query = $this->query($sql)->getRowArray();
+      return json_encode($query);
+  }
+
   // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null, $vlcode = null){
 

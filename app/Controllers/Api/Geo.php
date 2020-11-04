@@ -118,6 +118,24 @@ class Geo extends ResourceController
 
       break;
 
+    case 'obsdetail':
+
+      $obscode = $this->request->getGet('obscode');
+      $data = $this->model->get_obs_detail($obscode);
+      if(!empty($data)) {
+        return $this->respond($data);
+      } else {
+        $code = '404';
+        $this->response->setStatusCode($code);
+        $message = [
+          'status' => $code,
+          'message' => $this->response->getReason(),
+        ];
+        return $this->respond($message, $code);
+      }
+
+    break;
+
     }
 
   }
