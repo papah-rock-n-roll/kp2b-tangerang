@@ -69,7 +69,7 @@
     const view = new MapView({
       container: "viewDiv",
       center: [106.518852, -6.120213],
-      zoom: 11,
+      zoom: 10,
       map: map
     });
 
@@ -157,7 +157,7 @@
         });
         var desaDom = '<option value="">Semua desa</option>';
         for (var i = 0; i < dataDesa.length; i++) {
-          var optDesa = '<option value="' + dataDesa[i].vl_code + '"> ' + toTitleCase(dataDesa[i].vlname) + ' </option>';
+          var optDesa = '<option value="' + dataDesa[i].vlcode + '"> ' + toTitleCase(dataDesa[i].vlname) + ' </option>';
           desaDom = desaDom + optDesa;
         }
         $('#layerDesa').html(desaDom);

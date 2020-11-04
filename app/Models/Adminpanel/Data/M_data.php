@@ -12,41 +12,28 @@ use CodeIgniter\Model;
   
 class M_data extends Model
 {
+
   public function dashboard()
   {
+    $count = $this->counting();
     $data = [
-      'total_observations' => $this->countObservations()->count,
-      'total_owners' => $this->countOwners()->count,
-      'total_cultivators' => $this->countCultivators()->count,
-      'total_farm' => $this->countFarms()->count,
+      'total_observations' => $count->observations,
+      'total_owners' => $count->owners,
+      'total_cultivators' => $count->cultivators,
+      'total_farm' => $count->farms,
     ];
     echo view('adminpanel/data/main', $data);
   }
 
-  public function countObservations()
+  public function counting()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT obscode) AS count FROM v_observations");
-
-    return $query->getRow();
-  }
-
-  public function countOwners()
-  {
-    $query = $this->query("SELECT COUNT(DISTINCT ownerid) AS count FROM v_observations");
-
-    return $query->getRow();
-  }
-
-  public function countCultivators()
-  {
-    $query = $this->query("SELECT COUNT(DISTINCT cultivatorid) AS count FROM v_observations");
-
-    return $query->getRow();
-  }
-
-  public function countFarms()
-  {
-    $query = $this->query("SELECT COUNT(DISTINCT farmcode) AS count FROM v_observations");
+    $query = $this->db->query("SELECT 
+    COUNT(DISTINCT obscode) AS observations,
+    COUNT(DISTINCT owner) AS owners,
+    COUNT(DISTINCT cultivator) AS cultivators,
+    COUNT(DISTINCT farmcode) AS farms
+    FROM observations_frmobservations
+    WHERE owner OR cultivator OR farmcode <> 1");
 
     return $query->getRow();
   }

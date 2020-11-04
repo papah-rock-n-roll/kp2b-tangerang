@@ -28,7 +28,7 @@ class M_owner extends M_data
 
   public function getRemoteOwners($selected, $page)
   {
-    $offset = $page . 0;
+    $offset = $page * 10;
 
     $like = ['mstr_owners.ownernik' => $selected];
     $orlike = ['mstr_owners.ownername' => $selected];

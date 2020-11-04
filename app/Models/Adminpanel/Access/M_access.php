@@ -12,6 +12,7 @@ use CodeIgniter\Model;
   
 class M_access extends Model
 {
+
   public function dashboard()
   {
     $data = [
@@ -39,7 +40,7 @@ class M_access extends Model
 
   public function countRole()
   {
-    $query = $this->query("SELECT 
+    $query = $this->db->query("SELECT 
     mstr_role.roleid,
     mstr_role.rolename,
     COUNT(mstr_users.role) AS count

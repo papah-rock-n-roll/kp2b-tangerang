@@ -7,7 +7,7 @@ class M_geophp extends Model
 {
   protected $table = 'observations_frmobservations';
   protected $primaryKey = 'obscode';
-  protected $allowedFields = ['obscode','vl_code','farmcode','pemilik','penggarap'];
+  protected $allowedFields = ['obscode','vlcode','farmcode','pemilik','penggarap'];
 
   protected $db;
 
@@ -33,10 +33,10 @@ class M_geophp extends Model
     {
       $cond = "WHERE `v_observations`.`sdcode` = '{$sdcode}'";
 
-      $sql = "SELECT `v_observations`.`vl_code`, `v_observations`.`vlname`
+      $sql = "SELECT `v_observations`.`vlcode`, `v_observations`.`vlname`
       FROM `v_observations`
       {$cond}
-      GROUP BY `v_observations`.`vl_code`, `v_observations`.`vlname`
+      GROUP BY `v_observations`.`vlcode`, `v_observations`.`vlname`
       ORDER BY `v_observations`.`vlname`;";
 
       $query = $this->db->query($sql);
@@ -57,7 +57,7 @@ class M_geophp extends Model
   public function get_obs_detail($obscode){
     $sql = "SELECT obscode,areantatus,broadnrea,typeirigation,distancefromriver,
       distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,
-      other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,timestamp,vl_code,sdcode,
+      other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,timestamp,vlcode,sdcode,
       sdname,vlname,farmname,pemilik,penggarap,respId
       FROM v_observations WHERE obscode = {$obscode};";
     $query = $this->db->query($sql)->getRowArray();
@@ -75,10 +75,10 @@ class M_geophp extends Model
   if(!empty($sdcode)){ $condSd = " AND sdcode = '".$sdcode."'"; }
 
   $condVl = '';
-  if(!empty($vlcode)){ $condVl = " AND vl_code = '".$vlcode."'"; }
+  if(!empty($vlcode)){ $condVl = " AND vlcode = '".$vlcode."'"; }
 
     // query untuk megambil data
-    $sql = "SELECT {$id_field} AS FID, ST_AsGeoJSON( {$geom_field} ) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
+    $sql = "SELECT {$id_field} AS FID, ST_AsGeoJson({$geom_field}) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
     $query = $this->db->query($sql)->getResultArray();
 
     if(!empty($query)){
@@ -118,9 +118,10 @@ class M_geophp extends Model
 
         array_push($geojson['features'], $polygon);
 
-        $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
-
       }
+
+      $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
+
     } else {
       return false;
     }
@@ -146,7 +147,7 @@ class M_geophp extends Model
   public function validationRules($id = null)
   {
     return [
-      'vl_code' => [
+      'vlcode' => [
       'label' => 'Kode Desa',
       'rules' => 'required|max_length[10]|is_unique[observations_frmobservations.obscode,obscode,'.$id.']',
       'errors' => [

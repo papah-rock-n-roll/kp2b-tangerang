@@ -4,34 +4,38 @@ use CodeIgniter\Model;
   
 class M_dashboard extends Model
 {
-  public function countPemilik()
+
+  public function dashboard()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT ownerid) AS count FROM v_observations");
-    return $query->getRow();
+    $count = $this->counting();
+    $data = [
+      'total_pemilik' => $count->owners,
+      'total_penggarap' => $count->cultivators,
+      'total_poktan' => $count->farms,
+      'total_desa' => $count->villages,
+      'list' => $this->getTable(),
+      'graph' => $this->getGrafik(),
+    ];
+    echo view('adminpanel/dashboard', $data);
   }
 
-  public function countPenggarap()
+  public function counting()
   {
-    $query = $this->query("SELECT COUNT(DISTINCT cultivatorid) AS count FROM v_observations");
-    return $query->getRow();
-  }
+    $query = $this->query("SELECT 
+    COUNT(DISTINCT owner) AS owners,
+    COUNT(DISTINCT cultivator) AS cultivators,
+    COUNT(DISTINCT farmcode) AS farms,
+    COUNT(DISTINCT vlcode) AS villages
+    FROM observations_frmobservations
+    WHERE owner OR cultivator OR farmcode <> 1");
 
-  public function countPoktan()
-  {
-    $query = $this->query("SELECT COUNT(DISTINCT farmname) AS count FROM v_observations");
-    return $query->getRow();
-  }
-
-  public function countDesa()
-  {
-    $query = $this->query("SELECT COUNT(DISTINCT vl_code) AS count FROM v_observations");
     return $query->getRow();
   }
 
   public function getGrafik()
   {
     $data = array();
-    $query = $this->query("SELECT DISTINCT
+    $query = $this->db->query("SELECT DISTINCT
     COUNT(obscode) AS total,
     COALESCE(areantatus,'NO DATA') AS arentatus
     FROM v_observations
