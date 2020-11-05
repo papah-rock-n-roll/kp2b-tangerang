@@ -29,15 +29,19 @@ class M_management extends M_access
   protected $getFile;
   protected $getName;
 
-  public function list($role = null, $keyword = null, $data, $paginate = 5)
+  public function list($role = null, $keyword = null, $data, $paginate)
   {
     $where = array();
     $like = array();
     $orLike = array();
 
+    if(empty($paginate)) {
+      $paginate = 5;
+    }
+
     $data['role'] = $role;
     $data['keyword'] = $keyword;
-    $data['paginate'] = ($paginate == 0 ? 5 : $paginate);
+    $data['page'] = $paginate;
 
     if(!empty($role)) {
       $where = ['mstr_users.role' => $role];
@@ -194,7 +198,7 @@ class M_management extends M_access
     }
   }
 
-  public function getUsers($where = null, $like = null, $orLike = null, $paginate = 5)
+  public function getUsers($where = null, $like = null, $orLike = null, int $paginate = 5)
   {
     $query = $this->select('userid,usernik,name,email,rolename,sts')
     ->join('mstr_role', 'mstr_users.role = mstr_role.roleid')

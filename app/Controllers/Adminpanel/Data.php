@@ -32,7 +32,7 @@ class Data extends \App\Controllers\BaseController
 
     $farms = $this->M_farmer->getFarmers();
     $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
-
+    
     $this->M_observation->list($farm, $keyword, $data, $paginate);
   }
 
@@ -97,6 +97,40 @@ class Data extends \App\Controllers\BaseController
     }
   }
 
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Observations - Plantdates
+ *
+ * --------------------------------------------------------------------
+ */
+  public function observation_plantdates($id)
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_plantdates->create_new($id, $data);
+    }
+    else
+    {
+      $rules = $this->M_plantdates->validationRules();
+
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $data = $this->request->getPost();
+      $post = $this->M_plantdates->create_post($data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Create Observation Plantdates Successfully');
+        return redirect()->back();
+      }
+ 
+    }
+  }
+
 
 /**
  * --------------------------------------------------------------------
@@ -124,6 +158,17 @@ class Data extends \App\Controllers\BaseController
  * --------------------------------------------------------------------
  *
  * Data Responden
+ *
+ * --------------------------------------------------------------------
+ */
+
+
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Function
  *
  * --------------------------------------------------------------------
  */

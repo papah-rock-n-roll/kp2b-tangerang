@@ -29,11 +29,11 @@ class M_data extends Model
   {
     $query = $this->db->query("SELECT 
     COUNT(DISTINCT obscode) AS observations,
-    COUNT(DISTINCT owner) AS owners,
-    COUNT(DISTINCT cultivator) AS cultivators,
+    COUNT(DISTINCT ownerid) AS owners,
+    COUNT(DISTINCT cultivatorid) AS cultivators,
     COUNT(DISTINCT farmcode) AS farms
     FROM observations_frmobservations
-    WHERE owner OR cultivator OR farmcode <> 1");
+    WHERE ownerid OR cultivatorid OR farmcode <> 1");
 
     return $query->getRow();
   }

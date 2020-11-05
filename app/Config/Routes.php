@@ -94,6 +94,11 @@ $routes->group('administrator', function($routes) {
 			$routes->get('delete/(:num)', 'Adminpanel\Data::observation_delete/$1');
 		});
 
+		// Data Observation Plantdates
+		$routes->group('observation', function($routes) {
+			$routes->match(['get', 'post'], 'plantdates/(:num)', 'Adminpanel\Data::observation_plantdates/$1');
+		});
+
 		// Data Owner - Pemilik / Penggarap
 		$routes->group('owner', function($routes) {
 			$routes->get('', 'Adminpanel\Data::owner_index');

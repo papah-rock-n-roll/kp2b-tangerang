@@ -21,21 +21,21 @@
               <label for="">Owner</label>
               <?php
               $selected = old('ownerid') == null ? '' : old('ownerid');
-              echo form_dropdown('pemilik', $owners, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              echo form_dropdown('ownerid', $owners, $selected, ['class' => 'custom-select select2', 'required' => '']);
               ?>
               <div class="invalid-feedback">
-                <?= $validation->getError('pemilik') ?>
+                <?= $validation->getError('ownerid') ?>
               </div>
             </div>
 
             <div class="form-group">
               <label for="">Cultivator</label>
               <?php
-              $selected = old('ownerid') == null ? '' : old('ownerid');
-              echo form_dropdown('penggarap', $cultivators, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              $selected = old('cultivatorid') == null ? '' : old('cultivatorid');
+              echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'required' => '']);
               ?>
               <div class="invalid-feedback">
-                <?= $validation->getError('penggarap') ?>
+                <?= $validation->getError('cultivatorid') ?>
               </div>
             </div>
 
@@ -52,7 +52,7 @@
 
             <div class="form-group">
               <label for="">Area Status</label>
-              <select class="form-control select2-input" name="areantatus" placeholder="Status" required>
+              <select class="form-control select2-input" name="areantatus" required>
                 <option>MILIK</option>
                 <option>SEWA</option>
                 <option>GARAP</option>
@@ -88,7 +88,7 @@
 
             <div class="form-group">
               <label for="">Area Status</label>
-              <select class="form-control select2-input" name="typeirigation" placeholder="Status" required>
+              <select class="form-control select2-input" name="typeirigation" required>
                 <option>SUNGAI</option>
                 <option>PRIMER</option>
                 <option>SEKUNDER</option>
@@ -120,7 +120,7 @@
                 </div>
               </div>
               <div class="invalid-feedback">
-                <?= $validation->getError('wtrtreatnnst') ?>
+                <?= $validation->getError('distancefromriver') ?>
               </div>
             </div>
             
@@ -151,7 +151,7 @@
 
             <div class="form-group">
               <label for="">Intensity Land</label>
-              <select class="form-control select2-input" name="intensitynlan" placeholder="Intensity" required>
+              <select class="form-control select2-input" name="intensitynlan" required>
                 <option>1</option>
                 <option>2</option>
                 <option>2.5</option>
@@ -188,14 +188,14 @@
                 'class' => $validation->hasError('pattrnnlant') ? 'form-control is-invalid' : 'form-control',
                 'name' => 'pattrnnlant',
                 'minlength' => '1',
-                'placeholder' => 'Index',
+                'placeholder' => 'Pattern',
                 'value' => old('pattrnnlant'),
                 'required' => ''
               ];
               echo form_input($pattrnnlant);
               ?>
               <div class="invalid-feedback">
-              <?= $validation->getError('indxnlant') ?>
+              <?= $validation->getError('pattrnnlant') ?>
               </div>
             </div>
 
@@ -206,28 +206,22 @@
             <div class="form-group">
               <label for="">Responden</label>
               <?php
-              $selected = old('respId') == null ? '' : old('respId');
-              echo form_dropdown('respId', $respondens, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              $selected = old('respid') == null ? '' : old('respid');
+              echo form_dropdown('respid', $respondens, $selected, ['class' => 'custom-select select2', 'required' => '']);
               ?>
               <div class="invalid-feedback">
-                <?= $validation->getError('respId') ?>
+              <?= $validation->getError('respid') ?>
               </div>
             </div>
 
             <div class="form-group">
               <label for="">Relate Production OPT</label>
-              <?php
-              $opt = [
-                'class' => $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'opt',
-                'name' => 'opt',
-                'minlength' => '1',
-                'placeholder' => 'Enter..',
-                'value' => old('opt'),
-                'required' => ''
-              ];
-              echo form_input($opt);
-              ?>
+              <?php $valid = $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control' ?>
+              <select class="<?= $valid ?> select2-multi" name="opt[]" multiple="multiple" data-placeholder="Select Module">
+                <?php foreach($opt as $k => $v) : ?>
+                  <option <?= $v ?>><?= $k ?></option>
+                <?php endforeach ?>
+              </select>
               <div class="invalid-feedback">
               <?= $validation->getError('opt') ?>
               </div>
@@ -254,20 +248,14 @@
 
             <div class="form-group">
               <label for="">Relate Production Saprotan</label>
-              <?php
-              $saprotan = [
-                'class' => $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'input',
-                'name' => 'saprotan',
-                'minlength' => '1',
-                'placeholder' => 'Enter..',
-                'value' => old('saprotan'),
-                'required' => ''
-              ];
-              echo form_input($saprotan);
-              ?>
+              <?php $valid = $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control' ?>
+              <select class="<?= $valid ?> select2-multi" name="saprotan[]" multiple="multiple" data-placeholder="Select Module">
+                <?php foreach($saprotan as $k => $v) : ?>
+                  <option <?= $v ?>><?= $k ?></option>
+                <?php endforeach ?>
+              </select>
               <div class="invalid-feedback">
-              <?= $validation->getError('saprotan') ?>
+                <?= $validation->getError('saprotan') ?>
               </div>
             </div>
 
@@ -312,7 +300,7 @@
 
             <div class="form-group">
               <label for="">Month Max</label>
-              <select class="form-control select2" name="monthmax" placeholder="Enter.. Month" required>
+              <select class="form-control select2" name="monthmax" required>
                 <option>JANUARI</option>
                 <option>FEBRUARI</option>
                 <option>MARET</option>
@@ -353,7 +341,7 @@
 
             <div class="form-group">
               <label for="">Month Min</label>
-              <select class="form-control select2" name="monthmin" placeholder="Enter.. Month" required>
+              <select class="form-control select2" name="monthmin" required>
                 <option>JANUARI</option>
                 <option>FEBRUARI</option>
                 <option>MARET</option>
@@ -374,7 +362,7 @@
 
             <div class="form-group">
               <label for="">Harvest Sell</label>
-              <select class="form-control select2-input" name="harvstsell" placeholder="Harvest.." required>
+              <select class="form-control select2-input" name="harvstsell" required>
                 <option>TIDAK DIJUAL</option>
                 <option>PASAR</option>
                 <option>TENGKULAK</option>
@@ -407,6 +395,10 @@
   $('.select2').select2()
 
   $(".select2-input").select2({
+    tags: true
+  });
+
+  $(".select2-multi").select2({
     tags: true
   });
 

@@ -7,29 +7,30 @@
   <div class="card-body box-profile">
     <div class="text-center">
       <img class="profile-user-img img-fluid img-rounded"
-            src="<?= site_url('uploads/users/') . $v['image'] ?>"
+            src="<?= site_url('uploads/users/') . 'default.png' ?>"
             alt="User profile picture">
     </div>
 
-    <h3 class="profile-username text-center"><?= $v['name'] ?></h3>
+    <h3 class="profile-username text-center"><?= $v['farmname'] ?></h3>
 
-    <p class="text-muted text-center"><?= $v['usernik'] ?></p>
+    <p class="text-muted text-center"><?= $v['sdname'] ?></p>
+    <p class="text-muted text-center"><?= $v['vlname'] ?></p>
 
     <ul class="list-group list-group-unbordered mb-3">
       <li class="list-group-item">
-        <b>Phone</b> <a class="float-right"><?= $v['phone'] ?></a>
+        <b>Owner</b> <a class="float-right"><?= $v['ownername'] ?></a>
       </li>
       <li class="list-group-item">
-        <b>Email</b> <a class="float-right"><?= $v['email'] ?></a>
+        <b>Cultivator</b> <a class="float-right"><?= $v['cultivatorname'] ?></a>
       </li>
       <li class="list-group-item">
-        <b>Role</b> <a class="float-right"><?= $v['rolename'] ?></a>
+        <b>Area Status</b> <a class="float-right"><?= $v['areantatus'] ?></a>
       </li>
       <li class="list-group-item">
-        <b>Password</b> <a class="float-right"><?= $v['realpassword'] ?></a>
+        <b>Broad Area</b> <a class="float-right"><?= $v['broadnrea'] ?></a>
       </li>
       <li class="list-group-item">
-        <b>Status</b> <a class="float-right"><?= $v['sts'] ?></a>
+        <b>Responden</b> <a class="float-right"><?= $v['respname'] ?></a>
       </li>
     </ul>
 

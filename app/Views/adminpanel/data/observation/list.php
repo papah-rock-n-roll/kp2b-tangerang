@@ -9,25 +9,6 @@
     <h5 class="card-title"><i class="fas fa-search"></i> Filter Data</h5>
     <div class="card-tools" style="width: 50%">
       <div class="input-group input-group-sm">
-        <?php
-          $paginate = [
-            'type'  => 'number',
-            'list'  => 'defaultPaginate',
-            'class' => 'form-control',
-            'name'  => 'paginate',
-            'id'    => 'paginate',
-            'min'   => 1,
-            'max'   => 100,
-            'value' => $paginate,
-            'placeholder' => 'Paginate...'
-          ];
-          echo form_input($paginate);
-        ?>
-        <datalist id="defaultPaginate">
-          <option value="5">
-          <option value="25">
-          <option value="50">
-        </datalist>
         <?php echo form_dropdown('farm', $farms, $farm, ['class' => 'custom-select', 'id' => 'farms']) ?>
         <?php
           $form_keyword = [
@@ -54,10 +35,23 @@
   <div class="card-header">
     <h5 class="card-title"><i class="fas fa-tags"></i> List Data</h5>
     <div class="card-tools">
-      <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
-      </button>
-      <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
-      </button>
+      <div class="input-group input-group-sm">
+        <?php
+            $paginate = [
+              '5' => '5',
+              '10' => '10',
+              '50' => '50',
+              '100' => '100'
+            ];
+          echo form_dropdown('paginate', $paginate, $page, ['class' => 'custom-select', 'id' => 'paginate']);
+        ?>
+        <div class="input-group-append">
+          <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
+          </button>
+          <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -88,12 +82,18 @@
             <td><?= $v['cultivatorname'] ?></td>
             <td>
               <div class="btn-group">
-                <button type="button" class="tmb-read btn btn-primary btn-sm" title="View - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($read . $v['obscode']) ?>'">
-                <i class="fa fa-eye"></i></button>
-                <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($update . $v['obscode']) ?>'">
+                <button type="button" class="tmb-update btn btn-default btn-sm" title="Edit - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($update . $v['obscode']) ?>'">
                 <i class="fa fa-edit"></i></button>
-                <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete - <?= $v['obscode'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
+                <button type="button" class="tmb-delete btn btn-default btn-sm" title="Delete - <?= $v['obscode'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
                 <i class="fa fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                  <a class="tmb-read dropdown-item" href="<?= $read . $v['obscode'] ?>">View Farmer</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="<?= $plantdates . $v['obscode'] ?>">Calendar Plantation</a>
+                </div>
               </div>
               <?php
                 $modals = [
@@ -166,10 +166,8 @@ if(! empty(session()->getFlashdata('warning'))) {
     }
   });
 
-  $("#paginate").keypress(function(event) {
-    if(event.keyCode == 13) {
-      filter();
-    }
+  $("#paginate").change(function() {
+    filter();
   });
 
 </script>

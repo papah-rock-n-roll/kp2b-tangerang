@@ -16,29 +16,33 @@ class M_observation extends M_data
   const BACK = '/administrator/data/observation';
 
   const CREATE = 'observation/create';
-  const READ   = 'observation/read';
+  const READ   = 'observation/read/';
   const UPDATE = 'observation/update/';
   const DELETE = 'observation/delete/';
+
+  const PLANTDATES = 'adminpanel/data/plantdates/';
 
 
   protected $table = 'v_observations';
   protected $primaryKey = 'obscode';
 
-  protected $allowedFields = ['obsshape','areantatus','broadnrea','broadnrea','typeirigation',
-  'distancefromriver','distancefromIrgPre','wtrtreatnnst','intensitynlan','indxnlant','pattrnnlant',
-  'opt','wtr','saprotan','other','harvstmax','monthmax','harvstmin','monthmin','harvstsell',
-  'timestamp','vl_code','farmcode','pemilik','penggrap','respId'];
+  public $optbase = ['BURUNG','SUNDEP','WERENG','WALANG'];
+  public $saprotanbase = ['SEMPROTAN','TRAKTOR'];
 
 
-  public function list($farm = null, $keyword = null, $data, $paginate = 5)
+  public function list($farm = null, $keyword = null, $data, $paginate)
   {
     $where = array();
     $like = array();
     $orLike = array();
 
+    if(empty($paginate)) {
+      $paginate = 5;
+    }
+
     $data['farm'] = $farm;
     $data['keyword'] = $keyword;
-    $data['paginate'] = ($paginate == 0 ? 5 : $paginate);
+    $data['page'] = $paginate;
 
     if(!empty($farm)) {
       $where = ['v_observations.farmcode' => $farm];
@@ -62,16 +66,33 @@ class M_observation extends M_data
       'read' => self::READ,
       'update' => self::UPDATE,
       'delete' => self::DELETE,
+      'plantdates' => self::PLANTDATES,
     ];
     echo view(self::VIEW.'list', $data);
   }
 
-  public function create_new($data)
+  public function read($id)
   {
-    $data += [
-      'action' => self::ACTS.'create',
+    $data = [
+      'v' => $this->getObservation($id),
       'back' => self::BACK,
     ];
+
+    echo view(self::VIEW.'read', $data);
+  }
+
+  public function create_new($data)
+  {
+    $optbase = array_fill_keys($this->optbase, '');
+    $saprotanbase = array_fill_keys($this->saprotanbase, '');
+
+    $data += [
+      'action' => self::ACTS.'create',
+      'opt' => $optbase,
+      'saprotan' => $saprotanbase,
+      'back' => self::BACK,
+    ];
+
     echo view(self::VIEW.'create', $data);
   }
 
@@ -83,13 +104,27 @@ class M_observation extends M_data
   public function update_new($id, $data)
   {
     $observation = $this->getObservation($id);
+    
+    $opt = explode(',', $observation['opt']);
+    $saprotan = explode(',', $observation['saprotan']);
+
+    $optbase = array_fill_keys($this->optbase, '');
+    $saprotanbase = array_fill_keys($this->saprotanbase, '');
+    
+    $selected = array_fill_keys($opt, 'selected');
+    $newObs['opt'] = array_replace($optbase, $selected);
+
+    $selected = array_fill_keys($saprotan, 'selected');
+    $newObs['saprotan'] = array_replace($saprotanbase, $selected);
+
+    $observation = array_replace($observation, $newObs);
 
     $data += [
       'action' => self::ACTS.'update/'.$id,
       'v' => $observation,
       'back' => self::BACK,
     ];
-
+    
     echo view(self::VIEW.'update', $data);
   }
 
@@ -105,15 +140,27 @@ class M_observation extends M_data
 
   public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
   {
-    $query = $this->where($where)->like($like)->orLike($orLike);
+    $query = $this->select('obscode,	sdcode,	sdname,	
+    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,	
+    cultivatorid,	cultivatornik,	cultivatorname')
+    ->where($where)->like($like)->orLike($orLike)
+    ->orderBy('obscode ASC');
+
     return $query->paginate($paginate, 'observations');
   }
 
   public function getObservation($id)
   {
-    return $this->where('obscode', $id)->first();
-  }
+    $query = $this->select('obscode,	areantatus,	broadnrea,	
+    typeirigation,	distancefromriver,	distancefromIrgPre,	wtrtreatnnst,	
+    intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,	other,	
+    harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdcode,	sdname,	
+    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,	
+    cultivatorid,	cultivatornik,	cultivatorname,	respname,	username')
+    ->where('obscode', $id)->first();
 
+    return $query;
+  }
   
   public function validationRules($id = null)
   {
