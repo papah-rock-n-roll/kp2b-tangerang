@@ -6,7 +6,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title">Create Owner</h5>
+    <h5 class="card-title">Create Farm</h5>
   </div>
 
   <?php echo form_open($action) ?>
@@ -15,42 +15,42 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="">NIK</label>
+          <label for="">Chief Name</label>
           <?php 
-          $ownernik = [
+          $farmhead = [
             'type' => 'text',
-            'class' => $validation->hasError('ownernik') ? 'form-control is-invalid' : 'form-control',
-            'name' => 'ownernik',
-            'placeholder' => 'Enter NIK',
+            'class' => $validation->hasError('farmhead') ? 'form-control is-invalid' : 'form-control',
+            'name' => 'farmhead',
+            'placeholder' => 'Enter Farm Name',
             'minlength' => '1',
-            'value' => old('ownernik') == null ? '' : old('ownernik'),
+            'value' => old('farmhead') == null ? '' : old('farmhead'),
             'required' => ''
           ];
-          echo form_input($ownernik);
+          echo form_input($farmhead);
           ?>
           <div class="invalid-feedback">
-            <?= $validation->getError('ownernik') ?>
+            <?= $validation->getError('farmhead') ?>
           </div>
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="form-group">
-          <label for="">Nama</label>
+          <label for="">Phone</label>
             <?php 
-            $ownername = [
+            $farmmobile = [
               'type' => 'text',
-              'class' => $validation->hasError('ownername') ? 'form-control is-invalid' : 'form-control',
-              'name' => 'ownername',
+              'class' => $validation->hasError('farmmobile') ? 'form-control is-invalid' : 'form-control',
+              'name' => 'farmmobile',
               'placeholder' => 'Enter Name',
               'minlength' => '1',
-              'value' => old('ownername') == null ? '' : old('ownername'),
+              'value' => old('farmmobile') == null ? '' : old('farmmobile'),
               'required' => ''
             ];
-            echo form_input($ownername);
+            echo form_input($farmmobile);
             ?>
             <div class="invalid-feedback">
-              <?= $validation->getError('ownername') ?>
+              <?= $validation->getError('farmmobile') ?>
             </div>
         </div>
       </div>      
@@ -59,22 +59,21 @@
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
-          <label for="">Address</label>
+          <label for="">Farm Name</label>
           <?php
-          $owneraddress = [
-            'class' => 'form-control',
-            'cols' => '2',
-            'rows' => '3',
-            'name' => 'owneraddress',
+          $farmname = [
+            'type' => 'text',
+            'class' => $validation->hasError('farmname') ? 'form-control is-invalid' : 'form-control',
+            'name' => 'farmname',
+            'placeholder' => 'Enter Name',
             'minlength' => '1',
-            'placeholder' => 'Address',
-            'value' => old('owneraddress') == null ? '' : old('owneraddress'),
+            'value' => old('farmname') == null ? '' : old('farmname'),
             'required' => ''
           ];
-          echo form_textarea($owneraddress);
+          echo form_input($farmname);
           ?>
           <div class="invalid-feedback">
-            <?= $validation->getError('owneraddress') ?>
+            <?= $validation->getError('farmname') ?>
           </div>
         </div>
       </div>        

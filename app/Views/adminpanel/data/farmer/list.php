@@ -5,7 +5,7 @@
 
 <div class="card bg-gradient-primary collapsed-card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-search"></i> Filter Owner</h5>
+    <h5 class="card-title"><i class="fas fa-search"></i> Filter Farmer</h5>
     <div class="card-tools" style="width: 25%">
       <div class="input-group input-group-sm">
         <?php
@@ -31,7 +31,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-users"></i> List Owner / Cultivator</h5>
+    <h5 class="card-title"><i class="fas fa-tractor"></i> List Farm</h5>
     <div class="card-tools">
       <div class="input-group input-group-sm">
         <?php
@@ -60,7 +60,7 @@
         <tr>
           <th style="width: 10%">No</th>
           <th style="width: 30%">Nama</th>
-          <th style="width: 50%">Address</th>
+          <th style="width: 50%">Describe</th>
           <th style="width: 10%">Action</th>
         </tr>
       </thead>
@@ -72,15 +72,16 @@
         <tr>
           <td><?= ++$k ?></td>
           <td>
-            <h6><?= $v['ownername'] ?></h6>
-            <small><?= $v['ownernik'] ?></small>
+            <h6><?= $v['farmname'] ?></h6>
           </td>
-          <td><p><small><?= $v['owneraddress'] ?></small></p></td>
+          <td><h6><?= $v['farmhead'] ?></h6>
+            <small><?= $v['farmmobile'] ?></small>
+          </td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['ownername'] ?>" onclick="window.location.href='<?= esc($update . $v['ownerid']) ?>'">
+              <button type="button" class="btn btn-default btn-sm" title="<?= $v['farmname'] ?>" onclick="window.location.href='<?= esc($update . $v['farmcode']) ?>'">
               <i class="fa fa-edit"></i> Edit</button>
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['ownername'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
+              <button type="button" class="btn btn-default btn-sm" title="<?= $v['farmname'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
               <i class="fa fa-trash-alt"></i> Delete</button>
             </div>
             <?php
@@ -89,8 +90,8 @@
                 'size' => 'modal-sm',
                 'class' => 'bg-warning',
                 'title' => 'Delete',
-                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'.$v['ownername'],
-                'action' => esc($delete . $v['ownerid']),
+                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'.$v['farmname'],
+                'action' => esc($delete . $v['farmcode']),
                 ];
               echo view('events/modals', $modals);
             ?>
@@ -104,7 +105,7 @@
   </div>
   <div class="card-footer clearfix">
     <div class="pagination pagination-md m-0 float-right">
-      <?= $pager->links('owners', 'bootstrap-pager') ?>
+      <?= $pager->links('farmers', 'bootstrap-pager') ?>
     </div>
   </div>
 </div>

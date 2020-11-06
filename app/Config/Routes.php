@@ -42,7 +42,7 @@ $routes->match(['get', 'post'], '/login', 'Auth::login');
 $routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
 
-
+// REDIRECT MODULE PANEL
 $routes->addRedirect('administrator', 'administrator/dashboard');
 
 
@@ -98,6 +98,7 @@ $routes->group('administrator', function($routes) {
 			$routes->get('delete/(:num)', 'Adminpanel\Data::observation_delete/$1');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('update', 'administrator/data/observation');
+			$routes->addRedirect('plantdate', 'administrator/data/observation');
 
 			// Data Observation Plantdates
 			$routes->match(['get', 'post'], 'plantdate/(:num)', 'Adminpanel\Data::observation_plantdates/$1');
@@ -107,7 +108,6 @@ $routes->group('administrator', function($routes) {
 		// Data Owner - Pemilik / Penggarap
 		$routes->group('owner', function($routes) {
 			$routes->get('', 'Adminpanel\Data::owner_index');
-			$routes->get('read/(:num)', 'Adminpanel\Data::owner_read/$1');
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::owner_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::owner_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::owner_delete/$1');
@@ -115,10 +115,10 @@ $routes->group('administrator', function($routes) {
 			$routes->addRedirect('update', 'administrator/data/owner');
 		});
 
+
 		// Data Farmer - Poktan
 		$routes->group('farmer', function($routes) {
 			$routes->get('', 'Adminpanel\Data::farmer_index');
-			$routes->get('read/(:num)', 'Adminpanel\Data::farmer_read/$1');
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::farmer_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::farmer_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::farmer_delete/$1');
@@ -126,10 +126,10 @@ $routes->group('administrator', function($routes) {
 			$routes->addRedirect('update', 'administrator/data/farmer');
 		});
 
+
 		// Data Responden
 		$routes->group('responden', function($routes) {
 			$routes->get('', 'Adminpanel\Data::responden_index');
-			$routes->get('read/(:num)', 'Adminpanel\Data::responden_read/$1');
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::responden_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::responden_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::responden_delete/$1');
