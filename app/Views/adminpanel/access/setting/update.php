@@ -5,12 +5,6 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<?php 
-$create = $v['create'] ? 'checked' : '';
-$read = $v['read'] ? 'checked' : '';
-$update = $v['update'] ? 'checked' : '';
-$delete = $v['delete'] ? 'checked' : '';
-?>
 
 <div class="row">
 <div class="col-lg-12">
@@ -43,8 +37,8 @@ $delete = $v['delete'] ? 'checked' : '';
       <label for="">Role Module</label>
       <?php $valid = $validation->hasError('rolemodules') ? 'form-control is-invalid' : 'form-control' ?>
       <select class="<?= $valid ?> select2" name="rolemodules[]" multiple="multiple" data-placeholder="Select Module">
-        <?php foreach($v['rolemodules'] as $k => $v) : ?>
-          <option <?= $v ?>><?= $k ?></option>
+        <?php foreach($v['rolemodules'] as $k_mod => $v_mod) : ?>
+          <option <?= $v_mod ?>><?= $k_mod ?></option>
         <?php endforeach ?>
       </select>
       <div class="invalid-feedback">
@@ -55,19 +49,23 @@ $delete = $v['delete'] ? 'checked' : '';
     <div class="form-group">
       <label for="">Action</label>
       <div class="form-check">
-        <input class="form-check-input" name="create" type="checkbox" value="1" <?= $create ?> >
+        <input class="form-check-input" name="create" type="checkbox" value="1"
+        <?= $create = $v['create'] ? 'checked' : '' ?> >
         <label class="form-check-label">Create</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" name="read" type="checkbox" value="1" <?= $read ?> >
+        <input class="form-check-input" name="read" type="checkbox" value="1" 
+        <?= $read = $v['read'] ? 'checked' : '' ?> >
         <label class="form-check-label">Read</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" name="update" type="checkbox" value="1" <?= $update ?> >
+        <input class="form-check-input" name="update" type="checkbox" value="1" 
+        <?= $update = $v['update'] ? 'checked' : '' ?> >
         <label class="form-check-label">Update</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" name="delete" type="checkbox" value="1" <?= $delete ?> >
+        <input class="form-check-input" name="delete" type="checkbox" value="1" 
+        <?= $delete = $v['delete'] ? 'checked' : '' ?> >
         <label class="form-check-label">Delete</label>
       </div>
     </div>

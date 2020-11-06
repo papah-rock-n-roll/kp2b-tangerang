@@ -22,12 +22,12 @@ class M_dashboard extends Model
   public function counting()
   {
     $query = $this->query("SELECT 
-    COUNT(DISTINCT owner) AS owners,
-    COUNT(DISTINCT cultivator) AS cultivators,
+    COUNT(DISTINCT ownerid) AS owners,
+    COUNT(DISTINCT cultivatorid) AS cultivators,
     COUNT(DISTINCT farmcode) AS farms,
     COUNT(DISTINCT vlcode) AS villages
     FROM observations_frmobservations
-    WHERE owner OR cultivator OR farmcode <> 1");
+    WHERE ownerid OR cultivatorid OR farmcode <> 1");
 
     return $query->getRow();
   }

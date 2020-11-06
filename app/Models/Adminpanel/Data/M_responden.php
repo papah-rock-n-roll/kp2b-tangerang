@@ -11,9 +11,9 @@
 class M_responden extends M_data
 { 
   protected $table = 'mstr_respondens';
-  protected $primaryKey = 'respId';
+  protected $primaryKey = 'respid';
 
-  protected $allowedFields = ['respId','resName','mobileNo'];
+  protected $allowedFields = ['respid','resname','mobileno'];
 
 
   public function getRespondens()
@@ -23,7 +23,7 @@ class M_responden extends M_data
 
   public function getResponden($id, $mobileno = null)
   {
-    return $this->where('ownerid', $id)->orWhere('mobileNo', $mobileno)->first();
+    return $this->where('respid', $id)->orWhere('mobileno', $mobileno)->first();
   }
 
 }

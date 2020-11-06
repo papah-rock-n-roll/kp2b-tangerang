@@ -32,7 +32,7 @@ class Data extends \App\Controllers\BaseController
 
     $farms = $this->M_farmer->getFarmers();
     $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
-
+    
     $this->M_observation->list($farm, $keyword, $data, $paginate);
   }
 
@@ -80,7 +80,7 @@ class Data extends \App\Controllers\BaseController
     }
     else
     {
-      $rules = $this->M_observation->validationRules();
+      $rules = $this->M_observation->validationRules($id);
 
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
@@ -97,6 +97,37 @@ class Data extends \App\Controllers\BaseController
     }
   }
 
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Observations - Plantdates
+ *
+ * --------------------------------------------------------------------
+ */
+  public function observation_plantdates($id)
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+      $this->M_plantdate->plantdates_new($id, $data);
+
+    }
+    else
+    {
+      $get = $this->request->getPost();
+
+      $data = $this->transposeData($get);
+      $post = $this->M_plantdate->plantdates_post($id, $data);
+
+      if($post) {
+        $this->session->setFlashdata('success', 'Create Observation Plantdates Successfully');
+        return redirect()->back();
+      }
+ 
+    }
+
+  }
+
 
 /**
  * --------------------------------------------------------------------
@@ -105,7 +136,13 @@ class Data extends \App\Controllers\BaseController
  *
  * --------------------------------------------------------------------
  */
-
+public function owner_index()
+{
+  $keyword = $this->request->getGet('keyword');
+  $paginate = $this->request->getGet('paginate');
+  
+  $this->M_owner->list(null, $keyword, null, $paginate);
+}
 
 
 
@@ -128,6 +165,29 @@ class Data extends \App\Controllers\BaseController
  * --------------------------------------------------------------------
  */
 
+
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Function
+ *
+ * --------------------------------------------------------------------
+ */
+
+  function transposeData($data)
+  {
+    $retData = array();
+
+    foreach ($data as $row => $columns) {
+      foreach ($columns as $row2 => $column2) {
+        $retData[$row2][$row] = $column2;
+      }
+    }
+    return $retData;
+  }
+
   function fetchDropdown()
   {
     $subdistricts = $this->M_data->getSubdistricts();
@@ -137,7 +197,7 @@ class Data extends \App\Controllers\BaseController
     $data['villages'] = array('' => 'Choose Village') + array_column($villages, 'vlname', 'vlcode');
 
     $respondens = $this->M_responden->getRespondens();
-    $data['respondens'] = array('' => 'Choose Responden') + array_column($respondens, 'respName', 'respId');
+    $data['respondens'] = array('' => 'Choose Responden') + array_column($respondens, 'respname', 'respid');
     
     $farms = $this->M_farmer->getFarmers();
     $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');

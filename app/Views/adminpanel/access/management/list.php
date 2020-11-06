@@ -9,25 +9,6 @@
     <h5 class="card-title"><i class="fas fa-search"></i> Filter Data</h5>
     <div class="card-tools" style="width: 50%">
       <div class="input-group input-group-sm">
-        <?php
-          $paginate = [
-            'type'  => 'number',
-            'list'  => 'defaultPaginate',
-            'class' => 'form-control',
-            'name'  => 'paginate',
-            'id'    => 'paginate',
-            'min'   => 1,
-            'max'   => 100,
-            'value' => $paginate,
-            'placeholder' => 'Paginate...'
-          ];
-          echo form_input($paginate);
-        ?>
-        <datalist id="defaultPaginate">
-          <option value="5">
-          <option value="25">
-          <option value="50">
-        </datalist>
         <?php echo form_dropdown('role', $roles, $role, ['class' => 'custom-select', 'id' => 'roles']) ?>
         <?php
           $form_keyword = [
@@ -54,10 +35,23 @@
   <div class="card-header">
     <h5 class="card-title"><i class="fas fa-tags"></i> List Data</h5>
     <div class="card-tools">
-      <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
-      </button>
-      <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
-      </button>
+      <div class="input-group input-group-sm">
+        <?php
+            $paginate = [
+              '5' => '5',
+              '10' => '10',
+              '50' => '50',
+              '100' => '100'
+            ];
+          echo form_dropdown('paginate', $paginate, $page, ['class' => 'custom-select', 'id' => 'paginate']);
+        ?>
+        <div class="input-group-append">
+          <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
+          </button>
+          <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -80,7 +74,8 @@
         <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
-          <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
+          <tr>
+            <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
             <td><?= ++$k ?></td>
             <td><?= $v['name'] ?></td>
             <td><?= $v['usernik'] ?></td>
@@ -167,10 +162,8 @@ if(! empty(session()->getFlashdata('warning'))) {
     }
   });
 
-  $("#paginate").keypress(function(event) {
-    if(event.keyCode == 13) {
-      filter();
-    }
+  $("#paginate").change(function() {
+    filter();
   });
 
 </script>
