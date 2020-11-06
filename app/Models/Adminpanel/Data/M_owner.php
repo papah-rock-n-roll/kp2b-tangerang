@@ -10,6 +10,16 @@
   
 class M_owner extends M_data
 { 
+  const VIEW = 'adminpanel/data/owner/';
+
+  const ACTS = 'administrator/data/owner/';
+  const BACK = '/administrator/data/owner';
+
+  const CREATE = 'owner/create';
+  const READ   = 'owner/read/';
+  const UPDATE = 'owner/update/';
+  const DELETE = 'owner/delete/';
+
   protected $table = 'mstr_owners';
   protected $primaryKey = 'ownerid';
 

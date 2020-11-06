@@ -136,7 +136,13 @@ class Data extends \App\Controllers\BaseController
  *
  * --------------------------------------------------------------------
  */
-
+public function owner_index()
+{
+  $keyword = $this->request->getGet('keyword');
+  $paginate = $this->request->getGet('paginate');
+  
+  $this->M_owner->list(null, $keyword, null, $paginate);
+}
 
 
 

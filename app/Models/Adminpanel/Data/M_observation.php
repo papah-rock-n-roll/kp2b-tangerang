@@ -205,9 +205,9 @@ class M_observation extends M_data
     $query = $this->select('obscode,	areantatus,	broadnrea,	
     typeirigation,	distancefromriver,	distancefromIrgPre,	wtrtreatnnst,	
     intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,	other,	
-    harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdcode,		
-    vlcode,	farmcode,	ownerid,	ownernik,	ownername,	
-    cultivatorid,	cultivatornik, respid, userid')
+    harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdcode,	sdname,	
+    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,	
+    cultivatorid,	cultivatornik,	cultivatorname,	respid, respname, userid,	username')
     ->where('obscode', $id)->first();
 
     return $query;

@@ -42,9 +42,9 @@ $routes->match(['get', 'post'], '/login', 'Auth::login');
 $routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
 
-// Admin Panel
+
 $routes->addRedirect('administrator', 'administrator/dashboard');
-$routes->addRedirect('management/update', 'administrator/access/management');
+
 
 $routes->group('administrator', function($routes) {
 	
@@ -67,6 +67,8 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Access::management_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Access::management_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Access::management_delete/$1');
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('update', 'administrator/access/management');
 		});
 
 		// Access Setting
@@ -75,6 +77,8 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Access::setting_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Access::setting_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Access::setting_delete/$1');
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('update', 'administrator/access/management');
 		});
 
 		$routes->get('log', 'Adminpanel\Access::log');
@@ -92,12 +96,13 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::observation_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::observation_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::observation_delete/$1');
-		});
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('update', 'administrator/data/observation');
 
-		// Data Observation Plantdates
-		$routes->group('observation', function($routes) {
+			// Data Observation Plantdates
 			$routes->match(['get', 'post'], 'plantdate/(:num)', 'Adminpanel\Data::observation_plantdates/$1');
 		});
+
 
 		// Data Owner - Pemilik / Penggarap
 		$routes->group('owner', function($routes) {
@@ -106,6 +111,8 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::owner_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::owner_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::owner_delete/$1');
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('update', 'administrator/data/owner');
 		});
 
 		// Data Farmer - Poktan
@@ -115,6 +122,8 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::farmer_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::farmer_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::farmer_delete/$1');
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('update', 'administrator/data/farmer');
 		});
 
 		// Data Responden
@@ -124,6 +133,8 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::responden_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::responden_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::responden_delete/$1');
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('update', 'administrator/data/responden');
 		});
 
 	});
