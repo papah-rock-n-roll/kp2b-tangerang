@@ -80,7 +80,7 @@ class Data extends \App\Controllers\BaseController
     }
     else
     {
-      $rules = $this->M_observation->validationRules();
+      $rules = $this->M_observation->validationRules($id);
 
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
@@ -109,19 +109,15 @@ class Data extends \App\Controllers\BaseController
     if($this->request->getMethod() === 'get')
     {
       $data['validation'] = $this->validation;
+      $this->M_plantdate->plantdates_new($id, $data);
 
-      $this->M_plantdates->create_new($id, $data);
     }
     else
     {
-      $rules = $this->M_plantdates->validationRules();
+      $get = $this->request->getPost();
 
-      if(! $this->validate($rules)) {
-        return redirect()->back()->withInput();
-      }
-
-      $data = $this->request->getPost();
-      $post = $this->M_plantdates->create_post($data);
+      $data = $this->transposeData($get);
+      $post = $this->M_plantdate->plantdates_post($id, $data);
 
       if($post) {
         $this->session->setFlashdata('success', 'Create Observation Plantdates Successfully');
@@ -129,6 +125,7 @@ class Data extends \App\Controllers\BaseController
       }
  
     }
+
   }
 
 
@@ -173,6 +170,18 @@ class Data extends \App\Controllers\BaseController
  * --------------------------------------------------------------------
  */
 
+  function transposeData($data)
+  {
+    $retData = array();
+
+    foreach ($data as $row => $columns) {
+      foreach ($columns as $row2 => $column2) {
+        $retData[$row2][$row] = $column2;
+      }
+    }
+    return $retData;
+  }
+
   function fetchDropdown()
   {
     $subdistricts = $this->M_data->getSubdistricts();
@@ -182,7 +191,7 @@ class Data extends \App\Controllers\BaseController
     $data['villages'] = array('' => 'Choose Village') + array_column($villages, 'vlname', 'vlcode');
 
     $respondens = $this->M_responden->getRespondens();
-    $data['respondens'] = array('' => 'Choose Responden') + array_column($respondens, 'respName', 'respId');
+    $data['respondens'] = array('' => 'Choose Responden') + array_column($respondens, 'respname', 'respid');
     
     $farms = $this->M_farmer->getFarmers();
     $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');

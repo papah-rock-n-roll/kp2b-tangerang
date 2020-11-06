@@ -32,35 +32,36 @@
       <?php if(empty($list)) : ?>
       <tr><td colspan="5"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
       <?php else : ?>
-      <?php foreach($list as $k => $v) : ?>
-        <td><?= ++$k ?></td>
-        <td><h6><?= $v['rolename'] ?></h6></td>
-        <td><?= $v['rolemodules'] ?></td>
-        <td><?= $v['create'] ?></td>
-        <td><?= $v['read'] ?></td>
-        <td><?= $v['update'] ?></td>
-        <td><?= $v['delete'] ?></td>
-        <td>
-        <div class="btn-group">
-          <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['rolename'] ?>" onclick="window.location.href='<?= $update . $v['roleid'] ?>'">
-          <i class="fa fa-edit"></i></button>
-          <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete -<?= $v['rolename'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
-          <i class="fa fa-trash-alt"></i></button>
-        </div>
-        <?php
-          $modals = [
-            'id' => 'modal_'.$k,
-            'size' => 'modal-sm',
-            'class' => 'bg-warning',
-            'title' => 'Delete',
-            'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['rolename'],
-            'action' => esc($delete . $v['roleid']),
-            ];
-          echo view('events/modals', $modals);
-        ?>
-        </td>
-      </tr>
-      <?php endforeach ?>
+        <?php foreach($list as $k => $v) : ?>
+          <tr>  
+            <td><?= ++$k ?></td>
+            <td><h6><?= $v['rolename'] ?></h6></td>
+            <td><?= $v['rolemodules'] ?></td>
+            <td><?= $v['create'] ?></td>
+            <td><?= $v['read'] ?></td>
+            <td><?= $v['update'] ?></td>
+            <td><?= $v['delete'] ?></td>
+            <td>
+            <div class="btn-group">
+              <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['rolename'] ?>" onclick="window.location.href='<?= $update . $v['roleid'] ?>'">
+              <i class="fa fa-edit"></i></button>
+              <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete -<?= $v['rolename'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
+              <i class="fa fa-trash-alt"></i></button>
+            </div>
+            <?php
+              $modals = [
+                'id' => 'modal_'.$k,
+                'size' => 'modal-sm',
+                'class' => 'bg-warning',
+                'title' => 'Delete',
+                'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['rolename'],
+                'action' => esc($delete . $v['roleid']),
+                ];
+              echo view('events/modals', $modals);
+            ?>
+            </td>
+          </tr>
+        <?php endforeach ?>
       <?php endif ?>
       </tbody>
       </table>

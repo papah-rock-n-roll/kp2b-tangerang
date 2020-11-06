@@ -96,7 +96,7 @@ $routes->group('administrator', function($routes) {
 
 		// Data Observation Plantdates
 		$routes->group('observation', function($routes) {
-			$routes->match(['get', 'post'], 'plantdates/(:num)', 'Adminpanel\Data::observation_plantdates/$1');
+			$routes->match(['get', 'post'], 'plantdate/(:num)', 'Adminpanel\Data::observation_plantdates/$1');
 		});
 
 		// Data Owner - Pemilik / Penggarap

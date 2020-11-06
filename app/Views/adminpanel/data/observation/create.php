@@ -80,14 +80,14 @@
                 <div class="input-group-append">
                   <span class="input-group-text">m2</span>
                 </div>
-              </div>
-              <div class="invalid-feedback">
-                <?= $validation->getError('broadnrea') ?>
+                <div class="invalid-feedback">
+                  <?= $validation->getError('broadnrea') ?>
+                </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="">Area Status</label>
+              <label for="">Type Irrigation</label>
               <select class="form-control select2-input" name="typeirigation" required>
                 <option>SUNGAI</option>
                 <option>PRIMER</option>
@@ -118,9 +118,9 @@
                 <div class="input-group-append">
                   <span class="input-group-text">m</span>
                 </div>
-              </div>
-              <div class="invalid-feedback">
-                <?= $validation->getError('distancefromriver') ?>
+                <div class="invalid-feedback">
+                  <?= $validation->getError('distancefromriver') ?>
+                </div>
               </div>
             </div>
             
@@ -143,9 +143,28 @@
                 <div class="input-group-append">
                   <span class="input-group-text">m</span>
                 </div>
+                <div class="invalid-feedback">
+                  <?= $validation->getError('distancefromIrgPre') ?>
+                </div>
               </div>
+            </div>
+
+            <div class="form-group">
+              <label for="">Water Installment</label>
+              <?php
+              $wtrtreatnnst = [
+                'class' => $validation->hasError('wtrtreatnnst') ? 'form-control is-invalid' : 'form-control',
+                'type' => 'input',
+                'name' => 'wtrtreatnnst',
+                'minlenght' => '1',
+                'placeholder' => 'Water Installment',
+                'value' => old('wtrtreatnnst'),
+                'required' => ''
+              ];
+              echo form_input($wtrtreatnnst);
+              ?>
               <div class="invalid-feedback">
-                <?= $validation->getError('distancefromIrgPre') ?>
+                <?= $validation->getError('wtrtreatnnst') ?>
               </div>
             </div>
 
@@ -177,7 +196,7 @@
               echo form_input($indxnlant);
               ?>
               <div class="invalid-feedback">
-              <?= $validation->getError('indxnlant') ?>
+                <?= $validation->getError('indxnlant') ?>
               </div>
             </div>
 

@@ -74,7 +74,8 @@
         <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
-          <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
+          <tr>
+            <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
             <td><?= ++$k ?></td>
             <td><?= $v['name'] ?></td>
             <td><?= $v['usernik'] ?></td>

@@ -63,7 +63,7 @@ class BaseController extends Controller
 		$this->M_data = model('App\Models\Adminpanel\Data\M_data');
 		//---
 		$this->M_observation = model('App\Models\Adminpanel\Data\M_observation');
-		$this->M_plantdates = model('App\Models\Adminpanel\Data\M_plantdates');
+		$this->M_plantdate = model('App\Models\Adminpanel\Data\M_plantdate');
 		//---
 		$this->M_owner = model('App\Models\Adminpanel\Data\M_owner');
 		$this->M_farmer = model('App\Models\Adminpanel\Data\M_farmer');

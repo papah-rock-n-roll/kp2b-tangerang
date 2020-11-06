@@ -74,6 +74,7 @@
         <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
+          <tr>
             <td><?= ++$k ?></td>
             <td><?= $v['obscode'] ?></td>
             <td><?= $v['vlname'] ?></td>
@@ -92,7 +93,7 @@
                 <div class="dropdown-menu" role="menu">
                   <a class="tmb-read dropdown-item" href="<?= $read . $v['obscode'] ?>">View Farmer</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="<?= $plantdates . $v['obscode'] ?>">Calendar Plantation</a>
+                  <a class="dropdown-item" href="<?= $plantdate . $v['obscode'] ?>">Calendar Plantation</a>
                 </div>
               </div>
               <?php
