@@ -29,23 +29,20 @@ class M_geophp extends Model
 
   // get desa
   public function get_desa($sdcode){
-    if(!empty($sdcode))
-    {
+    if(!empty($sdcode)){
       $cond = "WHERE `v_observations`.`sdcode` = '{$sdcode}'";
-
-      $sql = "SELECT `v_observations`.`vlcode`, `v_observations`.`vlname`
-      FROM `v_observations`
-      {$cond}
-      GROUP BY `v_observations`.`vlcode`, `v_observations`.`vlname`
-      ORDER BY `v_observations`.`vlname`;";
-
-      $query = $this->db->query($sql);
-
     }
     else
     {
-      $query = null;
+      $cond = '';
     }
+    $sql = "SELECT `v_observations`.`vlcode`, `v_observations`.`vlname`
+    FROM `v_observations`
+    {$cond}
+    GROUP BY `v_observations`.`vlcode`, `v_observations`.`vlname`
+    ORDER BY `v_observations`.`vlname`;";
+
+    $query = $this->db->query($sql);
 
     if(!empty($query)){
       $rows = $query->getResultArray();
@@ -125,7 +122,7 @@ class M_geophp extends Model
     } else {
       return false;
     }
-    
+
     return json_decode($result, true);
 
   }

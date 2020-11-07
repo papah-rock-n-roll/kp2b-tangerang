@@ -198,7 +198,7 @@
         layerAdd.collapse();
       }
 
-      var kecDom = '<div class="form-group input-group-sm" id="layerForm"> \
+      var kecDom = '<div class="form-group input-group-sm" id="kecForm"> \
         <label>Pilih kecamatan</label> \
         <select class="form-control" id="layerKec"> \
           <option value="">Semua kecamatan</option>';
@@ -208,7 +208,7 @@
         	}
         kecDom = kecDom + '</select> \
       </div> \
-      <div class="form-group input-group-sm" id="layerForm"> \
+      <div class="form-group input-group-sm" id="desaForm" style="display: none;"> \
         <label>Pilih desa</label> \
         <select class="form-control" id="layerDesa"> \
           <option value="">Semua desa</option> \
@@ -230,10 +230,10 @@
        });
 
       view.ui.add(layerAdd, "top-left");
-      getDesa();
 
       watchUtils.whenTrueOnce(layerAdd, 'expanded', function(){
         on(dom.byId("layerKec"), 'change', function(){
+          if(this.value == ''){$("#desaForm").hide();}else{$("#desaForm").show();}
           getDesa(this.value);
         });
         on(dom.byId("applyLayer"), 'click', function(){
