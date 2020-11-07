@@ -57,7 +57,12 @@ $routes->group('administrator', function($routes) {
 	$routes->get('report', 'Adminpanel\Report::index');
 
 
-	// Access Module
+/**
+ * --------------------------------------------------------------------
+ * Access Module
+ * --------------------------------------------------------------------
+ */
+
 	$routes->group('access', function($routes) {
 	
 		// Access Management
@@ -86,7 +91,29 @@ $routes->group('administrator', function($routes) {
 	});
 
 
-	// Data Module
+/**
+ * --------------------------------------------------------------------
+ * User Module
+ * --------------------------------------------------------------------
+ */
+
+	$routes->group('user', function($routes) {
+
+		// REDIRECT MODULE PANEL
+		$routes->addRedirect('account', 'administrator/user/account/update/$1');
+		// User Account
+		$routes->get('account/update', 'Adminpanel\User::user_get');
+		$routes->post('account/update/(:num)', 'Adminpanel\User::user_update/$1');
+
+	});
+
+
+/**
+ * --------------------------------------------------------------------
+ * Data Module
+ * --------------------------------------------------------------------
+ */
+
 	$routes->group('data', function($routes) {
 
 		// Data Observation - Petak
@@ -140,7 +167,12 @@ $routes->group('administrator', function($routes) {
 	});
 
 
-	// Geo Module
+/**
+ * --------------------------------------------------------------------
+ * Geo Module
+ * --------------------------------------------------------------------
+ */
+
 	$routes->group('geo', function($routes) {
 
 		// Geo Observation
@@ -172,7 +204,20 @@ $routes->group('administrator', function($routes) {
 
 	});
 
+
+/**
+ * --------------------------------------------------------------------
+ * Report Module
+ * --------------------------------------------------------------------
+ */
+
+
+
+
 });
+
+
+
 
 
 $routes->group('restapi', function($routes) {

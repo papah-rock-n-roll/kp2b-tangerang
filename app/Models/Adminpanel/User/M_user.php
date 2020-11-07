@@ -1,24 +1,23 @@
-<?php namespace App\Models\Adminpanel\Access;
+<?php namespace App\Models\Adminpanel\User;
 
 /**
  * --------------------------------------------------------------------
  *
- * Access Management
+ * User Main
  *
  * --------------------------------------------------------------------
  */
+
+use CodeIgniter\Model;
   
-class M_management extends M_access
+class M_user extends Model
 {
-  const VIEW = 'adminpanel/access/management/';
+  const VIEW = 'adminpanel/user/account/';
 
-  const ACTS = 'administrator/access/management/';
-  const BACK = '/administrator/access/management';
+  const ACTS = 'administrator/user/account/';
+  const BACK = '/administrator/user';
 
-  const CREATE = 'management/create';
-  const READ   = 'management/read/';
-  const UPDATE = 'management/update/';
-  const DELETE = 'management/delete/';
+  const UPDATE = 'account/';
 
 
   protected $table = 'mstr_users';
@@ -29,83 +28,39 @@ class M_management extends M_access
   protected $getFile;
   protected $getName;
 
-  public function list($role = null, $keyword = null, $data, $paginate)
+
+  public function dashboard($role = null, $keyword = null, $data, $paginate)
   {
     $where = array();
     $like = array();
     $orLike = array();
 
+    // Berdasarkan value $_['GET'] paginate, jika paginate null maka menjadi 5
     if(empty($paginate)) {
-      $paginate = 5;
+      $paginate = 8;
     }
 
+    // Masukan Value berdarakan Array Assoc
     $data['role'] = $role;
     $data['keyword'] = $keyword;
     $data['page'] = $paginate;
 
+    // Jika Tidak null maka where role = $_['GET'] role
     if(!empty($role)) {
       $where = ['mstr_users.role' => $role];
     }
 
+    // Jika Tidak null maka like name - or like usernik = $_['GET'] keyword
     if(!empty($keyword)) {
       $like = ['mstr_users.name' => $keyword];
-      $orLike = ['mstr_users.usernik' => $keyword, 'mstr_users.email' => $keyword];
+      $orLike = ['mstr_users.usernik' => $keyword];
     }
 
     $data += [
-      'list' => $this->getUsers($where, $like, $orLike, $paginate),
+      'list' => $this->getListusers($where, $like, $orLike, $paginate),
       'pager' => $this->pager,
-      'create' => self::CREATE,
-      'read' => self::READ,
-      'update' => self::UPDATE,
-      'delete' => self::DELETE,
     ];
-    echo view(self::VIEW.'list', $data);
-  }
-
-  public function read($id)
-  {
-    $data = [
-      'v' => $this->getUser($id),
-      'back' => self::BACK,
-    ];
-    echo view(self::VIEW.'read', $data);
-  }
-
-  public function create_new($data)
-  {
-    $data += [
-      'action' => self::ACTS.'create',
-      'back' => self::BACK,
-    ];
-    echo view(self::VIEW.'create', $data);
-  }
-
-  public function create_post($file, $data)
-  {
-    $upload = $this->uploadfile($file, 'create');
-
-    if($upload) {
-      $this->getFile->move('uploads/users', $this->getName);
-    } 
-
-    $p = (object) array(
-      'usernik' => $data['usernik'],
-      'name' => $data['name'],
-      'phone' => $data['phone'],
-      'email' => $data['email'],
-      'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-      'realpassword' => $data['password'],
-      'role' => $data['roleid'],
-      'image' => $this->getName,
-      'sts' => $data['sts'],
-      'timestamp' => date('y-m-d H:i:s'),
-    );
-
-    $query = "CALL p_insertUser ('{$p->usernik}','{$p->name}','{$p->phone}','{$p->email}','{$p->password}',
-    '{$p->realpassword}',{$p->role},'{$p->image}','{$p->sts}','{$p->timestamp}');";
-
-    return $this->query($query);
+    echo view('adminpanel/user/main', $data);
   }
 
   public function update_new($id, $data)
@@ -142,25 +97,26 @@ class M_management extends M_access
     return $this->update($id, $p);
   }
 
-  public function delete_post($id, $data)
+  public function getListusers($where = null, $like = null, $orLike = null, $paginate = 5)
   {
-    if($data['image'] != 'default.png')
-    {
-      unlink('uploads/users/'. $data['image']);
-    }
-
-    return $this->delete($id);
-  }
-
-  public function getUsers($where = null, $like = null, $orLike = null, int $paginate = 5)
-  {
-    $query = $this->select('userid,usernik,name,email,rolename,sts')
-    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid')
+    $query = $this->select('
+      mstr_users.userid,
+      mstr_users.usernik,
+      mstr_users.name,
+      mstr_users.role,
+      mstr_users.image,
+      mstr_role.roleid,
+      mstr_role.rolename')
+    ->selectCount('t_frmobs.userid', 'observations')
+    ->join('mstr_role', 'mstr_role.roleid = mstr_users.role')
+    ->join('observations_frmobservations t_frmobs', 't_frmobs.userid = mstr_users.userid')
     ->where($where)->like($like)->orLike($orLike)
-    ->orderBy('userid DESC');
-
+    ->groupBy('t_frmobs.userid')
+    ->orderBy('mstr_users.userid DESC');
+        
     return $query->paginate($paginate, 'users');
   }
+
 
   public function getUser($id = null)
   {
@@ -226,7 +182,7 @@ class M_management extends M_access
   }
 
 
-/**
+  /**
  * --------------------------------------------------------------------
  *
  * Function
@@ -279,5 +235,6 @@ class M_management extends M_access
         break;
     }
   }
+
 
 }

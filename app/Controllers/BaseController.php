@@ -26,7 +26,7 @@ class BaseController extends Controller
 	 *
 	 * @var array
 	 */
-	protected $helpers = ['form'];
+	protected $helpers = ['form', 'cookie'];
 
 	/**
 	 * Constructor.
@@ -57,7 +57,7 @@ class BaseController extends Controller
 		$this->M_log = model('App\Models\Adminpanel\Access\M_log');
 
 		// User Panel
-		// ---
+		$this->M_user = model('App\Models\Adminpanel\User\M_user');
 
 		// Data Panel
 		$this->M_data = model('App\Models\Adminpanel\Data\M_data');

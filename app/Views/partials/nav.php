@@ -21,9 +21,11 @@ $nav = array_keys(session('privilage')->menus);
       <i class="fas fa-th-large"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-        <a href="/logout" class="dropdown-item">
-        Logout
-        </a>
+        <?php foreach ($nav as $v): ?>
+          <a href="<?= base_url($adminpanel.'/'.$v)?>" class="dropdown-item"> <?= ucfirst($v) ?></a>
+        <?php endforeach ?>
+        <div class="dropdown-divider"></div>
+        <a href="/logout" class="dropdown-item">Logout<i class="float-right fas fa-lock p-1"></i></a>
       </div>
     </li>
   </ul>

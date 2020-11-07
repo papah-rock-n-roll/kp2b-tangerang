@@ -10,7 +10,7 @@ class M_auth extends Model
   public function userLogin($email, $password)
   {
     $query = $this->query("SELECT
-      userid,name,email,password,role,sts
+      userid,name,email,password,role,image,sts
       FROM
       mstr_users
       WHERE email = '{$email}'
@@ -34,6 +34,7 @@ class M_auth extends Model
           'userid' => $data['userid'],
           'rolename' => $rolename,
           'name' => $data['name'],
+          'image' => $data['image'],
           'email' => $data['email'],
           'sts' => $data['sts'],
           'menus' => \App\Libraries\Role::modules($data['role']),

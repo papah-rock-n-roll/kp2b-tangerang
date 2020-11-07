@@ -13,10 +13,10 @@ class Role
 
     $menu = array(
       'access' => ['management','setting','log'],
-      'user' => ['account','profile'],
+      'user' => ['account'],
       'data' => ['observation','owner','farmer','responden'],
       'geo' => ['observation','village','subdistrict'],
-      'report' => ['grafik','tabel'],
+      'report' => ['graph','table'],
     );
 
     $menus = array();
