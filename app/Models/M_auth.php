@@ -9,49 +9,67 @@ class M_auth extends Model
 
   public function userLogin($email, $password)
   {
+    // check database mstr_users join mstr_role
     $query = $this->query("SELECT
-      userid,name,email,password,role,image,sts
+      t_user.userid,
+      t_user.name,
+      t_user.email,
+      t_user.password,
+      t_user.role,
+      t_role.rolename,
+      t_user.image,
+      t_user.sts
       FROM
-      mstr_users
+      mstr_users t_user
+      JOIN mstr_role t_role ON t_role.roleid = t_user.role
       WHERE email = '{$email}'
     ");
     $data = $query->getRowArray();
 
     if(!empty($data)) {
 
-      //Akun anda belum aktif
+      // Akun anda belum aktif
       if($data['sts'] == 'Inactive') {
         return 2;
       }
       
-      //Akun access granted
+      // Akun access granted
       if(password_verify($password, $data['password'])) 
       {
-        $query = $this->query("SELECT rolename FROM mstr_role WHERE roleid = {$data['role']}");
-        $rolename = $query->getRow()->rolename;
+        // ambil data actions berdasarkan role
+        $acts = \App\Libraries\Role::actions($data['role']);
 
+        // disable action dengan memasukan template jquery .remove
+        $disable = array();
+        foreach ($acts as $v) {
+          $disable[] = '$(".tmb-'.$v.'").remove();';
+        }
+        $actions = implode(PHP_EOL, $disable);
+
+        // fetch data privilage kedalam session dengan format object stdclass
         $dataSession['privilage'] = (object) [
           'userid' => $data['userid'],
-          'rolename' => $rolename,
+          'rolename' => $data['rolename'],
           'name' => $data['name'],
           'image' => $data['image'],
           'email' => $data['email'],
           'sts' => $data['sts'],
           'menus' => \App\Libraries\Role::modules($data['role']),
-          'acts' => \App\Libraries\Role::actions($data['role']),
+          'acts' => $acts,
+          'disable' => $actions,
         ];
         session()->set($dataSession);
 
         return 200;
       }
-      //Akun password salah
+      // Akun password salah
       else
       {
         return 1;
       }
 
     }
-    //Akun tidak terdaftar
+    // Akun tidak terdaftar
     else 
     {
       return 404;

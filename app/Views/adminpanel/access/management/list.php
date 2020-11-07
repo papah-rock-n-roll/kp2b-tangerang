@@ -62,10 +62,9 @@
         <tr>
           <th style="width: 5%">No</th>
           <th style="width: 30%">Nama</th>
-          <th style="width: 25%">NIK</th>
-          <th style="width: 25%">Email</th>
+          <th style="width: 30%">Email</th>
           <th style="width: 10%">Role</th>
-          <th style="width: 5%">Status</th>
+          <th style="width: 10%">Status</th>
           <th style="width: 25%">Action</th>
         </tr>
       </thead>
@@ -77,8 +76,10 @@
           <tr>
             <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
             <td><?= ++$k ?></td>
-            <td><?= $v['name'] ?></td>
-            <td><?= $v['usernik'] ?></td>
+            <td>
+              <h6><?= $v['name'] ?></h6>
+              <small><?= $v['usernik'] ?></small>
+            </td>
             <td><?= $v['email'] ?></td>
             <td><?= $v['rolename'] ?></td>
             <td><?= $v['sts'] ?></td>

@@ -15,6 +15,16 @@ class Home extends BaseController
 		echo view('public/home', $data);
 	}
 
+	public function data()
+	{
+		echo view('public/data');
+	}
+
+	public function chart()
+	{
+		echo view('public/chart');
+	}
+
 
 
 	//--------------------------------------------------------------------

@@ -24,7 +24,7 @@ else
         <img src="<?= site_url('uploads/users/') . session('privilage')->image ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block"><?= session('privilage')->name ?></a>
+        <a href="#" class="d-block"><small><?= session('privilage')->name ?></small></a>
       </div>
     </div>
     <nav class="mt-2">

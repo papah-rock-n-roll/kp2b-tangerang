@@ -34,36 +34,16 @@
       </div>
     </div>
   </div>
-  
-  <div class="row">
-    <?php foreach($list as $v) : ?>
-      <div class="col-md-3">
-        
-          <div class="card card-widget widget-user-2">
-            <!-- Add the bg color to the header using any of the bg-* classes -->
-            <div class="widget-user-header bg-warning">
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="<?= site_url('uploads/users/') . $v['image'] ?>" alt="User Avatar">
-              </div>
-              <!-- /.widget-user-image -->
-              <h3 class="widget-user-username"><?= $v['name'] ?></h3>
-              <h5 class="widget-user-desc"><?= $v['rolename'] ?></h5>
-            </div>
-            <div class="card-footer p-0">
-              <ul class="nav flex-column">
-                <li class="nav-item">
-                  <p class="nav-link">
-                    Observations <span class="float-right badge bg-primary p-2"><?= $v['observations'] ?></span>
-                    <br><?= $v['usernik'] ?>
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        
+
+    
+  <?php foreach (array_chunk($list, 4) as $nlist ) : ?>  
+      <div class="card-deck">
+        <?php foreach ($nlist as $v ) : ?> 
+          <?= view('adminpanel/user/component', $v) ?>
+        <?php endforeach ?>
       </div>
-    <?php endforeach ?>
-  </div>
+  <?php endforeach ?>
+    
 
   <div class="card-footer clearfix">
     <div class="pagination pagination-md m-0 float-right">

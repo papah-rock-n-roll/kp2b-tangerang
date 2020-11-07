@@ -100,7 +100,7 @@ $routes->group('administrator', function($routes) {
 	$routes->group('user', function($routes) {
 
 		// REDIRECT MODULE PANEL
-		$routes->addRedirect('account', 'administrator/user/account/update/$1');
+		$routes->addRedirect('account', 'administrator/user/account/update');
 		// User Account
 		$routes->get('account/update', 'Adminpanel\User::user_get');
 		$routes->post('account/update/(:num)', 'Adminpanel\User::user_update/$1');
