@@ -15,7 +15,7 @@
       <div class="icon">
         <i class="fas fa-search"></i>
       </div>
-      <a href="data/petak" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="data/observation" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
@@ -28,7 +28,7 @@
       <div class="icon">
         <i class="fas fa-user-friends"></i>
       </div>
-      <a href="data/tuan" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="data/owner" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
@@ -41,7 +41,7 @@
       <div class="icon">
         <i class="fas fa-user-friends"></i>
       </div>
-      <a href="data/tuan" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="data/owner" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
       <div class="icon">
         <i class="fas fa-tractor"></i>
       </div>
-      <a href="data/poktan" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      <a href="data/farmer" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
     </div>
   </div>
 

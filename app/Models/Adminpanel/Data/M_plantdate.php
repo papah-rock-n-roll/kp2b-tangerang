@@ -24,36 +24,47 @@ class M_plantdate extends M_data
 
   public function plantdates_new($id, $data)
   {
-    $index = $this->getObsIndexPlant($id);
+    // round up nilai indxnlant
+    $indxnlant = $this->getObsIndexPlant($id);
+    $index = (int) ceil($indxnlant);
     $plant = $this->getPlantdates($id);
 
-    if(!empty($plant)) {
-
-      // fetch data kosong ke variable $temp
-      $temp = array_fill_keys(array_keys($plant[0]), '');
-
-      // push data kosong ke variable $plan sesuai nilai Index Plant
-      for($i = count($plant); $i < $index; ++$i) {
-        array_push($plant, $temp);
-      }
-
+    // return setflashdata catch warning
+    if($index > 5) {
+      return true;
     }
     else
     {
-      // Ganti key Assoc berdasarkan Base fields dengan value ''
-      $base = array_fill_keys($this->plantdateFields, '');
-      
-      // fetch data kosong ke variable $temp
-      $temp = array_fill_keys(array_keys($base), '');
+      if(!empty($plant)) {
 
-      // push data kosong ke variable $plan sesuai nilai Index Plant
-      for($i = count($plant); $i < $index; ++$i) {
-        array_push($plant, $temp);
+        // fetch data kosong ke variable $temp
+        $temp = array_fill_keys(array_keys($plant[0]), '');
+
+        // push data kosong ke variable $plan sesuai nilai Index Plant
+        for($i = count($plant); $i < $index; ++$i) {
+          array_push($plant, $temp);
+        }
+
       }
+      else
+      {
+        // Ganti key Assoc berdasarkan Base fields dengan value ''
+        $base = array_fill_keys($this->plantdateFields, '');
+        
+        // fetch data kosong ke variable $temp
+        $temp = array_fill_keys(array_keys($base), '');
+
+        // push data kosong ke variable $plan sesuai nilai Index Plant
+        for($i = count($plant); $i < $index; ++$i) {
+          array_push($plant, $temp);
+        }
+      }
+
     }
 
     $data += [
       'action' => self::ACTS.'/'.$id,
+      'indxnlant' => $indxnlant,
       'oldlist' => $this->getPlantdates($id),
       'newlist' => $plant,
       'back' => self::BACK,
@@ -92,7 +103,6 @@ class M_plantdate extends M_data
     $query = $db->query("SELECT indxnlant FROM observations_frmobservations WHERE obscode = {$id}");
 
     return $query->getRow()->indxnlant;
-
   }
 
   public function getPlantdates($id)

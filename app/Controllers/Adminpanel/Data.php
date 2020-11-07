@@ -120,7 +120,12 @@ class Data extends \App\Controllers\BaseController
     if($this->request->getMethod() === 'get')
     {
       $data['validation'] = $this->validation;
-      $this->M_plantdate->plantdates_new($id, $data);
+      $catch = $this->M_plantdate->plantdates_new($id, $data);
+
+      if($catch) {
+        $this->session->setFlashdata('catch', 'Nilai Index Plantation Melebihi 5');
+        return redirect()->back();
+      }
 
     }
     else
@@ -200,7 +205,7 @@ class Data extends \App\Controllers\BaseController
       $post = $this->M_owner->update_post($id, $data);
 
       if($post) {
-        $this->session->setFlashdata('success', 'Update Observation Successfully');
+        $this->session->setFlashdata('success', 'Update Owner Successfully');
         return redirect()->back();
       }
  
@@ -254,7 +259,7 @@ class Data extends \App\Controllers\BaseController
       $post = $this->M_farmer->create_post($data);
 
       if($post) {
-        $this->session->setFlashdata('success', 'Create Owner Successfully');
+        $this->session->setFlashdata('success', 'Create Farm Successfully');
         return redirect()->back();
       }
  
@@ -280,7 +285,7 @@ class Data extends \App\Controllers\BaseController
       $post = $this->M_farmer->update_post($id, $data);
 
       if($post) {
-        $this->session->setFlashdata('success', 'Update Observation Successfully');
+        $this->session->setFlashdata('success', 'Update Farm Successfully');
         return redirect()->back();
       }
  
@@ -334,7 +339,7 @@ class Data extends \App\Controllers\BaseController
       $post = $this->M_responden->create_post($data);
 
       if($post) {
-        $this->session->setFlashdata('success', 'Create Owner Successfully');
+        $this->session->setFlashdata('success', 'Create Responden Successfully');
         return redirect()->back();
       }
 
@@ -360,7 +365,7 @@ class Data extends \App\Controllers\BaseController
       $post = $this->M_responden->update_post($id, $data);
 
       if($post) {
-        $this->session->setFlashdata('success', 'Update Observation Successfully');
+        $this->session->setFlashdata('success', 'Update Responden Successfully');
         return redirect()->back();
       }
 

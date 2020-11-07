@@ -14,7 +14,10 @@
           $uri = service('uri');
           $kodepetak = $uri->getSegment(5);
         ?>
-        <h5 class="card-title"><i class="fas fa-search"></i> Plantdates Data - <?= $kodepetak ?></h5>
+        <h5 class="card-title"><i class="fas fa-search"></i> Plantdates Data -
+        <span class="badge badge-primary"><?= $kodepetak ?></span>
+        <span class="badge badge-warning"> Index Plantation - 
+        <?= $indxnlant ?></span> </h5>
         <div class="card-tools">
           <div class="input-group-append">
             <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>

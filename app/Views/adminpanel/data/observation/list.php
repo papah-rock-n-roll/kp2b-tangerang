@@ -60,12 +60,11 @@
       <table class="table projects">
       <thead>
         <tr>
-          <th style="width: 5%">No</th>
-          <th style="width: 20%">Kode Petak</th>
-          <th style="width: 20%">Desa</th>
-          <th style="width: 20%">Poktan</th>
-          <th style="width: 20%">Pemilik</th>
-          <th style="width: 20%">Penggarap</th>
+          <th style="width: 10%">No</th>
+          <th style="width: 10%">Kode</th>
+          <th style="width: 10%">Poktan</th>
+          <th style="width: 30%">Pemilik</th>
+          <th style="width: 30%">Penggarap</th>
           <th style="width: 20%">Action</th>
         </tr>
       </thead>
@@ -77,10 +76,18 @@
           <tr>
             <td><?= ++$k ?></td>
             <td><?= $v['obscode'] ?></td>
-            <td><?= $v['vlname'] ?></td>
-            <td><?= $v['farmname'] ?></td>
-            <td><?= $v['ownername'] ?></td>
-            <td><?= $v['cultivatorname'] ?></td>
+            <td>
+              <h6><?= $v['farmname'] ?></h6>
+              <small><?= $v['vlname'] ?></small>
+            </td>
+            <td>
+              <h6><?= $v['ownername'] ?></h6>
+              <small><?= $v['ownernik'] ?></small>
+            </td>
+            <td>
+              <h6><?= $v['cultivatorname'] ?></h6>
+              <small><?= $v['cultivatornik'] ?></small>
+            </td>
             <td>
               <div class="btn-group">
                 <button type="button" class="tmb-update btn btn-default btn-sm" title="Edit - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($update . $v['obscode']) ?>'">
@@ -137,6 +144,21 @@ if(! empty(session()->getFlashdata('warning'))) {
   'subtitle' => '',
   'body' => session()->getFlashdata('warning'),
   'icon' => 'icon fas fa-trash-alt',
+  'image' => '',
+  'imageAlt' => '',
+  ];
+  echo view('events/toasts', $toast);
+}
+
+if(! empty(session()->getFlashdata('catch'))) {
+  $toast = [
+  'class' => 'bg-warning',
+  'autohide' => 'true',
+  'delay' => '10000',
+  'title' => 'Warning',
+  'subtitle' => '',
+  'body' => session()->getFlashdata('catch'),
+  'icon' => 'icon fas fa-exclamation-triangle',
   'image' => '',
   'imageAlt' => '',
   ];

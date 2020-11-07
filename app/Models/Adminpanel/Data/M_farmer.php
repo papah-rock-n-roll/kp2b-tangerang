@@ -116,7 +116,7 @@ class M_farmer extends M_data
   {
     return [
       'farmname' => [
-        'label' => 'Farmer Name',
+        'label' => 'Farm Name',
         'rules' => 'required|max_length[50]|is_unique[mstr_farmers.farmname,farmcode,'.$id.']',
         'errors' => [
           'required' => 'Diperlukan {field}',

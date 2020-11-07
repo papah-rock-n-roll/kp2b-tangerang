@@ -54,14 +54,8 @@ class M_observation extends M_data
 
     // Jika Tidak null maka like ownernik - or like ownername = $_['GET'] keyword
     if(!empty($keyword)) {
-      $like = [
-        'v_observations.ownername' => $keyword,
-        'v_observations.cultivatorname' => $keyword
-      ];
-      $orLike = [
-        'v_observations.ownernik' => $keyword,
-        'v_observations.cultivatornik' => $keyword
-      ];
+      $like = ['v_observations.ownername' => $keyword];
+      $orLike = ['v_observations.ownernik' => $keyword];
     }
 
     $data += [
