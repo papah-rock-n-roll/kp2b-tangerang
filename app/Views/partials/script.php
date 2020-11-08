@@ -4,7 +4,9 @@
 
 <script type="text/javascript">
 <?php if(session()->has('privilage')) : ?>
+document.addEventListener('DOMContentLoaded', function() {
 <?= session('privilage')->disable ?>
 <?= PHP_EOL ?>
+});
 <?php endif ?>
 </script>

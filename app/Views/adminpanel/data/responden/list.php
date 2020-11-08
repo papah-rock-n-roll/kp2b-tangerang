@@ -75,9 +75,9 @@
           <td><?= $v['mobileno'] ?></td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['respname'] ?>" onclick="window.location.href='<?= esc($update . $v['respid']) ?>'">
+              <button type="button" class="tmb-update btn btn-default btn-sm" title="<?= $v['respname'] ?>" onclick="window.location.href='<?= esc($update . $v['respid']) ?>'">
               <i class="fa fa-edit"></i> Edit</button>
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['respname'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
+              <button type="button" class="tmb-delete btn btn-default btn-sm" title="<?= $v['respname'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
               <i class="fa fa-trash-alt"></i> Delete</button>
             </div>
             <?php

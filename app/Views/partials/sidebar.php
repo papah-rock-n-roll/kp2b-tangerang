@@ -24,7 +24,8 @@ else
         <img src="<?= site_url('uploads/users/') . session('privilage')->image ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block"><small><?= session('privilage')->name ?></small></a>
+        <?php $name = str_word_count(session('privilage')->name, 1) ?>
+        <a href="#" class="d-block"><?= $name[0] . ' ' . $name[1] ?></a>
       </div>
     </div>
     <nav class="mt-2">

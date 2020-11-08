@@ -27,7 +27,8 @@ class M_observation extends M_data
   protected $primaryKey = 'obscode';
 
 
-  public $optbase = ['Burung','Sundep','Wereng','Walang'];
+  public $irigationbase = ['Sungai','Primer','Sekunder','Tersier'];
+  public $optbase = ['Burung','Walang Sangit','Wereng','Sundep'];
   public $saprotanbase = ['Semprotan','Traktor'];
 
 
@@ -104,26 +105,10 @@ class M_observation extends M_data
   public function update_new($id, $data)
   {
     // Data Observation By obscode
-    $observation = $this->getObservation($id);
+    $obs = $this->getObservation($id);
     
-    // Pisah String OTP dan Saprotan dengan delimiter (Koma) menjadi Array
-    $opt = explode(',', $observation['opt']);
-    $saprotan = explode(',', $observation['saprotan']);
-
-    // Ganti key Assoc berdasarkan Base dengan value ''
-    $optbase = array_fill_keys($this->optbase, '');
-    $saprotanbase = array_fill_keys($this->saprotanbase, '');
-    
-    // Ganti key Assoc OPT berdasarkan Base dengan value Selected
-    $selected = array_fill_keys($opt, 'selected');
-    $newObs['opt'] = array_replace($optbase, $selected);
-
-    // Ganti key Assoc berdasarkan Base dengan value Selected
-    $selected = array_fill_keys($saprotan, 'selected');
-    $newObs['saprotan'] = array_replace($saprotanbase, $selected);
-
-    // Ganti key Assoc yang sama OPT dan Saprotan dengan value Selected
-    $observation = array_replace($observation, $newObs);
+    // function Observation By base value typeirigation, opt, saprotan
+    $observation = $this->recursiveBase($obs);
 
     $data += [
       'action' => self::ACTS.'update/'.$id,
@@ -141,6 +126,7 @@ class M_observation extends M_data
     // Pisah Array OTP dan Saprotan menjadi string
     $newData['opt'] = implode(',', $data['opt']);
     $newData['saprotan'] = implode(',', $data['saprotan']);
+    $newData['typeirigation'] = implode(',', $data['typeirigation']);
 
     // Ganti key Assoc pada $data dengan $newData yang sama OPT dan Saprotan
     $v = array_replace($data, $newData);
@@ -201,7 +187,7 @@ class M_observation extends M_data
     intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,	other,	
     harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdcode,	sdname,	
     vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,	
-    cultivatorid,	cultivatornik,	cultivatorname,	respid, respname, userid,	username')
+    cultivatorid,	cultivatornik,	cultivatorname,	landuse, respid, respname, userid,	username')
     ->where('obscode', $id)->first();
 
     return $query;
@@ -262,5 +248,46 @@ class M_observation extends M_data
     ];
 
   }
+
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Function
+ *
+ * --------------------------------------------------------------------
+ */
+
+  function recursiveBase($observation)
+  {
+    // Pisah String OTP dan Saprotan dengan delimiter (Koma) menjadi Array
+    $opt = explode(',', $observation['opt']);
+    $saprotan = explode(',', $observation['saprotan']);
+    $typeirigation = explode(',', $observation['typeirigation']);
+
+    // Ganti key Assoc berdasarkan Base dengan value ''
+    $optbase = array_fill_keys($this->optbase, '');
+    $saprotanbase = array_fill_keys($this->saprotanbase, '');
+    $irigationbase = array_fill_keys($this->irigationbase, '');
+
+    // Ganti key Assoc irigation berdasarkan Base dengan value Selected
+    $selected = array_fill_keys($typeirigation, 'selected');
+    $newObs['typeirigation'] = array_replace_recursive($irigationbase, $selected);
+    
+    // Ganti key Assoc OPT berdasarkan Base dengan value Selected
+    $selected = array_fill_keys($opt, 'selected');
+    $newObs['opt'] = array_replace_recursive($optbase, $selected);
+
+    // Ganti key Assoc saprotan berdasarkan Base dengan value Selected
+    $selected = array_fill_keys($saprotan, 'selected');
+    $newObs['saprotan'] = array_replace_recursive($saprotanbase, $selected);
+
+    // Ganti key Assoc yang sama OPT dan Saprotan dengan value Selected
+    $observation = array_replace($observation, $newObs);
+
+    return $observation;
+  }
+  
 
 }

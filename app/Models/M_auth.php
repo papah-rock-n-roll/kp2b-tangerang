@@ -37,14 +37,8 @@ class M_auth extends Model
       if(password_verify($password, $data['password'])) 
       {
         // ambil data actions berdasarkan role
-        $acts = \App\Libraries\Role::actions($data['role']);
-
-        // disable action dengan memasukan template jquery .remove
-        $disable = array();
-        foreach ($acts as $v) {
-          $disable[] = '$(".tmb-'.$v.'").remove();';
-        }
-        $actions = implode(PHP_EOL, $disable);
+        $menus = \App\Libraries\Role::modules($data['role']);
+        $role = \App\Libraries\Role::actions($data['role']);        
 
         // fetch data privilage kedalam session dengan format object stdclass
         $dataSession['privilage'] = (object) [
@@ -54,9 +48,9 @@ class M_auth extends Model
           'image' => $data['image'],
           'email' => $data['email'],
           'sts' => $data['sts'],
-          'menus' => \App\Libraries\Role::modules($data['role']),
-          'acts' => $acts,
-          'disable' => $actions,
+          'menus' => $menus,
+          'acts' => $role['acts'],
+          'disable' => $role['actions'],
         ];
         session()->set($dataSession);
 

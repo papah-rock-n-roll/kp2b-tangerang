@@ -100,7 +100,7 @@
                 <div class="dropdown-menu" role="menu">
                   <a class="tmb-read dropdown-item" href="<?= $read . $v['obscode'] ?>">View Farmer</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="<?= $plantdate . $v['obscode'] ?>">Calendar Plantation</a>
+                  <a class="tmb-update dropdown-item" href="<?= $plantdate . $v['obscode'] ?>">Calendar Plantation</a>
                 </div>
               </div>
               <?php
