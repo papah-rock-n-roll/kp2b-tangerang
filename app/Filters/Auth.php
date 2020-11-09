@@ -23,5 +23,7 @@ class Auth implements FilterInterface
   {
     // Do something here
 
+
+
   }
 }

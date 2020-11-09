@@ -145,7 +145,7 @@ class Geo extends ResourceController
     $password = 123;
     $token = \App\Libraries\Crypto::encrypt($password);
 
-    $this->request->getHeaderLine('KP2B-TOKEN') == $token ? $sts = true : $sts = false;
+    $this->request->getHeaderLine('X-API-KP2B') == $token ? $sts = true : $sts = false;
     return $sts;
   }
 

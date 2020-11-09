@@ -3,17 +3,17 @@
 <head>
 <?= $this->include('partials/head') ?>
 </head>
-<body>
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-    <a href="/"><b><strong>KP2B</strong> Tangerang</b></a>
+      <a href="/"><b><strong>KP2B</strong> Tangerang</b></a>
     </div>
+
+    <?php echo form_open($action) ?>
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Register to create your account</p>
 
-        <?php echo form_open($action) ?>
         <div class="input-group mb-3">
           <?php
             $usernik = [
@@ -114,20 +114,24 @@
           <?= $validation->getError('confirm_password') ?>
           </div>
         </div>
-        <div class="row">
-          <div class="col-8">
-            <p class="mb-0">
-              <a href="<?= esc($cancel) ?>" class="text-center">Cancel</a>
-            </p>
-          </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+
+        <div class="row mb-2">  
+          <div class="col-12">
+            <button type="submit" class="btn btn-success btn-block">Register</button>
+          </div>  
+        </div>
+
+        <div class="dropdown-divider"></div>
+        <div class="row mt-3">
+          <div class="col-12">            
+            <button type="button" class="btn btn-default btn-block" onclick="window.location.href='<?= esc($cancel) ?>'">Cancel</button>
           </div>
         </div>
-        <?php echo form_close() ?>
 
       </div>
     </div>
+    <?php echo form_close() ?>
+
   </div>
 <?= $this->include('partials/script') ?>
 </body>
