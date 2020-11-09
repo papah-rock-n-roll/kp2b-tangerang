@@ -15,8 +15,8 @@
     }
 }
 </style>
-<link rel="shortcut icon" type="image/png" href="<?php echo base_url('themes/dist') ?>/img/AdminLTELogo.png"/>
-<?php 
+<link rel="shortcut icon" type="image/png" href="<?php echo base_url('themes/dist') ?>/img/favicon.ico"/>
+<?php
 $uri = service('uri');
 if($uri->getTotalSegments() > 1) {
   $title = $uri->getSegment(2) == '' ? ucfirst($uri->getSegment(1)) : ucfirst($uri->getSegment(1)). ' - ' .ucfirst($uri->getSegment(2));

@@ -9,7 +9,8 @@ class Home extends BaseController
 		$data = [
       'url' => base_url('api/geo/'),
 			'url_kec' => base_url('api/geo/kecamatan'),
-      'url_desa' => base_url('api/geo/desa')
+      'url_desa' => base_url('api/geo/desa'),
+      'url_obs' => base_url('api/geo/obsdetail')
 		];
 
 		echo view('public/home', $data);
