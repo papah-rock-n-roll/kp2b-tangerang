@@ -7,8 +7,8 @@
         <img class="img-circle elevation-2" src="<?= site_url('uploads/users/') . $image ?>" alt="User Avatar">
       </div>
       <!-- /.widget-user-image -->
-      <h3 class="widget-user-username"><?= $name ?></h3>
-      <h5 class="widget-user-desc"><?= $rolename ?></h5>
+      <h3 class="widget-user-username"><?= esc($name) ?></h3>
+      <h5 class="widget-user-desc"><?= esc($rolename) ?></h5>
     </div>
     <div class="card-body p-0">
       <ul class="nav flex-column">

@@ -18,9 +18,9 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
-$routes->setTranslateURIDashes(false);
+$routes->setTranslateURIDashes(true);
 $routes->set404Override('App\Errors::show404');
-$routes->setAutoRoute(false);
+$routes->setAutoRoute(true);
 
 // Will display a custom view
 $routes->set404Override(function() {

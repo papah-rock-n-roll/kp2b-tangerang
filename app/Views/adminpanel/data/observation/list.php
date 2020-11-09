@@ -75,24 +75,24 @@
         <?php foreach($list as $k => $v) : ?>
           <tr>
             <td><?= ++$k ?></td>
-            <td><?= $v['obscode'] ?></td>
+            <td><?= esc($v['obscode']) ?></td>
             <td>
-              <h6><?= $v['farmname'] ?></h6>
-              <small><?= $v['vlname'] ?></small>
+              <h6><?= esc($v['farmname']) ?></h6>
+              <small><?= esc($v['vlname']) ?></small>
             </td>
             <td>
-              <h6><?= $v['ownername'] ?></h6>
-              <small><?= $v['ownernik'] ?></small>
+              <h6><?= esc($v['ownername']) ?></h6>
+              <small><?= esc($v['ownernik']) ?></small>
             </td>
             <td>
-              <h6><?= $v['cultivatorname'] ?></h6>
-              <small><?= $v['cultivatornik'] ?></small>
+              <h6><?= esc($v['cultivatorname']) ?></h6>
+              <small><?= esc($v['cultivatornik']) ?></small>
             </td>
             <td>
               <div class="btn-group">
-                <button type="button" class="tmb-update btn btn-default btn-sm" title="Edit - <?= $v['obscode'] ?>" onclick="window.location.href='<?= esc($update . $v['obscode']) ?>'">
+                <button type="button" class="tmb-update btn btn-default btn-sm" title="Edit - <?= esc($v['obscode']) ?>" onclick="window.location.href='<?= $update . $v['obscode'] ?>'">
                 <i class="fa fa-edit"></i></button>
-                <button type="button" class="tmb-delete btn btn-default btn-sm" title="Delete - <?= $v['obscode'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
+                <button type="button" class="tmb-delete btn btn-default btn-sm" title="Delete - <?= esc($v['obscode']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
                 <i class="fa fa-trash-alt"></i></button>
                 <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
                   <span class="sr-only">Toggle Dropdown</span>
@@ -109,8 +109,8 @@
                   'size' => 'modal-sm',
                   'class' => 'bg-warning',
                   'title' => 'Delete',
-                  'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['obscode'],
-                  'action' => esc($delete . $v['obscode']),
+                  'bodytext' => 'Anda Yakin Ingin Menghapus <br> obscode - '. esc($v['obscode'] .' Farmname - '.$v['farmname']),
+                  'action' => $delete . $v['obscode'],
                   ];
                 echo view('events/modals', $modals);
               ?>

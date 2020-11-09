@@ -18,27 +18,20 @@ class Filters extends BaseConfig
 	// Always applied before every request
 	public $globals = [
 		'before' => [
-			'csrf',
+			'csrf'=> [
+				'except' => ['/','login','register','data','chart']
+			],
 			'auth' => [
-				'except' => [
-					'api/*','/','login','register','data','chart'
-					]
+				'except' => ['api/*','/','login','register','data','chart']
 			],
 			'acts' => [
-				'except' => [
-						'api/*','/','login','register','data','chart'
-					]
+				'except' => ['api/*','/','login','register','data','chart']
 			],
 			'cors',
 			//'honeypot'
 		],
 		'after'  => [
 			'toolbar',
-			'auth' => [
-				'except' => [
-					'api/*','/','login','register','data','chart'
-					]
-			],
 			'cors',
 			//'honeypot'
 		],

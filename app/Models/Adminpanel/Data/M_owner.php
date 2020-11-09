@@ -117,6 +117,9 @@ class M_owner extends M_data
   // Api owners - Remote Select2
   public function getRemoteOwners($selected, $page)
   {
+    if(empty($selected)) $selected = '';
+    if(empty($page)) $page = 1;
+
     $offset = $page * 10;
 
     $like = ['mstr_owners.ownernik' => $selected];
@@ -128,6 +131,9 @@ class M_owner extends M_data
       'results' => $data,
       'page' => $page,
     );
+
+    $result = json_encode($result, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
 
     return $result;
   }

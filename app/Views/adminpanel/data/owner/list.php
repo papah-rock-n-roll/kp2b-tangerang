@@ -72,15 +72,15 @@
         <tr>
           <td><?= ++$k ?></td>
           <td>
-            <h6><?= $v['ownername'] ?></h6>
-            <small><?= $v['ownernik'] ?></small>
+            <h6><?= esc($v['ownername']) ?></h6>
+            <small><?= esc($v['ownernik']) ?></small>
           </td>
-          <td><p><small><?= $v['owneraddress'] ?></small></p></td>
+          <td><p><small><?= esc($v['owneraddress']) ?></small></p></td>
           <td>
             <div class="btn-group">
-              <button type="button" class="tmb-update btn btn-default btn-sm" title="<?= $v['ownername'] ?>" onclick="window.location.href='<?= esc($update . $v['ownerid']) ?>'">
+              <button type="button" class="tmb-update btn btn-default btn-sm" title="<?= esc($v['ownername']) ?>" onclick="window.location.href='<?= $update . $v['ownerid'] ?>'">
               <i class="fa fa-edit"></i> Edit</button>
-              <button type="button" class="tmb-delete btn btn-default btn-sm" title="<?= $v['ownername'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
+              <button type="button" class="tmb-delete btn btn-default btn-sm" title="<?= esc($v['ownername']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
               <i class="fa fa-trash-alt"></i> Delete</button>
             </div>
             <?php
@@ -89,8 +89,8 @@
                 'size' => 'modal-sm',
                 'class' => 'bg-warning',
                 'title' => 'Delete',
-                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'.$v['ownername'],
-                'action' => esc($delete . $v['ownerid']),
+                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'. esc($v['ownername']),
+                'action' => $delete . $v['ownerid'],
                 ];
               echo view('events/modals', $modals);
             ?>

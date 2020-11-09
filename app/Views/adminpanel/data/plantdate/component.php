@@ -10,7 +10,7 @@
         'name' => 'growceason[]',
         'minlength' => '1',
         'placeholder' => 'Enter your season',
-        'value' => old('growceason') == null ? $growceason : old('growceason'),
+        'value' => old('growceason') == null ? esc($growceason) : old('growceason'),
         'required' => ''
       ];
       echo form_input($growceason_);

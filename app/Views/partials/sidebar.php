@@ -25,7 +25,7 @@ else
       </div>
       <div class="info">
         <?php $name = str_word_count(session('privilage')->name, 1) ?>
-        <a href="#" class="d-block"><?= $name[0] . ' ' . $name[1] ?></a>
+        <a href="#" class="d-block"><?= count($name) < 2 ? $name[0] : $name[0] . ' ' . $name[1] ?></a>
       </div>
     </div>
     <nav class="mt-2">

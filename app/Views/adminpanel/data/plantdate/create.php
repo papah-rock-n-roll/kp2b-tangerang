@@ -46,11 +46,11 @@
             <?php foreach($oldlist as $k => $v) : ?>
               <tr>
                 <td><?= ++$k ?></td>
-                <td><?= $v['growceason'] ?></td>
-                <td><?= $v['monthgrow'] ?></td>
-                <td><?= $v['monthharvest'] ?></td>
-                <td><?= $v['varieties'] ?></td>
-                <td><?= $v['irrigationavbl'] ?></td>
+                <td><?= esc($v['growceason']) ?></td>
+                <td><?= esc($v['monthgrow']) ?></td>
+                <td><?= esc($v['monthharvest']) ?></td>
+                <td><?= esc($v['varieties']) ?></td>
+                <td><?= esc($v['irrigationavbl']) ?></td>
               </tr>
             <?php endforeach ?>
           <?php endif ?>
