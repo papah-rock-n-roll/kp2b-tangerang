@@ -17,7 +17,6 @@
     "esri/Map",
     "esri/layers/GeoJSONLayer",
     "esri/views/MapView",
-    "esri/widgets/LayerList",
     "esri/widgets/Locate",
     "esri/widgets/Expand",
     "esri/widgets/BasemapGallery",
@@ -28,24 +27,57 @@
     "dojo/dom",
     "dojo/on",
     "esri/core/watchUtils"
-  ], function (Map, GeoJSONLayer, MapView, LayerList, Locate, Expand, BasemapGallery, Fullscreen, Search, Editor, domConstruct, dom, on, watchUtils) {
+  ], function (Map, GeoJSONLayer, MapView, Locate, Expand, BasemapGallery, Fullscreen, Search, Editor, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
+    const url_desa = "<?= $url_desa ?>";
+    const url_obs = "<?= $url_obs ?>";
+    const url_edtObs = "<?= $url_edtObs ?>";
     let editor, features;
-    var dataKec = [];
-    var kecDom = '';
+    var dataKec = [], dataDesa = [], dataObs = [];
+    var geojsonLayer;
+    var dataHead = ["Kode petak","Nama responden","Nama Kelompok Tani","Nama kecamatan","Nama desa","Landuse",
+    "Status lahan","Luas petak (m<sup>2</sup>)","NIK pemilik","Nama pemilik","Nama penggarap","Tipe irigasi",
+    "Jarak dari sungai (m)","Jarak dari irigasi primer (m)","Lembaga pengelola air","Intensitas tanam","Index pertanaman (IP)",
+    "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
+    "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
+    "Penjualan panen","Surveyor","Update"]
 
     const editThisAction = {
-      title: "Edit feature",
+      title: "Edit attributes",
       id: "edit-this",
       className: "esri-icon-edit"
     };
 
     const template = {
       title: "Kode Petak: {FID}",
-      actions: [editThisAction]
+      actions: [editThisAction],
+      content: getDetail
     };
+
+    function getDetail(feature) {
+      var obscode = feature.graphic.attributes.FID;
+      $.ajax({
+        async : false,
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url : url_obs + '?obscode=' + obscode,
+        type : 'GET',
+        success : function(response){
+          dataObs = JSON.parse(response);
+        }
+      });
+      var div = document.createElement("div");
+      var divContent = '<table class="esri-widget__table"><tbody>';
+      for (var i = 0; i < dataHead.length; i++) {
+        divContent += '<tr><th class="esri-feature-fields__field-header">' + dataHead[i] + '</th> \
+        <td class="esri-feature-fields__field-data">' + Object.values(dataObs)[i] + '</td></tr>';
+      }
+      divContent += '</tbody></table>';
+      divContent += '<p class="mt-3">Update terkahir oleh: ' + dataObs.username + '. Tanggal ' + dataObs.timestamp + '</p>';
+      div.innerHTML = divContent;
+      return div;
+    }
 
     const renderer = {
       type: "simple",
@@ -59,59 +91,33 @@
       }
     };
 
-    const geojsonLayer = new GeoJSONLayer({
-      url: url,
-      copyright: "Dinas Pertanian Kab. Tangerang",
-      popupTemplate: template,
-      renderer: renderer,
-      title: "Kecamatan Sukadiri"
-    });
-
     const map = new Map({
-      basemap: "gray-vector",
-      layers: [geojsonLayer]
+      basemap: "gray-vector"
     });
 
     const view = new MapView({
       container: "viewDiv",
       center: [106.518852, -6.120213],
-      zoom: 11,
-      map: map
+      zoom: 10,
+      map: map,
+      popup: {
+        dockOptions: {
+          position: "bottom-right"
+        }
+      }
     });
 
     view.when(function () {
+      var popup = view.popup;
+
       var searchWidget = new Search({
         view: view,
-        includeDefaultSources: false,
-        sources: [
-          {
-            layer: geojsonLayer,
-            searchFields: ["FID"],
-            suggestionTemplate: "Kode Petak: {FID}",
-            displayField: "FID",
-            exactMatch: false,
-            outFields: ["FID"],
-            name: "Kode petak",
-            placeholder: "Cari kode petak"
-          }
-        ]
+        includeDefaultSources: false
       });
 
       view.ui.add(searchWidget, {
         position: "top-right"
       });
-
-      var layerList = new LayerList({
-        view: view
-      });
-
-      view.ui.add(
-        new Expand({
-          view: view,
-          content: layerList
-        }),
-        "top-left"
-      );
 
       view.ui.add(
         new Fullscreen({
@@ -147,37 +153,133 @@
         "bottom-left"
       );
 
-    });
+      view.popup.on("trigger-action", function (event) {
+        if (event.action.id === "edit-this") {
+          var attributes = popup.viewModel.selectedFeature.attributes;
+          var id = attributes.FID;
+          window.location.href = url_edtObs + "/" + id;
+        }
+      });
 
-    $.ajax({
-      async : false,
-      headers: {'X-Requested-With': 'XMLHttpRequest'},
-      url : url_kec,
-      type : 'GET',
-      success : function(response){
-        dataKec = JSON.parse(response);
+      $.ajax({
+        async : false,
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url : url_kec,
+        type : 'GET',
+        success : function(response){
+          dataKec = JSON.parse(response);
+        }
+      });
+
+      // Format char to Title Case
+    	function toTitleCase(str) {
+          return str.replace(
+              /\w\S*/g,
+              function(txt) {
+                  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              }
+          );
       }
-    });
 
-    for (var i = 0; i < dataKec.length; i++) {
-      var opt = '<div class="checkbox"><label><input type="checkbox" value="' + dataKec[i].sdcode + '"> ' + dataKec[i].sdname + ' </label></div>';
-      kecDom = kecDom + opt;
-  	}
+      // get List Desa
+      function getDesa(sdcode = ''){
+        $.ajax({
+          async : false,
+          headers: {'X-Requested-With': 'XMLHttpRequest'},
+          url : url_desa + '?sdcode=' + sdcode,
+          type : 'GET',
+          success : function(response){
+            dataDesa = JSON.parse(response);
+          }
+        });
+        var desaDom = '<option value="">Semua desa</option>';
+        for (var i = 0; i < dataDesa.length; i++) {
+          var optDesa = '<option value="' + dataDesa[i].vlcode + '"> ' + toTitleCase(dataDesa[i].vlname) + ' </option>';
+          desaDom = desaDom + optDesa;
+        }
+        $('#layerDesa').html(desaDom);
+      }
 
-    var node = domConstruct.create("div", {
-      className: "esri-layer-list esri-widget esri-widget--panel",
-      innerHTML: kecDom
-    });
+      // update search layer source
+      function updateSearchSource(){
+        const sources = [
+          {
+            layer: geojsonLayer,
+            searchFields: ["FID"],
+            suggestionTemplate: "Kode Petak: {FID}",
+            displayField: "FID",
+            exactMatch: false,
+            outFields: ["FID"],
+            name: "Kode petak",
+            placeholder: "Cari kode petak"
+          }
+        ];
+        searchWidget.sources = sources;
+      }
 
-    view.ui.add(
-      new Expand({
+      // Update layers
+      function updateLayer(kec, desa){
+        map.layers.removeAll();
+        popup.close();
+        geojsonLayer = new GeoJSONLayer({
+          url: url + "/info?table=v_observations&fid=obscode&shape=obsshape&sdcode=" + kec + "&vlcode=" + desa,
+          copyright: "Dinas Pertanian Kab. Tangerang",
+          popupTemplate: template,
+          renderer: renderer,
+          title: "Petak LP2B"
+        });
+        geojsonLayer.queryExtent().then(function(results){
+          view.goTo(results.extent);
+        });
+        map.add(geojsonLayer);
+        updateSearchSource();
+        layerAdd.collapse();
+      }
+
+      var kecDom = '<div class="form-group input-group-sm" id="kecForm"> \
+        <label>Pilih kecamatan</label> \
+        <select class="form-control" id="layerKec"> \
+          <option value="">Semua kecamatan</option>';
+          for (var i = 0; i < dataKec.length; i++) {
+            var opt = '<option value="' + dataKec[i].sdcode + '"> ' + toTitleCase(dataKec[i].sdname) + ' </option>';
+            kecDom = kecDom + opt;
+        	}
+        kecDom = kecDom + '</select> \
+      </div> \
+      <div class="form-group input-group-sm" id="desaForm" style="display: none;"> \
+        <label>Pilih desa</label> \
+        <select class="form-control" id="layerDesa"> \
+          <option value="">Semua desa</option> \
+        </select> \
+      </div> \
+      <div class="form-group input-group-sm" id="layerForm"><button id="applyLayer" type="submit" class="btn btn-block btn-sm btn-primary">Apply</button></div>';
+
+      var node = domConstruct.create("div", {
+        className: "esri-layer-list esri-widget esri-widget--panel",
+        innerHTML: kecDom
+      });
+
+      const layerAdd = new Expand({
         view: view,
         expanded: false,
-        expandTooltip: "Tambah layer petak sawah",
+        expandIconClass: "esri-icon-layers",
+        expandTooltip: "Add layer",
         content: node
-      }),
-      "top-left"
-    );
+       });
+
+      view.ui.add(layerAdd, "top-left");
+
+      watchUtils.whenTrueOnce(layerAdd, 'expanded', function(){
+        on(dom.byId("layerKec"), 'change', function(){
+          if(this.value == ''){$("#desaForm").hide();}else{$("#desaForm").show();}
+          getDesa(this.value);
+        });
+        on(dom.byId("applyLayer"), 'click', function(){
+          updateLayer($("#layerKec").val(), $("#layerDesa").val());
+        });
+      });
+
+    });
 
   });
 </script>

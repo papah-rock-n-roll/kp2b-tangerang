@@ -52,10 +52,10 @@ class M_geophp extends Model
 
   // get desa
   public function get_obs_detail($obscode){
-    $sql = "SELECT obscode,areantatus,broadnrea,typeirigation,distancefromriver,
+    $sql = "SELECT obscode,respname,farmname,sdname,vlname,landuse,areantatus,broadnrea,
+      ownernik,ownername,cultivatorname,typeirigation,distancefromriver,
       distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,
-      other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,timestamp,vlcode,sdcode,
-      sdname,vlname,farmname,pemilik,penggarap,respId
+      other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,username,timestamp
       FROM v_observations WHERE obscode = {$obscode};";
     $query = $this->db->query($sql)->getRowArray();
     return json_encode($query);

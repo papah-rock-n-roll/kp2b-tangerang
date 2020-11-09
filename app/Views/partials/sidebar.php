@@ -1,4 +1,4 @@
-<?php 
+<?php
 $uri = service('uri');
 $adminpanel = $uri->getSegment(1);
 $urisegment = $uri->getSegment(2);
@@ -14,7 +14,7 @@ else
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <a href="#" class="brand-link">
-    <img src="<?= base_url('themes/dist/img/AdminLTELogo.png') ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <img src="<?= base_url('themes/dist/img/logo.png') ?>" alt="Kabupaten TangerangE Logo" class="brand-image">
     <span class="brand-text font-weight-light"><?= session('privilage')->rolename ?></span>
   </a>
 

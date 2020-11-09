@@ -35,20 +35,44 @@
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
     const url_desa = "<?= $url_desa ?>";
+    const url_obs = "<?= $url_obs ?>";
     let editor, features;
-    var dataKec = [], dataDesa = [];
+    var dataKec = [], dataDesa = [], dataObs = [];
     var geojsonLayer;
-
-    const editThisAction = {
-      title: "View details",
-      id: "view-this",
-      className: "esri-icon-description"
-    };
+    var dataHead = ["Kode petak","Nama responden","Nama Kelompok Tani","Nama kecamatan","Nama desa","Landuse",
+    "Status lahan","Luas petak (m<sup>2</sup>)","NIK pemilik","Nama pemilik","Nama penggarap","Tipe irigasi",
+    "Jarak dari sungai (m)","Jarak dari irigasi primer (m)","Lembaga pengelola air","Intensitas tanam","Index pertanaman (IP)",
+    "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
+    "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
+    "Penjualan panen","Surveyor","Update"]
 
     const template = {
       title: "Kode Petak: {FID}",
-      actions: [editThisAction]
+      content: getDetail
     };
+
+    function getDetail(feature) {
+      var obscode = feature.graphic.attributes.FID;
+      $.ajax({
+        async : false,
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url : url_obs + '?obscode=' + obscode,
+        type : 'GET',
+        success : function(response){
+          dataObs = JSON.parse(response);
+        }
+      });
+      var div = document.createElement("div");
+      var divContent = '<table class="esri-widget__table"><tbody>';
+      for (var i = 0; i < dataHead.length; i++) {
+        divContent += '<tr><th class="esri-feature-fields__field-header">' + dataHead[i] + '</th> \
+        <td class="esri-feature-fields__field-data">' + Object.values(dataObs)[i] + '</td></tr>';
+      }
+      divContent += '</tbody></table>';
+      divContent += '<p class="mt-3">Update terkahir oleh: ' + dataObs.username + '. Tanggal ' + dataObs.timestamp + '</p>';
+      div.innerHTML = divContent;
+      return div;
+    }
 
     const renderer = {
       type: "simple",
@@ -70,11 +94,17 @@
       container: "viewDiv",
       center: [106.518852, -6.120213],
       zoom: 10,
-      map: map
+      map: map,
+      popup: {
+        dockOptions: {
+          position: "bottom-right"
+        }
+      }
     });
 
     view.when(function () {
       var popup = view.popup;
+
       var searchWidget = new Search({
         view: view,
         includeDefaultSources: false
@@ -118,12 +148,6 @@
         "bottom-left"
       );
 
-      view.popup.on("trigger-action", function (event) {
-        if (event.action.id === "view-this") {
-          alert("Detail");
-        }
-      });
-
       $.ajax({
         async : false,
         headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -163,6 +187,7 @@
         $('#layerDesa').html(desaDom);
       }
 
+      // update search layer source
       function updateSearchSource(){
         const sources = [
           {
@@ -214,7 +239,7 @@
           <option value="">Semua desa</option> \
         </select> \
       </div> \
-      <div class="form-group input-group-sm" id="layerForm"><button id="applyLayer" type="submit" class="btn btn-primary btn-xs">Apply</button></div>';
+      <div class="form-group input-group-sm" id="layerForm"><button id="applyLayer" type="submit" class="btn btn-block btn-sm btn-primary">Apply</button></div>';
 
       var node = domConstruct.create("div", {
         className: "esri-layer-list esri-widget esri-widget--panel",
