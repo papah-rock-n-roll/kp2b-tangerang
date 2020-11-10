@@ -108,8 +108,8 @@ class M_user extends Model
       mstr_role.roleid,
       mstr_role.rolename')
     ->selectCount('t_frmobs.userid', 'observations')
-    ->join('mstr_role', 'mstr_role.roleid = mstr_users.role')
-    ->join('observations_frmobservations t_frmobs', 't_frmobs.userid = mstr_users.userid')
+    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid', 'left')
+    ->join('observations_frmobservations t_frmobs', 'mstr_users.userid = t_frmobs.userid', 'left')
     ->where($where)->like($like)->orLike($orLike)
     ->groupBy('t_frmobs.userid')
     ->orderBy('mstr_users.userid DESC');

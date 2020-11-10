@@ -8,7 +8,7 @@
       </div>
       <!-- /.widget-user-image -->
       <h3 class="widget-user-username"><?= esc($name) ?></h3>
-      <h5 class="widget-user-desc"><?= esc($rolename) ?></h5>
+      <h5 class="widget-user-desc"><?= esc($rolename) == null ? '<small class="badge badge-danger">New Register</small>' : esc($rolename) ?></h5>
     </div>
     <div class="card-body p-0">
       <ul class="nav flex-column">

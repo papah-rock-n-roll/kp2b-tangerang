@@ -18,6 +18,7 @@ class M_access extends Model
     $data = [
       'total_users' => $this->countUsers()->count,
       'total_roles' => $this->countRoles()->count,
+      'total_register' => $this->countRegister()->count,
       'list' => $this->countRole(),
       'moreinfo' => 'access/management',
     ];
@@ -34,6 +35,13 @@ class M_access extends Model
   public function countRoles()
   {
     $query = $this->query("SELECT COUNT(DISTINCT roleid) AS count FROM mstr_role");
+
+    return $query->getRow();
+  }
+
+  public function countRegister()
+  {
+    $query = $this->query("SELECT COUNT(DISTINCT userid) AS count FROM mstr_users WHERE `role` = 0");
 
     return $query->getRow();
   }

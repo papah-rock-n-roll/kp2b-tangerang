@@ -156,7 +156,7 @@ class M_management extends M_access
   public function getUsers($where = null, $like = null, $orLike = null, int $paginate = 5)
   {
     $query = $this->select('userid,usernik,name,email,rolename,sts')
-    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid')
+    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid', 'left')
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('userid DESC');
 
@@ -166,7 +166,7 @@ class M_management extends M_access
   public function getUser($id = null)
   {
     $query = $this->select('usernik,name,phone,email,password,realpassword,roleid,rolename,image,sts')
-    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid')
+    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid', 'left')
     ->where('mstr_users.userid', $id);
 
     return $query->first();
