@@ -16,7 +16,23 @@ class M_dashboard extends Model
       'list' => $this->getTable(),
       'graph' => $this->getGrafik(),
     ];
-    echo view('adminpanel/dashboard', $data);
+
+    if (! $view = cache('adminpanel-dashboard'))
+    {
+      // simpan view adminpanel/dashboard ke variable
+      $view = view('adminpanel/dashboard', $data);
+
+      // simpan file dir writable\cache selama 1 hari
+      cache()->save('adminpanel-dashboard', $view, DAY);
+    }
+    else
+    {
+      // jika ada cache, maka ambil dari cache
+      $view = cache()->get('adminpanel-dashboard');
+    }
+
+    echo $view;
+  
   }
 
   public function counting()

@@ -60,7 +60,23 @@ class M_user extends Model
       'list' => $this->getListusers($where, $like, $orLike, $paginate),
       'pager' => $this->pager,
     ];
-    echo view('adminpanel/user/main', $data);
+
+    if (! $view = cache('adminpanel-user'))
+    {
+      // simpan view adminpanel/user/main ke variable
+      $view = view('adminpanel/user/main', $data);
+
+      // simpan file dir writable\cache selama 1 hari
+      cache()->save('adminpanel-user', $view, DAY);
+    }
+    else
+    {
+      // jika ada cache, maka ambil dari cache
+      $view = cache()->get('adminpanel-user');
+    }
+
+    echo $view;
+
   }
 
   public function update_new($id, $data)
