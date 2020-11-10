@@ -9,9 +9,10 @@ class Auth implements FilterInterface
   public function before(RequestInterface $request, $arguments = null)
   {
     // Do something here
+
     $auth = session()->has('privilage');
 
-    if(! $auth) {
+    if (! $auth) {
       return redirect('login');
     }
 

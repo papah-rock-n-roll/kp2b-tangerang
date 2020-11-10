@@ -77,19 +77,21 @@
             <?= $v['sts'] == 'Inactive' ? '<tr style="background-color: #80808020;">' : '<tr>' ?>
             <td><?= ++$k ?></td>
             <td>
-              <h6><?= $v['name'] ?></h6>
-              <small><?= $v['usernik'] ?></small>
+              <h6><?= esc($v['name']) ?></h6>
+              <small><?= esc($v['usernik']) ?></small>
             </td>
-            <td><?= $v['email'] ?></td>
-            <td><?= $v['rolename'] ?></td>
-            <td><?= $v['sts'] ?></td>
+            <td><?= esc($v['email']) ?></td>
+            <td>
+              <?= esc($v['rolename']) == null ? '<small class="badge badge-danger">New Register</small>' : esc($v['rolename']) ?>
+            </td>
+            <td><?= esc($v['sts']) ?></td>
             <td>
               <div class="btn-group">
-                <button type="button" class="tmb-read btn btn-primary btn-sm" title="View - <?= $v['name'] ?>" onclick="window.location.href='<?= esc($read . $v['userid']) ?>'">
+                <button type="button" class="tmb-read btn btn-primary btn-sm" title="View - <?= esc($v['name']) ?>" onclick="window.location.href='<?= $read . $v['userid'] ?>'">
                 <i class="fa fa-eye"></i></button>
-                <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['name'] ?>" onclick="window.location.href='<?= esc($update . $v['userid']) ?>'">
+                <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= esc($v['name']) ?>" onclick="window.location.href='<?= $update . $v['userid'] ?>'">
                 <i class="fa fa-edit"></i></button>
-                <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete - <?= $v['name'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
+                <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete - <?= esc($v['name']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
                 <i class="fa fa-trash-alt"></i></button>
               </div>
               <?php
@@ -98,8 +100,8 @@
                   'size' => 'modal-sm',
                   'class' => 'bg-warning',
                   'title' => 'Delete',
-                  'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['name'],
-                  'action' => esc($delete . $v['userid']),
+                  'bodytext' => 'Anda Yakin Ingin Menghapus '.esc($v['name']),
+                  'action' => $delete . $v['userid'],
                   ];
                 echo view('events/modals', $modals);
               ?>

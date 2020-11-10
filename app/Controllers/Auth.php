@@ -2,10 +2,27 @@
   
 class Auth extends BaseController
 {
+
   public function index()
   {
     if($this->session->has('privilage')) {
       return redirect()->to('administrator/dashboard');
+    }
+    elseif($this->session->has('try'))
+    {
+      if(session('try') < 1 ) 
+      {
+        return redirect()->to('/block');
+      }
+      else
+      {
+        $data = [
+          'validation' => $this->validation,
+          'action' => '/login',
+          'register' => '/register',
+        ];
+        echo view('auth/login', $data);
+      }
     }
     else
     {
@@ -16,6 +33,7 @@ class Auth extends BaseController
       ];
       echo view('auth/login', $data);
     }
+    
   }
 
   public function login()
@@ -40,12 +58,26 @@ class Auth extends BaseController
       switch($check) {
 
         case 1:
-          $this->session->setFlashdata('errors', 'Password yang Anda masukan salah');
-          return redirect()->back();
+
+          if(session('try') < 1) 
+          {
+            return redirect()->to('/block');
+          }
+          else
+          {
+            $this->session->setFlashdata(
+              'errors', 
+              'Password <br> Yang anda masukan salah <br>
+              <small>Masa Percobaan login - ' . session('try') .'</small>'
+              );
+
+            return redirect()->back();
+          }
+          
           break;
 
         case 2:
-          $this->session->setFlashdata('errors', 'Akun anda belum aktif, Silahkan Contact Administrator');
+          $this->session->setFlashdata('errors', 'Akun Belum Aktif, <br> Silahkan Contact Administrator');
           return redirect()->to('/login');
           break;
 
@@ -54,7 +86,7 @@ class Auth extends BaseController
           break;
 
         case 404:
-          $this->session->setFlashdata('errors', 'Email yang Anda masukan tidak terdaftar');
+          $this->session->setFlashdata('errors', 'Akun - Email <br> Tidak Terdaftar');
           return redirect()->to('/login');
           break;
       }
@@ -92,8 +124,24 @@ class Auth extends BaseController
 
   public function logout()
   {
-    $this->session->destroy();
+    session()->destroy();
+    delete_cookie('kp2b_session');
+    delete_cookie('csrf_cookie_kp2b');
     return redirect()->to('/');
+  }
+
+  
+  public function block()
+  {
+    if($this->session->has('try'))
+    {
+      echo view('auth/block');
+    }
+    else
+    {
+      return redirect()->to('/login');
+    }
+
   }
 
 }

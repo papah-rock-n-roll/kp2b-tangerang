@@ -12,27 +12,27 @@ class Filters extends BaseConfig
 		'honeypot' => \CodeIgniter\Filters\Honeypot::class,
 		'auth' => \App\Filters\Auth::class,
 		'acts' => \App\Filters\Acts::class,
+		'cors' => \App\Filters\Cors::class,
 	];
 
 	// Always applied before every request
 	public $globals = [
 		'before' => [
-			'csrf',
+			'csrf'=> [
+				'except' => ['/','login','block','register','data','chart']
+			],
 			'auth' => [
-				'except' => [
-					'api/*','/','login','data','chart'
-					]
+				'except' => ['api/*','/','login','block','register','data','chart']
 			],
 			'acts' => [
-				'except' => [
-						'api/*','/','login','data','chart'
-					]
+				'except' => ['api/*','/','login','block','register','data','chart']
 			],
-		
+			'cors',
 			//'honeypot'
 		],
 		'after'  => [
 			'toolbar',
+			'cors',
 			//'honeypot'
 		],
 	];

@@ -72,16 +72,16 @@
         <tr>
           <td><?= ++$k ?></td>
           <td>
-            <h6><?= $v['farmname'] ?></h6>
+            <h6><?= esc($v['farmname']) ?></h6>
           </td>
-          <td><h6><?= $v['farmhead'] ?></h6>
-            <small><?= $v['farmmobile'] ?></small>
+          <td><h6><?= esc($v['farmhead']) ?></h6>
+            <small><?= esc($v['farmmobile']) ?></small>
           </td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['farmname'] ?>" onclick="window.location.href='<?= esc($update . $v['farmcode']) ?>'">
+              <button type="button" class="tmb-update btn btn-default btn-sm" title="<?= esc($v['farmname']) ?>" onclick="window.location.href='<?= $update . $v['farmcode'] ?>'">
               <i class="fa fa-edit"></i> Edit</button>
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['farmname'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
+              <button type="button" class="tmb-delete btn btn-default btn-sm" title="<?= esc($v['farmname']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
               <i class="fa fa-trash-alt"></i> Delete</button>
             </div>
             <?php
@@ -90,8 +90,8 @@
                 'size' => 'modal-sm',
                 'class' => 'bg-warning',
                 'title' => 'Delete',
-                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'.$v['farmname'],
-                'action' => esc($delete . $v['farmcode']),
+                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'. esc($v['farmname']),
+                'action' => $delete . $v['farmcode'],
                 ];
               echo view('events/modals', $modals);
             ?>

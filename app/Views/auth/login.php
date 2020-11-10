@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <?= $this->include('partials/head') ?>
 </head>
-<body>
 <body class="hold-transition login-page">
+
   <div class="login-box">
     <div class="login-logo">
       <a href="/"><b><strong>KP2B</strong> Tangerang</b></a>
     </div>
+
+    <?php echo form_open($action) ?>
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
@@ -17,7 +22,7 @@
           <div class="alert alert-warning alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
-            <?php echo esc($error); ?>
+            <?= $error ?>
           </div>
         <?php endif ?>
 
@@ -25,13 +30,12 @@
           <div class="row">
             <div class="col-md-12">
               <div class="alert alert-success text-center">
-                <?php echo $success_register; ?>
+                <?= $success_register ?>
               </div>
             </div>
           </div>
         <?php endif ?>
 
-        <?php echo form_open($action) ?>
         <div class="input-group mb-3">
           <?php
           $email = [
@@ -72,24 +76,33 @@
           <?= $validation->getError('password') ?>
           </div>
         </div>
-        <div class="row">
-          <div class="col-8">
-            <p class="mb-0">
-              <a href="<?= esc($register) ?>" class="text-center">Register</a>
-            </p>
-            <p class="mb-0">
-              <a href="/" class="text-center">Back</a>
-            </p>
-          </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+
+        <div class="row mb-2">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
           </div>
         </div>
-        <?php echo form_close() ?>
+
+        <div class="row mb-2">  
+          <div class="col-12">
+            <button type="button" class="btn btn-success btn-block" onclick="window.location.href='<?= esc($register)  ?>'">Register</button>
+          </div>  
+        </div>
+
+        <div class="dropdown-divider"></div>
+        <div class="row mt-3">
+          <div class="col-12">            
+            <button type="button" class="btn btn-default btn-block" onclick="window.location.href='/'">Back</button>
+          </div>
+        </div>
+      </div>
 
       </div>
     </div>
+    <?php echo form_close() ?>
+
   </div>
+  
 <?= $this->include('partials/script') ?>
 </body>
 </html>

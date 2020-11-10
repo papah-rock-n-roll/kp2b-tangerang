@@ -19,8 +19,13 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
-$routes->setAutoRoute(true);
+$routes->set404Override('App\Errors::show404');
+$routes->setAutoRoute(false);
+
+// Will display a custom view
+$routes->set404Override(function() {
+  echo view('events/404');
+});
 
 /**
  * --------------------------------------------------------------------
@@ -41,6 +46,7 @@ $routes->get('/login', 'Auth::index');
 $routes->match(['get', 'post'], '/login', 'Auth::login');
 $routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
+$routes->get('/block', 'Auth::block');
 
 // REDIRECT MODULE PANEL
 $routes->addRedirect('administrator', 'administrator/dashboard');
@@ -158,7 +164,7 @@ $routes->group('administrator', function($routes) {
 		$routes->group('responden', function($routes) {
 			$routes->get('', 'Adminpanel\Data::responden_index');
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::responden_create');
-			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::responden_update/$1');
+			$routes->match(['get', 'post'], 'update/(:any)', 'Adminpanel\Data::responden_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::responden_delete/$1');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('update', 'administrator/data/responden');

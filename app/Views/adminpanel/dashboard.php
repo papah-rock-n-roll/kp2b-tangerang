@@ -99,9 +99,9 @@
               <?php foreach($list as $k => $v) : ?>
                 <tr>
                 <td><?= ++$k ?></td>
-                <td><?= $v['poktan'] ?></td>
-                <td><?= $v['pemilik'] ?></td>
-                <td><?= $v['penggarap'] ?></td>
+                <td><?= esc($v['poktan']) ?></td>
+                <td><?= esc($v['pemilik']) ?></td>
+                <td><?= esc($v['penggarap']) ?></td>
                 </tr>
               <?php endforeach ?>
             </tbody>

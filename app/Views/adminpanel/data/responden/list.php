@@ -71,13 +71,13 @@
       <?php foreach($list as $k => $v) : ?>
         <tr>
           <td><?= ++$k ?></td>
-          <td><h6><?= $v['respname'] ?></h6></td>
-          <td><?= $v['mobileno'] ?></td>
+          <td><h6><?= esc($v['respname']) ?></h6></td>
+          <td><?= esc($v['mobileno']) ?></td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['respname'] ?>" onclick="window.location.href='<?= esc($update . $v['respid']) ?>'">
+              <button type="button" class="tmb-update btn btn-default btn-sm" title="<?= esc($v['respname']) ?>" onclick="window.location.href='<?= $update . $v['respid'] ?>'">
               <i class="fa fa-edit"></i> Edit</button>
-              <button type="button" class="btn btn-default btn-sm" title="<?= $v['respname'] ?>" data-toggle="modal" data-target="#modal_<?= esc($k) ?>">
+              <button type="button" class="tmb-delete btn btn-default btn-sm" title="<?= esc($v['respname']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
               <i class="fa fa-trash-alt"></i> Delete</button>
             </div>
             <?php
@@ -86,8 +86,8 @@
                 'size' => 'modal-sm',
                 'class' => 'bg-warning',
                 'title' => 'Delete',
-                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'.$v['respname'],
-                'action' => esc($delete . $v['respid']),
+                'bodytext' => 'Anda Yakin Ingin Menghapus <br>'. esc($v['respname']),
+                'action' => $delete . $v['respid'],
                 ];
               echo view('events/modals', $modals);
             ?>

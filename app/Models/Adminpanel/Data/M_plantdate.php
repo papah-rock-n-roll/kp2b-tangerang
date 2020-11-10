@@ -76,7 +76,7 @@ class M_plantdate extends M_data
   public function plantdates_post($id, $data)
   {
     $this->query("DELETE FROM observations_plantdates WHERE obscode = {$id}");
-    
+
     foreach ($data as $v) {
 
       $uniq = uniqid();
@@ -90,7 +90,7 @@ class M_plantdate extends M_data
         '{$v['irrigationavbl']}',
         '{$id}')
       ");
-
+      
     }
 
     return $query;

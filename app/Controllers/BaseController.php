@@ -42,6 +42,7 @@ class BaseController extends Controller
 		// E.g.:
 		$this->session = \Config\Services::session();
 		$this->validation = \Config\Services::validation();
+		
 
 		// Public
 		$this->M_geophp = model('App\Models\M_geophp');

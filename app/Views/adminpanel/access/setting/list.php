@@ -35,17 +35,17 @@
         <?php foreach($list as $k => $v) : ?>
           <tr>  
             <td><?= ++$k ?></td>
-            <td><h6><?= $v['rolename'] ?></h6></td>
-            <td><?= $v['rolemodules'] ?></td>
-            <td><?= $v['create'] ?></td>
-            <td><?= $v['read'] ?></td>
-            <td><?= $v['update'] ?></td>
-            <td><?= $v['delete'] ?></td>
+            <td><h6><?= esc($v['rolename']) ?></h6></td>
+            <td><?= esc($v['rolemodules']) ?></td>
+            <td><?= esc($v['create']) ?></td>
+            <td><?= esc($v['read']) ?></td>
+            <td><?= esc($v['update']) ?></td>
+            <td><?= esc($v['delete']) ?></td>
             <td>
             <div class="btn-group">
-              <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= $v['rolename'] ?>" onclick="window.location.href='<?= $update . $v['roleid'] ?>'">
+              <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= esc($v['rolename']) ?>" onclick="window.location.href='<?= $update . $v['roleid'] ?>'">
               <i class="fa fa-edit"></i></button>
-              <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete -<?= $v['rolename'] ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
+              <button type="button" class="tmb-delete btn btn-warning btn-sm" title="Delete -<?= esc($v['rolename']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
               <i class="fa fa-trash-alt"></i></button>
             </div>
             <?php
@@ -54,7 +54,7 @@
                 'size' => 'modal-sm',
                 'class' => 'bg-warning',
                 'title' => 'Delete',
-                'bodytext' => 'Anda Yakin Ingin Menghapus '.$v['rolename'],
+                'bodytext' => 'Anda Yakin Ingin Menghapus '. esc($v['rolename']),
                 'action' => esc($delete . $v['roleid']),
                 ];
               echo view('events/modals', $modals);

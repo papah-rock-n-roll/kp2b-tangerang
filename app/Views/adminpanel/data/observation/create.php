@@ -21,7 +21,7 @@
               <label for="">Owner</label>
               <?php
               $selected = old('ownerid') == null ? '' : old('ownerid');
-              echo form_dropdown('ownerid', $owners, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              echo form_dropdown('ownerid', $owners, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
@@ -32,7 +32,7 @@
               <label for="">Cultivator</label>
               <?php
               $selected = old('cultivatorid') == null ? '' : old('cultivatorid');
-              echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('cultivatorid') ?>
@@ -43,7 +43,7 @@
               <label for="">Farmer</label>
               <?php
               $selected = old('farmcode') == null ? '' : old('farmcode');
-              echo form_dropdown('farmcode', $farms, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              echo form_dropdown('farmcode', $farms, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('farmcode') ?>
@@ -52,7 +52,7 @@
 
             <div class="form-group">
               <label for="">Area Status</label>
-              <select class="form-control select2-input" name="areantatus" required>
+              <select class="form-control select2-input" name="areantatus" style="width: 100%;" required>
                 <option>MILIK</option>
                 <option>SEWA</option>
                 <option>GARAP</option>
@@ -88,11 +88,11 @@
 
             <div class="form-group">
               <label for="">Type Irrigation</label>
-              <select class="form-control select2-input" name="typeirigation" required>
-                <option>SUNGAI</option>
-                <option>PRIMER</option>
-                <option>SEKUNDER</option>
-                <option>TERSIER</option>
+              <?php $valid = $validation->hasError('typeirigation') ? 'form-control is-invalid' : 'form-control' ?>
+              <select class="<?= $valid ?> select2-multi" name="typeirigation[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
+                <?php foreach($typeirigation as $k_irig => $v_irig) : ?>
+                  <option <?= $v_irig ?>><?= $k_irig ?></option>
+                <?php endforeach ?>
               </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('typeirigation') ?>
@@ -170,7 +170,7 @@
 
             <div class="form-group">
               <label for="">Intensity Land</label>
-              <select class="form-control select2-input" name="intensitynlan" required>
+              <select class="form-control select2-input" name="intensitynlan" style="width: 100%;" required>
                 <option>1</option>
                 <option>2</option>
                 <option>2.5</option>
@@ -226,7 +226,7 @@
               <label for="">Responden</label>
               <?php
               $selected = old('respid') == null ? '' : old('respid');
-              echo form_dropdown('respid', $respondens, $selected, ['class' => 'custom-select select2', 'required' => '']);
+              echo form_dropdown('respid', $respondens, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
               <?= $validation->getError('respid') ?>
@@ -236,9 +236,9 @@
             <div class="form-group">
               <label for="">Relate Production OPT</label>
               <?php $valid = $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control' ?>
-              <select class="<?= $valid ?> select2-multi" name="opt[]" multiple="multiple" data-placeholder="Select Module">
-                <?php foreach($opt as $k => $v) : ?>
-                  <option <?= $v ?>><?= $k ?></option>
+              <select class="<?= $valid ?> select2-multi" name="opt[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
+                <?php foreach($opt as $k_opt => $v_opt) : ?>
+                  <option <?= $v_opt ?>><?= $k_opt ?></option>
                 <?php endforeach ?>
               </select>
               <div class="invalid-feedback">
@@ -268,9 +268,9 @@
             <div class="form-group">
               <label for="">Relate Production Saprotan</label>
               <?php $valid = $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control' ?>
-              <select class="<?= $valid ?> select2-multi" name="saprotan[]" multiple="multiple" data-placeholder="Select Module">
-                <?php foreach($saprotan as $k => $v) : ?>
-                  <option <?= $v ?>><?= $k ?></option>
+              <select class="<?= $valid ?> select2-multi" name="saprotan[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
+                <?php foreach($saprotan as $k_sap => $v_sap) : ?>
+                  <option <?= $v_sap ?>><?= $k_sap ?></option>
                 <?php endforeach ?>
               </select>
               <div class="invalid-feedback">
@@ -319,7 +319,7 @@
 
             <div class="form-group">
               <label for="">Month Max</label>
-              <select class="form-control select2" name="monthmax" required>
+              <select class="form-control select2" name="monthmax" style="width: 100%;" required>
                 <option>JANUARI</option>
                 <option>FEBRUARI</option>
                 <option>MARET</option>
@@ -360,7 +360,7 @@
 
             <div class="form-group">
               <label for="">Month Min</label>
-              <select class="form-control select2" name="monthmin" required>
+              <select class="form-control select2" name="monthmin" style="width: 100%;" required>
                 <option>JANUARI</option>
                 <option>FEBRUARI</option>
                 <option>MARET</option>
@@ -381,13 +381,25 @@
 
             <div class="form-group">
               <label for="">Harvest Sell</label>
-              <select class="form-control select2-input" name="harvstsell" required>
+              <select class="form-control select2-input" name="harvstsell" style="width: 100%;" required>
                 <option>TIDAK DIJUAL</option>
                 <option>PASAR</option>
                 <option>TENGKULAK</option>
               </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('harvstsell') ?>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="">Land User</label>
+              <select class="form-control select2" name="landuse" style="width: 100%;" required>
+                <option>Sawah</option>
+                <option>Non Sawah</option>
+                <option>Pemukiman</option>
+              </select>
+              <div class="invalid-feedback">
+                <?= $validation->getError('landuse') ?>
               </div>
             </div>
             

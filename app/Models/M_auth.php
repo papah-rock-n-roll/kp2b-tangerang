@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Libraries\Role;
   
 class M_auth extends Model
 {
@@ -36,15 +37,12 @@ class M_auth extends Model
       // Akun access granted
       if(password_verify($password, $data['password'])) 
       {
-        // ambil data actions berdasarkan role
-        $acts = \App\Libraries\Role::actions($data['role']);
+        // bersihkan terlebih dahulu session try yang ada
+        session()->remove('try');
 
-        // disable action dengan memasukan template jquery .remove
-        $disable = array();
-        foreach ($acts as $v) {
-          $disable[] = '$(".tmb-'.$v.'").remove();';
-        }
-        $actions = implode(PHP_EOL, $disable);
+        // ambil data actions berdasarkan role
+        $menus = Role::modules($data['role']);
+        $role = Role::actions($data['role']);
 
         // fetch data privilage kedalam session dengan format object stdclass
         $dataSession['privilage'] = (object) [
@@ -54,9 +52,9 @@ class M_auth extends Model
           'image' => $data['image'],
           'email' => $data['email'],
           'sts' => $data['sts'],
-          'menus' => \App\Libraries\Role::modules($data['role']),
-          'acts' => $acts,
-          'disable' => $actions,
+          'menus' => $menus,
+          'acts' => $role['acts'],
+          'disable' => $role['actions'],
         ];
         session()->set($dataSession);
 
@@ -65,6 +63,20 @@ class M_auth extends Model
       // Akun password salah
       else
       {
+        $try = session()->has('try');
+  
+        if(! $try) {
+          // set try mulai dari 3 
+          session()->set('try', 3);
+        }
+        else
+        {
+          // set try hitung mundur
+          $counter = session()->get('try');
+          session()->remove('try');
+          session()->set('try', $counter - 1);
+        }
+
         return 1;
       }
 
@@ -79,23 +91,27 @@ class M_auth extends Model
  
   public function register($data)
   {
-    $p = (object) array(
-      'usernik' => $data['usernik'],
-      'name' => $data['name'],
-      'phone' => null,
-      'email' => $data['email'],
-      'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-      'realpassword' => $data['password'],
-      'role' => 0,
-      'image' => 'default.png',
-      'sts' => 'Inactive',
-      'timestamp' => date('y-m-d H:i:s'),
-    );
+    $phone = null;
+    $password = password_hash($data['password'], PASSWORD_DEFAULT);
+    $image = 'default.png';
+    $role = 0;
+    $sts = 'Inactive';
+    $timestamp =  date('y-m-d H:i:s');
 
-    $query = "CALL p_insertUser ('{$p->usernik}','{$p->name}','{$p->phone}','{$p->email}','{$p->password}',
-    '{$p->realpassword}',{$p->role},'{$p->image}','{$p->sts}','{$p->timestamp}');";
+    $query = $this->query("CALL p_insertUser(
+      '{$data['usernik']}',
+      '{$data['name']}',
+      '{$phone}',
+      '{$data['email']}',
+      '{$password}',
+      '{$data['password']}',
+      '{$role}',
+      '{$image}',
+      '{$sts}',
+      '{$timestamp}')
+      ");
 
-    return $this->query($query);
+    return $query;
   }
 
   public function authlogin()

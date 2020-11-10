@@ -6,7 +6,7 @@
 
 <?= $this->section('content') ?>
 <div class="row">
-  <div class="col-lg-12">
+<div class="col-lg-12">
 
     <div class="card">
       <div class="card-header">
@@ -46,11 +46,11 @@
             <?php foreach($oldlist as $k => $v) : ?>
               <tr>
                 <td><?= ++$k ?></td>
-                <td><?= $v['growceason'] ?></td>
-                <td><?= $v['monthgrow'] ?></td>
-                <td><?= $v['monthharvest'] ?></td>
-                <td><?= $v['varieties'] ?></td>
-                <td><?= $v['irrigationavbl'] ?></td>
+                <td><?= esc($v['growceason']) ?></td>
+                <td><?= esc($v['monthgrow']) ?></td>
+                <td><?= esc($v['monthharvest']) ?></td>
+                <td><?= esc($v['varieties']) ?></td>
+                <td><?= esc($v['irrigationavbl']) ?></td>
               </tr>
             <?php endforeach ?>
           <?php endif ?>
@@ -60,136 +60,60 @@
       </div>
     </div>
 
+    <?php if(empty($newlist)) : ?> 
 
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title"><i class="fas fa-tags"></i>  Modify Plantdates Data</h5>
-      </div>
-
-      <?php echo form_open($action) ?>
-      <div class="card-body">
-      <?php if(empty($newlist)) : ?>
-        <div class="callout callout-warning">
-          <h5>Silahkan isi Nilai Index Plantation "IP" terlebih dahulu</h5>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"><i class="fas fa-tags"></i>  Modify Plantdates Data</h5>
         </div>
-      <?php else : ?>
-        <?php foreach ($newlist as $k => $v) : ?>
-
-          <div class="callout callout-success">
-            <h5>Index Plantation - <?= ++$k ?></h5>
+        <div class="card-body">
+          <div class="callout callout-warning">
+            <h5>Silahkan isi Nilai Index Plantation "IP" terlebih dahulu</h5>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="">Grow Season</label>
-                <?php
-                $growceason = [
-                  'class' => $validation->hasError('growceason') ? 'form-control is-invalid' : 'form-control',
-                  'name' => 'growceason[]',
-                  'minlength' => '1',
-                  'placeholder' => 'Enter your season',
-                  'value' => old('growceason') == null ? $v['growceason'] : old('growceason'),
-                  'required' => ''
-                ];
-                echo form_input($growceason);
-                ?>
-                <div class="invalid-feedback">
-                <?= $validation->getError('growceason') ?>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="">Month Grow</label>
-                <?php $status = old('monthgrow') == null ? $v['monthgrow'] : old('monthgrow') ?>
-                <select class="form-control select2" name="monthgrow[]" required>
-                  <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
-                  <option <?= $status == 'FEBRUARI' ? 'selected' : '' ?>>FEBRUARI</option>
-                  <option <?= $status == 'MARET' ? 'selected' : '' ?>>MARET</option>
-                  <option <?= $status == 'APRIL' ? 'selected' : '' ?>>APRIL</option>
-                  <option <?= $status == 'MEI' ? 'selected' : '' ?>>MEI</option>
-                  <option <?= $status == 'JUNI' ? 'selected' : '' ?>>JUNI</option>
-                  <option <?= $status == 'JULI' ? 'selected' : '' ?>>JULI</option>
-                  <option <?= $status == 'AGUSTUS' ? 'selected' : '' ?>>AGUSTUS</option>
-                  <option <?= $status == 'SEPTEMBER' ? 'selected' : '' ?>>SEPTEMBER</option>
-                  <option <?= $status == 'OKTOBER' ? 'selected' : '' ?>>OKTOBER</option>
-                  <option <?= $status == 'NOVEMBER' ? 'selected' : '' ?>>NOVEMBER</option>
-                  <option <?= $status == 'DESEMBER' ? 'selected' : '' ?>>DESEMBER</option>
-                </select>
-                <div class="invalid-feedback">
-                <?= $validation->getError('monthgrow') ?>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="">Month Harvest</label>
-                <?php $status = old('monthharvest') == null ? $v['monthharvest'] : old('monthharvest') ?>
-                <select class="form-control select2" name="monthharvest[]" required>
-                  <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
-                  <option <?= $status == 'FEBRUARI' ? 'selected' : '' ?>>FEBRUARI</option>
-                  <option <?= $status == 'MARET' ? 'selected' : '' ?>>MARET</option>
-                  <option <?= $status == 'APRIL' ? 'selected' : '' ?>>APRIL</option>
-                  <option <?= $status == 'MEI' ? 'selected' : '' ?>>MEI</option>
-                  <option <?= $status == 'JUNI' ? 'selected' : '' ?>>JUNI</option>
-                  <option <?= $status == 'JULI' ? 'selected' : '' ?>>JULI</option>
-                  <option <?= $status == 'AGUSTUS' ? 'selected' : '' ?>>AGUSTUS</option>
-                  <option <?= $status == 'SEPTEMBER' ? 'selected' : '' ?>>SEPTEMBER</option>
-                  <option <?= $status == 'OKTOBER' ? 'selected' : '' ?>>OKTOBER</option>
-                  <option <?= $status == 'NOVEMBER' ? 'selected' : '' ?>>NOVEMBER</option>
-                  <option <?= $status == 'DESEMBER' ? 'selected' : '' ?>>DESEMBER</option>
-                </select>
-                <div class="invalid-feedback">
-                <?= $validation->getError('monthharvest') ?>
-                </div>
-              </div>
-              
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-group">
-                <label for="">Variety</label>
-                <?php
-                $varieties = [
-                  'class' => $validation->hasError('varieties') ? 'form-control is-invalid' : 'form-control',
-                  'type' => 'varieties',
-                  'name' => 'varieties[]',
-                  'placeholder' => 'Enter variety',
-                  'value' => old('varieties') == null ? $v['varieties'] : old('varieties'),
-                  'required' => ''
-                ];
-                echo form_input($varieties);
-                ?>
-                <div class="invalid-feedback">
-                <?= $validation->getError('varieties') ?>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="">Irrigation</label>
-                <select name="irrigationavbl[]" id="" class="custom-select" required>
-                  <option value="">Choose Irrigation</option>
-                  <?php $status = old('irrigationavbl') == null ? $v['irrigationavbl'] : old('irrigationavbl') ?>
-                  <option <?= $status == 'ADA' ? 'selected' : '' ?> value="ADA">ADA</option>
-                  <option <?= $status == 'TIDAK' ? 'selected' : '' ?> value="TIDAK">TIDAK</option>
-                </select>
-                <div class="invalid-feedback">
-                <?= $validation->getError('irrigationavbl') ?>
-                </div>
-              </div>
-            
-            </div>
-          </div>
-
-        <?php endforeach ?>
-      <?php endif ?>  
-      
-      </div>   
-      <div class="card-footer">
-        <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
       </div>
+
+    <?php else : ?>
+    
+      <?php echo form_open($action) ?>  
+
+        <div class="card">
+          <div class="card-header d-flex p-0">
+            <h5 class="card-title p-3"><i class="fas fa-tags"></i>  Modify Plantdates Data</h5>
+            <ul class="nav nav-pills ml-auto p-2">
+              <?php $no = 1 ?>
+              <?php for ($i = 0; $i < count($newlist); $i++) : ?>
+                <li class="nav-item"><a class="nav-link <?= $i == 0 ? 'active' : '' ?>" href="#tab_<?= $i ?>" data-toggle="tab">Index <?= $no ?></a></li>
+                <?php ++$no ?>
+              <?php endfor ?>
+            </ul>
+          </div>
+          <div class="card-body">
+            <div class="tab-content">
+              <?php foreach ($newlist as $k => $v) : ?>
+                <div class="tab-pane <?= $k == 0 ? 'active' : '' ?>" id="tab_<?= $k ?>">
+                  <div class="callout callout-success">
+                    <h5>Index Plantation - <?= ++$k ?></h5>
+                  </div>
+
+                  <?= view('adminpanel/data/plantdate/component', $v) ?>
+
+                </div>
+              <?php endforeach ?>
+            </div>
+          </div>      
+     
+          <div class="card-footer">
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
 
       <?php echo form_close() ?>
 
-    </div>
-  </div>
+    <?php endif ?>
+
+</div>
 </div>
 <?= $this->endSection() ?>
 
@@ -197,8 +121,13 @@
 <?= \App\Libraries\Link::script()->select2 ?>
 
 <script>
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    changeSelect()
+})
 
-  $('.select2').select2()
+function changeSelect() {
+  $('select.select2').select2()
+}
 
 </script>
 
