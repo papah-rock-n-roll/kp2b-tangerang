@@ -1,7 +1,7 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
-//use geoPHP;
+use geoPHP;
 
 class M_geophp extends Model
 {
@@ -64,18 +64,18 @@ class M_geophp extends Model
   // geojson converter
   public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null, $vlcode = null){
 
-  // Break fields array
-  $fields = '';
-  if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
+    // Break fields array
+    $fields = '';
+    if(!empty($info_fields)){ $fields = ', '.implode(", ", $info_fields);}
 
-  $condSd = '';
-  if(!empty($sdcode)){ $condSd = " AND sdcode = '".$sdcode."'"; }
+    $condSd = '';
+    if(!empty($sdcode)){ $condSd = " AND sdcode = '".$sdcode."'"; }
 
-  $condVl = '';
-  if(!empty($vlcode)){ $condVl = " AND vlcode = '".$vlcode."'"; }
+    $condVl = '';
+    if(!empty($vlcode)){ $condVl = " AND vlcode = '".$vlcode."'"; }
 
     // query untuk megambil data
-    $sql = "SELECT {$id_field} AS FID, ST_AsGeoJson({$geom_field}) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
+    $sql = "SELECT {$id_field} AS FID, ST_AsText({$geom_field}) AS GEOM {$fields} FROM {$table} WHERE {$geom_field} IS NOT NULL {$condSd}{$condVl};";
     $query = $this->db->query($sql)->getResultArray();
 
     if(!empty($query)){
@@ -97,7 +97,10 @@ class M_geophp extends Model
       $features = array();
 
       foreach ($query as $row){
-        $features = json_decode($row['GEOM'], true);
+        $geom = geoPHP::load($row['GEOM'],'wkt');
+        $json = $geom->out('json');
+        $features = json_decode($json);
+        //$features = json_decode($row['GEOM'], true);
 
         $properties['FID'] = $row['FID'];
         if(!empty($info_fields)){
@@ -124,7 +127,6 @@ class M_geophp extends Model
     }
 
     return json_decode($result, true);
-
   }
 
 /*
