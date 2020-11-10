@@ -18,9 +18,9 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
-$routes->setTranslateURIDashes(true);
+$routes->setTranslateURIDashes(false);
 $routes->set404Override('App\Errors::show404');
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(false);
 
 // Will display a custom view
 $routes->set404Override(function() {
@@ -46,6 +46,7 @@ $routes->get('/login', 'Auth::index');
 $routes->match(['get', 'post'], '/login', 'Auth::login');
 $routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
+$routes->get('/block', 'Auth::block');
 
 // REDIRECT MODULE PANEL
 $routes->addRedirect('administrator', 'administrator/dashboard');

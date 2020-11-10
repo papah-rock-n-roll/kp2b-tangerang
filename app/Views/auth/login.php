@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <?= $this->include('partials/head') ?>
 </head>
 <body class="hold-transition login-page">
@@ -8,8 +11,9 @@
   <div class="login-box">
     <div class="login-logo">
       <a href="/"><b><strong>KP2B</strong> Tangerang</b></a>
-      <?php echo form_open($action) ?>
     </div>
+
+    <?php echo form_open($action) ?>
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
@@ -18,7 +22,7 @@
           <div class="alert alert-warning alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
-            <?php echo esc($error); ?>
+            <?= $error ?>
           </div>
         <?php endif ?>
 
@@ -26,7 +30,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="alert alert-success text-center">
-                <?php echo $success_register; ?>
+                <?= $success_register ?>
               </div>
             </div>
           </div>

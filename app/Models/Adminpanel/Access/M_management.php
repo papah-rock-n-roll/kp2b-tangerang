@@ -89,23 +89,24 @@ class M_management extends M_access
       $this->getFile->move('uploads/users', $this->getName);
     } 
 
-    $p = (object) array(
-      'usernik' => $data['usernik'],
-      'name' => $data['name'],
-      'phone' => $data['phone'],
-      'email' => $data['email'],
-      'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-      'realpassword' => $data['password'],
-      'role' => $data['roleid'],
-      'image' => $this->getName,
-      'sts' => $data['sts'],
-      'timestamp' => date('y-m-d H:i:s'),
-    );
+    $password = password_hash($data['password'], PASSWORD_DEFAULT);
+    $image =  $this->getName;
+    $timestamp =  date('y-m-d H:i:s');
 
-    $query = "CALL p_insertUser ('{$p->usernik}','{$p->name}','{$p->phone}','{$p->email}','{$p->password}',
-    '{$p->realpassword}',{$p->role},'{$p->image}','{$p->sts}','{$p->timestamp}');";
+    $query = $this->query("CALL p_insertUser(
+      '{$data['usernik']}',
+      '{$data['name']}',
+      '{$data['phone']}',
+      '{$data['email']}',
+      '{$password}',
+      '{$data['password']}',
+      '{$data['roleid']}',
+      '{$image}',
+      '{$data['sts']}',
+      '{$timestamp}')
+      ");
 
-    return $this->query($query);
+    return $query;
   }
 
   public function update_new($id, $data)

@@ -19,13 +19,13 @@ class Filters extends BaseConfig
 	public $globals = [
 		'before' => [
 			'csrf'=> [
-				'except' => ['/','login','register','data','chart']
+				'except' => ['/','login','block','register','data','chart']
 			],
 			'auth' => [
-				'except' => ['api/*','/','login','register','data','chart']
+				'except' => ['api/*','/','login','block','register','data','chart']
 			],
 			'acts' => [
-				'except' => ['api/*','/','login','register','data','chart']
+				'except' => ['api/*','/','login','block','register','data','chart']
 			],
 			'cors',
 			//'honeypot'
