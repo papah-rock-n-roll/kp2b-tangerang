@@ -24,7 +24,7 @@ $routes->setAutoRoute(false);
 
 // Will display a custom view
 $routes->set404Override(function() {
-  echo view('events/404');
+  echo view('errors/html/error_404');
 });
 
 /**

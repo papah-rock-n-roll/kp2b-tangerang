@@ -4,7 +4,6 @@ use CodeIgniter\Model;
   
 class M_dashboard extends Model
 {
-
   public function dashboard()
   {
     $count = $this->counting();
@@ -38,12 +37,12 @@ class M_dashboard extends Model
   public function counting()
   {
     $query = $this->query("SELECT 
-    COUNT(DISTINCT ownerid) AS owners,
-    COUNT(DISTINCT cultivatorid) AS cultivators,
-    COUNT(DISTINCT farmcode) AS farms,
-    COUNT(DISTINCT vlcode) AS villages
-    FROM observations_frmobservations
-    WHERE ownerid OR cultivatorid OR farmcode <> 1");
+      COUNT(DISTINCT ownerid) AS owners,
+      COUNT(DISTINCT cultivatorid) AS cultivators,
+      COUNT(DISTINCT farmcode) AS farms,
+      COUNT(DISTINCT vlcode) AS villages
+      FROM observations_frmobservations
+      WHERE ownerid OR cultivatorid OR farmcode <> 1");
 
     return $query->getRow();
   }
