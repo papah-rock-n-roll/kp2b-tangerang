@@ -27,12 +27,16 @@ class Filters extends BaseConfig
 			'acts' => [
 				'except' => ['cli/*','api/*','/','login','block','register','data','chart']
 			],
-			'cors',
+			'cors'=> [
+				'except' => ['cli/*']
+			],
 			//'honeypot'
 		],
 		'after'  => [
 			'toolbar',
-			'cors',
+			'cors'=> [
+				'except' => ['cli/*']
+			],
 			//'honeypot'
 		],
 	];

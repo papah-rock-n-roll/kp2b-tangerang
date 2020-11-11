@@ -5,6 +5,7 @@ class Auth extends BaseController
 
   public function index()
   {
+    
     if($this->session->has('privilage')) {
       return redirect()->to('administrator/dashboard');
     }
@@ -16,16 +17,12 @@ class Auth extends BaseController
       }
       else
       {
-        $data = [
-          'validation' => $this->validation,
-          'action' => '/login',
-          'register' => '/register',
-        ];
-        echo view('auth/login', $data);
+        goto login;
       }
     }
     else
     {
+      login:
       $data = [
         'validation' => $this->validation,
         'action' => '/login',

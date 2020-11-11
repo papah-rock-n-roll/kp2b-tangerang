@@ -75,3 +75,19 @@ defined('EXIT_USER_INPUT')     || define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       || define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      || define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+/*
+|--------------------------------------------------------------------------
+| Dynamic Scheme Host Constants
+|--------------------------------------------------------------------------
+|
+| Cek Scheme dan Host
+| 
+*/
+$scheme = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') .'://';
+$host = (!empty($_SERVER['SERVER_NAME']) ? $_SERVER['HTTP_HOST'] : 'localhost:8080') .'/';
+
+defined('SCHEME')       || define('SCHEME', $scheme);
+defined('HOST')         || define('HOST', $host);
+defined('SCHEME_HOST')  || define('SCHEME_HOST', $scheme . $host);

@@ -15,12 +15,12 @@ class Cors implements FilterInterface
     // Do something here
     $request = Services::request();
 
-    $server = $request->uri->getScheme() .'://'. $request->uri->getHost();
+    $server = $request->uri->getScheme() .'://'. $request->uri->getHost() .'/';
 
-    if ($server !== base_url('')) {
+    if ($server !== SCHEME_HOST) {
 
-        $request->setHeader('Location', $server);
-        exit();
+      $request->setHeader('Location', SCHEME_HOST);
+      exit();
 
     }
   
