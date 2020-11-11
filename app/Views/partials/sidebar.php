@@ -12,9 +12,9 @@ else
 }
 ?>
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary">
   <a href="#" class="brand-link">
-    <img src="<?= base_url('themes/dist/img/logo.png') ?>" alt="Kabupaten TangerangE Logo" class="brand-image">
+    <img src="<?= base_url('themes/dist/img/logo.png') ?>" alt="Logo" class="brand-image">
     <span class="brand-text font-weight-light"><?= session('privilage')->rolename ?></span>
   </a>
 
