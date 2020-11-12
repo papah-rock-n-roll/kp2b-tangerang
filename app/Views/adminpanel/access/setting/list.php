@@ -15,12 +15,12 @@
   </div>
   <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table projects">
+      <table class="table table-hover text-nowrap projects">
       <thead>
         <tr>
           <th style="width: 5%">No</th>
           <th style="width: 20%">Role Name</th>
-          <th style="width: 30%">Role Name</th>
+          <th style="width: 30%">Modules</th>
           <th style="width: 5%">Create</th>
           <th style="width: 5%">Read</th>
           <th style="width: 5%">Update</th>

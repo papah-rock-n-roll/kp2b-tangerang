@@ -36,15 +36,39 @@ $routes->set404Override(function() {
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
-// MODULE COMMAND LINE
-$routes->cli('cli/writable/delete/(:any)', 'Adminpanel\Access::log_cli/$1');
+/**
+ * --------------------------------------------------------------------
+ * API Base URL
+ * Lihat Controller Api
+ * --------------------------------------------------------------------
+ */
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+	$routes->resource('geo');
+	$routes->resource('owners');
+	$routes->resource('farmer');
+});
 
+/**
+ * --------------------------------------------------------------------
+ * CLI Base Route
+ * Lihat Controller Cli
+ * --------------------------------------------------------------------
+ */
+$routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) {
+	$routes->cli('writable/delete/(:any)', 'Access::writable_delete/$1');
+});
+
+
+/**
+ * --------------------------------------------------------------------
+ * Public Home
+ * --------------------------------------------------------------------
+ */
 
 // Public Home
 $routes->get('/', 'Home::index');
 $routes->get('/data', 'Home::data');
 $routes->get('/chart', 'Home::chart');
-
 
 // Auth login
 $routes->get('/login', 'Auth::index');
@@ -53,12 +77,17 @@ $routes->match(['get', 'post'], '/register', 'Auth::register');
 $routes->get('/logout', 'Auth::logout');
 $routes->get('/block', 'Auth::block');
 
-// REDIRECT MODULE PANEL
-$routes->addRedirect('administrator', 'administrator/dashboard');
-
+/**
+ * --------------------------------------------------------------------
+ * Administrator Home
+ * --------------------------------------------------------------------
+ */
 
 $routes->group('administrator', function($routes) {
-	
+
+	// REDIRECT MODULE PANEL
+	$routes->addRedirect('', 'administrator/dashboard');
+
 	// Main Module
 	$routes->get('dashboard', 'Adminpanel\Dashboard::index');
 	$routes->get('access', 'Adminpanel\Access::index');
@@ -66,7 +95,6 @@ $routes->group('administrator', function($routes) {
 	$routes->get('data', 'Adminpanel\Data::index');
 	$routes->get('geo', 'Adminpanel\Geo::index');
 	$routes->get('report', 'Adminpanel\Report::index');
-
 
 /**
  * --------------------------------------------------------------------
@@ -84,6 +112,7 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Access::management_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Access::management_delete/$1');
 			// REDIRECT MODULE PANEL
+			$routes->addRedirect('read', 'administrator/access/management');
 			$routes->addRedirect('update', 'administrator/access/management');
 		});
 
@@ -97,7 +126,7 @@ $routes->group('administrator', function($routes) {
 			$routes->addRedirect('update', 'administrator/access/management');
 		});
 
-		// Log Setting
+		// Access Log
 		$routes->group('log', function($routes) {
 			$routes->get('', 'Adminpanel\Access::log_index');
 			$routes->get('delete/(:any)', 'Adminpanel\Access::log_delete/$1');
@@ -116,10 +145,10 @@ $routes->group('administrator', function($routes) {
 
 		// REDIRECT MODULE PANEL
 		$routes->addRedirect('account', 'administrator/user/account/update');
+
 		// User Account
 		$routes->get('account/update', 'Adminpanel\User::user_get');
 		$routes->post('account/update/(:num)', 'Adminpanel\User::user_update/$1');
-
 	});
 
 
@@ -139,6 +168,7 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::observation_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::observation_delete/$1');
 			// REDIRECT MODULE PANEL
+			$routes->addRedirect('read', 'administrator/data/observation');
 			$routes->addRedirect('update', 'administrator/data/observation');
 			$routes->addRedirect('plantdate', 'administrator/data/observation');
 
@@ -232,30 +262,6 @@ $routes->group('administrator', function($routes) {
 });
 
 
-
-
-
-$routes->group('restapi', function($routes) {
-	$routes->resource('farmer');
-		
-
-});
-
-/**
- * --------------------------------------------------------------------
- * API Base URL
- * 
- * Lihat Config App Baseurl
- * 
- * Lihat Controller Api
- * --------------------------------------------------------------------
- */
-$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
-
-	$routes->resource('geo');
-	$routes->resource('owners');
-	
-});
 
 /**
  * --------------------------------------------------------------------

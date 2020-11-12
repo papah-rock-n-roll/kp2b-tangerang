@@ -5,9 +5,9 @@
 <div class="col-lg-12">
 
 <div class="card bg-gradient-primary collapsed-card">
-  <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-search"></i> Filter Data</h5>
-    <div class="card-tools" style="width: 50%">
+  <div class="card-header p-2">
+    <h5 class="card-title col-3"><i class="fas fa-search"></i> Filter</h5>
+    <div class="card-tools col-8 col-sm-8 col-lg-6">
       <div class="input-group input-group-sm">
         <?php echo form_dropdown('role', $roles, $role, ['class' => 'custom-select', 'id' => 'roles']) ?>
         <?php
@@ -57,7 +57,7 @@
 
   <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table projects">
+      <table class="table table-hover text-nowrap projects">
       <thead>
         <tr>
           <th style="width: 5%">No</th>

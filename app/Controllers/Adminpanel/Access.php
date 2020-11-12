@@ -226,10 +226,5 @@ class Access extends \App\Controllers\BaseController
     }
   }
 
-  public function log_cli($name)
-  {
-    $this->M_log->delete_post($name);
-  }
-
 
 }

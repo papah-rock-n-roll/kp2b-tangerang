@@ -21,8 +21,8 @@ class M_dashboard extends Model
       // simpan view adminpanel/dashboard ke variable
       $view = view('adminpanel/dashboard', $data);
 
-      // simpan file dir writable\cache selama 1 hari
-      cache()->save('adminpanel-dashboard', $view, DAY);
+      // simpan file dir writable\cache selama 1 menit
+      cache()->save('adminpanel-dashboard', $view, MINUTE);
     }
     else
     {

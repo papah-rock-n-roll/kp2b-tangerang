@@ -9,9 +9,9 @@
 <div class="col-lg-12">
 
   <div class="card bg-gradient-primary collapsed-card">
-    <div class="card-header">
-      <h5 class="card-title"><i class="fas fa-search"></i> Filter Data</h5>
-      <div class="card-tools" style="width: 50%">
+    <div class="card-header p-2">
+      <h5 class="card-title col-3"><i class="fas fa-search"></i> Filter</h5>
+      <div class="card-tools col-8 col-sm-8 col-lg-6">
         <div class="input-group input-group-sm">
           <?php echo form_dropdown('role', $roles, $role, ['class' => 'custom-select', 'id' => 'roles']) ?>
           <?php
@@ -35,15 +35,15 @@
     </div>
   </div>
 
-    
-  <?php foreach (array_chunk($list, 4) as $nlist ) : ?>  
-      <div class="card-deck">
+  <?php foreach (array_chunk($list, 2) as $nlist ) : ?>  
+    <div class="row">
+      <div class="card-deck col-sm-12 col-md-12 col-lg-12 m-0 p-0">
         <?php foreach ($nlist as $v ) : ?> 
           <?= view('adminpanel/user/component', $v) ?>
         <?php endforeach ?>
       </div>
+    </div>
   <?php endforeach ?>
-    
 
   <div class="card-footer clearfix">
     <div class="pagination pagination-md m-0 float-right">

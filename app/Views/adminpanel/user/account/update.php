@@ -85,11 +85,11 @@
               <?php
               $password = [
                 'class' => $validation->hasError('password') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'input',
+                'type' => 'password',
                 'name' => 'password',
                 'minlength' => '6',
                 'placeholder' => 'Enter your password',
-                'value' => old('realpassword') == null ? $v['realpassword'] : old('realpassword'),
+                'value' => old('realpassword') == null ? '' : old('realpassword'),
                 'required' => ''
               ];
               echo form_input($password);

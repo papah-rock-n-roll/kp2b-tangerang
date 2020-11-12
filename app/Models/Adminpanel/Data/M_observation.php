@@ -86,9 +86,11 @@ class M_observation extends M_data
     // Ganti key Assoc berdasarkan Base dengan value ''
     $optbase = array_fill_keys($this->optbase, '');
     $saprotanbase = array_fill_keys($this->saprotanbase, '');
+    $irigationbase = array_fill_keys($this->irigationbase, '');
 
     $data += [
       'action' => self::ACTS.'create',
+      'typeirigation' => $irigationbase,
       'opt' => $optbase,
       'saprotan' => $saprotanbase,
       'back' => self::BACK,

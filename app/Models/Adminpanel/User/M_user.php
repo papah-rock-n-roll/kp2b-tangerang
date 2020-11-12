@@ -61,22 +61,7 @@ class M_user extends Model
       'pager' => $this->pager,
     ];
 
-    if (! $view = cache('adminpanel-user'))
-    {
-      // simpan view adminpanel/user/main ke variable
-      $view = view('adminpanel/user/main', $data);
-
-      // simpan file dir writable\cache selama 1 hari
-      cache()->save('adminpanel-user', $view, DAY);
-    }
-    else
-    {
-      // jika ada cache, maka ambil dari cache
-      $view = cache()->get('adminpanel-user');
-    }
-
-    echo $view;
-
+    echo view('adminpanel/user/main', $data);
   }
 
   public function update_new($id, $data)

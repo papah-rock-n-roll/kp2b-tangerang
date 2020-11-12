@@ -7,7 +7,7 @@ $nav = array_keys(session('privilage')->menus);
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <ul class="navbar-nav">
     <li class="nav-item">
-      <button class="btn nav-link" data-widget="pushmenu" data-enable-remember="true" data-enable-remember="true" href="#"><i class="fas fa-bars"></i></button>
+      <a class="nav-link" data-widget="pushmenu" data-enable-remember="true" data-enable-remember="true" href="#"><i class="fas fa-bars"></i></a>
     </li>
     <?php foreach ($nav as $v): ?>
       <li class="nav-item d-none d-sm-inline-block">

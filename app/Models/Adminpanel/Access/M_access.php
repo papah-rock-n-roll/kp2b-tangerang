@@ -23,22 +23,7 @@ class M_access extends Model
       'moreinfo' => 'access/management',
     ];
 
-    if (! $view = cache('adminpanel-access'))
-    {
-      // simpan view adminpanel/access/main ke variable
-      $view = view('adminpanel/access/main', $data);
-
-      // simpan file dir writable\cache selama 1 hari
-      cache()->save('adminpanel-access', $view, DAY);
-    }
-    else
-    {
-      // jika ada cache, maka ambil dari cache
-      $view = cache()->get('adminpanel-access');
-    }
-
-    echo $view;
-
+    echo view('adminpanel/access/main', $data);
   }
 
   public function countUsers()

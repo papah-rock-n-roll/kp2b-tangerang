@@ -85,7 +85,7 @@
               <?php
               $password = [
                 'class' => $validation->hasError('password') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'input',
+                'type' => 'password',
                 'name' => 'password',
                 'minlength' => '6',
                 'placeholder' => 'Enter your password',

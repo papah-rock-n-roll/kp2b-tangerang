@@ -28,7 +28,7 @@
 
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table class="table projects">
+          <table class="table table-hover text-nowrap projects">
           <thead>
             <tr>
               <th style="width: 5%">No</th>
