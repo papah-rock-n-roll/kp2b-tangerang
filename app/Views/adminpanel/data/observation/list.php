@@ -45,7 +45,6 @@
             ];
           echo form_dropdown('paginate', $paginate, $page, ['class' => 'custom-select', 'id' => 'paginate']);
         ?>
-
         <div class="input-group-append">
           <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
           Action  <span class="sr-only">Toggle Dropdown</span>
@@ -174,7 +173,7 @@ if(! empty(session()->getFlashdata('catch'))) {
 
 if(! empty(session()->getFlashdata('import'))) {
   $toast = [
-  'class' => 'bg-succes',
+  'class' => 'bg-info',
   'autohide' => 'true',
   'delay' => '10000',
   'title' => 'Import',

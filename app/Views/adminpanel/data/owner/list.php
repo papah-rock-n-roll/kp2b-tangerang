@@ -44,18 +44,24 @@
           echo form_dropdown('paginate', $paginate, $page, ['class' => 'custom-select', 'id' => 'paginate']);
         ?>
         <div class="input-group-append">
-          <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
+          <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+          Action  <span class="sr-only">Toggle Dropdown</span>
           </button>
-          <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
-          </button>
+          <div class="dropdown-menu" role="menu">
+            <a class="tmb-create dropdown-item" href="<?= esc($create) ?>">Tambah <i class="fas fa-file-alt float-right p-1"></i></a>
+            <div class="dropdown-divider"></div>
+            <a class="tmb-read dropdown-item" id="export">Export <i class="fas fa-download float-right p-1"></i></a>
+            <a class="tmb-update dropdown-item" href="<?= esc($import) ?>">Import <i class="fas fa-upload float-right p-1"></i></a>
+          </div>
         </div>
+        <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
       </div>
     </div>
   </div>
 
   <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table projects">
+      <table class="table table-hover text-nowrap projects">
       <thead>
         <tr>
           <th style="width: 10%">No</th>
@@ -129,6 +135,21 @@ if(! empty(session()->getFlashdata('warning'))) {
   ];
   echo view('events/toasts', $toast);
 }
+
+if(! empty(session()->getFlashdata('import'))) {
+  $toast = [
+  'class' => 'bg-info',
+  'autohide' => 'true',
+  'delay' => '10000',
+  'title' => 'Import',
+  'subtitle' => '',
+  'body' => session()->getFlashdata('import'),
+  'icon' => 'icon fas fa-check',
+  'image' => '',
+  'imageAlt' => '',
+  ];
+  echo view('events/toasts', $toast);
+}
 ?>
 
 <script>
@@ -151,6 +172,16 @@ if(! empty(session()->getFlashdata('warning'))) {
 
   $("#paginate").change(function() {
     filter();
+  });
+
+  let own_export = function() {
+    var keyword = $("#keyword").val();
+    var paginate = $("#paginate").val();
+    window.location.replace("<?= esc($export) ?>?paginate="+ paginate +"&keyword="+ keyword);
+  };
+
+  $("#export").click(function() {
+    own_export();
   });
 
 </script>

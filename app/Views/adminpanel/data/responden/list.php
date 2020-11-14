@@ -4,9 +4,9 @@
 <div class="col-lg-12">
 
 <div class="card bg-gradient-primary collapsed-card">
-  <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-search"></i> Filter Responden</h5>
-    <div class="card-tools" style="width: 25%">
+  <div class="card-header p-2">
+    <h5 class="card-title col-3"><i class="fas fa-search"></i> Filter</h5>
+    <div class="card-tools col-8 col-sm-8 col-lg-6">
       <div class="input-group input-group-sm">
         <?php
         $form_keyword = [
@@ -33,7 +33,7 @@
   <div class="card-header">
     <h5 class="card-title"><i class="fas fa-users"></i> List Responden</h5>
     <div class="card-tools">
-      <div class="input-group input-group-sm">
+      <div class="input-group table-hover text-nowrap input-group-sm">
         <?php
             $paginate = [
               '5' => '5',
@@ -55,7 +55,7 @@
 
   <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table projects">
+      <table class="table table-hover text-nowrap projects">
       <thead>
         <tr>
           <th style="width: 10%">No</th>
@@ -71,7 +71,7 @@
       <?php foreach($list as $k => $v) : ?>
         <tr>
           <td><?= ++$k ?></td>
-          <td><h6><?= esc($v['respname']) ?></h6></td>
+          <td><?= esc($v['respname']) ?></td>
           <td><?= esc($v['mobileno']) ?></td>
           <td>
             <div class="btn-group">

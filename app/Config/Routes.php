@@ -188,6 +188,11 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::owner_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::owner_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::owner_delete/$1');
+				// Upload - Import
+				$routes->match(['get', 'post'], 'upload', 'Adminpanel\Data::owner_upload');
+				$routes->post('import', 'Adminpanel\Data::owner_import');
+				// Export
+				$routes->get('export', 'Adminpanel\Data::owner_export');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('update', 'administrator/data/owner');
 		});
@@ -199,6 +204,11 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::farmer_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::farmer_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::farmer_delete/$1');
+				// Upload - Import
+				$routes->match(['get', 'post'], 'upload', 'Adminpanel\Data::farmer_upload');
+				$routes->post('import', 'Adminpanel\Data::farmer_import');
+				// Export
+				$routes->get('export', 'Adminpanel\Data::farmer_export');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('update', 'administrator/data/farmer');
 		});

@@ -281,6 +281,57 @@ class Data extends \App\Controllers\BaseController
   }
 
 
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Owner - Upload Import - Export
+ *
+ * --------------------------------------------------------------------
+ */
+  public function owner_upload()
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_owner->upload_new($data);
+    }
+    else
+    {
+      $rules = $this->M_owner->validationImport();
+      
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $file = $this->request->getFile('own_file');
+      $this->M_owner->upload_post($file);
+    }
+  }
+
+  public function owner_import()
+  {
+    $data = $this->request->getPost();
+    $import = $this->M_owner->import($data);
+
+    if($import) {
+      $this->session->setFlashdata('import', 'Import Owner Successfully');
+      return redirect()->to('/administrator/data/owner');
+    }
+
+  }
+
+  public function owner_export()
+  {
+    // $_['GET'] variabel owner - keyword - paginate
+    $keyword = $this->request->getGet('keyword');
+    $paginate = $this->request->getGet('paginate');
+    
+    // fetch data dengan memanggil fungsi model observation
+    $this->M_owner->export(null, $keyword, null, $paginate);
+  }
+
+
 
 /**
  * --------------------------------------------------------------------
@@ -360,6 +411,56 @@ class Data extends \App\Controllers\BaseController
     }
   }
 
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Farmer - Upload Import - Export
+ *
+ * --------------------------------------------------------------------
+ */
+  public function farmer_upload()
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_farmer->upload_new($data);
+    }
+    else
+    {
+      $rules = $this->M_farmer->validationImport();
+      
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $file = $this->request->getFile('farm_file');
+      $this->M_farmer->upload_post($file);
+    }
+  }
+
+  public function farmer_import()
+  {
+    $data = $this->request->getPost();
+    $import = $this->M_farmer->import($data);
+
+    if($import) {
+      $this->session->setFlashdata('import', 'Import Farmer Successfully');
+      return redirect()->to('/administrator/data/farmer');
+    }
+
+  }
+
+  public function farmer_export()
+  {
+    // $_['GET'] variabel farmer - keyword - paginate
+    $keyword = $this->request->getGet('keyword');
+    $paginate = $this->request->getGet('paginate');
+    
+    // fetch data dengan memanggil fungsi model observation
+    $this->M_farmer->export(null, $keyword, null, $paginate);
+  }
 
 
 /**
