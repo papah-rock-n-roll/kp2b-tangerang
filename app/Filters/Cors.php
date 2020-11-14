@@ -4,19 +4,24 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 
-use function Complex\sec;
-use function Complex\sech;
+use Config\Services;
+use App\Libraries\Crypto;
 
 class Cors implements FilterInterface
 {
+  
   public function before(RequestInterface $request, $arguments = null)
   {
     // Do something here
-    $request = \Config\Services::request();
-    
-    if ($request->isSecure())
-    {
-        force_https();
+    $request = Services::request();
+
+    $server = $request->uri->getScheme() .'://'. $request->uri->getHost();
+
+    if ($server !== base_url('')) {
+
+        $request->setHeader('Location', $server);
+        exit();
+
     }
   
   }
@@ -26,32 +31,39 @@ class Cors implements FilterInterface
   public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
   {
     // Do something here
-    $auth = session()->has('privilage');
+    $response = Services::response();
 
-    $response = \Config\Services::response();
+    $server = $request->uri->getScheme() .'://'. $request->uri->getHost();
+
+    $options = [
+      'max-age' => DAY,
+      'public', 
+      'no-tranform',
+    ];
+    $response->setCache($options);
 
     $response
-    ->setHeader('Access-Control-Allow-Origin', $request->uri->getScheme() .'://'. $request->uri->getHost())
-    ->setHeader('Access-Control-Allow-Headers','X-API-KP2B, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization')
-    ->setHeader('Access-Control-Allow-Methods', 'GET');
+    ->setHeader('Connection', 'keep-alive')
+    ->setHeader('Access-Control-Allow-Origin', $server)
+    ->setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization')
+    ->setHeader('Access-Control-Allow-Methods', 'GET')
+    ->setHeader('Access-Control-Max-Age', '86400');
+
+
+    $auth = session()->has('privilage');
 
     if ($auth) {
 
       $email = session('privilage')->email;
-      $token = \App\Libraries\Crypto::encrypt(uniqid().'#'.$email.'#'.time());
+      $token = Crypto::encrypt(uniqid().'#'.$email.'#'.time());
       
       $response
+      ->appendHeader('Access-Control-Allow-Headers','X-API-KP2B')
       ->appendHeader('Access-Control-Allow-Methods', 'PUT')
-      ->setHeader('access-control-max-age', '3000')
       ->setHeader('X-API-KP2B', $token);
-
-      $options = [
-        'max-age'  => DAY,
-        's-maxage' => DAY,
-      ];
-      $response->setCache($options);
 
     }
 
   }
+
 }

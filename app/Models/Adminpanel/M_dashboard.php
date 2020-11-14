@@ -4,7 +4,6 @@ use CodeIgniter\Model;
   
 class M_dashboard extends Model
 {
-
   public function dashboard()
   {
     $count = $this->counting();
@@ -16,18 +15,34 @@ class M_dashboard extends Model
       'list' => $this->getTable(),
       'graph' => $this->getGrafik(),
     ];
-    echo view('adminpanel/dashboard', $data);
+
+    if (! $view = cache('adminpanel-dashboard'))
+    {
+      // simpan view adminpanel/dashboard ke variable
+      $view = view('adminpanel/dashboard', $data);
+
+      // simpan file dir writable\cache selama 1 hari
+      cache()->save('adminpanel-dashboard', $view, DAY);
+    }
+    else
+    {
+      // jika ada cache, maka ambil dari cache
+      $view = cache()->get('adminpanel-dashboard');
+    }
+
+    echo $view;
+  
   }
 
   public function counting()
   {
     $query = $this->query("SELECT 
-    COUNT(DISTINCT ownerid) AS owners,
-    COUNT(DISTINCT cultivatorid) AS cultivators,
-    COUNT(DISTINCT farmcode) AS farms,
-    COUNT(DISTINCT vlcode) AS villages
-    FROM observations_frmobservations
-    WHERE ownerid OR cultivatorid OR farmcode <> 1");
+      COUNT(DISTINCT ownerid) AS owners,
+      COUNT(DISTINCT cultivatorid) AS cultivators,
+      COUNT(DISTINCT farmcode) AS farms,
+      COUNT(DISTINCT vlcode) AS villages
+      FROM observations_frmobservations
+      WHERE ownerid OR cultivatorid OR farmcode <> 1");
 
     return $query->getRow();
   }

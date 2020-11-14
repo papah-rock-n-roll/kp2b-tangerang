@@ -22,7 +22,23 @@ class M_data extends Model
       'total_cultivators' => $count->cultivators,
       'total_farm' => $count->farms,
     ];
-    echo view('adminpanel/data/main', $data);
+
+    if (! $view = cache('adminpanel-data'))
+    {
+      // simpan view adminpanel/data/main ke variable
+      $view = view('adminpanel/data/main', $data);
+
+      // simpan file dir writable\cache selama 1 hari
+      cache()->save('adminpanel-data', $view, DAY);
+    }
+    else
+    {
+      // jika ada cache, maka ambil dari cache
+      $view = cache()->get('adminpanel-data');
+    }
+
+    echo $view;
+
   }
 
   public function counting()

@@ -60,7 +60,23 @@ class M_user extends Model
       'list' => $this->getListusers($where, $like, $orLike, $paginate),
       'pager' => $this->pager,
     ];
-    echo view('adminpanel/user/main', $data);
+
+    if (! $view = cache('adminpanel-user'))
+    {
+      // simpan view adminpanel/user/main ke variable
+      $view = view('adminpanel/user/main', $data);
+
+      // simpan file dir writable\cache selama 1 hari
+      cache()->save('adminpanel-user', $view, DAY);
+    }
+    else
+    {
+      // jika ada cache, maka ambil dari cache
+      $view = cache()->get('adminpanel-user');
+    }
+
+    echo $view;
+
   }
 
   public function update_new($id, $data)
@@ -108,8 +124,8 @@ class M_user extends Model
       mstr_role.roleid,
       mstr_role.rolename')
     ->selectCount('t_frmobs.userid', 'observations')
-    ->join('mstr_role', 'mstr_role.roleid = mstr_users.role')
-    ->join('observations_frmobservations t_frmobs', 't_frmobs.userid = mstr_users.userid')
+    ->join('mstr_role', 'mstr_users.role = mstr_role.roleid', 'left')
+    ->join('observations_frmobservations t_frmobs', 'mstr_users.userid = t_frmobs.userid', 'left')
     ->where($where)->like($like)->orLike($orLike)
     ->groupBy('t_frmobs.userid')
     ->orderBy('mstr_users.userid DESC');

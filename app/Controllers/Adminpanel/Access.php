@@ -202,6 +202,7 @@ class Access extends \App\Controllers\BaseController
     }
   }
 
+
 /**
  * --------------------------------------------------------------------
  *
@@ -209,5 +210,26 @@ class Access extends \App\Controllers\BaseController
  *
  * --------------------------------------------------------------------
  */
+
+  public function log_index()
+  { 
+    $this->M_log->list();
+  }
+
+  public function log_delete($name)
+  {
+    $delete = $this->M_log->delete_post($name);
+    
+    if($delete) {
+      $this->session->setFlashdata('warning', 'Delete Files '.$name.' Successfully');
+      return redirect()->back();
+    }
+  }
+
+  public function log_cli($name)
+  {
+    $this->M_log->delete_post($name);
+  }
+
 
 }

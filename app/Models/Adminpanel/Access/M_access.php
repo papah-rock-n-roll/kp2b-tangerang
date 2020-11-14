@@ -18,10 +18,27 @@ class M_access extends Model
     $data = [
       'total_users' => $this->countUsers()->count,
       'total_roles' => $this->countRoles()->count,
+      'total_register' => $this->countRegister()->count,
       'list' => $this->countRole(),
       'moreinfo' => 'access/management',
     ];
-    echo view('adminpanel/access/main', $data);
+
+    if (! $view = cache('adminpanel-access'))
+    {
+      // simpan view adminpanel/access/main ke variable
+      $view = view('adminpanel/access/main', $data);
+
+      // simpan file dir writable\cache selama 1 hari
+      cache()->save('adminpanel-access', $view, DAY);
+    }
+    else
+    {
+      // jika ada cache, maka ambil dari cache
+      $view = cache()->get('adminpanel-access');
+    }
+
+    echo $view;
+
   }
 
   public function countUsers()
@@ -34,6 +51,13 @@ class M_access extends Model
   public function countRoles()
   {
     $query = $this->query("SELECT COUNT(DISTINCT roleid) AS count FROM mstr_role");
+
+    return $query->getRow();
+  }
+
+  public function countRegister()
+  {
+    $query = $this->query("SELECT COUNT(DISTINCT userid) AS count FROM mstr_users WHERE `role` = 0");
 
     return $query->getRow();
   }

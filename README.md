@@ -4,28 +4,53 @@
 
 ### Base Site URL
 
-public $baseURL = 'http://localhost/kp2b-tangerang/'; -KP2B
+https://p4w-ipb.id
 
-public $baseURL = 'https://kp2b-tangerang.ga'; -Ardi
+### CPANEL
+```
+https://p4w-ipb.id/cpanel
+user: pwipbid
+pass: crestpent1p8
+```
+### FTP
+```
+host: ftp.p4w-ipb.id
+user: pwipbid
+pass: crestpent1p8
+```
 
-### Create Procedure
+### mysql
+```
+user: pwipbid_admin
+pass: crestpent1p8
+DB: pwipbid_tangerang
+```
 
-```sql
-USE lppbmis_new;
-CREATE PROCEDURE p_insertUser(
-usernik VARCHAR(30),
-name VARCHAR(30),
-email VARCHAR(30),
-password VARCHAR(60),
-realpassword VARCHAR(60),
-role TINYINT(3),
-sts VARCHAR(15),
-timestamp TIMESTAMP)
-BEGIN
-	SET FOREIGN_KEY_CHECKS = 0; 
-	INSERT INTO
-		mstr_users (`usernik`,`name`,`email`,`password`,`realpassword`,`role`,`sts`,`timestamp`)
-	VALUES (`usernik`,`name`,`email`,`password`,`realpassword`,`role`,`sts`,`timestamp`); 
-	SET FOREIGN_KEY_CHECKS = 1;
-END
+### SSH
+```
+lumineon.sg.rapidplex.com:64000
+user: pwipbid
+pass: crestpent1p8
+```
+
+## API
+
+### owners
+```
+https://"HOST"/api/owners
+https://"HOST"/api/owners?q=aaa&page=1
+```
+### geojson
+```
+https://"HOST"/api/geo/info
+https://"HOST"/api/geo/info?table=v_observations&fid=obscode&shape=obsshape&fields=ownername,cultivatorname
+```
+
+## Command Line
+```
+cli routes
+php public\index.php "cli writable delete" "session, cache, logs, debugbar"
+
+running sample
+php public\index.php cli writable delete sessions
 ```

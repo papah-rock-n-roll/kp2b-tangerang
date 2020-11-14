@@ -24,7 +24,7 @@ $routes->setAutoRoute(false);
 
 // Will display a custom view
 $routes->set404Override(function() {
-  echo view('events/404');
+  echo view('errors/html/error_404');
 });
 
 /**
@@ -36,10 +36,15 @@ $routes->set404Override(function() {
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
+// MODULE COMMAND LINE
+$routes->cli('cli/writable/delete/(:any)', 'Adminpanel\Access::log_cli/$1');
+
+
 // Public Home
 $routes->get('/', 'Home::index');
 $routes->get('/data', 'Home::data');
 $routes->get('/chart', 'Home::chart');
+
 
 // Auth login
 $routes->get('/login', 'Auth::index');
@@ -92,7 +97,11 @@ $routes->group('administrator', function($routes) {
 			$routes->addRedirect('update', 'administrator/access/management');
 		});
 
-		$routes->get('log', 'Adminpanel\Access::log');
+		// Log Setting
+		$routes->group('log', function($routes) {
+			$routes->get('', 'Adminpanel\Access::log_index');
+			$routes->get('delete/(:any)', 'Adminpanel\Access::log_delete/$1');
+		});
 
 	});
 
