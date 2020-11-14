@@ -5,7 +5,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-tags"></i> List Role</h5>
+    <h5 class="card-title"><i class="fas fa-tags"></i> Daftar Role</h5>
     <div class="card-tools">
       <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
       </button>
@@ -19,7 +19,7 @@
       <thead>
         <tr>
           <th style="width: 5%">No</th>
-          <th style="width: 20%">Role Name</th>
+          <th style="width: 20%">Role</th>
           <th style="width: 30%">Modules</th>
           <th style="width: 5%">Create</th>
           <th style="width: 5%">Read</th>
@@ -30,7 +30,7 @@
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-      <tr><td colspan="5"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
+      <tr><td colspan="8"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
           <tr>  

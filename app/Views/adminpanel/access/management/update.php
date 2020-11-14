@@ -145,7 +145,7 @@
 
             <div class="form-group">
               <div>
-                <img src="<?= $scr . $img ?>" alt="Thumbnail" class="img-fluid">
+                <img src="<?= $scr . $img ?>" alt="Thumbnail" class="img-fluid" style="height:128px;width:128px">
               </div>
             </div>
 

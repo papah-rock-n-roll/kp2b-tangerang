@@ -6,7 +6,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-tags"></i> List Data</h5>
+    <h5 class="card-title"><i class="fas fa-tags"></i> Daftar Menu</h5>
     <div class="card-tools">
       <div class="input-group input-group-sm">
         <div class="input-group-append">

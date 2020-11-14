@@ -45,10 +45,8 @@
     </div>
   <?php endforeach ?>
 
-  <div class="card-footer clearfix">
-    <div class="pagination pagination-md m-0 float-right">
-      <?= $pager->links('users', 'bootstrap-pager') ?>
-    </div>
+  <div class="pagination pagination-md m-0 float-right">
+    <?= $pager->links('users', 'bootstrap-pager') ?>
   </div>
 
 </div>

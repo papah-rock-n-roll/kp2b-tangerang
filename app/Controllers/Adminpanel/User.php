@@ -11,7 +11,7 @@ class User extends \App\Controllers\BaseController
 
     // fetch data role dari model M_setting dengan array column rolename - roleid
     $roles = $this->M_setting->getRoleModules();
-    $data['roles'] = array('' => 'Choose Role') + array_column($roles, 'rolename', 'roleid');
+    $data['roles'] = array('' => 'Pilih Role') + array_column($roles, 'rolename', 'roleid');
 
     $this->M_user->dashboard($role, $keyword, $data, $paginate);
   } 
@@ -42,6 +42,5 @@ class User extends \App\Controllers\BaseController
       return redirect()->back();
     }
   }
-
 
 }

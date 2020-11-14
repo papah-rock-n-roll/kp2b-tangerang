@@ -3,13 +3,13 @@
   <div class="col-md-6">
 
     <div class="form-group">
-      <label for="">Grow Season</label>
+      <label for="">Musim</label>
       <?php
       $growceason_ = [
         'class' => $validation->hasError('growceason') ? 'form-control is-invalid' : 'form-control',
         'name' => 'growceason[]',
         'minlength' => '1',
-        'placeholder' => 'Enter your season',
+        'placeholder' => 'Enter musim',
         'value' => old('growceason') == null ? esc($growceason) : old('growceason'),
         'required' => ''
       ];
@@ -21,7 +21,7 @@
     </div>
 
     <div class="form-group">
-      <label for="">Month Grow</label>
+      <label for="">Bulan Tanam</label>
       <?php $status = old('monthgrow') == null ? $monthgrow : old('monthgrow') ?>
       <select class="form-control select2" name="monthgrow[]" style="width: 100%;" required>
         <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="form-group">
-      <label for="">Month Harvest</label>
+      <label for="">Bulan Panen</label>
       <?php $status = old('monthharvest') == null ? $monthharvest : old('monthharvest') ?>
       <select class="form-control select2" name="monthharvest[]" style="width: 100%;" required>
         <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
@@ -69,13 +69,13 @@
   <div class="col-md-6">
 
     <div class="form-group">
-      <label for="">Variety</label>
+      <label for="">Varietas</label>
       <?php
       $varieties_ = [
         'class' => $validation->hasError('varieties') ? 'form-control is-invalid' : 'form-control',
         'type' => 'varieties',
         'name' => 'varieties[]',
-        'placeholder' => 'Enter variety',
+        'placeholder' => 'Enter Varietas',
         'value' => old('varieties') == null ? $varieties : old('varieties'),
         'required' => ''
       ];
@@ -87,9 +87,9 @@
     </div>
 
     <div class="form-group">
-      <label for="">Irrigation</label>
+      <label for="">Irigasi</label>
       <select name="irrigationavbl[]" id="" class="custom-select" required>
-        <option value="">Choose Irrigation</option>
+        <option value="">Pilih Irigasi</option>
         <?php $status = old('irrigationavbl') == null ? $irrigationavbl : old('irrigationavbl') ?>
         <option <?= $status == 'ADA' ? 'selected' : '' ?> value="ADA">ADA</option>
         <option <?= $status == 'TIDAK' ? 'selected' : '' ?> value="TIDAK">TIDAK</option>

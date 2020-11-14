@@ -13,13 +13,13 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">Name</label>
+              <label for="">Nama</label>
               <?php
               $name = [
                 'class' => $validation->hasError('name') ? 'form-control is-invalid' : 'form-control',
                 'name' => 'name',
                 'minlength' => '3',
-                'placeholder' => 'Enter your name',
+                'placeholder' => 'Enter nama kamu',
                 'value' => old('name') == null ? $v['name'] : old('name'),
                 'required' => ''
               ];
@@ -36,7 +36,7 @@
                 'class' => $validation->hasError('usernik') ? 'form-control is-invalid' : 'form-control',
                 'name' => 'usernik',
                 'minlength' => '3',
-                'placeholder' => 'Enter your NIK',
+                'placeholder' => 'Enter NIK kamu',
                 'value' => old('usernik') == null ? $v['usernik'] : old('usernik'),
                 'required' => ''
               ];
@@ -53,7 +53,7 @@
                 'class' => $validation->hasError('phone') ? 'form-control is-invalid' : 'form-control',
                 'name' => 'phone',
                 'minlength' => '1',
-                'placeholder' => 'Enter your phone number',
+                'placeholder' => 'Enter nomor telpon kamu',
                 'value' => old('phone') == null ? $v['phone'] : old('phone'),
                 'required' => ''
               ];
@@ -70,7 +70,7 @@
                 'class' => $validation->hasError('email') ? 'form-control is-invalid' : 'form-control',
                 'type' => 'email',
                 'name' => 'email',
-                'placeholder' => 'Enter your email',
+                'placeholder' => 'Enter email kamu',
                 'value' => old('email') == null ? $v['email'] : old('email'),
                 'required' => ''
               ];
@@ -88,7 +88,7 @@
                 'type' => 'password',
                 'name' => 'password',
                 'minlength' => '6',
-                'placeholder' => 'Enter your password',
+                'placeholder' => 'Enter password kamu',
                 'value' => old('realpassword') == null ? '' : old('realpassword'),
                 'required' => ''
               ];
@@ -139,7 +139,7 @@
 
             <div class="form-group">
               <div>
-                <img src="<?= $scr . $img ?>" alt="Thumbnail" class="img-fluid">
+                <img src="<?= $scr . $img ?>" alt="Thumbnail" class="img-fluid" style="height:128px;width:128px">
               </div>
             </div>
 

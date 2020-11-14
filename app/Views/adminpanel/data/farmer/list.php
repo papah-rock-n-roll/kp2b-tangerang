@@ -15,7 +15,7 @@
             'name'  => 'keyword',
             'id'    => 'keyword',
             'value' => $keyword,
-            'placeholder' => 'Enter keyword ...'
+            'placeholder' => 'Enter keyword..'
         ];
         echo form_input($form_keyword);
         ?>
@@ -31,7 +31,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-tractor"></i> List Farm</h5>
+    <h5 class="card-title"><i class="fas fa-tractor"></i> Daftar Poktan</h5>
     <div class="card-tools">
       <div class="input-group input-group-sm">
         <?php
@@ -66,7 +66,7 @@
         <tr>
           <th style="width: 10%">No</th>
           <th style="width: 30%">Nama</th>
-          <th style="width: 50%">Describe</th>
+          <th style="width: 50%">Keterangan</th>
           <th style="width: 10%">Action</th>
         </tr>
       </thead>
@@ -80,7 +80,8 @@
           <td>
             <h6><?= esc($v['farmname']) ?></h6>
           </td>
-          <td><h6><?= esc($v['farmhead']) ?></h6>
+          <td>
+            <h6><?= esc($v['farmhead']) ?></h6>
             <small><?= esc($v['farmmobile']) ?></small>
           </td>
           <td>

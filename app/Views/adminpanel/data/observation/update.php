@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Kelompok tani</label>
+              <label for="">Kelompok Tani</label>
               <?php
               $selected = old('farmcode') == null ? $v['farmcode'] : old('farmcode');
               echo form_dropdown('farmcode', $farms, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
@@ -53,7 +53,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Status lahan</label>
+              <label for="">Status Lahan</label>
               <?php $status = old('areantatus') == null ? $v['areantatus'] : old('areantatus') ?>
               <select class="form-control select2-input" name="areantatus" style="width: 100%;" required>
                 <option <?= $status == 'MILIK' ? 'selected' : '' ?> >MILIK</option>
@@ -66,15 +66,18 @@
             </div>
 
             <div class="form-group">
-              <label for="">Luas petak lahan</label>
+              <label for="">Luas Petak Lahan</label>
               <div class="input-group">
                 <?php
                 $broadnrea = [
                   'class' => $validation->hasError('broadnrea') ? 'form-control is-invalid' : 'form-control',
-                  'type' => 'numeric',
+                  'type' => 'text',
+                  'inputmode' => 'decimal',
+                  'pattern' => '[0-9]+',
                   'name' => 'broadnrea',
-                  'minlength' => '1',
-                  'placeholder' => 'Area in meter square',
+                  'min' => '1',
+                  'max' => '1000000',
+                  'placeholder' => 'Area meter persegi',
                   'value' => old('broadnrea') == null ? $v['broadnrea'] : old('broadnrea'),
                   'required' => ''
                 ];
@@ -90,7 +93,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Jenis irigasi</label>
+              <label for="">Jenis Irigasi</label>
               <?php $valid = $validation->hasError('typeirigation') ? 'form-control is-invalid' : 'form-control' ?>
               <select class="<?= $valid ?> select2-multi" name="typeirigation[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['typeirigation'] as $k_irig => $v_irig) : ?>
@@ -103,16 +106,18 @@
             </div>
 
             <div class="form-group">
-              <label for="">Jarak dari sungai</label>
+              <label for="">Jarak Dari Sungai</label>
               <div class="input-group">
                 <?php
                 $distancefromriver = [
                   'class' => $validation->hasError('distancefromriver') ? 'form-control is-invalid' : 'form-control',
-                  'type' => 'input',
+                  'type' => 'text',
                   'inputmode' => 'decimal',
+                  'pattern' => '[0-9]+',
                   'name' => 'distancefromriver',
-                  'minlength' => '1',
-                  'placeholder' => 'Distance in meter - decimal',
+                  'min' => '1',
+                  'max' => '1000000',
+                  'placeholder' => 'Jarak dalam meter',
                   'value' => old('distancefromriver') == null ? $v['distancefromriver'] : old('distancefromriver'),
                   'required' => ''
                 ];
@@ -128,16 +133,18 @@
             </div>
 
             <div class="form-group">
-              <label for="">Jarak dari irigasi</label>
+              <label for="">Jarak Dari Irigasi</label>
               <div class="input-group">
                 <?php
                 $distancefromIrgPre = [
                   'class' => $validation->hasError('distancefromIrgPre') ? 'form-control is-invalid' : 'form-control',
-                  'type' => 'input',
+                  'type' => 'text',
                   'inputmode' => 'decimal',
+                  'pattern' => '[0-9]+',
                   'name' => 'distancefromIrgPre',
-                  'minlength' => '1',
-                  'placeholder' => 'Distance in meter - decimal',
+                  'min' => '1',
+                  'man' => '1000000',
+                  'placeholder' => 'Jarak dalam meter',
                   'value' => old('distancefromIrgPre') == null ? $v['distancefromIrgPre'] : old('distancefromIrgPre'),
                   'required' => ''
                 ];
@@ -153,14 +160,14 @@
             </div>
 
             <div class="form-group">
-              <label for="">Lembaga pengelolaan air</label>
+              <label for="">Lembaga Pengelolaan Air</label>
               <?php
               $wtrtreatnnst = [
                 'class' => $validation->hasError('wtrtreatnnst') ? 'form-control is-invalid' : 'form-control',
                 'type' => 'input',
                 'name' => 'wtrtreatnnst',
                 'minlenght' => '1',
-                'placeholder' => 'Water Installment',
+                'placeholder' => 'Enter..',
                 'value' => old('wtrtreatnnst') == null ? $v['wtrtreatnnst'] : old('wtrtreatnnst'),
                 'required' => ''
               ];
@@ -172,7 +179,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Intensitas tanam</label>
+              <label for="">Intensitas Tanam</label>
               <?php $status = old('intensitynlan') == null ? $v['intensitynlan'] : old('intensitynlan') ?>
               <select class="form-control select2-input" name="intensitynlan" style="width: 100%;" required>
                 <option <?= $status == '1' ? 'selected' : '' ?> >1</option>
@@ -186,14 +193,15 @@
             </div>
 
             <div class="form-group">
-              <label for="">Indeks pertanaman</label>
+              <label for="">Indeks Pertanaman</label>
               <?php
               $indxnlant = [
                 'class' => $validation->hasError('indxnlant') ? 'form-control is-invalid' : 'form-control',
                 'type' => 'number',
                 'name' => 'indxnlant',
                 'min' => '1',
-                'placeholder' => 'Index',
+                'max' => '5',
+                'placeholder' => 'IP',
                 'value' => old('indxnlant') == null ? $v['indxnlant'] : old('indxnlant'),
                 'required' => ''
               ];
@@ -205,13 +213,14 @@
             </div>
 
             <div class="form-group">
-              <label for="">Pola tanam</label>
+              <label for="">Pola Tanam</label>
               <?php
               $pattrnnlant = [
                 'class' => $validation->hasError('pattrnnlant') ? 'form-control is-invalid' : 'form-control',
+                'type' => 'input',
                 'name' => 'pattrnnlant',
                 'minlength' => '1',
-                'placeholder' => 'Pattern',
+                'placeholder' => 'Pola',
                 'value' => old('pattrnnlant') == null ? $v['pattrnnlant'] : old('pattrnnlant'),
                 'required' => ''
               ];
@@ -283,7 +292,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Permasalahan lainnya</label>
+              <label for="">Permasalahan Lainnya</label>
               <?php
               $other = [
                 'class' => $validation->hasError('other') ? 'form-control is-invalid' : 'form-control',
@@ -302,15 +311,17 @@
             </div>
 
             <div class="form-group">
-              <label for="">Panen terbanyak</label>
+              <label for="">Panen Terbanyak</label>
               <?php
               $harvstmax = [
                 'class' => $validation->hasError('harvstmax') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'input',
+                'type' => 'text',
                 'inputmode' => 'decimal',
+                'pattern' => '[0-9]+',
                 'name' => 'harvstmax',
-                'minlength' => '1',
-                'placeholder' => 'Enter Decimal..',
+                'min' => '1',
+                'max' => '1000000',
+                'placeholder' => 'Enter Desimal..',
                 'value' => old('harvstmax') == null ? $v['harvstmax'] : old('harvstmax'),
                 'required' => ''
               ];
@@ -322,7 +333,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Bulan panen terbanyak</label>
+              <label for="">Bulan Panen Terbanyak</label>
               <?php $status = old('monthmax') == null ? $v['monthmax'] : old('monthmax') ?>
               <select class="form-control select2" name="monthmax" style="width: 100%;" required>
                 <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
@@ -344,15 +355,17 @@
             </div>
 
             <div class="form-group">
-              <label for="">Panen terkecil</label>
+              <label for="">Panen Terkecil</label>
               <?php
               $harvstmin = [
                 'class' => $validation->hasError('harvstmin') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'input',
+                'type' => 'text',
                 'inputmode' => 'decimal',
+                'pattern' => '[0-9]+',
                 'name' => 'harvstmin',
-                'minlength' => '1',
-                'placeholder' => 'Enter Decimal..',
+                'min' => '1',
+                'max' => '1000000',
+                'placeholder' => 'Enter Desimal..',
                 'value' => old('harvstmin') == null ? $v['harvstmin'] : old('harvstmin'),
                 'required' => ''
               ];
@@ -364,7 +377,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Bulan panen terkecil</label>
+              <label for="">Bulan Panen Terkecil</label>
               <?php $status = old('monthmin') == null ? $v['monthmin'] : old('monthmin') ?>
               <select class="form-control select2" name="monthmin" style="width: 100%;" required>
                 <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
@@ -386,7 +399,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Penjualan panen</label>
+              <label for="">Penjualan Panen</label>
               <?php $status = old('harvstsell') == null ? $v['harvstsell'] : old('harvstsell') ?>
               <select class="form-control select2-input" name="harvstsell" style="width: 100%;" required>
                 <option <?= $status == 'TIDAK DIJUA' ? 'selected' : '' ?> >TIDAK DIJUAL</option>
@@ -399,7 +412,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Land Use</label>
+              <label for="">Penggunaan Lahan</label>
               <?php $status = old('landuse') == null ? $v['landuse'] : old('landuse') ?>
               <select class="form-control select2" name="landuse" style="width: 100%;" required>
                 <option <?= $status == 'Sawah' ? 'selected' : '' ?> >Sawah</option>
@@ -430,7 +443,7 @@
 <?= \App\Libraries\Link::script()->select2 ?>
 
 <script>
-  $.fn.select2.defaults.set( "theme", "bootstrap" );
+  //$.fn.select2.defaults.set( "theme", "bootstrap" );
 
   $('.select2').select2()
 

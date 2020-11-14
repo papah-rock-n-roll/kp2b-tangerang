@@ -15,7 +15,7 @@
             'name'  => 'keyword',
             'id'    => 'keyword',
             'value' => $keyword,
-            'placeholder' => 'Enter keyword ...'
+            'placeholder' => 'Enter keyword..'
         ];
         echo form_input($form_keyword);
         ?>
@@ -31,7 +31,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-users"></i> List Responden</h5>
+    <h5 class="card-title"><i class="fas fa-users"></i> Daftar Responden</h5>
     <div class="card-tools">
       <div class="input-group table-hover text-nowrap input-group-sm">
         <?php
@@ -66,7 +66,7 @@
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-      <tr><td colspan="3"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
+      <tr><td colspan="4"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
       <?php else : ?>
       <?php foreach($list as $k => $v) : ?>
         <tr>

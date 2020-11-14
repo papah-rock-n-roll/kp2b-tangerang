@@ -17,7 +17,7 @@
             'name'  => 'keyword',
             'id'    => 'keyword',
             'value' => $keyword,
-            'placeholder' => 'Enter keyword ...'
+            'placeholder' => 'Enter keyword..'
           ];
         echo form_input($form_keyword);
         ?>
@@ -33,7 +33,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-tags"></i> List Data</h5>
+    <h5 class="card-title"><i class="fas fa-tags"></i> Observasi Petak</h5>
     <div class="card-tools">
       <div class="input-group input-group-sm">
         <?php
@@ -76,7 +76,7 @@
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-        <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
+        <tr><td colspan="6"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
           <tr>

@@ -18,10 +18,10 @@
 
     <ul class="list-group list-group-unbordered mb-3">
       <li class="list-group-item">
-        <b>Owner</b> <a class="float-right"><?= $v['ownername'] ?></a>
+        <b>Pemilik</b> <a class="float-right"><?= $v['ownername'] ?></a>
       </li>
       <li class="list-group-item">
-        <b>Cultivator</b> <a class="float-right"><?= $v['cultivatorname'] ?></a>
+        <b>Penggarap</b> <a class="float-right"><?= $v['cultivatorname'] ?></a>
       </li>
       <li class="list-group-item">
         <b>Area Status</b> <a class="float-right"><?= $v['areantatus'] ?></a>

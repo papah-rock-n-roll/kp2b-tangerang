@@ -14,9 +14,9 @@
           $uri = service('uri');
           $kodepetak = $uri->getSegment(5);
         ?>
-        <h5 class="card-title"><i class="fas fa-search"></i> Plantdates Data -
+        <h5 class="card-title"><i class="fas fa-search"></i> Data Tanam -
         <span class="badge badge-primary"><?= $kodepetak ?></span>
-        <span class="badge badge-warning"> Index Plantation - 
+        <span class="badge badge-warning"> Index Pertanian - 
         <?= $indxnlant ?></span> </h5>
         <div class="card-tools">
           <div class="input-group-append">
@@ -32,11 +32,11 @@
           <thead>
             <tr>
               <th style="width: 5%">No</th>
-              <th style="width: 25%">Grow Season</th>
-              <th style="width: 20%">Month Grow</th>
-              <th style="width: 20%">Month Harvest</th>
-              <th style="width: 25%">Variety</th>
-              <th style="width: 5%">Irrigation</th>
+              <th style="width: 25%">Musim</th>
+              <th style="width: 20%">Bulan Tanam</th>
+              <th style="width: 20%">Bulan Panen</th>
+              <th style="width: 25%">Varietas</th>
+              <th style="width: 5%">Irigasi</th>
             </tr>
           </thead>
           <tbody>
@@ -64,7 +64,7 @@
 
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title"><i class="fas fa-tags"></i>  Modify Plantdates Data</h5>
+          <h5 class="card-title"><i class="fas fa-tags"></i>  Modifikasi Tanggal Tanam</h5>
         </div>
         <div class="card-body">
           <div class="callout callout-warning">
@@ -79,11 +79,11 @@
 
         <div class="card">
           <div class="card-header d-flex p-0">
-            <h5 class="card-title p-3"><i class="fas fa-tags"></i>  Modify Plantdates Data</h5>
+            <h5 class="card-title p-3"><i class="fas fa-tags"></i>  Modifikasi Tanggal Tanam</h5>
             <ul class="nav nav-pills ml-auto p-2">
               <?php $no = 1 ?>
               <?php for ($i = 0; $i < count($newlist); $i++) : ?>
-                <li class="nav-item"><a class="nav-link <?= $i == 0 ? 'active' : '' ?>" href="#tab_<?= $i ?>" data-toggle="tab">Index <?= $no ?></a></li>
+                <li class="nav-item"><a class="nav-link <?= $i == 0 ? 'active' : '' ?>" href="#tab_<?= $i ?>" data-toggle="tab">IP <?= $no ?></a></li>
                 <?php ++$no ?>
               <?php endfor ?>
             </ul>

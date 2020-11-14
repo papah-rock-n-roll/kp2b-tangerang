@@ -140,7 +140,7 @@
 
             <div class="form-group">
               <div>
-                <img src="/uploads/users/default.png" alt="Thumbnail" class="img-fluid">
+                <img src="/uploads/users/default.png" alt="Thumbnail" class="img-fluid" style="height:128px;width:128px">
               </div>
             </div>
 
