@@ -66,7 +66,7 @@
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-      <tr><td colspan="3"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
+      <tr><td colspan="3"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
       <?php else : ?>
       <?php foreach($list as $k => $v) : ?>
         <tr>
@@ -100,7 +100,7 @@
     </div>
   </div>
   <div class="card-footer clearfix">
-    <div class="pagination pagination-md m-0 float-right">
+    <div class="pagination pagination-sm pagination-md m-0 float-right">
       <?= $pager->links('respondens', 'bootstrap-pager') ?>
     </div>
   </div>
@@ -111,7 +111,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
-<?php 
+<?php
 if(! empty(session()->getFlashdata('warning'))) {
   $toast = [
   'class' => 'bg-warning',
