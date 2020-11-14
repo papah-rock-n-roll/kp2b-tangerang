@@ -21,7 +21,7 @@
               'name'  => 'keyword',
               'id'    => 'keyword',
               'value' => $keyword,
-              'placeholder' => 'Enter keyword ...'
+              'placeholder' => 'Enter keyword..'
             ];
           echo form_input($form_keyword);
           ?>

@@ -180,7 +180,7 @@ class Data extends \App\Controllers\BaseController
       $catch = $this->M_plantdate->plantdates_new($id, $data);
 
       if($catch) {
-        $this->session->setFlashdata('catch', 'Nilai Index Plantation Melebihi 5');
+        $this->session->setFlashdata('catch', 'Nilai Index Plantation Melebihi 9');
         return redirect()->back();
       }
 

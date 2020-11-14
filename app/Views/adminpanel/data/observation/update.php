@@ -402,7 +402,7 @@
               <label for="">Penjualan Panen</label>
               <?php $status = old('harvstsell') == null ? $v['harvstsell'] : old('harvstsell') ?>
               <select class="form-control select2-input" name="harvstsell" style="width: 100%;" required>
-                <option <?= $status == 'TIDAK DIJUA' ? 'selected' : '' ?> >TIDAK DIJUAL</option>
+                <option <?= $status == 'TIDAK DIJUAL' ? 'selected' : '' ?> >TIDAK DIJUAL</option>
                 <option <?= $status == 'PASAR' ? 'selected' : '' ?> >PASAR</option>
                 <option <?= $status == 'TENGKULAK' ? 'selected' : '' ?> >TENGKULAK</option>
               </select>

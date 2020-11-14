@@ -25,17 +25,21 @@ class M_plantdate extends M_data
   public function plantdates_new($id, $data)
   {
     // round up nilai indxnlant
-    $indxnlant = $this->getObsIndexPlant($id);
+    $indxnlant = $this->getObsIndexPlant($id) / 100;
     $index = (int) ceil($indxnlant);
     $plant = $this->getPlantdates($id);
+    $indxplant = count($plant);
 
     // return setflashdata catch warning
-    if($index > 5) {
+    if($index > 9) {
       return true;
     }
     else
     {
       if(!empty($plant)) {
+
+        // trim plant sesuai nilai indexnlant
+        $plant = array_slice($plant, 0, $index);
 
         // fetch data kosong ke variable $temp
         $temp = array_fill_keys(array_keys($plant[0]), '');
@@ -64,7 +68,8 @@ class M_plantdate extends M_data
 
     $data += [
       'action' => self::ACTS.'/'.$id,
-      'indxnlant' => $indxnlant,
+      'idxlama' => $indxplant,
+      'idxbaru' => $indxnlant,
       'oldlist' => $this->getPlantdates($id),
       'newlist' => $plant,
       'back' => self::BACK,

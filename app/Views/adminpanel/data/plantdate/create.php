@@ -15,9 +15,9 @@
           $kodepetak = $uri->getSegment(5);
         ?>
         <h5 class="card-title"><i class="fas fa-search"></i> Data Tanam -
-        <span class="badge badge-primary"><?= $kodepetak ?></span>
-        <span class="badge badge-warning"> Index Pertanian - 
-        <?= $indxnlant ?></span> </h5>
+          <span class="badge badge-primary"><?= $kodepetak ?></span>
+          <span class="badge badge-warning"> IP Awal - <?= $idxlama ?></span>
+        </h5>
         <div class="card-tools">
           <div class="input-group-append">
             <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -64,7 +64,8 @@
 
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title"><i class="fas fa-tags"></i>  Modifikasi Tanggal Tanam</h5>
+          <h5 class="card-title"><i class="fas fa-tags"></i>  Modifikasi
+          </h5>
         </div>
         <div class="card-body">
           <div class="callout callout-warning">
@@ -79,7 +80,9 @@
 
         <div class="card">
           <div class="card-header d-flex p-0">
-            <h5 class="card-title p-3"><i class="fas fa-tags"></i>  Modifikasi Tanggal Tanam</h5>
+            <h5 class="card-title p-3"><i class="fas fa-tags"></i>
+              <span class="badge badge-warning"> IP Baru - <?= $idxbaru ?></span>
+            </h5>
             <ul class="nav nav-pills ml-auto p-2">
               <?php $no = 1 ?>
               <?php for ($i = 0; $i < count($newlist); $i++) : ?>
