@@ -108,6 +108,63 @@ class Data extends \App\Controllers\BaseController
     }
   }
 
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Data Observations - Upload Import - Export
+ *
+ * --------------------------------------------------------------------
+ */
+  public function observation_upload()
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_observation->upload_new($data);
+    }
+    else
+    {
+      $rules = $this->M_observation->validationImport();
+      
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $file = $this->request->getFile('obs_file');
+      $this->M_observation->upload_post($file);
+    }
+  }
+
+  public function observation_import()
+  {
+    $data = $this->request->getPost();
+    $import = $this->M_observation->import($data);
+
+    if($import) {
+      $this->session->setFlashdata('import', 'Import Observation Successfully');
+      return redirect()->to('/administrator/data/observation');
+    }
+
+  }
+
+  public function observation_export()
+  {
+    // $_['GET'] variabel farm - keyword - paginate
+    $farm = $this->request->getGet('farm');
+    $keyword = $this->request->getGet('keyword');
+    $paginate = $this->request->getGet('paginate');
+
+    // fetch data farmers dengan array column farmname - farmcode
+    $farms = $this->M_farmer->getFarmers();
+    $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
+    
+    // fetch data dengan memanggil fungsi model observation
+    $this->M_observation->export($farm, $keyword, $data, $paginate);
+  }
+
+
 /**
  * --------------------------------------------------------------------
  *

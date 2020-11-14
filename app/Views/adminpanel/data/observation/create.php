@@ -392,7 +392,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Land User</label>
+              <label for="">Land Use</label>
               <select class="form-control select2" name="landuse" style="width: 100%;" required>
                 <option>Sawah</option>
                 <option>Non Sawah</option>

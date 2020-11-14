@@ -9,6 +9,7 @@
  */
 
 use CodeIgniter\Model;
+use PhpOffice\PhpSpreadsheet;
   
 class M_data extends Model
 {
@@ -80,6 +81,22 @@ class M_data extends Model
     $query = $this->query("SELECT * FROM mstr_villages WHERE vlcode = {$id}");
 
     return $query->getRowArray();
+  }
+
+  public static function spreadsheet()
+  {
+    return new PhpSpreadsheet\Spreadsheet;
+  }
+
+  public static function writer_sheet($spreadsheet)
+  {
+    return new PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+  }
+
+  public static function reader_sheet(string $extension)
+  {
+    if ($extension == 'xlsx') return new PhpSpreadsheet\Reader\Xlsx();
+    if ($extension == 'xls') return new PhpSpreadsheet\Reader\Xls();
   }
 
 }

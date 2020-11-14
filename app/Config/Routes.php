@@ -167,6 +167,11 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'create', 'Adminpanel\Data::observation_create');
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::observation_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::observation_delete/$1');
+				// Upload - Import
+				$routes->match(['get', 'post'], 'upload', 'Adminpanel\Data::observation_upload');
+				$routes->post('import', 'Adminpanel\Data::observation_import');
+				// Export
+				$routes->get('export', 'Adminpanel\Data::observation_export');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('read', 'administrator/data/observation');
 			$routes->addRedirect('update', 'administrator/data/observation');
