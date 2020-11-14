@@ -1,6 +1,7 @@
 <?= $this->extend('partials/index') ?>
 <?= $this->section('link') ?>
 <?= \App\Libraries\Link::style()->select2 ?>
+<?= \App\Libraries\Link::style()->select2bootstrap ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -9,7 +10,7 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <h5 class="card-title">Update Observation</h5>
+        <h5 class="card-title">Update Petak</h5>
       </div>
 
       <?php echo form_open($action) ?>
@@ -19,7 +20,7 @@
           <div class="col-md-6"><!-- LEFT col-md-6 -->
 
           <div class="form-group">
-              <label for="">Owner</label>
+              <label for="">Pemilik</label>
               <?php
               $selected = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
               echo form_dropdown('ownerid', $owners, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
@@ -30,7 +31,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Cultivator</label>
+              <label for="">Penggarap</label>
               <?php
               $selected = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
               echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
@@ -41,7 +42,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Farmer</label>
+              <label for="">Kelompok tani</label>
               <?php
               $selected = old('farmcode') == null ? $v['farmcode'] : old('farmcode');
               echo form_dropdown('farmcode', $farms, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
@@ -52,7 +53,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Area Status</label>
+              <label for="">Status lahan</label>
               <?php $status = old('areantatus') == null ? $v['areantatus'] : old('areantatus') ?>
               <select class="form-control select2-input" name="areantatus" style="width: 100%;" required>
                 <option <?= $status == 'MILIK' ? 'selected' : '' ?> >MILIK</option>
@@ -65,7 +66,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Broad Area</label>
+              <label for="">Luas petak lahan</label>
               <div class="input-group">
                 <?php
                 $broadnrea = [
@@ -80,7 +81,7 @@
                 echo form_input($broadnrea);
                 ?>
                 <div class="input-group-append">
-                  <span class="input-group-text">m2</span>
+                  <span class="input-group-text">m<sup>2</sup></span>
                 </div>
                 <div class="invalid-feedback">
                   <?= $validation->getError('broadnrea') ?>
@@ -89,7 +90,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Type Irrigation</label>
+              <label for="">Jenis irigasi</label>
               <?php $valid = $validation->hasError('typeirigation') ? 'form-control is-invalid' : 'form-control' ?>
               <select class="<?= $valid ?> select2-multi" name="typeirigation[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['typeirigation'] as $k_irig => $v_irig) : ?>
@@ -100,9 +101,9 @@
                 <?= $validation->getError('typeirigation') ?>
               </div>
             </div>
-            
+
             <div class="form-group">
-              <label for="">Distance From River</label>
+              <label for="">Jarak dari sungai</label>
               <div class="input-group">
                 <?php
                 $distancefromriver = [
@@ -125,9 +126,9 @@
                 </div>
               </div>
             </div>
-            
+
             <div class="form-group">
-              <label for="">Distance From Irigation</label>
+              <label for="">Jarak dari irigasi</label>
               <div class="input-group">
                 <?php
                 $distancefromIrgPre = [
@@ -152,7 +153,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Water Installment</label>
+              <label for="">Lembaga pengelolaan air</label>
               <?php
               $wtrtreatnnst = [
                 'class' => $validation->hasError('wtrtreatnnst') ? 'form-control is-invalid' : 'form-control',
@@ -171,7 +172,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Intensity Land</label>
+              <label for="">Intensitas tanam</label>
               <?php $status = old('intensitynlan') == null ? $v['intensitynlan'] : old('intensitynlan') ?>
               <select class="form-control select2-input" name="intensitynlan" style="width: 100%;" required>
                 <option <?= $status == '1' ? 'selected' : '' ?> >1</option>
@@ -185,7 +186,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Index Plantations</label>
+              <label for="">Indeks pertanaman</label>
               <?php
               $indxnlant = [
                 'class' => $validation->hasError('indxnlant') ? 'form-control is-invalid' : 'form-control',
@@ -204,7 +205,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Pattern Plantations</label>
+              <label for="">Pola tanam</label>
               <?php
               $pattrnnlant = [
                 'class' => $validation->hasError('pattrnnlant') ? 'form-control is-invalid' : 'form-control',
@@ -237,7 +238,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Relate Production OPT</label>
+              <label for="">Permasalahan OPT</label>
               <?php $valid = $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control' ?>
               <select class="<?= $valid ?> select2-multi" name="opt[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['opt'] as $k_opt => $v_opt) : ?>
@@ -250,8 +251,8 @@
             </div>
 
             <div class="form-group">
-              <label for="">Relate Production Air</label>
-              <?php 
+              <label for="">Permasalahan Air</label>
+              <?php
               $wtr = [
                 'class' => $validation->hasError('wtr') ? 'form-control is-invalid' : 'form-control',
                 'type' => 'input',
@@ -269,7 +270,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Relate Production Saprotan</label>
+              <label for="">Permasalahan Saprotan</label>
               <?php $valid = $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control' ?>
               <select class="<?= $valid ?> select2-multi" name="saprotan[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['saprotan'] as $k_sap => $v_sap) : ?>
@@ -282,7 +283,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Other</label>
+              <label for="">Permasalahan lainnya</label>
               <?php
               $other = [
                 'class' => $validation->hasError('other') ? 'form-control is-invalid' : 'form-control',
@@ -301,7 +302,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Harvest Max</label>
+              <label for="">Panen terbanyak</label>
               <?php
               $harvstmax = [
                 'class' => $validation->hasError('harvstmax') ? 'form-control is-invalid' : 'form-control',
@@ -321,7 +322,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Month Max</label>
+              <label for="">Bulan panen terbanyak</label>
               <?php $status = old('monthmax') == null ? $v['monthmax'] : old('monthmax') ?>
               <select class="form-control select2" name="monthmax" style="width: 100%;" required>
                 <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
@@ -343,7 +344,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Harvest Min</label>
+              <label for="">Panen terkecil</label>
               <?php
               $harvstmin = [
                 'class' => $validation->hasError('harvstmin') ? 'form-control is-invalid' : 'form-control',
@@ -363,7 +364,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Month Min</label>
+              <label for="">Bulan panen terkecil</label>
               <?php $status = old('monthmin') == null ? $v['monthmin'] : old('monthmin') ?>
               <select class="form-control select2" name="monthmin" style="width: 100%;" required>
                 <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
@@ -385,7 +386,7 @@
             </div>
 
             <div class="form-group">
-              <label for="">Harvest Sell</label>
+              <label for="">Penjualan panen</label>
               <?php $status = old('harvstsell') == null ? $v['harvstsell'] : old('harvstsell') ?>
               <select class="form-control select2-input" name="harvstsell" style="width: 100%;" required>
                 <option <?= $status == 'TIDAK DIJUA' ? 'selected' : '' ?> >TIDAK DIJUAL</option>
@@ -409,14 +410,14 @@
                 <?= $validation->getError('landuse') ?>
               </div>
             </div>
-            
+
           </div><!-- RIGHT col-md-6 -->
         </div><!-- ROW -->
 
-      </div>   
+      </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
+        <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
       </div>
       <?php echo form_close() ?>
 
@@ -429,6 +430,7 @@
 <?= \App\Libraries\Link::script()->select2 ?>
 
 <script>
+  $.fn.select2.defaults.set( "theme", "bootstrap" );
 
   $('.select2').select2()
 

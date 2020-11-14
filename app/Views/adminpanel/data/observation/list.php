@@ -45,55 +45,47 @@
             ];
           echo form_dropdown('paginate', $paginate, $page, ['class' => 'custom-select', 'id' => 'paginate']);
         ?>
-        <div class="input-group-append">
-          <button type="button" class="tmb-create btn btn-success btn-sm" onclick="window.location.href='<?= esc($create) ?>'"><i class="fas fa-file-alt"></i> Tambah
-          </button>
-          <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
-          </button>
-        </div>
       </div>
     </div>
   </div>
 
   <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table projects">
+      <table class="table table-sm">
       <thead>
         <tr>
-          <th style="width: 10%">No</th>
-          <th style="width: 10%">Kode</th>
-          <th style="width: 10%">Poktan</th>
-          <th style="width: 30%">Pemilik</th>
-          <th style="width: 30%">Penggarap</th>
-          <th style="width: 20%">Action</th>
+          <th>No</th>
+          <th>Kode</th>
+          <th>Poktan</th>
+          <th>Pemilik</th>
+          <th>Penggarap</th>
+          <th width="40px">Action</th>
         </tr>
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-        <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
+        <tr><td colspan="7"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
       <?php else : ?>
         <?php foreach($list as $k => $v) : ?>
           <tr>
             <td><?= ++$k ?></td>
             <td><?= esc($v['obscode']) ?></td>
             <td>
-              <h6><?= esc($v['farmname']) ?></h6>
-              <small><?= esc($v['vlname']) ?></small>
+              <b><?= esc($v['farmname']) ?></b>
+              <p class="text-muted text-sm mb-0"><?= esc($v['vlname']) ?></p>
             </td>
             <td>
-              <h6><?= esc($v['ownername']) ?></h6>
-              <small><?= esc($v['ownernik']) ?></small>
+              <b><?= esc($v['ownername']) ?></b>
+              <p class="text-muted text-sm mb-0"><?= esc($v['ownernik']) ?></p>
             </td>
             <td>
-              <h6><?= esc($v['cultivatorname']) ?></h6>
-              <small><?= esc($v['cultivatornik']) ?></small>
+              <b><?= esc($v['cultivatorname']) ?></b>
+              <p class="text-muted text-sm mb-0"><?= esc($v['cultivatornik']) ?></p>
             </td>
             <td>
-              <div class="btn-group">
+              <div class="btn-group btn-group-sm">
                 <button type="button" class="tmb-update btn btn-default btn-sm" title="Edit - <?= esc($v['obscode']) ?>" onclick="window.location.href='<?= $update . $v['obscode'] ?>'">
                 <i class="fa fa-edit"></i></button>
-                <button type="button" class="tmb-delete btn btn-default btn-sm" title="Delete - <?= esc($v['obscode']) ?>" data-toggle="modal" data-target="#modal_<?= $k ?>">
-                <i class="fa fa-trash-alt"></i></button>
                 <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
@@ -123,7 +115,7 @@
     </div>
   </div>
   <div class="card-footer clearfix">
-    <div class="pagination pagination-md m-0 float-right">
+    <div class="pagination pagination-sm m-0 float-right">
       <?= $pager->links('observations', 'bootstrap-pager') ?>
     </div>
   </div>
@@ -134,7 +126,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
-<?php 
+<?php
 if(! empty(session()->getFlashdata('warning'))) {
   $toast = [
   'class' => 'bg-warning',

@@ -1,5 +1,5 @@
 <?php namespace App\Controllers\Adminpanel;
- 
+
 class Data extends \App\Controllers\BaseController
 {
 
@@ -33,8 +33,8 @@ class Data extends \App\Controllers\BaseController
 
     // fetch data farmers dengan array column farmname - farmcode
     $farms = $this->M_farmer->getFarmers();
-    $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
-    
+    $data['farms'] = array('' => 'Pilih kelompok tani') + array_column($farms, 'farmname', 'farmcode');
+
     // fetch data dengan memanggil fungsi model observation
     $this->M_observation->list($farm, $keyword, $data, $paginate);
   }
@@ -71,12 +71,12 @@ class Data extends \App\Controllers\BaseController
       $data = $this->request->getPost();
       $post = $this->M_observation->create_post($data);
 
-      // Jika bernilai true maka akan di set nilai 'success' pada session flash data 
+      // Jika bernilai true maka akan di set nilai 'success' pada session flash data
       if($post) {
         $this->session->setFlashdata('success', 'Create Observation Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -104,7 +104,7 @@ class Data extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Update Observation Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -139,7 +139,7 @@ class Data extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Create Observation Plantdates Successfully');
         return redirect()->back();
       }
- 
+
     }
 
   }
@@ -156,7 +156,7 @@ class Data extends \App\Controllers\BaseController
   {
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
-    
+
     $this->M_owner->list(null, $keyword, null, $paginate);
   }
 
@@ -182,7 +182,7 @@ class Data extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Create Owner Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -208,7 +208,7 @@ class Data extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Update Owner Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -216,7 +216,7 @@ class Data extends \App\Controllers\BaseController
   {
     $data = $this->M_owner->getOwner($id);
     $delete = $this->M_owner->delete_post($id);
-    
+
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Name '.$data['ownername'].' Successfully');
       return redirect()->back();
@@ -236,7 +236,7 @@ class Data extends \App\Controllers\BaseController
   {
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
-    
+
     $this->M_farmer->list(null, $keyword, null, $paginate);
   }
 
@@ -262,7 +262,7 @@ class Data extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Create Farm Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -288,7 +288,7 @@ class Data extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Update Farm Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -296,7 +296,7 @@ class Data extends \App\Controllers\BaseController
   {
     $data = $this->M_farmer->getOwner($id);
     $delete = $this->M_farmer->delete_post($id);
-    
+
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Name '.$data['farmname'].' Successfully');
       return redirect()->back();
@@ -316,7 +316,7 @@ class Data extends \App\Controllers\BaseController
   {
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
-    
+
     $this->M_responden->list(null, $keyword, null, $paginate);
   }
 
@@ -376,7 +376,7 @@ class Data extends \App\Controllers\BaseController
   {
     $data = $this->M_responden->getOwner($id);
     $delete = $this->M_responden->delete_post($id);
-    
+
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Name '.$data['respname'].' Successfully');
       return redirect()->back();
@@ -408,16 +408,16 @@ class Data extends \App\Controllers\BaseController
   function fetchDropdown()
   {
     $subdistricts = $this->M_data->getSubdistricts();
-    $data['subdistricts'] = array('' => 'Choose Subdistrict') + array_column($subdistricts, 'sdname', 'sdcode');
-    
+    $data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
+
     $villages = $this->M_data->getVillages();
-    $data['villages'] = array('' => 'Choose Village') + array_column($villages, 'vlname', 'vlcode');
+    $data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
 
     $respondens = $this->M_responden->getRespondens();
-    $data['respondens'] = array('' => 'Choose Responden') + array_column($respondens, 'respname', 'respid');
-    
+    $data['respondens'] = array('' => 'Pilih responden') + array_column($respondens, 'respname', 'respid');
+
     $farms = $this->M_farmer->getFarmers();
-    $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
+    $data['farms'] = array('' => 'Pilih kelompok tani') + array_column($farms, 'farmname', 'farmcode');
 
     $owners = $this->M_owner->getOwners();
     $newowners = array();
@@ -431,8 +431,8 @@ class Data extends \App\Controllers\BaseController
       }
     }
 
-    $data['owners'] = array('' => 'Choose Owner') + array_column($newowners, 'newowners', 'ownerid');   
-    $data['cultivators'] = array('' => 'Choose Cultivator') + array_column($newowners, 'newowners', 'ownerid');
+    $data['owners'] = array('' => 'Pilih pemilik') + array_column($newowners, 'newowners', 'ownerid');
+    $data['cultivators'] = array('' => 'Pilih penggarap') + array_column($newowners, 'newowners', 'ownerid');
 
     return $data;
   }

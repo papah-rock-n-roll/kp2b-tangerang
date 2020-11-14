@@ -18,9 +18,11 @@
 <script>
   require([
     "esri/Map",
-    "esri/layers/GeoJSONLayer",
     "esri/views/MapView",
-    "esri/widgets/Locate",
+    "esri/layers/GeoJSONLayer",
+    "esri/layers/GroupLayer",
+    "esri/widgets/LayerList",
+    "esri/widgets/Track",
     "esri/widgets/Expand",
     "esri/widgets/BasemapGallery",
     "esri/widgets/Fullscreen",
@@ -30,7 +32,7 @@
     "dojo/dom",
     "dojo/on",
     "esri/core/watchUtils"
-  ], function (Map, GeoJSONLayer, MapView, Locate, Expand, BasemapGallery, Fullscreen, Search, Editor, domConstruct, dom, on, watchUtils) {
+  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, Editor, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
@@ -102,6 +104,29 @@
       }
     });
 
+    function defineActions(event) {
+      var item = event.item;
+
+      if (item.title === "Petak sawah") {
+        item.actionsSections = [
+          [{
+            title: "Go to full extent",
+            className: "esri-icon-zoom-out-fixed",
+            id: "full-extent"
+          }],
+          [{
+            title: "Increase opacity",
+            className: "esri-icon-up",
+            id: "increase-opacity"
+          },{
+            title: "Decrease opacity",
+            className: "esri-icon-down",
+            id: "decrease-opacity"
+          }]
+        ];
+      }
+    }
+
     view.when(function () {
       var popup = view.popup;
 
@@ -122,20 +147,14 @@
         "top-right"
       );
 
-      view.ui.add(
-        new Locate({
-          view: view,
-          element: viewDiv
-        }),
-        "top-right"
-      );
+      var track = new Track({
+        view: view,
+        useHeadingEnabled: false,
+        goToLocationEnabled: false
+      });
+      view.ui.add(track, "top-left");
 
       const basemapGallery = new BasemapGallery({
-        source: {
-          query: {
-            id: '702026e41f6641fb85da88efe79dc166'
-          }
-        },
         view: view,
         container: document.createElement("div")
       });
@@ -147,6 +166,40 @@
         }),
         "bottom-left"
       );
+
+      var layerList = new LayerList({
+        view: view,
+        listItemCreatedFunction: defineActions
+      });
+
+      view.ui.add(
+        new Expand({
+          view: view,
+          content: layerList
+        }),
+        "top-left"
+      );
+
+      layerList.on("trigger-action", function (event) {
+
+        var id = event.action.id;
+
+        if (id === "full-extent") {
+          view.goTo(geojsonLayer.fullExtent).catch(function (error) {
+            if (error.name != "AbortError") {
+              console.error(error);
+            }
+          });
+        } else if (id === "increase-opacity") {
+          if (geojsonLayer.opacity < 1) {
+            geojsonLayer.opacity += 0.25;
+          }
+        } else if (id === "decrease-opacity") {
+          if (geojsonLayer.opacity > 0) {
+            geojsonLayer.opacity -= 0.25;
+          }
+        }
+      });
 
       $.ajax({
         async : false,
@@ -213,7 +266,8 @@
           copyright: "Dinas Pertanian Kab. Tangerang",
           popupTemplate: template,
           renderer: renderer,
-          title: "Petak LP2B"
+          title: "Petak sawah",
+          opacity: .75
         });
         geojsonLayer.queryExtent().then(function(results){
           view.goTo(results.extent);
@@ -249,7 +303,7 @@
       const layerAdd = new Expand({
         view: view,
         expanded: false,
-        expandIconClass: "esri-icon-layers",
+        expandIconClass: "esri-icon-collection",
         expandTooltip: "Add layer",
         content: node
        });
