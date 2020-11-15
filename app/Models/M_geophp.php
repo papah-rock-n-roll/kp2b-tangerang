@@ -1,13 +1,12 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
-use geoPHP;
 
 class M_geophp extends Model
 {
   protected $table = 'observations_frmobservations';
   protected $primaryKey = 'obscode';
-  protected $allowedFields = ['obscode','vlcode','farmcode','pemilik','penggarap'];
+  protected $allowedFields = ['obscode','vlcode','farmcode','ownerid','cultivatorid'];
 
   protected $db;
 
@@ -97,10 +96,11 @@ class M_geophp extends Model
       $features = array();
 
       foreach ($query as $row){
-        $geom = geoPHP::load($row['GEOM'],'wkt');
-        $json = $geom->out('json');
-        $features = json_decode($json);
-        //$features = json_decode($row['GEOM'], true);
+        
+        //$geom = geoPHP::load($row['GEOM'],'wkt');
+        //$json = $geom->out('json');
+        //$features = json_decode($json);
+        $features = json_decode($row['GEOM'], true);
 
         $properties['FID'] = $row['FID'];
         if(!empty($info_fields)){
@@ -129,13 +129,40 @@ class M_geophp extends Model
     return json_decode($result, true);
   }
 
-/*
 
+// --------------------------------------------------------------------------
+
+
+  public function get_public($conditions = null) : Array
+  {
+    // data sdcode ambil dari cache
+    if (!empty($conditions['sdcode'])) {
+      $geoPublic = cache()->get('geojson.'.$conditions['sdcode'].'.cache');
+    } 
+
+    // data vlcode ambil dari cache
+    if (!empty($conditions['vlcode'])) {
+      $geoPublic = cache()->get('geojson.'.$conditions['vlcode'].'.cache');
+    }
+
+    if ($geoPublic == null) $geoPublic = [];
+
+    return $geoPublic;
+  }
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * API raw input 
+ *
+ * --------------------------------------------------------------------
+ */
+
+/*
   public function postGeo($data)
   {
     return $this->insert($data);
   }
-
 */
 
   public function putGeo($id, $data)
@@ -147,23 +174,23 @@ class M_geophp extends Model
   {
     return [
       'vlcode' => [
-      'label' => 'Kode Desa',
-      'rules' => 'required|max_length[10]|is_unique[observations_frmobservations.obscode,obscode,'.$id.']',
-      'errors' => [
-        'required' => 'Diperlukan {field}',
-        'is_unique' => 'Data {field} {value} Sudah Ada',
-        'max_length' => '{field} Maximum {param} Character',
-        ]
+        'label' => 'Kode Desa',
+        'rules' => 'required|max_length[10]|is_unique[observations_frmobservations.obscode,obscode,'.$id.']',
+        'errors' => [
+          'required' => 'Diperlukan {field}',
+          'is_unique' => 'Data {field} {value} Sudah Ada',
+          'max_length' => '{field} Maximum {param} Character',
+          ]
       ],
       'farmcode' => [
-        'label' => 'Kode Desa',
+        'label' => 'Kode Poktan',
         'rules' => 'required|max_length[10]',
         'errors' => [
           'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
-      'pemilik' => [
+      'ownerid' => [
         'label' => 'ID Pemilik',
         'rules' => 'required|max_length[10]',
         'errors' => [
@@ -171,7 +198,7 @@ class M_geophp extends Model
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
-      'penggarap' => [
+      'cultivatorid' => [
         'label' => 'ID Penggarap',
         'rules' => 'required|max_length[10]',
         'errors' => [
@@ -179,7 +206,6 @@ class M_geophp extends Model
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
-
     ];
   }
 }

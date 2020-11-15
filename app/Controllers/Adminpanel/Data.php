@@ -188,7 +188,7 @@ class Data extends \App\Controllers\BaseController
     else
     {
       $get = $this->request->getPost();
-
+      
       $data = $this->transposeData($get);
       $post = $this->M_plantdate->plantdates_post($id, $data);
 

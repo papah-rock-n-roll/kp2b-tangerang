@@ -38,6 +38,7 @@ class M_plantdate extends M_data
     {
       if(!empty($plant)) {
 
+        // jika nilai index baru lebih kecil dari data index lama
         // trim plant sesuai nilai indexnlant
         $plant = array_slice($plant, 0, $index);
 
@@ -46,10 +47,11 @@ class M_plantdate extends M_data
 
         // push data kosong ke variable $plan sesuai nilai Index Plant
         for($i = count($plant); $i < $index; ++$i) {
-          array_push($plant, $temp);
+             array_push($plant, $temp);
         }
 
       }
+      // jika index plant kosong
       else
       {
         // Ganti key Assoc berdasarkan Base fields dengan value ''
@@ -65,7 +67,6 @@ class M_plantdate extends M_data
       }
 
     }
-
     $data += [
       'action' => self::ACTS.'/'.$id,
       'idxlama' => $indxplant,
@@ -80,13 +81,12 @@ class M_plantdate extends M_data
 
   public function plantdates_post($id, $data)
   {
-    $this->query("DELETE FROM observations_plantdates WHERE obscode = {$id}");
+    foreach ($data as $k => $v) {
 
-    foreach ($data as $v) {
-
-      $uniq = uniqid();
+      $uniq = uniqid().'-'.session('privilage')->userid;
 
       $query = $this->query("CALL p_insertPlantdates(
+        '{$k}',
         '{$uniq}',
         '{$v['growceason']}',
         '{$v['monthgrow']}',
@@ -117,6 +117,5 @@ class M_plantdate extends M_data
 
     return $query->where('obscode', $id)->findAll();
   }
-
 
 }

@@ -56,6 +56,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
  */
 $routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) {
 	$routes->cli('writable/delete/(:any)', 'Access::writable_delete/$1');
+	$routes->cli('geo/public/cache/(:any)/(:any)', 'Geo::cache_geojson/$1/$2');
 });
 
 

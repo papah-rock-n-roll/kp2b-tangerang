@@ -87,7 +87,7 @@
               <?php $no = 1 ?>
               <?php for ($i = 0; $i < count($newlist); $i++) : ?>
                 <li class="nav-item"><a class="nav-link <?= $i == 0 ? 'active' : '' ?>" href="#tab_<?= $i ?>" data-toggle="tab">IP <?= $no ?></a></li>
-                <?php ++$no ?>
+                <?php $no++ ?>
               <?php endfor ?>
             </ul>
           </div>

@@ -7,6 +7,9 @@
       <?php
       $growceason_ = [
         'class' => $validation->hasError('growceason') ? 'form-control is-invalid' : 'form-control',
+        'type' => 'number',
+        'min' => '1',
+        'max' => '5',
         'name' => 'growceason[]',
         'minlength' => '1',
         'placeholder' => 'Enter musim',
@@ -73,7 +76,8 @@
       <?php
       $varieties_ = [
         'class' => $validation->hasError('varieties') ? 'form-control is-invalid' : 'form-control',
-        'type' => 'varieties',
+        'type' => 'input',
+        'minlength' => '1',
         'name' => 'varieties[]',
         'placeholder' => 'Enter Varietas',
         'value' => old('varieties') == null ? $varieties : old('varieties'),

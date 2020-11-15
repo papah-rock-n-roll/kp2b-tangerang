@@ -45,7 +45,7 @@
     </div>
   <?php endforeach ?>
 
-  <div class="pagination pagination-md m-0 float-right">
+  <div class="pagination pagination-md justify-content-center m-0">
     <?= $pager->links('users', 'bootstrap-pager') ?>
   </div>
 
