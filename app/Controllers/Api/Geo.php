@@ -34,7 +34,7 @@ class Geo extends ResourceController
     $info_fields = array(
       'areantatus', 'broadnrea'
     );
-    $data = $this->model->get_geojson('v_observations', 'obscode', 'obsshape', $info_fields);
+    $data = $this->model->get_geojson('v_observations', 'obscode', 'obsshape');
 
     if(!empty($data)) {
       return $this->respond($data);
@@ -148,7 +148,7 @@ class Geo extends ResourceController
  * public kondisi sdcode atau vlcode
  *
  * https://localhost/kp2b-tangerang/api/public?sdcode=xxxx
- * 
+ *
  * https://localhost/kp2b-tangerang/api/public?vlcode=xxxxxxx
  *
  * --------------------------------------------------------------------
@@ -161,7 +161,7 @@ class Geo extends ResourceController
           'vlcode' => $this->request->getGet('vlcode'),
         );
         $data = $this->model->get_public($conditions);
-    
+
         if(!empty($data)) {
           return $this->respond($data);
         }

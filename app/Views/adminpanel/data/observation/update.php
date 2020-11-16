@@ -1,7 +1,6 @@
 <?= $this->extend('partials/index') ?>
 <?= $this->section('link') ?>
 <?= \App\Libraries\Link::style()->select2 ?>
-<?= \App\Libraries\Link::style()->select2bootstrap ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -22,8 +21,14 @@
           <div class="form-group">
               <label for="">Pemilik</label>
               <?php
-              $selected = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
-              echo form_dropdown('ownerid', $owners, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              //$selected = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
+              //echo form_dropdown('ownerid', $owners, $ownerid, ['class' => 'custom-select select2'', 'style' => 'width: 100%;', 'required' => '']);
+              $ownerid = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
+              $ownernik = old('ownernik') == null ? $v['ownernik'] : old('ownernik');
+              $ownernname = old('ownername') == null ? $v['ownername'] : old('ownername');
+              echo '<select name="ownerid" class="form-control select2-owner">';
+                echo '<option value="'.$ownerid.'">'.$ownernik.' - '.$ownernname.'</option>';
+              echo '</select>';
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
@@ -33,8 +38,14 @@
             <div class="form-group">
               <label for="">Penggarap</label>
               <?php
-              $selected = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
-              echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              //$selected = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
+              //echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              $cultivatorid = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
+              $cultivatornik = old('cultivatornik') == null ? $v['cultivatornik'] : old('cultivatornik');
+              $cultivatorname = old('cultivatorname') == null ? $v['cultivatorname'] : old('cultivatorname');
+              echo '<select name="cultivatorid" class="form-control select2-cultivator">';
+                echo '<option value="'.$cultivatorid.'">'.$cultivatornik.' - '.$cultivatorname.'</option>';
+              echo '</select>';
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('cultivatorid') ?>
@@ -199,8 +210,8 @@
                 'class' => $validation->hasError('indxnlant') ? 'form-control is-invalid' : 'form-control',
                 'type' => 'number',
                 'name' => 'indxnlant',
-                'min' => '1',
-                'max' => '5',
+                'min' => '100',
+                'max' => '500',
                 'placeholder' => 'IP',
                 'value' => old('indxnlant') == null ? $v['indxnlant'] : old('indxnlant'),
                 'required' => ''
@@ -300,8 +311,7 @@
                 'name' => 'other',
                 'minlength' => '1',
                 'placeholder' => 'Enter..',
-                'value' => old('other') == null ? $v['other'] : old('other'),
-                'required' => ''
+                'value' => old('other') == null ? $v['other'] : old('other')
               ];
               echo form_input($other);
               ?>
@@ -414,7 +424,7 @@
             <div class="form-group">
               <label for="">Penggunaan Lahan</label>
               <?php $status = old('landuse') == null ? $v['landuse'] : old('landuse') ?>
-              <select class="form-control select2" name="landuse" style="width: 100%;" required>
+              <select class="form-control select2-input" name="landuse" style="width: 100%;" required>
                 <option <?= $status == 'Sawah' ? 'selected' : '' ?> >Sawah</option>
                 <option <?= $status == 'Non Sawah' ? 'selected' : '' ?> >Non Sawah</option>
                 <option <?= $status == 'Pemukiman' ? 'selected' : '' ?> >Pemukiman</option>
@@ -443,7 +453,6 @@
 <?= \App\Libraries\Link::script()->select2 ?>
 
 <script>
-  //$.fn.select2.defaults.set( "theme", "bootstrap" );
 
   $('.select2').select2()
 
@@ -454,6 +463,104 @@
   $(".select2-multi").select2({
     tags: true
   });
+
+  $(".select2-owner").select2({
+    ajax: {
+      url: "/api/owners",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+
+        var results = [];
+        $.each(data.results, function(k, v) {
+            results.push({
+                id: v.ownerid,
+                text: v.ownernik + ' - ' + v.ownername
+            });
+        });
+
+        return {
+          results: results,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },
+    placeholder: 'Pilih pemilik',
+    minimumInputLength: 1,
+    templateResult: formatData,
+    templateSelection: formatDataSelection
+  });
+
+  function formatData (data) {
+    if (data.loading) {
+      return data.text;
+    }
+
+    return data.text;
+  }
+
+  function formatDataSelection (data) {
+    return data.text;
+  }
+
+  $(".select2-cultivator").select2({
+    ajax: {
+      url: "/api/owners",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+
+        var results = [];
+        $.each(data.results, function(k, v) {
+            results.push({
+                id: v.ownerid,
+                text: v.ownernik + ' - ' + v.ownername
+            });
+        });
+
+        return {
+          results: results,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },
+    placeholder: 'Pilih penggarap',
+    minimumInputLength: 1,
+    templateResult: formatData,
+    templateSelection: formatDataSelection
+  });
+
+  function formatData (data) {
+    if (data.loading) {
+      return data.text;
+    }
+
+    return data.text;
+  }
+
+  function formatDataSelection (data) {
+    return data.text;
+  }
 
 </script>
 

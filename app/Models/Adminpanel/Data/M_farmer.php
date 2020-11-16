@@ -7,9 +7,9 @@
  *
  * --------------------------------------------------------------------
  */
-  
+
 class M_farmer extends M_data
-{ 
+{
   const VIEW = 'adminpanel/data/farmer/';
 
   const ACTS = 'administrator/data/farmer/';
@@ -99,7 +99,7 @@ class M_farmer extends M_data
   }
 
   public function upload_new($data)
-  { 
+  {
     $data += [
       'action' => self::ACTS.'upload',
       'back' => self::BACK,
@@ -108,17 +108,17 @@ class M_farmer extends M_data
   }
 
   public function upload_post($file)
-  { 
+  {
     $db = \Config\Database::connect();
 
     $filename = $file->getName();
     $extension = $file->getClientExtension();
 
     // load phpspreadsheet static function M_data
-    if($extension == 'xlsx' || 'Xlsx' ) 
-      $reader = M_data::reader_sheet('xlsx'); 
+    if($extension == 'xlsx' || 'Xlsx' )
+      $reader = M_data::reader_sheet('xlsx');
     else $reader = M_data::reader_sheet('xls');
-    
+
     $spreadsheet = $reader->load($file);
     $sheet = $spreadsheet->getActiveSheet()->toArray();
 
@@ -131,7 +131,7 @@ class M_farmer extends M_data
 
     // cek primary key farmcode
     $farmcode = array_column($sheet, 0);
-    $query = $db->query("SELECT farmcode 
+    $query = $db->query("SELECT farmcode
       FROM mstr_farmers
       WHERE farmcode IN (".implode(',', $farmcode).")
     ")->getResultArray();
@@ -141,18 +141,18 @@ class M_farmer extends M_data
 
     if(!empty($inDB)) {
       session()->setFlashdata(
-        'duplicate', 
+        'duplicate',
         'Perhatian.. Semua nilai fields dengan Primary Key ini Akan Terganti.'
       );
     }
 
     if(!empty($outDB)) {
       session()->setFlashdata(
-        'newdata', 
+        'newdata',
         'Data Baru.. Kamu akan menjadi penghuni baru di Database'
       );
     }
-      
+
     $data = [
       'inDB' => implode(', ', $inDB),
       'outDB' => implode(', ', $outDB),
@@ -169,7 +169,7 @@ class M_farmer extends M_data
  * --------------------------------------------------------------------
  * Query
  * --------------------------------------------------------------------
- */  
+ */
   public function getFarmlist($where = null, $like = null, $orLike = null, $paginate = 5)
   {
     $query = $this->select('farmcode, farmname, farmmobile, farmhead')
@@ -178,7 +178,7 @@ class M_farmer extends M_data
 
     return $query->paginate($paginate, 'farmers');
   }
- 
+
   public function getFarmers()
   {
     return $this->findAll();
@@ -187,6 +187,33 @@ class M_farmer extends M_data
   public function getFarmer($id)
   {
     return $this->where('farmcode', $id)->first();
+  }
+
+
+  // Api owners - Remote Select2
+  public function getRemoteFarmer($selected, $page)
+  {
+    if(empty($selected)) $selected = '';
+    if(empty($page)) $page = 0;
+
+    $offset = $page * 10;
+
+    $like = ['mstr_farmers.farmcode' => $selected];
+    $orlike = ['mstr_farmers.farmname' => $selected];
+
+    $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
+    $alldata = $this->like($like, 'match')->orlike($orlike, 'match')->findAll();
+    $totaldata = count($alldata);
+
+    $result = array(
+      'total_count' => $totaldata,
+      'results' => $data
+    );
+
+    $result = json_encode($result, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
+
+    return $result;
   }
 
 
@@ -222,7 +249,7 @@ class M_farmer extends M_data
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
-    
+
     ];
 
   }
@@ -249,7 +276,7 @@ class M_farmer extends M_data
  * --------------------------------------------------------------------
  */
   function import($data)
-  { 
+  {
     $db = \Config\Database::connect();
     $filename = $data['filename'];
 
@@ -263,7 +290,7 @@ class M_farmer extends M_data
 
     }
     $affectedRows = $db->affectedRows() > 0 ? true : false;
-    
+
     cache()->delete($filename.'.cache');
 
     return $affectedRows;

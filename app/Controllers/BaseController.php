@@ -42,7 +42,7 @@ class BaseController extends Controller
 		// E.g.:
 		$this->session = \Config\Services::session();
 		$this->validation = \Config\Services::validation();
-		
+
 
 		// Public
 		$this->M_geophp = model('App\Models\M_geophp');
@@ -62,6 +62,10 @@ class BaseController extends Controller
 
 		// Data Panel
 		$this->M_data = model('App\Models\Adminpanel\Data\M_data');
+
+		// Geo Panel
+		$this->M_geo = model('App\Models\Adminpanel\Geo\M_geo');
+
 		//---
 		$this->M_observation = model('App\Models\Adminpanel\Data\M_observation');
 		$this->M_plantdate = model('App\Models\Adminpanel\Data\M_plantdate');
@@ -69,7 +73,7 @@ class BaseController extends Controller
 		$this->M_owner = model('App\Models\Adminpanel\Data\M_owner');
 		$this->M_farmer = model('App\Models\Adminpanel\Data\M_farmer');
 		$this->M_responden = model('App\Models\Adminpanel\Data\M_responden');
-		
+
 	}
 
 }
