@@ -6,7 +6,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title">Create Farm</h5>
+    <h5 class="card-title">Tambah data Poktan</h5>
   </div>
 
   <?php echo form_open($action) ?>
@@ -15,13 +15,13 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="">Chief Name</label>
-          <?php 
+          <label for="">Nama ketua Poktan</label>
+          <?php
           $farmhead = [
             'type' => 'text',
             'class' => $validation->hasError('farmhead') ? 'form-control is-invalid' : 'form-control',
             'name' => 'farmhead',
-            'placeholder' => 'Enter Farm Name',
+            'placeholder' => 'Masukkan nama ketua poktan',
             'minlength' => '1',
             'value' => old('farmhead') == null ? '' : old('farmhead'),
             'required' => ''
@@ -36,13 +36,13 @@
 
       <div class="col-md-6">
         <div class="form-group">
-          <label for="">Phone</label>
-            <?php 
+          <label for="">No kontak ketua Poktan</label>
+            <?php
             $farmmobile = [
               'type' => 'text',
               'class' => $validation->hasError('farmmobile') ? 'form-control is-invalid' : 'form-control',
               'name' => 'farmmobile',
-              'placeholder' => 'Enter Name',
+              'placeholder' => 'Masukkan no kontak ketua poktan',
               'minlength' => '1',
               'value' => old('farmmobile') == null ? '' : old('farmmobile'),
               'required' => ''
@@ -53,19 +53,19 @@
               <?= $validation->getError('farmmobile') ?>
             </div>
         </div>
-      </div>      
-    </div>         
-     
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
-          <label for="">Farm Name</label>
+          <label for="">Nama Poktan</label>
           <?php
           $farmname = [
             'type' => 'text',
             'class' => $validation->hasError('farmname') ? 'form-control is-invalid' : 'form-control',
             'name' => 'farmname',
-            'placeholder' => 'Enter Name',
+            'placeholder' => 'Masukkan nama Poktan',
             'minlength' => '1',
             'value' => old('farmname') == null ? '' : old('farmname'),
             'required' => ''
@@ -76,7 +76,7 @@
             <?= $validation->getError('farmname') ?>
           </div>
         </div>
-      </div>        
+      </div>
     </div>
 
   </div>

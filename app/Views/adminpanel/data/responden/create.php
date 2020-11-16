@@ -6,7 +6,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title">Create Responden</h5>
+    <h5 class="card-title">Tambah data responden</h5>
   </div>
 
   <?php echo form_open($action) ?>
@@ -16,12 +16,12 @@
       <div class="col-md-6">
         <div class="form-group">
           <label for="">Name</label>
-          <?php 
+          <?php
           $respname = [
             'type' => 'text',
             'class' => $validation->hasError('respname') ? 'form-control is-invalid' : 'form-control',
             'name' => 'respname',
-            'placeholder' => 'Enter Name',
+            'placeholder' => 'Masukkan nama responden',
             'minlength' => '1',
             'value' => old('respname') == null ? '' : old('respname'),
             'required' => ''
@@ -37,12 +37,12 @@
       <div class="col-md-6">
         <div class="form-group">
           <label for="">Phone</label>
-            <?php 
+            <?php
             $mobileno = [
               'type' => 'text',
               'class' => $validation->hasError('mobileno') ? 'form-control is-invalid' : 'form-control',
               'name' => 'mobileno',
-              'placeholder' => 'Enter Phone',
+              'placeholder' => 'Masukkan no tlp responden',
               'minlength' => '1',
               'value' => old('mobileno') == null ? '' : old('mobileno'),
               'required' => ''
@@ -53,8 +53,8 @@
               <?= $validation->getError('mobileno') ?>
             </div>
         </div>
-      </div>      
-    </div>         
+      </div>
+    </div>
   </div>
   <div class="card-footer">
     <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
