@@ -201,39 +201,12 @@ class M_farmer extends M_data
     $orlike = ['mstr_farmers.farmhead' => $selected];
 
     $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
-
-    $total_count = count($data);
-    
-    $result = array(
-      'total_count' => $total_count,
-      'results' => $data,
-    );
-
-    $result = json_encode($result, JSON_NUMERIC_CHECK);
-    $result = json_decode($result, true);
-
-    return $result;
-  }
-
-
-  // Api owners - Remote Select2
-  public function getRemoteFarmer($selected, $page)
-  {
-    if(empty($selected)) $selected = '';
-    if(empty($page)) $page = 0;
-
-    $offset = $page * 10;
-
-    $like = ['mstr_farmers.farmcode' => $selected];
-    $orlike = ['mstr_farmers.farmname' => $selected];
-
-    $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
     $alldata = $this->like($like, 'match')->orlike($orlike, 'match')->findAll();
     $totaldata = count($alldata);
-
+    
     $result = array(
       'total_count' => $totaldata,
-      'results' => $data
+      'results' => $data,
     );
 
     $result = json_encode($result, JSON_NUMERIC_CHECK);

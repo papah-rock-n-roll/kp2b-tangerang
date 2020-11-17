@@ -159,6 +159,7 @@ class M_observation extends M_data
       `harvstmin` = '{$v['harvstmin']}',
       `monthmin` = '{$v['monthmin']}',
       `harvstsell` = '{$v['harvstsell']}',
+      `vlcode` = '{$v['vlcode']}',
       `farmcode` = '{$v['farmcode']}',
       `ownerid` = '{$v['ownerid']}',
       `cultivatorid` = '{$v['cultivatorid']}',
