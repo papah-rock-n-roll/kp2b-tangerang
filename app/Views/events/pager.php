@@ -3,8 +3,13 @@
 	<ul class="pagination">
 		<?php if ($pager->hasPrevious()) : ?>
 			<li class="page-item">
+				<a href="<?= $pager->getFirst() ?>" aria-label="<?= lang('Pager.first') ?>" class="page-link">
+					<span aria-hidden="true">Awal</span>
+				</a>
+			</li>
+			<li class="page-item">
 				<a href="<?= $pager->getPrevious() ?>" class="page-link" aria-label="<?= lang('Pager.previous') ?>">
-					<span>«</span>
+					<span aria-hidden="true">«</span>
 				</a>
 			</li>
 		<?php endif ?>
@@ -25,7 +30,7 @@
 			</li>
 			<li class="page-item">
 				<a href="<?= $pager->getLast() ?>" aria-label="<?= lang('Pager.last') ?>" class="page-link">
-					<span aria-hidden="true">Last</span>
+					<span aria-hidden="true">Akhir</span>
 				</a>
 			</li>
 		<?php endif ?>

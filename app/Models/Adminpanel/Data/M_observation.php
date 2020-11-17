@@ -257,7 +257,7 @@ class M_observation extends M_data
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('obscode ASC');
 
-    return $query->paginate($paginate, 'observations');
+    return $query->paginate($paginate, 'default');
   }
 
   public function getObservation($id)
@@ -282,7 +282,7 @@ class M_observation extends M_data
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('obscode ASC');
 
-    return $query->paginate($paginate, 'observations');
+    return $query->paginate($paginate, 'default');
   }
 
 
@@ -446,10 +446,10 @@ class M_observation extends M_data
       $where = ['v_observations.farmcode' => $farm];
     }
 
-    // Jika Tidak null maka like ownernik - or like ownername = $_['GET'] keyword
+    // Jika Tidak null maka like obscode - or like ownername = $_['GET'] keyword
     if(!empty($keyword)) {
-      $like = ['v_observations.ownername' => $keyword];
-      $orLike = ['v_observations.ownernik' => $keyword];
+      $like = ['v_observations.obscode' => $keyword];
+      $orLike = ['v_observations.ownername' => $keyword];
     }
 
     // get observations berdaskan filter data yang ditampilkan ke list awal

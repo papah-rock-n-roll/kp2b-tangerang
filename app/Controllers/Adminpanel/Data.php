@@ -155,13 +155,9 @@ class Data extends \App\Controllers\BaseController
     $farm = $this->request->getGet('farm');
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
-
-    // fetch data farmers dengan array column farmname - farmcode
-    $farms = $this->M_farmer->getFarmers();
-    $data['farms'] = array('' => 'Choose Farmer') + array_column($farms, 'farmname', 'farmcode');
     
     // fetch data dengan memanggil fungsi model observation
-    $this->M_observation->export($farm, $keyword, $data, $paginate);
+    $this->M_observation->export($farm, $keyword, null, $paginate);
   }
 
 
@@ -565,11 +561,23 @@ class Data extends \App\Controllers\BaseController
 
   function fetchDropdown()
   {
-    $subdistricts = $this->M_data->getSubdistricts();
-    $data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
+    //$subdistricts = $this->M_data->getSubdistricts();
+    //$data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
 
-    $villages = $this->M_data->getVillages();
-    $data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
+    //$villages = $this->M_data->getVillages();
+    //$data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
+
+    $SubdistVillage = $this->M_data->getSubdistVillage();
+    $newsubdist = array();
+    foreach ($SubdistVillage as $k => $v) {
+      foreach ($v as $nk => $nv) {
+        if ($nk == 'vlname') {
+          $newsubdist[$k]['newsubdist'] = $v['sdname'] . ' - ' . $v['vlname'];
+        }
+        $newsubdist[$k][$nk] = $nv;
+      }
+    }
+    $data['villages'] = array('' => 'Pilih desa') + array_column($newsubdist, 'newsubdist', 'vlcode');
 
     $respondens = $this->M_responden->getRespondens();
     $data['respondens'] = array('' => 'Pilih responden') + array_column($respondens, 'respname', 'respid');
@@ -579,7 +587,6 @@ class Data extends \App\Controllers\BaseController
 
     $owners = $this->M_owner->getOwners();
     $newowners = array();
-
     foreach ($owners as $k => $v) {
       foreach ($v as $nk => $nv) {
         if ($nk == 'ownername') {

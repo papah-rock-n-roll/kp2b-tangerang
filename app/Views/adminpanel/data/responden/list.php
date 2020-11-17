@@ -101,7 +101,7 @@
   </div>
   <div class="card-footer clearfix">
     <div class="pagination pagination-sm pagination-md m-0 float-right">
-      <?= $pager->links('respondens', 'bootstrap-pager') ?>
+      <?= $pager->links('default', 'bootstrap-pager') ?>
     </div>
   </div>
 </div>

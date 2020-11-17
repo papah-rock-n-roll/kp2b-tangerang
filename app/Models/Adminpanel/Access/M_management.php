@@ -160,7 +160,7 @@ class M_management extends M_access
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('userid DESC');
 
-    return $query->paginate($paginate, 'users');
+    return $query->paginate($paginate, 'default');
   }
 
   public function getUser($id = null)

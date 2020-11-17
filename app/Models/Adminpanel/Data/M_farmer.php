@@ -176,7 +176,7 @@ class M_farmer extends M_data
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('farmcode ASC');
 
-    return $query->paginate($paginate, 'farmers');
+    return $query->paginate($paginate, 'default');
   }
  
   public function getFarmers()
@@ -187,6 +187,32 @@ class M_farmer extends M_data
   public function getFarmer($id)
   {
     return $this->where('farmcode', $id)->first();
+  }
+
+  // Api farmer - Remote Select2
+  public function getRemoteFarmer($selected, $page)
+  {
+    if(empty($selected)) $selected = '';
+    if(empty($page)) $page = 0;
+
+    $offset = $page * 10;
+
+    $like = ['mstr_farmers.farmname' => $selected];
+    $orlike = ['mstr_farmers.farmhead' => $selected];
+
+    $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
+
+    $total_count = count($data);
+    
+    $result = array(
+      'total_count' => $total_count,
+      'results' => $data,
+    );
+
+    $result = json_encode($result, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
+
+    return $result;
   }
 
 

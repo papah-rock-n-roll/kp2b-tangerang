@@ -115,7 +115,7 @@ class M_user extends Model
     ->groupBy('t_frmobs.userid')
     ->orderBy('mstr_users.userid DESC');
         
-    return $query->paginate($paginate, 'users');
+    return $query->paginate($paginate, 'default');
   }
 
 
