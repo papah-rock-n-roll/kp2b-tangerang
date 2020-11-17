@@ -1,16 +1,10 @@
-<?php namespace App\Models;
+<?php namespace App\Models\Adminpanel\Geo;
 
 use CodeIgniter\Model;
 use geoPHP;
 
-class M_geophp extends Model
+class M_geo extends Model
 {
-  protected $table = 'observations_frmobservations';
-  protected $primaryKey = 'obscode';
-  protected $allowedFields = ['obscode','vlcode','farmcode','ownerid','cultivatorid'];
-
-  protected $db;
-
   public function __construct()
   {
     // init config database
@@ -62,7 +56,7 @@ class M_geophp extends Model
   }
 
   // geojson converter
-  public function get_geojson($table, $id_field, $geom_field, $info_fields = null, $sdcode = null, $vlcode = null){
+  public function get_geojson($table, $id_field, $geom_field, $info_fields, $sdcode = null, $vlcode = null){
 
     // Break fields array
     $fields = '';

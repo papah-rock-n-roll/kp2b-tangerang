@@ -7,7 +7,7 @@
  *
  * --------------------------------------------------------------------
  */
-  
+
 class M_observation extends M_data
 {
   const VIEW = 'adminpanel/data/observation/';
@@ -112,7 +112,7 @@ class M_observation extends M_data
   {
     // Data Observation By obscode
     $obs = $this->getObservation($id);
-    
+
     // function Observation By base value typeirigation, opt, saprotan
     $observation = $this->recursiveBase($obs);
 
@@ -140,30 +140,30 @@ class M_observation extends M_data
     $userid = session('privilage')->userid;
     $timestamp = date('y-m-d H:i:s');
 
-    $db->query("UPDATE `lppbmis`.`observations_frmobservations` SET 
-      `areantatus` = '{$v['areantatus']}', 
-      `broadnrea` = '{$v['broadnrea']}', 
-      `typeirigation` = '{$v['typeirigation']}', 
-      `distancefromriver` = '{$v['distancefromriver']}', 
-      `distancefromIrgPre` = '{$v['distancefromIrgPre']}', 
+    $db->query("UPDATE `lppbmis`.`observations_frmobservations` SET
+      `areantatus` = '{$v['areantatus']}',
+      `broadnrea` = '{$v['broadnrea']}',
+      `typeirigation` = '{$v['typeirigation']}',
+      `distancefromriver` = '{$v['distancefromriver']}',
+      `distancefromIrgPre` = '{$v['distancefromIrgPre']}',
       `wtrtreatnnst` = '{$v['wtrtreatnnst']}',
-      `intensitynlan` = '{$v['intensitynlan']}', 
-      `indxnlant` = '{$v['indxnlant']}', 
-      `pattrnnlant` = '{$v['pattrnnlant']}', 
-      `opt` = '{$v['opt']}', 
-      `wtr` = '{$v['wtr']}', 
-      `saprotan` = '{$v['saprotan']}', 
-      `other` = '{$v['other']}', 
-      `harvstmax` = '{$v['harvstmax']}', 
-      `monthmax` = '{$v['monthmax']}', 
-      `harvstmin` = '{$v['harvstmin']}', 
-      `monthmin` = '{$v['monthmin']}', 
-      `harvstsell` = '{$v['harvstsell']}', 
-      `farmcode` = '{$v['farmcode']}', 
-      `ownerid` = '{$v['ownerid']}', 
-      `cultivatorid` = '{$v['cultivatorid']}', 
-      `respid` = '{$v['respid']}', 
-      `userid` = '{$userid}', 
+      `intensitynlan` = '{$v['intensitynlan']}',
+      `indxnlant` = '{$v['indxnlant']}',
+      `pattrnnlant` = '{$v['pattrnnlant']}',
+      `opt` = '{$v['opt']}',
+      `wtr` = '{$v['wtr']}',
+      `saprotan` = '{$v['saprotan']}',
+      `other` = '{$v['other']}',
+      `harvstmax` = '{$v['harvstmax']}',
+      `monthmax` = '{$v['monthmax']}',
+      `harvstmin` = '{$v['harvstmin']}',
+      `monthmin` = '{$v['monthmin']}',
+      `harvstsell` = '{$v['harvstsell']}',
+      `farmcode` = '{$v['farmcode']}',
+      `ownerid` = '{$v['ownerid']}',
+      `cultivatorid` = '{$v['cultivatorid']}',
+      `respid` = '{$v['respid']}',
+      `userid` = '{$userid}',
       `timestamp` = '{$timestamp}'
       WHERE `obscode` = {$id}
     ");
@@ -178,7 +178,7 @@ class M_observation extends M_data
   }
 
   public function upload_new($data)
-  { 
+  {
     $data += [
       'action' => self::ACTS.'upload',
       'back' => self::BACK,
@@ -187,17 +187,17 @@ class M_observation extends M_data
   }
 
   public function upload_post($file)
-  { 
+  {
     $db = \Config\Database::connect();
 
     $filename = $file->getName();
     $extension = $file->getClientExtension();
 
     // load phpspreadsheet static function M_data
-    if($extension == 'xlsx' || 'Xlsx' ) 
-      $reader = M_data::reader_sheet('xlsx'); 
+    if($extension == 'xlsx' || 'Xlsx' )
+      $reader = M_data::reader_sheet('xlsx');
     else $reader = M_data::reader_sheet('xls');
-    
+
     $spreadsheet = $reader->load($file);
     $sheet = $spreadsheet->getActiveSheet()->toArray();
 
@@ -210,8 +210,8 @@ class M_observation extends M_data
 
     // cek primary key obscode
     $obscode = array_column($sheet, 0);
-    $query = $db->query("SELECT obscode 
-      FROM observations_frmobservations 
+    $query = $db->query("SELECT obscode
+      FROM observations_frmobservations
       WHERE obscode IN (".implode(',', $obscode).")
     ")->getResultArray();
 
@@ -220,18 +220,18 @@ class M_observation extends M_data
 
     if(!empty($inDB)) {
       session()->setFlashdata(
-        'duplicate', 
+        'duplicate',
         'Perhatian.. Semua nilai fields dengan Primary Key ini Akan Terganti.'
       );
     }
 
     if(!empty($outDB)) {
       session()->setFlashdata(
-        'newdata', 
+        'newdata',
         'Data Baru.. Kamu akan menjadi penghuni baru di Database'
       );
     }
-      
+
     $data = [
       'inDB' => implode(', ', $inDB),
       'outDB' => implode(', ', $outDB),
@@ -251,8 +251,8 @@ class M_observation extends M_data
  */
   public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
   {
-    $query = $this->select('obscode,	sdcode,	sdname,	
-    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,	
+    $query = $this->select('obscode,	sdcode,	sdname,
+    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,
     cultivatorid,	cultivatornik,	cultivatorname')
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('obscode ASC');
@@ -262,11 +262,11 @@ class M_observation extends M_data
 
   public function getObservation($id)
   {
-    $query = $this->select('obscode,	areantatus,	broadnrea,	
-    typeirigation,	distancefromriver,	distancefromIrgPre,	wtrtreatnnst,	
-    intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,	other,	
-    harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdcode,	sdname,	
-    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,	
+    $query = $this->select('obscode,	areantatus,	broadnrea,
+    typeirigation,	distancefromriver,	distancefromIrgPre,	wtrtreatnnst,
+    intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,	other,
+    harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdcode,	sdname,
+    vlcode,	vlname,	farmcode,	farmname,	ownerid,	ownernik,	ownername,
     cultivatorid,	cultivatornik,	cultivatorname,	landuse, respid, respname, userid,	username')
     ->where('obscode', $id)->first();
 
@@ -276,8 +276,8 @@ class M_observation extends M_data
   public function getExport($where = null, $like = null, $orLike = null, $paginate = 5)
   {
     $query = $this->select('obscode,	areantatus,	broadnrea,	typeirigation,	distancefromriver,
-    distancefromIrgPre,	wtrtreatnnst,	intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,	
-    other,	harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdname, vlcode,	vlname,	farmcode, farmname,	
+    distancefromIrgPre,	wtrtreatnnst,	intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,
+    other,	harvstmax,	monthmax,	harvstmin,	monthmin,	harvstsell,	sdname, vlcode,	vlname,	farmcode, farmname,
     ownerid, ownernik,	ownername,	cultivatorid, cultivatornik,	cultivatorname,	landuse, respid, respname')
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('obscode ASC');
@@ -336,13 +336,12 @@ class M_observation extends M_data
       ],
       'other' => [
         'label' => 'Other',
-        'rules' => 'required|max_length[100]',
+        'rules' => 'max_length[100]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
-      
+
     ];
 
   }
@@ -383,7 +382,7 @@ class M_observation extends M_data
     // Ganti key Assoc irigation berdasarkan Base dengan value Selected
     $selected = array_fill_keys($typeirigation, 'selected');
     $newObs['typeirigation'] = array_replace_recursive($irigationbase, $selected);
-    
+
     // Ganti key Assoc OPT berdasarkan Base dengan value Selected
     $selected = array_fill_keys($opt, 'selected');
     $newObs['opt'] = array_replace_recursive($optbase, $selected);
@@ -400,7 +399,7 @@ class M_observation extends M_data
 
 
   function import($data)
-  { 
+  {
     $db = \Config\Database::connect();
     $filename = $data['filename'];
 
@@ -418,7 +417,7 @@ class M_observation extends M_data
       )");
     }
     $affectedRows = $db->affectedRows() > 0 ? true : false;
-    
+
     cache()->delete($filename.'.cache');
 
     return $affectedRows;
@@ -534,5 +533,5 @@ class M_observation extends M_data
 
     $writer->save('php://output');
   }
-  
+
 }

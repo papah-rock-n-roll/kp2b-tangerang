@@ -65,14 +65,14 @@
       <thead>
         <tr>
           <th style="width: 10%">No</th>
-          <th style="width: 30%">Nama</th>
+          <th style="width: 30%">Nama Poktan</th>
           <th style="width: 50%">Keterangan</th>
           <th style="width: 10%">Action</th>
         </tr>
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-      <tr><td colspan="4"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
+      <tr><td colspan="4"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
       <?php else : ?>
       <?php foreach($list as $k => $v) : ?>
         <tr>
@@ -122,7 +122,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
-<?php 
+<?php
 if(! empty(session()->getFlashdata('warning'))) {
   $toast = [
   'class' => 'bg-warning',

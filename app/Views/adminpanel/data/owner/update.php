@@ -6,7 +6,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title">Update Owner</h5>
+    <h5 class="card-title">Ubah data pemilik</h5>
   </div>
 
   <?php echo form_open($action) ?>
@@ -16,12 +16,12 @@
       <div class="col-md-6">
         <div class="form-group">
           <label for="">NIK</label>
-          <?php 
+          <?php
           $usernik = [
             'type' => 'text',
             'class' => $validation->hasError('ownernik') ? 'form-control is-invalid' : 'form-control',
             'name' => 'ownernik',
-            'placeholder' => 'Enter NIK',
+            'placeholder' => 'Masukkan NIK pemilik',
             'minlength' => '1',
             'value' => old('ownernik') == null ? $v['ownernik'] : old('ownernik'),
             'required' => ''
@@ -37,12 +37,12 @@
       <div class="col-md-6">
         <div class="form-group">
           <label for="">Nama</label>
-            <?php 
+            <?php
             $ownername = [
               'type' => 'text',
               'class' => $validation->hasError('ownername') ? 'form-control is-invalid' : 'form-control',
               'name' => 'ownername',
-              'placeholder' => 'Enter Name',
+              'placeholder' => 'Masukkan nama pemilik',
               'minlength' => '1',
               'value' => old('ownername') == null ? $v['ownername'] : old('ownername'),
               'required' => ''
@@ -53,9 +53,9 @@
               <?= $validation->getError('ownername') ?>
             </div>
         </div>
-      </div>      
-    </div>         
-     
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-12">
         <div class="form-group">
@@ -67,7 +67,7 @@
             'rows' => '3',
             'name' => 'owneraddress',
             'minlength' => '1',
-            'placeholder' => 'Address',
+            'placeholder' => 'Masukkan alamat pemilik',
             'value' => old('owneraddress') == null ? $v['owneraddress'] : old('owneraddress'),
             'required' => ''
           ];
@@ -77,7 +77,7 @@
             <?= $validation->getError('owneraddress') ?>
           </div>
         </div>
-      </div>        
+      </div>
     </div>
 
   </div>

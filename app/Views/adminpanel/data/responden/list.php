@@ -60,7 +60,7 @@
         <tr>
           <th style="width: 10%">No</th>
           <th style="width: 30%">Nama</th>
-          <th style="width: 50%">Phone</th>
+          <th style="width: 50%">No. Tlp</th>
           <th style="width: 10%">Action</th>
         </tr>
       </thead>

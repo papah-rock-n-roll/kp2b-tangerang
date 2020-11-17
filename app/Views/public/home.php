@@ -28,11 +28,12 @@
     "esri/widgets/Fullscreen",
     "esri/widgets/Search",
     "esri/widgets/Editor",
+    "esri/widgets/Legend",
     "dojo/dom-construct",
     "dojo/dom",
     "dojo/on",
     "esri/core/watchUtils"
-  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, Editor, domConstruct, dom, on, watchUtils) {
+  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, Editor, Legend, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
@@ -76,16 +77,49 @@
       return div;
     }
 
-    const renderer = {
-      type: "simple",
-      field: "FID",
-      symbol: {
+    function createSymbol(color) {
+      return {
         type: "simple-fill",
-        color: "green",
+        color: color ? color : [0,0,0,0],
         outline: {
-          color: "white"
+          width: 0.5,
+          color: [255,255,255,0.5],
         }
-      }
+      };
+    }
+
+    const colors = [ "red", "blue", "green", "yellow", "purple" ];
+
+    const renderer = {
+      type: "unique-value",
+      field: "areantatus",
+      legendOptions: {
+        title: "Status lahan"
+      },
+      uniqueValueInfos: [
+        {
+          value: "MILIK",
+          symbol: createSymbol("#28a745"),
+          label: "Milik"
+        },
+        {
+          value: "SEWA",
+          symbol: createSymbol("#ffc107"),
+          label: "Sewa"
+        },
+        {
+          value: "GARAP",
+          symbol: createSymbol("#dc3545"),
+          label: "Garap"
+        },
+        {
+          value: "LAINNYA",
+          symbol: createSymbol("#17a2b8"),
+          label: "Lainnya"
+        }
+      ],
+      defaultSymbol: createSymbol("gray"),
+      defaultLabel: "Null"
     };
 
     const map = new Map({
@@ -167,40 +201,6 @@
         "bottom-left"
       );
 
-      var layerList = new LayerList({
-        view: view,
-        listItemCreatedFunction: defineActions
-      });
-
-      view.ui.add(
-        new Expand({
-          view: view,
-          content: layerList
-        }),
-        "top-left"
-      );
-
-      layerList.on("trigger-action", function (event) {
-
-        var id = event.action.id;
-
-        if (id === "full-extent") {
-          view.goTo(geojsonLayer.fullExtent).catch(function (error) {
-            if (error.name != "AbortError") {
-              console.error(error);
-            }
-          });
-        } else if (id === "increase-opacity") {
-          if (geojsonLayer.opacity < 1) {
-            geojsonLayer.opacity += 0.25;
-          }
-        } else if (id === "decrease-opacity") {
-          if (geojsonLayer.opacity > 0) {
-            geojsonLayer.opacity -= 0.25;
-          }
-        }
-      });
-
       $.ajax({
         async : false,
         headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -258,11 +258,11 @@
       }
 
       // Update layers
-      function updateLayer(kec, desa){
+      function updateLayer(data, kec, desa){
         map.layers.removeAll();
         popup.close();
         geojsonLayer = new GeoJSONLayer({
-          url: url + "/info?table=v_observations&fid=obscode&shape=obsshape&sdcode=" + kec + "&vlcode=" + desa,
+          url: url + "/info?table=v_observations&fid=obscode&shape=obsshape&fields=" + data + "&sdcode=" + kec + "&vlcode=" + desa,
           copyright: "Dinas Pertanian Kab. Tangerang",
           popupTemplate: template,
           renderer: renderer,
@@ -277,7 +277,13 @@
         layerAdd.collapse();
       }
 
-      var kecDom = '<div class="form-group input-group-sm" id="kecForm"> \
+      var kecDom = '<div class="form-group input-group-sm" id="dataForm"> \
+        <label>Pilih jenis data</label> \
+        <select class="form-control" id="layerData"> \
+          <option value="areantatus">Status lahan</option> \
+        </select> \
+      </div> \
+      <div class="form-group input-group-sm" id="kecForm"> \
         <label>Pilih kecamatan</label> \
         <select class="form-control" id="layerKec"> \
           <option value="">Semua kecamatan</option>';
@@ -316,9 +322,51 @@
           getDesa(this.value);
         });
         on(dom.byId("applyLayer"), 'click', function(){
-          updateLayer($("#layerKec").val(), $("#layerDesa").val());
+          updateLayer($("#layerData").val(), $("#layerKec").val(), $("#layerDesa").val());
         });
       });
+
+      var layerList = new LayerList({
+        view: view,
+        listItemCreatedFunction: defineActions
+      });
+
+      view.ui.add(
+        new Expand({
+          view: view,
+          content: layerList
+        }),
+        "top-left"
+      );
+
+      layerList.on("trigger-action", function (event) {
+
+        var id = event.action.id;
+
+        if (id === "full-extent") {
+          view.goTo(geojsonLayer.fullExtent).catch(function (error) {
+            if (error.name != "AbortError") {
+              console.error(error);
+            }
+          });
+        } else if (id === "increase-opacity") {
+          if (geojsonLayer.opacity < 1) {
+            geojsonLayer.opacity += 0.25;
+          }
+        } else if (id === "decrease-opacity") {
+          if (geojsonLayer.opacity > 0) {
+            geojsonLayer.opacity -= 0.25;
+          }
+        }
+      });
+
+      const legend = new Expand({
+        content: new Legend({
+          view: view
+        }),
+        view: view
+      });
+      view.ui.add(legend, "top-left");
 
     });
 
