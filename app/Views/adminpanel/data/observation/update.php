@@ -247,6 +247,17 @@
           <div class="col-md-6"><!-- RIGHT col-md-6 -->
 
             <div class="form-group">
+              <label for="">Desa</label>
+              <?php
+              $selected = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
+              echo form_dropdown('vlcode', $villages, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              ?>
+              <div class="invalid-feedback">
+                <?= $validation->getError('vlcode') ?>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label for="">Responden</label>
               <?php
               $selected = old('respid') == null ? $v['respid'] : old('respid');

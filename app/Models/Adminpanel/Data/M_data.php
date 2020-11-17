@@ -113,10 +113,14 @@ class M_data extends Model
     ->orlike($orlike, 'match')
     ->get(10, $offset)->getResultArray();
 
-    $total_count = count($data);
+    $alldata = $db->table('v_subdist')->like($like, 'match')
+    ->orlike($orlike, 'match')
+    ->get()->getResultArray();
+    
+    $totaldata = count($alldata);
     
     $result = array(
-      'total_count' => $total_count,
+      'total_count' => $totaldata,
       'results' => $data,
     );
 
