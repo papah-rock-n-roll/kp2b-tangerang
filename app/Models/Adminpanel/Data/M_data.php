@@ -24,22 +24,7 @@ class M_data extends Model
       'total_farm' => $count->farms,
     ];
 
-    if (! $view = cache('adminpanel-data'))
-    {
-      // simpan view adminpanel/data/main ke variable
-      $view = view('adminpanel/data/main', $data);
-
-      // simpan file dir writable\cache selama 1 menit
-      cache()->save('adminpanel-data', $view, MINUTE);
-    }
-    else
-    {
-      // jika ada cache, maka ambil dari cache
-      $view = cache()->get('adminpanel-data');
-    }
-
-    echo $view;
-
+    echo view('adminpanel/data/main', $data);
   }
 
 /**

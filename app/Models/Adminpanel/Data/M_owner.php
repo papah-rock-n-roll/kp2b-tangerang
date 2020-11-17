@@ -348,7 +348,7 @@ class M_owner extends M_data
     $response = \Config\Services::response();
     $writer = M_data::writer_sheet($spreadsheet);
 
-    $filename = 'owner_'.date('y-m-d').'.xlsx';
+    $filename = 'pemilik_'.date('y-m-d').'.xlsx';
 
     $response
     ->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

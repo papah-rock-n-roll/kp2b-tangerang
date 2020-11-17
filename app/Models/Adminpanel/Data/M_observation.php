@@ -526,7 +526,7 @@ class M_observation extends M_data
     $response = \Config\Services::response();
     $writer = M_data::writer_sheet($spreadsheet);
 
-    $filename = 'observation_'.date('y-m-d').'.xlsx';
+    $filename = 'petak_'.date('y-m-d').'.xlsx';
 
     $response
     ->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

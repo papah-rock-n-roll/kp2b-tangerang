@@ -347,7 +347,7 @@ class M_farmer extends M_data
     $response = \Config\Services::response();
     $writer = M_data::writer_sheet($spreadsheet);
 
-    $filename = 'farm_'.date('y-m-d').'.xlsx';
+    $filename = 'poktan_'.date('y-m-d').'.xlsx';
 
     $response
     ->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

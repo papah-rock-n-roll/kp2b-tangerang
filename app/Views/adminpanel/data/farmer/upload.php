@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="">Import observation File</label>
+      <label for="">Import File Poktan</label>
       <div class="custom-file">
         <?php $custom = $validation->hasError('farm_file') ? 'custom-file-label form-control is-invalid' : 'custom-file-label form-control' ?>
         <label class="<?= esc($custom) ?>" for="farm_file">Choose file</label>
