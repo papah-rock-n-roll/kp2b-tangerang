@@ -114,8 +114,8 @@
     </div>
   </div>
   <div class="card-footer clearfix">
-    <div class="pagination pagination-md m-0 float-right">
-      <?= $pager->links('users', 'bootstrap-pager') ?>
+    <div class="pagination pagination-sm m-0 float-right">
+      <?= $pager->links('default', 'bootstrap-pager') ?>
     </div>
   </div>
 </div>

@@ -100,7 +100,7 @@ class M_responden extends M_data
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('respid ASC');
 
-    return $query->paginate($paginate, 'respondens');
+    return $query->paginate($paginate, 'default');
   }
 
   public function getRespondens()

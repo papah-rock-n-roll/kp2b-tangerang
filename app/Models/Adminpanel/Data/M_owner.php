@@ -176,7 +176,7 @@ class M_owner extends M_data
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('ownerid ASC');
 
-    return $query->paginate($paginate, 'owners');
+    return $query->paginate($paginate, 'default');
   }
 
   public function getOwners()

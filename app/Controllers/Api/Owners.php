@@ -14,7 +14,6 @@
  */
 
 use CodeIgniter\RESTful\ResourceController;
-use CodeIgniter\HTTP\RequestInterface;
 
 class Owners extends ResourceController
 {

@@ -42,6 +42,12 @@ class M_data extends Model
 
   }
 
+/**
+ * --------------------------------------------------------------------
+ * Query
+ * --------------------------------------------------------------------
+ */ 
+
   public function counting()
   {
     $query = $this->db->query("SELECT 
@@ -82,6 +88,50 @@ class M_data extends Model
 
     return $query->getRowArray();
   }
+
+  public function getSubdistVillage()
+  {
+    $query = $this->query("SELECT * FROM v_subdist");
+
+    return $query->getResultArray();
+  }
+
+  // Api subdist - Remote Select2
+  public function getRemoteSubdist($selected, $page)
+  {
+    $db = \Config\Database::connect();
+
+    if(empty($selected)) $selected = '';
+    if(empty($page)) $page = 0;
+
+    $offset = $page * 10;
+
+    $like = ['v_subdist.sdname' => $selected];
+    $orlike = ['v_subdist.vlname' => $selected];
+
+    $data = $db->table('v_subdist')->like($like, 'match')
+    ->orlike($orlike, 'match')
+    ->get(10, $offset)->getResultArray();
+
+    $total_count = count($data);
+    
+    $result = array(
+      'total_count' => $total_count,
+      'results' => $data,
+    );
+
+    $result = json_encode($result, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
+
+    return $result;
+  }
+
+
+/**
+ * --------------------------------------------------------------------
+ * Spreadsheet
+ * --------------------------------------------------------------------
+ */   
 
   public static function spreadsheet()
   {

@@ -3,13 +3,12 @@
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
- 
+
 class Auth implements FilterInterface
 {
   public function before(RequestInterface $request, $arguments = null)
   {
     // Do something here
-
     $auth = session()->has('privilage');
 
     if (! $auth) {

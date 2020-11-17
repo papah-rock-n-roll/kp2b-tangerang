@@ -43,7 +43,7 @@ class Filters extends BaseConfig
 	// that they should run on, like:
 	//    'isLoggedIn' => ['before' => ['account/*', 'profiles/*']],
 	public $filters = [
-		'csrf' => ['before' => ['administrator/*']],
-		'authprep' => ['before' => ['administrator/*']],
+		'csrf' => ['before' => ['login','register','administrator/*']],
+		'authprep' => ['before' => ['api/geo/info','administrator/*']],
 	];
 }
