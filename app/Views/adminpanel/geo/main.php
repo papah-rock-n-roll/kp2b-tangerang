@@ -37,6 +37,7 @@
     const url_desa = "<?= $url_desa ?>";
     const url_obs = "<?= $url_obs ?>";
     const url_edtObs = "<?= $url_edtObs ?>";
+    const url_edtPlt = "<?= $url_edtPlt ?>";
     let editor, features;
     var dataKec = [], dataDesa = [], dataObs = [];
     var geojsonLayer;
@@ -47,15 +48,21 @@
     "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
     "Penjualan panen","Surveyor","Update"]
 
-    const editThisAction = {
+    const editAttributes = {
       title: "Edit attributes",
       id: "edit-this",
       className: "esri-icon-edit"
     };
 
+    const editCalendar = {
+      title: "Edit kalender tanam",
+      id: "edit-cal",
+      className: "esri-icon-calendar"
+    };
+
     const template = {
       title: "Kode Petak: {FID}",
-      actions: [editThisAction],
+      actions: [editAttributes, editCalendar],
       content: getDetail
     };
 
@@ -212,7 +219,11 @@
           var attributes = popup.viewModel.selectedFeature.attributes;
           var id = attributes.FID;
           window.location.href = url_edtObs + "/" + id;
-        }
+        }else if (event.action.id === "edit-cal") {
+            var attributes = popup.viewModel.selectedFeature.attributes;
+            var id = attributes.FID;
+            window.location.href = url_edtPlt + "/" + id;
+          }
       });
 
       $.ajax({
