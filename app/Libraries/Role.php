@@ -15,9 +15,21 @@ class Role
     $menu = array(
       'access' => ['management','setting','log'],
       'user' => ['account'],
-      'data' => ['observation','owner','farmer','responden'],
-      'geo' => ['observation','village','subdistrict'],
-      'report' => ['graph','table'],
+      'data' => [
+        'observation' => 'petak', 
+        'owner' => 'pemilik', 
+        'farmer' => 'poktan',
+        'responden'=> 'responden'
+      ],
+      'geo' => [
+        'observation' => 'petak',
+        'village' => 'desa',
+        'subdistrict' => 'kecamatan',
+      ],
+      'report' => [
+        'graph' => 'grafik',
+        'table' => 'tabel'
+      ],
     );
 
     // Trim menus sesuai rolemodules

@@ -8,7 +8,7 @@ if($urisegment == 'dashboard') {
 }
 else
 {
-  $menus = array_values(session('privilage')->menus[$urisegment]);
+  $menus = session('privilage')->menus[$urisegment];
 }
 ?>
 
@@ -40,9 +40,9 @@ else
           <li class="nav-header"><?= ucfirst($urisegment) ?></li>
         <?php else: ?>
           <li class="nav-header"><?= ucfirst($urisegment) ?></li>
-            <?php foreach ($menus as $v) : ?>
+            <?php foreach ($menus as $k => $v) : ?>
             <li class="nav-item">
-              <a href="<?= base_url($adminpanel.'/'.$urisegment.'/'.$v) ?>" class="nav-link">
+              <a href="<?= base_url($adminpanel.'/'.$urisegment.'/'.$k) ?>" class="nav-link">
                 <i class="nav-icon far fa-circle text-default"></i>
                 <p class="text"><?= ucwords($v) ?></p>
               </a>

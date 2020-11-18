@@ -200,8 +200,8 @@ class M_farmer extends M_data
     $like = ['mstr_farmers.farmname' => $selected];
     $orlike = ['mstr_farmers.farmhead' => $selected];
 
-    $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
-    $alldata = $this->like($like, 'match')->orlike($orlike, 'match')->findAll();
+    $data = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll(10, $offset);
+    $alldata = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll();
     $totaldata = count($alldata);
     
     $result = array(
@@ -347,7 +347,7 @@ class M_farmer extends M_data
     $response = \Config\Services::response();
     $writer = M_data::writer_sheet($spreadsheet);
 
-    $filename = 'farm_'.date('y-m-d').'.xlsx';
+    $filename = 'poktan_'.date('y-m-d').'.xlsx';
 
     $response
     ->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

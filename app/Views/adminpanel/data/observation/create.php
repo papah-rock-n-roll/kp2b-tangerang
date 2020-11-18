@@ -22,7 +22,7 @@
               <label for="">Pemilik</label>
               <?php
               $selected = old('ownerid') == null ? '' : old('ownerid');
-              echo form_dropdown('ownerid', $owners, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              echo form_dropdown('ownerid', 'Pilih pemilik', $selected, ['class' => 'custom-select select2-owner', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
@@ -457,6 +457,69 @@
   $(".select2-multi").select2({
     tags: true
   });
+
+  $(".select2-owner").select2({
+    ajax: {
+      url: "/api/owners",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+
+        var items = [];
+        $.each(data.results, function (k,v) {
+          items.push({
+            'id': v.ownerid,
+            'text': v.ownername, 
+            'items': {
+              'ownername': v.ownername, 
+              'ownernik': v.ownernik ,
+              },
+          });
+        });
+
+        return {
+          results: items,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },
+    escapeMarkup: function (markup) { return markup; },
+    minimumInputLength: 1,
+    templateResult: formatData,
+    templateSelection: formatDataSelection
+
+  });
+    
+  function formatData (data) {
+    console.log('fd',data);
+    if (data.loading) return data.text;
+
+    var markup = $(
+    '<div class="clearfix">' +
+      '<b class="name col"></b>' + 
+      '<p class="nik col"></p>' +
+    '</div>');
+
+    markup.find(".name").append(data.items.ownername);
+    markup.find(".nik").append(data.items.ownernik);
+
+    return markup;
+  }
+
+  function formatDataSelection (data) {
+    console.log('ds', data);
+    return data.text ;
+  }
 
 </script>
 
