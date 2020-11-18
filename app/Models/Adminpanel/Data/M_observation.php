@@ -297,7 +297,7 @@ class M_observation extends M_data
     return [
       'broadnrea' => [
         'label' => 'Broad Area',
-        'rules' => 'required|decimal|is_unique[observations_frmobservations.broadnrea,obscode,'.$id.']',
+        'rules' => 'required|decimal',
         'errors' => [
           'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
@@ -321,7 +321,7 @@ class M_observation extends M_data
       ],
       'indxnlant' => [
         'label' => 'Index Plantation',
-        'rules' => 'required|max_length[3]|numeric|is_unique[observations_frmobservations.indxnlant,obscode,'.$id.']',
+        'rules' => 'required|max_length[3]|numeric',
         'errors' => [
           'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
