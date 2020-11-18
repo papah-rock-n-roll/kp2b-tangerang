@@ -200,8 +200,8 @@ class M_farmer extends M_data
     $like = ['mstr_farmers.farmname' => $selected];
     $orlike = ['mstr_farmers.farmhead' => $selected];
 
-    $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
-    $alldata = $this->like($like, 'match')->orlike($orlike, 'match')->findAll();
+    $data = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll(10, $offset);
+    $alldata = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll();
     $totaldata = count($alldata);
     
     $result = array(

@@ -94,12 +94,12 @@ class M_data extends Model
     $like = ['v_subdist.sdname' => $selected];
     $orlike = ['v_subdist.vlname' => $selected];
 
-    $data = $db->table('v_subdist')->like($like, 'match')
-    ->orlike($orlike, 'match')
+    $data = $db->table('v_subdist')->like($like, 'match', 'after')
+    ->orlike($orlike, 'match', 'after')
     ->get(10, $offset)->getResultArray();
 
-    $alldata = $db->table('v_subdist')->like($like, 'match')
-    ->orlike($orlike, 'match')
+    $alldata = $db->table('v_subdist')->like($like, 'match', 'after')
+    ->orlike($orlike, 'match', 'after')
     ->get()->getResultArray();
     
     $totaldata = count($alldata);

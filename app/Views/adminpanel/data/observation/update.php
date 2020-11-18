@@ -18,17 +18,11 @@
         <div class="row">
           <div class="col-md-6"><!-- LEFT col-md-6 -->
 
-          <div class="form-group">
+            <div class="form-group">
               <label for="">Pemilik</label>
               <?php
-              //$selected = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
-              //echo form_dropdown('ownerid', $owners, $ownerid, ['class' => 'custom-select select2'', 'style' => 'width: 100%;', 'required' => '']);
-              $ownerid = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
-              $ownernik = old('ownernik') == null ? $v['ownernik'] : old('ownernik');
-              $ownernname = old('ownername') == null ? $v['ownername'] : old('ownername');
-              echo '<select name="ownerid" class="form-control select2-owner">';
-                echo '<option value="'.$ownerid.'">'.$ownernik.' - '.$ownernname.'</option>';
-              echo '</select>';
+              $selected = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
+              echo form_dropdown('ownerid', $v['ownername'], $selected, ['class' => 'custom-select select2-owner', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
@@ -38,14 +32,8 @@
             <div class="form-group">
               <label for="">Penggarap</label>
               <?php
-              //$selected = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
-              //echo form_dropdown('cultivatorid', $cultivators, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
-              $cultivatorid = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
-              $cultivatornik = old('cultivatornik') == null ? $v['cultivatornik'] : old('cultivatornik');
-              $cultivatorname = old('cultivatorname') == null ? $v['cultivatorname'] : old('cultivatorname');
-              echo '<select name="cultivatorid" class="form-control select2-cultivator">';
-                echo '<option value="'.$cultivatorid.'">'.$cultivatornik.' - '.$cultivatorname.'</option>';
-              echo '</select>';
+              $selected = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
+              echo form_dropdown('cultivatorid', $v['cultivatorname'], $selected, ['class' => 'custom-select select2-cultivator', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('cultivatorid') ?>
@@ -56,7 +44,7 @@
               <label for="">Kelompok Tani</label>
               <?php
               $selected = old('farmcode') == null ? $v['farmcode'] : old('farmcode');
-              echo form_dropdown('farmcode', $farms, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              echo form_dropdown('farmcode', $v['farmname'], $selected, ['class' => 'custom-select select2-farmer', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('farmcode') ?>
@@ -250,7 +238,7 @@
               <label for="">Desa</label>
               <?php
               $selected = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
-              echo form_dropdown('vlcode', $villages, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              echo form_dropdown('vlcode', $v['vlname'], $selected, ['class' => 'custom-select select2-subdist', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('vlcode') ?>
@@ -489,16 +477,20 @@
       processResults: function (data, params) {
         params.page = params.page || 1;
 
-        var results = [];
-        $.each(data.results, function(k, v) {
-            results.push({
-                id: v.ownerid,
-                text: v.ownernik + ' - ' + v.ownername
-            });
+        var items = [];
+        $.each(data.results, function (k,v) {
+          items.push({
+            'id': v.ownerid,
+            'text': v.ownername, 
+            'items': {
+              'ownername': v.ownername, 
+              'ownernik': v.ownernik ,
+              },
+          });
         });
 
         return {
-          results: results,
+          results: items,
           pagination: {
             more: (params.page * 10) < data.total_count
           }
@@ -506,23 +498,12 @@
       },
       cache: true
     },
+    escapeMarkup: function (markup) { return markup; },
     placeholder: 'Pilih pemilik',
     minimumInputLength: 1,
-    templateResult: formatData,
+    templateResult: formatDataOwnerCultivator,
     templateSelection: formatDataSelection
   });
-
-  function formatData (data) {
-    if (data.loading) {
-      return data.text;
-    }
-
-    return data.text;
-  }
-
-  function formatDataSelection (data) {
-    return data.text;
-  }
 
   $(".select2-cultivator").select2({
     ajax: {
@@ -538,16 +519,20 @@
       processResults: function (data, params) {
         params.page = params.page || 1;
 
-        var results = [];
-        $.each(data.results, function(k, v) {
-            results.push({
-                id: v.ownerid,
-                text: v.ownernik + ' - ' + v.ownername
-            });
+        var items = [];
+        $.each(data.results, function (k,v) {
+          items.push({
+            'id': v.ownerid,
+            'text': v.ownername, 
+            'items': {
+              'ownername': v.ownername,
+              'ownernik': v.ownernik ,
+              },
+          });
         });
 
         return {
-          results: results,
+          results: items,
           pagination: {
             more: (params.page * 10) < data.total_count
           }
@@ -557,16 +542,141 @@
     },
     placeholder: 'Pilih penggarap',
     minimumInputLength: 1,
-    templateResult: formatData,
+    templateResult: formatDataOwnerCultivator,
     templateSelection: formatDataSelection
   });
 
-  function formatData (data) {
-    if (data.loading) {
-      return data.text;
-    }
+  function formatDataOwnerCultivator (data) {
+    console.log('fd',data);
+    if (data.loading) return data.text;
 
-    return data.text;
+    var markup = $(
+    '<div class="clearfix">' +
+      '<b class="name col"></b>' + 
+      '<p class="nik col"></p>' +
+    '</div>');
+
+    markup.find(".name").append(data.items.ownername);
+    markup.find(".nik").append(data.items.ownernik);
+
+    return markup;
+  }
+
+  $(".select2-farmer").select2({
+    ajax: {
+      url: "/api/farmer",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+
+        var items = [];
+        $.each(data.results, function (k,v) {
+          items.push({
+            'id': v.farmcode,
+            'text': v.farmname, 
+            'items': {
+              'farmname': v.farmname, 
+              'farmhead': v.farmhead ,
+              },
+          });
+        });
+
+        return {
+          results: items,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },
+    escapeMarkup: function (markup) { return markup; },
+    placeholder: 'Pilih poktan',
+    minimumInputLength: 1,
+    templateResult: formatDataFarmer,
+    templateSelection: formatDataSelection
+  });
+
+  function formatDataFarmer(data) {
+    console.log('fd',data);
+    if (data.loading) return data.text;
+
+    var markup = $(
+    '<div class="clearfix">' +
+      '<b class="name col"></b>' + 
+      '<p class="head col"></p>' +
+    '</div>');
+
+    markup.find(".name").append(data.items.farmname);
+    markup.find(".head").append(data.items.farmhead);
+
+    return markup;
+  }
+
+  $(".select2-subdist").select2({
+    ajax: {
+      url: "/api/subdist",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+
+        var items = [];
+        $.each(data.results, function (k,v) {
+          items.push({
+            'id': v.vlcode,
+            'text': v.vlname, 
+            'items': {
+              'vlname': v.vlname, 
+              'sdname': v.sdname ,
+              },
+          });
+        });
+
+        return {
+          results: items,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },
+    escapeMarkup: function (markup) { return markup; },
+    placeholder: 'Pilih poktan',
+    minimumInputLength: 1,
+    templateResult: formatDataSubdist,
+    templateSelection: formatDataSelection
+  });
+
+
+  function formatDataSubdist(data) {
+    console.log('fd',data);
+    if (data.loading) return data.text;
+
+    var markup = $(
+    '<div class="clearfix">' +
+      '<b class="vlname col"></b>' + 
+      '<p class="sdname col"></p>' +
+    '</div>');
+
+    markup.find(".vlname").append(data.items.vlname);
+    markup.find(".sdname").append(data.items.sdname);
+
+    return markup;
   }
 
   function formatDataSelection (data) {

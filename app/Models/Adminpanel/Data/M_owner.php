@@ -198,11 +198,11 @@ class M_owner extends M_data
 
     $offset = $page * 10;
 
-    $like = ['mstr_owners.ownernik' => $selected];
-    $orlike = ['mstr_owners.ownername' => $selected];
+    $like = ['mstr_owners.ownername' => $selected];
+    $orlike = ['mstr_owners.ownernik' => $selected];
 
-    $data = $this->like($like, 'match')->orlike($orlike, 'match')->findAll(10, $offset);
-    $alldata = $this->like($like, 'match')->orlike($orlike, 'match')->findAll();
+    $data = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll(10, $offset);
+    $alldata = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll();
     $totaldata = count($alldata);
 
     $result = array(
