@@ -21,9 +21,12 @@
             <div class="form-group">
               <label for="">Pemilik</label>
               <?php
-              $selected = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
-              echo form_dropdown('ownerid', $v['ownername'], $selected, ['class' => 'custom-select select2-owner', 'style' => 'width: 100%;', 'required' => '']);
+              $ownerid = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
+              $ownername = old('ownername') == null ? $v['ownername'] : old('ownername');
               ?>
+              <select name="ownerid" class="form-control custom-select select2-ownercultivator" style="width: 100%;" required>';
+                <option value="<?= $ownerid ?>" selected="selected"><?= esc($ownername) ?></option>
+              </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
               </div>
@@ -32,9 +35,12 @@
             <div class="form-group">
               <label for="">Penggarap</label>
               <?php
-              $selected = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
-              echo form_dropdown('cultivatorid', $v['cultivatorname'], $selected, ['class' => 'custom-select select2-cultivator', 'style' => 'width: 100%;', 'required' => '']);
+              $cultivatorid = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
+              $cultivatorname = old('cultivatorname') == null ? $v['cultivatorname'] : old('cultivatorname');
               ?>
+              <select name="cultivatorid" class="form-control custom-select select2-ownercultivator" style="width: 100%;" required>';
+                <option value="<?= $cultivatorid ?>" selected="selected"><?= esc($cultivatorname) ?></option>
+              </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('cultivatorid') ?>
               </div>
@@ -43,9 +49,12 @@
             <div class="form-group">
               <label for="">Kelompok Tani</label>
               <?php
-              $selected = old('farmcode') == null ? $v['farmcode'] : old('farmcode');
-              echo form_dropdown('farmcode', $v['farmname'], $selected, ['class' => 'custom-select select2-farmer', 'style' => 'width: 100%;', 'required' => '']);
+              $farmcode = old('farmcode') == null ? $v['farmcode'] : old('farmcode');
+              $farmname = old('farmname') == null ? $v['farmname'] : old('farmname');
               ?>
+              <select name="farmcode" class="form-control custom-select select2-farmer" style="width: 100%;" required>';
+                <option value="<?= $farmcode ?>" selected="selected"><?= esc($farmname) ?></option>
+              </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('farmcode') ?>
               </div>
@@ -167,8 +176,7 @@
                 'name' => 'wtrtreatnnst',
                 'minlenght' => '1',
                 'placeholder' => 'Enter..',
-                'value' => old('wtrtreatnnst') == null ? $v['wtrtreatnnst'] : old('wtrtreatnnst'),
-                'required' => ''
+                'value' => old('wtrtreatnnst') == null ? $v['wtrtreatnnst'] : old('wtrtreatnnst')
               ];
               echo form_input($wtrtreatnnst);
               ?>
@@ -237,9 +245,12 @@
             <div class="form-group">
               <label for="">Desa</label>
               <?php
-              $selected = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
-              echo form_dropdown('vlcode', $v['vlname'], $selected, ['class' => 'custom-select select2-subdist', 'style' => 'width: 100%;', 'required' => '']);
+              $vlcode = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
+              $vlname = old('vlname') == null ? $v['vlname'] : old('vlname');
               ?>
+              <select name="vlcode" class="form-control custom-select select2-subdist" style="width: 100%;" required>';
+                <option value="<?= $vlcode ?>" selected="selected"><?= esc($vlname) ?></option>
+              </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('vlcode') ?>
               </div>
@@ -278,8 +289,7 @@
                 'name' => 'wtr',
                 'minlength' => '1',
                 'placeholder' => 'Enter..',
-                'value' => old('wtr') == null ? $v['wtr'] : old('wtr'),
-                'required' => ''
+                'value' => old('wtr') == null ? $v['wtr'] : old('wtr')
               ];
               echo form_input($wtr);
               ?>
@@ -463,7 +473,7 @@
     tags: true
   });
 
-  $(".select2-owner").select2({
+  $(".select2-ownercultivator").select2({
     ajax: {
       url: "/api/owners",
       dataType: 'json',
@@ -499,55 +509,13 @@
       cache: true
     },
     escapeMarkup: function (markup) { return markup; },
-    placeholder: 'Pilih pemilik',
-    minimumInputLength: 1,
-    templateResult: formatDataOwnerCultivator,
-    templateSelection: formatDataSelection
-  });
-
-  $(".select2-cultivator").select2({
-    ajax: {
-      url: "/api/owners",
-      dataType: 'json',
-      delay: 250,
-      data: function (params) {
-        return {
-          q: params.term,
-          page: params.page
-        };
-      },
-      processResults: function (data, params) {
-        params.page = params.page || 1;
-
-        var items = [];
-        $.each(data.results, function (k,v) {
-          items.push({
-            'id': v.ownerid,
-            'text': v.ownername, 
-            'items': {
-              'ownername': v.ownername,
-              'ownernik': v.ownernik ,
-              },
-          });
-        });
-
-        return {
-          results: items,
-          pagination: {
-            more: (params.page * 10) < data.total_count
-          }
-        };
-      },
-      cache: true
-    },
-    placeholder: 'Pilih penggarap',
+    placeholder: 'Cari.. pilih',
     minimumInputLength: 1,
     templateResult: formatDataOwnerCultivator,
     templateSelection: formatDataSelection
   });
 
   function formatDataOwnerCultivator (data) {
-    console.log('fd',data);
     if (data.loading) return data.text;
 
     var markup = $(
@@ -605,7 +573,6 @@
   });
 
   function formatDataFarmer(data) {
-    console.log('fd',data);
     if (data.loading) return data.text;
 
     var markup = $(
@@ -664,7 +631,6 @@
 
 
   function formatDataSubdist(data) {
-    console.log('fd',data);
     if (data.loading) return data.text;
 
     var markup = $(

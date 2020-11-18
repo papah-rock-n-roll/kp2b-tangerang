@@ -130,9 +130,17 @@ class M_observation extends M_data
     $db = \Config\Database::connect();
 
     // Pisah Array OTP dan Saprotan menjadi string
-    $newData['opt'] = implode(',', $data['opt']);
-    $newData['saprotan'] = implode(',', $data['saprotan']);
-    $newData['typeirigation'] = implode(',', $data['typeirigation']);
+    if(!empty($data['opt']))
+      $newData['opt'] = implode(',', $data['opt']); 
+    else $newData['opt'] = null;
+    
+    if(!empty($data['saprotan'])) 
+      $newData['saprotan'] = implode(',', $data['saprotan']);
+    else $newData['saprotan'] = null;
+
+    if(!empty($data['typeirigation'])) 
+      $newData['typeirigation'] = implode(',', $data['typeirigation']); 
+    else $newData['typeirigation'] = null;
 
     // Ganti key Assoc pada $data dengan $newData yang sama OPT dan Saprotan
     $v = array_replace($data, $newData);
@@ -371,9 +379,17 @@ class M_observation extends M_data
   function recursiveBase($observation)
   {
     // Pisah String OTP dan Saprotan dengan delimiter (Koma) menjadi Array
-    $opt = explode(',', $observation['opt']);
-    $saprotan = explode(',', $observation['saprotan']);
-    $typeirigation = explode(',', $observation['typeirigation']);
+    if(!empty($observation['opt']))
+      $opt = explode(',', $observation['opt']); 
+    else $opt = [];
+
+    if(!empty($observation['saprotan']))
+      $saprotan = explode(',', $observation['saprotan']); 
+    else $saprotan = [];
+
+    if(!empty($observation['typeirigation']))
+      $typeirigation = explode(',', $observation['typeirigation']); 
+    else $typeirigation = [];
 
     // Ganti key Assoc berdasarkan Base dengan value ''
     $optbase = array_fill_keys($this->optbase, '');

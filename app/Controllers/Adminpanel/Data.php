@@ -561,11 +561,15 @@ class Data extends \App\Controllers\BaseController
 
   function fetchDropdown()
   {
-    //$subdistricts = $this->M_data->getSubdistricts();
-    //$data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
+    $respondens = $this->M_responden->getRespondens();
+    $data['respondens'] = array('' => 'Pilih responden') + array_column($respondens, 'respname', 'respid');
 
-    //$villages = $this->M_data->getVillages();
-    //$data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
+    /**
+    $subdistricts = $this->M_data->getSubdistricts();
+    $data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
+
+    $villages = $this->M_data->getVillages();
+    $data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
 
     $SubdistVillage = $this->M_data->getSubdistVillage();
     $newsubdist = array();
@@ -579,8 +583,6 @@ class Data extends \App\Controllers\BaseController
     }
     $data['villages'] = array('' => 'Pilih desa') + array_column($newsubdist, 'newsubdist', 'vlcode');
 
-    $respondens = $this->M_responden->getRespondens();
-    $data['respondens'] = array('' => 'Pilih responden') + array_column($respondens, 'respname', 'respid');
 
     $farms = $this->M_farmer->getFarmers();
     $data['farms'] = array('' => 'Pilih kelompok tani') + array_column($farms, 'farmname', 'farmcode');
@@ -595,9 +597,9 @@ class Data extends \App\Controllers\BaseController
         $newowners[$k][$nk] = $nv;
       }
     }
-
     $data['owners'] = array('' => 'Pilih pemilik') + array_column($newowners, 'newowners', 'ownerid');
     $data['cultivators'] = array('' => 'Pilih penggarap') + array_column($newowners, 'newowners', 'ownerid');
+    */
 
     return $data;
   }
