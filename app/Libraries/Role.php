@@ -13,8 +13,14 @@ class Role
 
     // Base menu aplikasi KP2B untuk Nav dan Sidebar
     $menu = array(
-      'access' => ['management','setting','log'],
-      'user' => ['account'],
+      'access' => [
+        'management' => 'management',
+        'setting' => 'setting',
+        'log' => 'log'
+      ],
+      'user' => [
+        'account' => 'akun'
+      ],
       'data' => [
         'observation' => 'petak', 
         'owner' => 'pemilik', 

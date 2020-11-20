@@ -62,17 +62,16 @@ class BaseController extends Controller
 
 		// Data Panel
 		$this->M_data = model('App\Models\Adminpanel\Data\M_data');
-
-		// Geo Panel
-		$this->M_geo = model('App\Models\Adminpanel\Geo\M_geo');
-
-		//---
+		//-- 1
 		$this->M_observation = model('App\Models\Adminpanel\Data\M_observation');
 		$this->M_plantdate = model('App\Models\Adminpanel\Data\M_plantdate');
-		//---
+		//-- 2
 		$this->M_owner = model('App\Models\Adminpanel\Data\M_owner');
 		$this->M_farmer = model('App\Models\Adminpanel\Data\M_farmer');
 		$this->M_responden = model('App\Models\Adminpanel\Data\M_responden');
+		
+		// Geo Panel
+		$this->M_geo = model('App\Models\Adminpanel\Geo\M_geo');
 
 	}
 

@@ -28,11 +28,16 @@ class M_farmer extends M_data
   protected $allowedFields = ['farmcode','farmname','farmmobile','farmhead'];
 
 
-  public function list($farmer = null, $keyword = null, $data, $paginate)
+  public function list($farmer = null, $keyword = null, $paginate)
   {
     $farmer = array();
     $like = array();
     $orLike = array();
+
+    // Berdasarkan value $_['GET'] page, jika page null maka menjadi 1
+    if(empty($page)) {
+      $page = 1;
+    }
 
     // Berdasarkan value $_['GET'] paginate, jika paginate null maka menjadi 5
     if(empty($paginate)) {
@@ -72,11 +77,6 @@ class M_farmer extends M_data
     echo view(self::VIEW.'create', $data);
   }
 
-  public function create_post($data)
-  {
-    return $this->insert($data);
-  }
-
   public function update_new($id, $data)
   {
     $data += [
@@ -86,16 +86,6 @@ class M_farmer extends M_data
     ];
 
     echo view(self::VIEW.'update', $data);
-  }
-
-  public function update_post($id, $data)
-  {
-    return $this->update($id, $data);
-  }
-
-  public function delete_post($id)
-  {
-    return $this->delete($id);
   }
 
   public function upload_new($data)
@@ -188,6 +178,29 @@ class M_farmer extends M_data
   {
     return $this->where('farmcode', $id)->first();
   }
+  public function create_post($data)
+  {
+    return $this->insert($data);
+  }
+  
+  public function update_post($id, $data)
+  {
+    return $this->update($id, $data);
+  }
+
+  public function delete_post($id)
+  {
+    return $this->delete($id);
+  }
+  
+  public function getFarmExport($where = null, $like = null, $orLike = null, $paginate = 5, $page = 1)
+  {
+    $query = $this->select('farmcode, farmname, farmmobile, farmhead')
+    ->where($where)->like($like)->orLike($orLike)
+    ->orderBy('farmcode ASC');
+
+    return $query->paginate($paginate, 'default', $page);
+  }
 
   // Api farmer - Remote Select2
   public function getRemoteFarmer($selected, $page)
@@ -196,16 +209,13 @@ class M_farmer extends M_data
     if(empty($page)) $page = 0;
 
     $offset = $page * 10;
-
     $like = ['mstr_farmers.farmname' => $selected];
-    $orlike = ['mstr_farmers.farmhead' => $selected];
 
-    $data = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll(10, $offset);
-    $alldata = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll();
-    $totaldata = count($alldata);
-    
+    $countAll= $this->like($like, 'match', 'after')->countAll();
+    $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
+ 
     $result = array(
-      'total_count' => $totaldata,
+      'total_count' => $countAll,
       'results' => $data,
     );
 
@@ -296,11 +306,16 @@ class M_farmer extends M_data
   }
 
 
-  function export($farmer = null, $keyword = null, $data, $paginate)
+  function export($farmer = null, $keyword = null, $paginate, $page)
   {
     $farmer = array();
     $like = array();
     $orLike = array();
+
+    // Berdasarkan value $_['GET'] page, jika page null maka menjadi 1
+    if(empty($page)) {
+      $page = 1;
+    }
 
     // Berdasarkan value $_['GET'] paginate, jika paginate null maka menjadi 5
     if(empty($paginate)) {
@@ -318,7 +333,7 @@ class M_farmer extends M_data
     }
 
     // get farmer berdaskan filter data yang ditampilkan ke list awal
-    $data = $this->getFarmlist($farmer, $like, $orLike, $paginate);
+    $data = $this->getFarmExport($farmer, $like, $orLike, $paginate, $page);
 
     // panggil static function spreadsheet "M_data"
     $spreadsheet = M_data::spreadsheet();

@@ -177,9 +177,7 @@ if(! empty(session()->getFlashdata('import'))) {
   });
 
   let farm_export = function() {
-    var keyword = $("#keyword").val();
-    var paginate = $("#paginate").val();
-    window.location.replace("<?= esc($export) ?>?paginate="+ paginate +"&keyword="+ keyword);
+    window.location.replace("<?= esc($export) .'?'. service('uri')->getQuery()?>");
   };
 
   $("#export").click(function() {

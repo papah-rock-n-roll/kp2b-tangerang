@@ -105,17 +105,6 @@
                   <a class="tmb-update dropdown-item" href="<?= $plantdate . $v['obscode'] ?>">Calendar Plantation</a>
                 </div>
               </div>
-              <?php
-                $modals = [
-                  'id' => 'modal_'.$k,
-                  'size' => 'modal-sm',
-                  'class' => 'bg-warning',
-                  'title' => 'Delete',
-                  'bodytext' => 'Anda Yakin Ingin Menghapus <br> obscode - '. esc($v['obscode'] .' Farmname - '.$v['farmname']),
-                  'action' => $delete . $v['obscode'],
-                  ];
-                echo view('events/modals', $modals);
-              ?>
             </td>
           </tr>
         <?php endforeach ?>
@@ -211,10 +200,7 @@ if(! empty(session()->getFlashdata('import'))) {
   });
 
   let obs_export = function() {
-    var farm = $("#farms").val();
-    var keyword = $("#keyword").val();
-    var paginate = $("#paginate").val();
-    window.location.replace("<?= esc($export) ?>?paginate="+ paginate +"&farm="+ farm +"&keyword="+ keyword);
+    window.location.replace("<?= esc($export) .'?'. service('uri')->getQuery()?>");
   };
 
   $("#export").click(function() {

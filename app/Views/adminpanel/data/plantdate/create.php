@@ -107,8 +107,8 @@
           </div>      
      
           <div class="card-footer">
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
+            <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
           </div>
         </div>
 
@@ -131,6 +131,11 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 function changeSelect() {
   $('select.select2').select2()
 }
+
+$("form input").on("invalid", function() {
+  let tab = $(this).closest('.tab-pane').attr('id');
+  $('.nav-item a[href="#' + tab + '"]').tab('show')
+});
 
 </script>
 

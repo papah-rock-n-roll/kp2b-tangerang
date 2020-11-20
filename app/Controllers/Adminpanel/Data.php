@@ -97,7 +97,7 @@ class Data extends \App\Controllers\BaseController
         return redirect()->back()->withInput();
       }
 
-      $data = $this->request->getPost();
+      $data = $this->request->getVar();
       $post = $this->M_observation->update_post($id, $data);
 
       if($post) {
@@ -155,9 +155,10 @@ class Data extends \App\Controllers\BaseController
     $farm = $this->request->getGet('farm');
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
-    
+    $page = $this->request->getGet('page');
+
     // fetch data dengan memanggil fungsi model observation
-    $this->M_observation->export($farm, $keyword, null, $paginate);
+    $this->M_observation->export($farm, $keyword, $paginate, $page);
   }
 
 
@@ -322,9 +323,10 @@ class Data extends \App\Controllers\BaseController
     // $_['GET'] variabel owner - keyword - paginate
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
+    $page = $this->request->getGet('page');
     
     // fetch data dengan memanggil fungsi model observation
-    $this->M_owner->export(null, $keyword, null, $paginate);
+    $this->M_owner->export(null, $keyword, $paginate, $page);
   }
 
 
@@ -453,9 +455,10 @@ class Data extends \App\Controllers\BaseController
     // $_['GET'] variabel farmer - keyword - paginate
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
+    $page = $this->request->getGet('page');
     
     // fetch data dengan memanggil fungsi model observation
-    $this->M_farmer->export(null, $keyword, null, $paginate);
+    $this->M_farmer->export(null, $keyword, $paginate, $page);
   }
 
 
@@ -528,7 +531,7 @@ class Data extends \App\Controllers\BaseController
 
   public function responden_delete($id)
   {
-    $data = $this->M_responden->getOwner($id);
+    $data = $this->M_responden->getResponden($id);
     $delete = $this->M_responden->delete_post($id);
 
     if($delete) {
@@ -564,45 +567,44 @@ class Data extends \App\Controllers\BaseController
     $respondens = $this->M_responden->getRespondens();
     $data['respondens'] = array('' => 'Pilih responden') + array_column($respondens, 'respname', 'respid');
 
-    /**
-    $subdistricts = $this->M_data->getSubdistricts();
-    $data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
-
-    $villages = $this->M_data->getVillages();
-    $data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
-
-    $SubdistVillage = $this->M_data->getSubdistVillage();
-    $newsubdist = array();
-    foreach ($SubdistVillage as $k => $v) {
-      foreach ($v as $nk => $nv) {
-        if ($nk == 'vlname') {
-          $newsubdist[$k]['newsubdist'] = $v['sdname'] . ' - ' . $v['vlname'];
-        }
-        $newsubdist[$k][$nk] = $nv;
-      }
-    }
-    $data['villages'] = array('' => 'Pilih desa') + array_column($newsubdist, 'newsubdist', 'vlcode');
-
-
-    $farms = $this->M_farmer->getFarmers();
-    $data['farms'] = array('' => 'Pilih kelompok tani') + array_column($farms, 'farmname', 'farmcode');
-
-    $owners = $this->M_owner->getOwners();
-    $newowners = array();
-    foreach ($owners as $k => $v) {
-      foreach ($v as $nk => $nv) {
-        if ($nk == 'ownername') {
-          $newowners[$k]['newowners'] = $v['ownernik'] . ' - ' . $v['ownername'];
-        }
-        $newowners[$k][$nk] = $nv;
-      }
-    }
-    $data['owners'] = array('' => 'Pilih pemilik') + array_column($newowners, 'newowners', 'ownerid');
-    $data['cultivators'] = array('' => 'Pilih penggarap') + array_column($newowners, 'newowners', 'ownerid');
-    */
+  /**
+    | $subdistricts = $this->M_data->getSubdistricts();
+    | $data['subdistricts'] = array('' => 'Pilih kecamatan') + array_column($subdistricts, 'sdname', 'sdcode');
+    | 
+    | $villages = $this->M_data->getVillages();
+    | $data['villages'] = array('' => 'Pilih desa') + array_column($villages, 'vlname', 'vlcode');
+    | 
+    | $SubdistVillage = $this->M_data->getSubdistVillage();
+    | $newsubdist = array();
+    | foreach ($SubdistVillage as $k => $v) {
+    |   foreach ($v as $nk => $nv) {
+    |     if ($nk == 'vlname') {
+    |       $newsubdist[$k]['newsubdist'] = $v['sdname'] . ' - ' . $v['vlname'];
+    |     }
+    |     $newsubdist[$k][$nk] = $nv;
+    |   }
+    | }
+    | $data['villages'] = array('' => 'Pilih desa') + array_column($newsubdist, 'newsubdist', 'vlcode');
+    | 
+    | 
+    | $farms = $this->M_farmer->getFarmers();
+    | $data['farms'] = array('' => 'Pilih kelompok tani') + array_column($farms, 'farmname', 'farmcode');
+    | 
+    | $owners = $this->M_owner->getOwners();
+    | $newowners = array();
+    | foreach ($owners as $k => $v) {
+    |   foreach ($v as $nk => $nv) {
+    |     if ($nk == 'ownername') {
+    |       $newowners[$k]['newowners'] = $v['ownernik'] . ' - ' . $v['ownername'];
+    |     }
+    |     $newowners[$k][$nk] = $nv;
+    |   }
+    | }
+    | $data['owners'] = array('' => 'Pilih pemilik') + array_column($newowners, 'newowners', 'ownerid');
+    | $data['cultivators'] = array('' => 'Pilih penggarap') + array_column($newowners, 'newowners', 'ownerid');
+  */
 
     return $data;
   }
-
 
 }

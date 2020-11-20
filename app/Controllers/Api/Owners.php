@@ -14,12 +14,20 @@
  */
 
 use CodeIgniter\RESTful\ResourceController;
+use Config\Services;
 
 class Owners extends ResourceController
 {
   protected $modelName = 'App\Models\Adminpanel\Data\M_owner';
   protected $format    = 'json';
   protected $request;
+
+  protected $validation;
+
+  public function __construct()
+  {
+    $this->validation = Services::validation();
+  }
 
   public function index()
   {
@@ -34,6 +42,35 @@ class Owners extends ResourceController
     else
     {
       $code = '404';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+      ];
+      return $this->respond($message, $code);
+    }
+  }
+
+  public function insert()
+  {
+    $rules = $this->model->validationRules();
+
+    if(! $this->validate($rules)) {
+      $code = '406';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+        'errors' => $this->validation->getErrors(),
+      ];
+      return $this->respond($message, $code);
+    }
+
+    $data = $this->request->getRawInput();
+    $post = $this->model->insert($data);
+
+    if($post) {
+      $code = '202';
       $this->response->setStatusCode($code);
       $message = [
         'status' => $code,

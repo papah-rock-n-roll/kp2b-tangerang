@@ -127,57 +127,66 @@ class M_observation extends M_data
 
   public function update_post($id, $data)
   {
-    $db = \Config\Database::connect();
-
     // Pisah Array OTP dan Saprotan menjadi string
     if(!empty($data['opt']))
       $newData['opt'] = implode(',', $data['opt']); 
-    else $newData['opt'] = null;
+    else $newData['opt'] = '';
     
     if(!empty($data['saprotan'])) 
       $newData['saprotan'] = implode(',', $data['saprotan']);
-    else $newData['saprotan'] = null;
+    else $newData['saprotan'] = '';
 
     if(!empty($data['typeirigation'])) 
       $newData['typeirigation'] = implode(',', $data['typeirigation']); 
-    else $newData['typeirigation'] = null;
+    else $newData['typeirigation'] = '';
 
     // Ganti key Assoc pada $data dengan $newData yang sama OPT dan Saprotan
-    $v = array_replace($data, $newData);
+    $data = array_replace($data, $newData);
 
-    $userid = session('privilage')->userid;
-    $timestamp = date('y-m-d H:i:s');
+    // Fill null jika nilai ''
+    $v = array();
+    foreach ($data as $k => $val) {
+      if ($val == '') {
+        $val = null;
+      }
+      $v[$k] = $val;
+    }
 
-    $db->query("UPDATE `lppbmis`.`observations_frmobservations` SET
-      `areantatus` = '{$v['areantatus']}',
-      `broadnrea` = '{$v['broadnrea']}',
-      `typeirigation` = '{$v['typeirigation']}',
-      `distancefromriver` = '{$v['distancefromriver']}',
-      `distancefromIrgPre` = '{$v['distancefromIrgPre']}',
-      `wtrtreatnnst` = '{$v['wtrtreatnnst']}',
-      `intensitynlan` = '{$v['intensitynlan']}',
-      `indxnlant` = '{$v['indxnlant']}',
-      `pattrnnlant` = '{$v['pattrnnlant']}',
-      `opt` = '{$v['opt']}',
-      `wtr` = '{$v['wtr']}',
-      `saprotan` = '{$v['saprotan']}',
-      `other` = '{$v['other']}',
-      `harvstmax` = '{$v['harvstmax']}',
-      `monthmax` = '{$v['monthmax']}',
-      `harvstmin` = '{$v['harvstmin']}',
-      `monthmin` = '{$v['monthmin']}',
-      `harvstsell` = '{$v['harvstsell']}',
-      `vlcode` = '{$v['vlcode']}',
-      `farmcode` = '{$v['farmcode']}',
-      `ownerid` = '{$v['ownerid']}',
-      `cultivatorid` = '{$v['cultivatorid']}',
-      `respid` = '{$v['respid']}',
-      `userid` = '{$userid}',
-      `timestamp` = '{$timestamp}'
-      WHERE `obscode` = {$id}
-    ");
+    $db = \Config\Database::connect();
+    $builder = $db->table('observations_frmobservations');
 
-    return $db->affectedRows();
+    $query = [
+      'areantatus' => $v['areantatus'],
+      'broadnrea' => $v['broadnrea'],
+      'typeirigation' => $v['typeirigation'],
+      'distancefromriver' => $v['distancefromriver'],
+      'distancefromIrgPre' => $v['distancefromIrgPre'],
+      'wtrtreatnnst' => $v['wtrtreatnnst'],
+      'intensitynlan' => $v['intensitynlan'],
+      'indxnlant' => $v['indxnlant'],
+      'pattrnnlant' => $v['pattrnnlant'],
+      'opt' => $v['opt'],
+      'wtr' => $v['wtr'],
+      'saprotan' => $v['saprotan'],
+      'other' => $v['other'],
+      'harvstmax' => $v['harvstmax'],
+      'monthmax' => $v['monthmax'],
+      'harvstmin' => $v['harvstmin'],
+      'monthmin' => $v['monthmin'],
+      'harvstsell' => $v['harvstsell'],
+      'vlcode' => $v['vlcode'],
+      'farmcode' => $v['farmcode'],
+      'ownerid' => $v['ownerid'],
+      'cultivatorid' => $v['cultivatorid'],
+      'respid' => $v['respid'],
+      'userid' => session('privilage')->userid,
+      'timestamp' => date('y-m-d H:i:s')
+    ];
+
+    $builder->set($query);
+    $builder->where('obscode', $id);
+
+    return $builder->update();
   }
 
   public function delete_post($id)
@@ -282,7 +291,7 @@ class M_observation extends M_data
     return $query;
   }
 
-  public function getExport($where = null, $like = null, $orLike = null, $paginate = 5)
+  public function getExport($where = null, $like = null, $orLike = null, $paginate = 5, $page = 1)
   {
     $query = $this->select('obscode,	areantatus,	broadnrea,	typeirigation,	distancefromriver,
     distancefromIrgPre,	wtrtreatnnst,	intensitynlan,	indxnlant,	pattrnnlant,	opt,	wtr,	saprotan,
@@ -291,7 +300,7 @@ class M_observation extends M_data
     ->where($where)->like($like)->orLike($orLike)
     ->orderBy('obscode ASC');
 
-    return $query->paginate($paginate, 'default');
+    return $query->paginate($paginate, 'default', $page);
   }
 
 
@@ -441,21 +450,21 @@ class M_observation extends M_data
   }
 
 
-  function export($farm = null, $keyword = null, $data, $paginate)
+  function export($farm = null, $keyword = null, $paginate, $page)
   {
     $where = array();
     $like = array();
     $orLike = array();
 
+    // Berdasarkan value $_['GET'] page, jika page null maka menjadi 1
+    if(empty($page)) {
+      $page = 1;
+    }
+
     // Berdasarkan value $_['GET'] paginate, jika paginate null maka menjadi 5
     if(empty($paginate)) {
       $paginate = 5;
     }
-
-    // Masukan Value berdarakan Array Assoc
-    $data['farm'] = $farm;
-    $data['keyword'] = $keyword;
-    $data['page'] = $paginate;
 
     // Jika Tidak null maka where farmcode = $_['GET'] farm
     if(!empty($farm)) {
@@ -469,7 +478,7 @@ class M_observation extends M_data
     }
 
     // get observations berdaskan filter data yang ditampilkan ke list awal
-    $data = $this->getExport($where, $like, $orLike, $paginate);
+    $data = $this->getExport($where, $like, $orLike, $paginate, $page);
 
     // panggil static function spreadsheet "M_data"
     $spreadsheet = M_data::spreadsheet();
