@@ -10,7 +10,7 @@ class Auth extends BaseController
     }
     elseif($this->session->has('try'))
     {
-      if(session('try') < 1 ) 
+      if(session('try') < 1 )
       {
         return redirect()->to('/block');
       }
@@ -123,7 +123,7 @@ class Auth extends BaseController
     session()->destroy();
     delete_cookie('kp2b_session');
     delete_cookie('csrf_cookie_kp2b');
-    return redirect()->to('/');
+    return redirect()->to('/login');
   }
 
   

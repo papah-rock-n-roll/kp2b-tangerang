@@ -28,48 +28,19 @@ class Geo extends ResourceController
     $this->validation = \Config\Services::validation();
   }
 
-  public function getHeader()
+  public function index()
   {
-    $password = 123;
-    $token = \App\Libraries\Crypto::encrypt($password);
+    $info_fields = array(
+      'areantatus', 'broadnrea'
+    );
+    $data = $this->model->get_geojson('v_observations', 'obscode', 'obsshape', $info_fields);
 
-    $this->request->getHeaderLine('X-API-KP2B') == $token ? $sts = true : $sts = false;
-    return $sts;
-  }
-
-  public function update($id = null)
-  {
-    if($this->getHeader())
-    {
-      $rules = $this->model->validationRules($id);
-
-      if(! $this->validate($rules)) {
-        $code = '406';
-        $this->response->setStatusCode($code);
-        $message = [
-          'status' => $code,
-          'message' => $this->response->getReason(),
-          'errors' => $this->validation->getErrors(),
-        ];
-        return $this->respond($message, $code);
-      }
-
-      $data = $this->request->getRawInput();
-      $post = $this->model->putGeo($id, $data);
-
-      if($post) {
-        $code = '202';
-        $this->response->setStatusCode($code);
-        $message = [
-          'status' => $code,
-          'message' => $this->response->getReason(),
-        ];
-        return $this->respond($message, $code);
-      }
+    if(!empty($data)) {
+      return $this->respond($data);
     }
     else
     {
-      $code = '401';
+      $code = '404';
       $this->response->setStatusCode($code);
       $message = [
         'status' => $code,
@@ -79,19 +50,26 @@ class Geo extends ResourceController
     }
   }
 
-  public function index()
+  public function update($id = null)
   {
-    $info_fields = array(
-      'areantatus', 'broadnrea'
-    );
-    $data = $this->model->get_geojson('v_observations', 'obscode', 'obsshape');
+    $rules = $this->model->validationRules($id);
 
-    if(!empty($data)) {
-      return $this->respond($data);
+    if(! $this->validate($rules)) {
+      $code = '406';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+        'errors' => $this->validation->getErrors(),
+      ];
+      return $this->respond($message, $code);
     }
-    else
-    {
-      $code = '404';
+
+    $data = $this->request->getRawInput();
+    $post = $this->model->putGeo($id, $data);
+
+    if($post) {
+      $code = '202';
       $this->response->setStatusCode($code);
       $message = [
         'status' => $code,
@@ -166,7 +144,7 @@ class Geo extends ResourceController
           return $this->respond($message, $code);
         }
 
-        break;
+      break;
 
       case 'obsdetail':
 

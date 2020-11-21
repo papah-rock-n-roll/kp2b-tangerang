@@ -17,10 +17,25 @@ class Cors implements FilterInterface
 
     $server = $request->uri->getScheme() .'://'. $request->uri->getHost() .'/';
 
+    // set lokasi default scheme host
     if ($server !== SCHEME_HOST) {
 
       $request->setHeader('Location', SCHEME_HOST);
       exit();
+
+    }
+
+    $auth = session()->has('privilage');
+
+    if ($auth) {
+      
+      // set header X-API-KP2B di setiap request (setelah login)
+      $email = session('privilage')->email;
+      $token = Crypto::encrypt(uniqid().'#'.$email.'#'.time());
+      
+      $request
+      ->appendHeader('Access-Control-Allow-Headers','X-API-KP2B')
+      ->setHeader('X-API-KP2B', $token);
 
     }
   
@@ -32,8 +47,10 @@ class Cors implements FilterInterface
   {
     // Do something here
     $response = Services::response();
+    $request = Services::request();
 
     $server = $request->uri->getScheme() .'://'. $request->uri->getHost();
+
 
     $options = [
       'max-age' => DAY,
@@ -45,25 +62,37 @@ class Cors implements FilterInterface
     $response
     ->setHeader('Connection', 'keep-alive')
     ->setHeader('Access-Control-Allow-Origin', $server)
-    ->setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization')
-    ->setHeader('Access-Control-Allow-Methods', 'GET')
+    ->setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method')
     ->setHeader('Access-Control-Max-Age', '86400');
-
 
     $auth = session()->has('privilage');
 
-    if ($auth) {
+    if ($auth || $request->isAJAX()) {
 
+      // set header X-API-KP2B di setiap response (setelah login)
       $email = session('privilage')->email;
       $token = Crypto::encrypt(uniqid().'#'.$email.'#'.time());
-      
+
       $response
       ->appendHeader('Access-Control-Allow-Headers','X-API-KP2B')
-      ->appendHeader('Access-Control-Allow-Methods', 'PUT')
+      ->setHeader('Access-Control-Allow-Methods', 'GET')
       ->setHeader('X-API-KP2B', $token);
 
-    }
+      // filter actions berdasarkan role (setelah login)
+      // append header Access-Control-Allow-Methods di setiap response
+      $acts = session('privilage')->acts;
+      
+      if(empty(in_array('create', $acts))) {
+        $response->appendHeader('Access-Control-Allow-Methods', 'POST');
+      }
+      if(empty(in_array('update', $acts))) {
+        $response->appendHeader('Access-Control-Allow-Methods', 'PUT');
+      }
+      if(empty(in_array('delete', $acts))) {
+        $response->appendHeader('Access-Control-Allow-Methods', 'DELETE');
+      }
 
+    }
   }
 
 }

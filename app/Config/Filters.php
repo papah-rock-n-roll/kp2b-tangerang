@@ -10,24 +10,22 @@ class Filters extends BaseConfig
 		'csrf'     => \CodeIgniter\Filters\CSRF::class,
 		'toolbar'  => \CodeIgniter\Filters\DebugToolbar::class,
 		'honeypot' => \CodeIgniter\Filters\Honeypot::class,
-		'authprep' => [
-			\App\Filters\Auth::class,
-			\App\Filters\Acts::class,
-		],
+		'auth' => \App\Filters\Auth::class,
+		'acts' => \App\Filters\Acts::class,
 		'cors' => \App\Filters\Cors::class,
 	];
 
 	// Always applied before every request
 	public $globals = [
 		'before' => [
-			'cors'=> [
+			'cors' => [
 				'except' => ['cli/*']
 			],
 			//'honeypot'
 		],
 		'after'  => [
 			'toolbar',
-			'cors'=> [
+			'cors' => [
 				'except' => ['cli/*']
 			],
 			//'honeypot'
@@ -43,7 +41,14 @@ class Filters extends BaseConfig
 	// that they should run on, like:
 	//    'isLoggedIn' => ['before' => ['account/*', 'profiles/*']],
 	public $filters = [
-		'csrf' => ['before' => ['login','register','administrator/*']],
-		'authprep' => ['before' => ['api/geo/info','administrator/*']],
+		'csrf' => ['before' => [
+			'login','register','administrator/*'
+			]
+		],
+		'auth' => ['before' => [
+			'api/subdist','api/farmer','api/owners','administrator/*'
+			]
+		],
+		'acts' => ['before' => ['administrator/*']],
 	];
 }

@@ -8,8 +8,23 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
+      
       <div class="card-header">
         <h5 class="card-title">Update Petak</h5>
+        <div class="card-tools">
+          <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal_create">
+            <i class="fas fa-file-alt"></i>
+          </button>
+          <?php
+            $modals = [
+              'id' => 'modal_create',
+              'size' => 'modal-lg',
+              'class' => 'bg-default',
+              'title' => 'Tambah',
+              ];
+            echo view('adminpanel/data/observation/modals', $modals);
+          ?>
+        </div>
       </div>
 
       <?php echo form_open($action) ?>
@@ -27,6 +42,7 @@
               <select name="ownerid" class="form-control custom-select select2-ownercultivator" style="width: 100%;" required>';
                 <option value="<?= $ownerid ?>" selected="selected"><?= esc($ownername) ?></option>
               </select>
+              
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
               </div>
@@ -519,13 +535,11 @@
     if (data.loading) return data.text;
 
     var markup = $(
-    '<div class="clearfix">' +
-      '<b class="name col"></b>' + 
-      '<p class="nik col"></p>' +
-    '</div>');
+      '<optgroup label="'+ data.items.ownername +'">' + 
+        '<option class="nik"></option>' +
+      '</optgroup>');
 
-    markup.find(".name").append(data.items.ownername);
-    markup.find(".nik").append(data.items.ownernik);
+    markup.find(".nik").text(data.items.ownernik);
 
     return markup;
   }
@@ -576,13 +590,11 @@
     if (data.loading) return data.text;
 
     var markup = $(
-    '<div class="clearfix">' +
-      '<b class="name col"></b>' + 
-      '<p class="head col"></p>' +
-    '</div>');
+      '<optgroup label="'+ data.items.farmname +'">' + 
+        '<option class="farmhead"></option>' +
+      '</optgroup>');
 
-    markup.find(".name").append(data.items.farmname);
-    markup.find(".head").append(data.items.farmhead);
+    markup.find(".farmhead").text(data.items.farmhead);
 
     return markup;
   }
@@ -623,7 +635,7 @@
       cache: true
     },
     escapeMarkup: function (markup) { return markup; },
-    placeholder: 'Pilih poktan',
+    placeholder: 'Pilih desa',
     minimumInputLength: 1,
     templateResult: formatDataSubdist,
     templateSelection: formatDataSelection
@@ -634,13 +646,11 @@
     if (data.loading) return data.text;
 
     var markup = $(
-    '<div class="clearfix">' +
-      '<b class="vlname col"></b>' + 
-      '<p class="sdname col"></p>' +
-    '</div>');
+      '<optgroup label="'+ data.items.vlname +'">' + 
+        '<option class="sdname"></option>' +
+      '</optgroup>');
 
-    markup.find(".vlname").append(data.items.vlname);
-    markup.find(".sdname").append(data.items.sdname);
+    markup.find(".sdname").text(data.items.sdname);
 
     return markup;
   }

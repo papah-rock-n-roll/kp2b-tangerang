@@ -123,7 +123,7 @@ $chart = [
   'title' => 'Grafik Poktan',
   'labels' => $arentatus,
   'values' => $total,
-  'xlabels' => 'Bulan',
+  'xlabels' => 'Status',
   'ylabels' => 'Jumlah',
 ];
 echo view('events/chart', $chart); 

@@ -45,8 +45,8 @@ class M_owner extends M_data
 
     // Jika Tidak null maka like ownernik - or like ownername = $_['GET'] keyword
     if(!empty($keyword)) {
-      $like = ['mstr_owners.ownernik' => $keyword];
-      $orLike = ['mstr_owners.ownername' => $keyword];
+      $like = ['mstr_owners.ownername' => $keyword];
+      $orLike = ['mstr_owners.ownernik' => $keyword];
     }
 
     $data += [
@@ -72,11 +72,6 @@ class M_owner extends M_data
     echo view(self::VIEW.'create', $data);
   }
 
-  public function create_post($data)
-  {
-    return $this->insert($data);
-  }
-
   public function update_new($id, $data)
   {
     $data += [
@@ -86,16 +81,6 @@ class M_owner extends M_data
     ];
 
     echo view(self::VIEW.'update', $data);
-  }
-
-  public function update_post($id, $data)
-  {
-    return $this->update($id, $data);
-  }
-
-  public function delete_post($id)
-  {
-    return $this->delete($id);
   }
 
   public function upload_new($data)
@@ -189,6 +174,30 @@ class M_owner extends M_data
     return $this->where('ownerid', $id)->orWhere('ownernik', $nik)->first();
   }
 
+  public function create_post($data)
+  {
+    return $this->insert($data);
+  }
+
+  public function update_post($id, $data)
+  {
+    return $this->update($id, $data);
+  }
+
+  public function delete_post($id)
+  {
+    return $this->delete($id);
+  }
+
+  public function getOwnerExport($where = null, $like = null, $orLike = null, $paginate = 5, $page = 1)
+  {
+    $query = $this->select('ownerid, ownernik, ownername, owneraddress')
+    ->where($where)->like($like)->orLike($orLike)
+    ->orderBy('ownerid ASC');
+
+    return $query->paginate($paginate, 'default', $page);
+  }
+
 
   // Api owners - Remote Select2
   public function getRemoteOwners($selected, $page)
@@ -197,16 +206,13 @@ class M_owner extends M_data
     if(empty($page)) $page = 0;
 
     $offset = $page * 10;
-
     $like = ['mstr_owners.ownername' => $selected];
-    $orlike = ['mstr_owners.ownernik' => $selected];
 
-    $data = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll(10, $offset);
-    $alldata = $this->like($like, 'match', 'after')->orlike($orlike, 'match', 'after')->findAll();
-    $totaldata = count($alldata);
-
+    $countAll = $this->like($like, 'match', 'after')->countAll();
+    $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
+    
     $result = array(
-      'total_count' => $totaldata,
+      'total_count' => $countAll,
       'results' => $data
     );
 
@@ -297,29 +303,30 @@ class M_owner extends M_data
   }
 
 
-  function export($owner = null, $keyword = null, $data, $paginate)
+  function export($owner = null, $keyword = null, $paginate, $page)
   {
     $owner = array();
     $like = array();
     $orLike = array();
+
+    // Berdasarkan value $_['GET'] page, jika page null maka menjadi 1
+    if(empty($page)) {
+      $page = 1;
+    }
 
     // Berdasarkan value $_['GET'] paginate, jika paginate null maka menjadi 5
     if(empty($paginate)) {
       $paginate = 5;
     }
 
-    // Masukan Value berdarakan Array Assoc
-    $data['keyword'] = $keyword;
-    $data['page'] = $paginate;
-
     // Jika Tidak null maka like ownernik - or like ownername = $_['GET'] keyword
     if(!empty($keyword)) {
-      $like = ['mstr_owners.ownernik' => $keyword];
-      $orLike = ['mstr_owners.ownername' => $keyword];
+      $like = ['mstr_owners.ownername' => $keyword];
+      $orLike = ['mstr_owners.ownernik' => $keyword];
     }
 
     // get owner berdaskan filter data yang ditampilkan ke list awal
-    $data = $this->getOwnerlist($owner, $like, $orLike, $paginate);
+    $data = $this->getOwnerExport($owner, $like, $orLike, $paginate, $page);
 
     // panggil static function spreadsheet "M_data"
     $spreadsheet = M_data::spreadsheet();

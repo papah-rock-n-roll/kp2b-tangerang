@@ -27,12 +27,12 @@ class M_data extends Model
     echo view('adminpanel/data/main', $data);
   }
 
+
 /**
  * --------------------------------------------------------------------
  * Query
  * --------------------------------------------------------------------
  */ 
-
   public function counting()
   {
     $query = $this->db->query("SELECT 
@@ -46,6 +46,7 @@ class M_data extends Model
     return $query->getRow();
   }
 
+  // get semua kecamatan
   public function getSubdistricts()
   {
     $query = $this->query("SELECT * FROM mstr_subdistricts");
@@ -53,6 +54,7 @@ class M_data extends Model
     return $query->getResultArray();
   }
 
+  // get 1 kecamatan by sdcode
   public function getSubdistrict($id)
   {
     $query = $this->query("SELECT * FROM mstr_subdistricts WHERE sdcode = {$id}");
@@ -60,6 +62,7 @@ class M_data extends Model
     return $query->getRowArray();
   }
 
+  // get semua desa
   public function getVillages()
   {
     $query = $this->query("SELECT * FROM mstr_villages");
@@ -67,6 +70,7 @@ class M_data extends Model
     return $query->getResultArray();
   }
 
+  // get 1 desa by sdcode
   public function getVillage($id)
   {
     $query = $this->query("SELECT * FROM mstr_villages WHERE vlcode = {$id}");
@@ -74,6 +78,7 @@ class M_data extends Model
     return $query->getRowArray();
   }
 
+  // get semua kecamatan dan desa
   public function getSubdistVillage()
   {
     $query = $this->query("SELECT * FROM v_subdist");
@@ -90,22 +95,13 @@ class M_data extends Model
     if(empty($page)) $page = 0;
 
     $offset = $page * 10;
+    $like = ['v_subdist.vlname' => $selected];
 
-    $like = ['v_subdist.sdname' => $selected];
-    $orlike = ['v_subdist.vlname' => $selected];
-
-    $data = $db->table('v_subdist')->like($like, 'match', 'after')
-    ->orlike($orlike, 'match', 'after')
-    ->get(10, $offset)->getResultArray();
-
-    $alldata = $db->table('v_subdist')->like($like, 'match', 'after')
-    ->orlike($orlike, 'match', 'after')
-    ->get()->getResultArray();
-    
-    $totaldata = count($alldata);
+    $countAll = $db->table('v_subdist')->like($like, 'match', 'after')->countAllResults();
+    $data = $db->table('v_subdist')->like($like, 'match', 'after')->get(10, $offset)->getResultArray();
     
     $result = array(
-      'total_count' => $totaldata,
+      'total_count' => $countAll,
       'results' => $data,
     );
 
@@ -121,7 +117,6 @@ class M_data extends Model
  * Spreadsheet
  * --------------------------------------------------------------------
  */   
-
   public static function spreadsheet()
   {
     return new PhpSpreadsheet\Spreadsheet;
