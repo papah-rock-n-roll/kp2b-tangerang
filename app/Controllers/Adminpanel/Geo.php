@@ -15,4 +15,14 @@ class Geo extends \App\Controllers\BaseController
     echo view('adminpanel/geo/main', $data);
   }
 
+  public function observation_index()
+  {
+    // $_['GET'] variabel keyword - paginate
+    $keyword = $this->request->getGet('keyword');
+    $paginate = $this->request->getGet('paginate');
+
+    // fetch data dengan memanggil fungsi model obsgeo
+    $this->M_obsgeo->list(null, $keyword, null, $paginate);
+  }
+
 }

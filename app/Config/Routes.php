@@ -56,8 +56,14 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
  * --------------------------------------------------------------------
  */
 $routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) {
-	$routes->cli('writable/delete/(:any)', 'Access::writable_delete/$1');
-	$routes->cli('geo/public/cache/(:any)/(:any)', 'Geo::cache_geojson/$1/$2');
+
+	// Access log
+	$routes->cli('writable/delete/(:any)/(:any)', 'Access::writable_delete/$1/$2');
+
+	// Geo Public
+	$routes->cli('geo/cache/(:any)/(:any)', 'Geo::cache_geojson/$1/$2');
+	$routes->cli('geo/cache/kecamatan', 'Geo::kecamatan_geojson');
+	$routes->cli('geo/cache/kelurahan', 'Geo::kelurahan_geojson');
 });
 
 
@@ -245,29 +251,18 @@ $routes->group('administrator', function($routes) {
 		// Geo Observation
 		$routes->group('observation', function($routes) {
 			$routes->get('', 'Adminpanel\Geo::observation_index');
-			$routes->get('read/(:num)', 'Adminpanel\Geo::observation_read/$1');
-			$routes->match(['get', 'post'], 'create', 'Adminpanel\Geo::observation_create');
-			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Geo::observation_update/$1');
-			$routes->get('delete/(:num)', 'Adminpanel\Geo::observation_delete/$1');
+			// Upload - Import
+			$routes->match(['get', 'post'], 'upload', 'Adminpanel\Geo::observation_upload');
+			$routes->post('import', 'Adminpanel\Geo::observation_import');
+			// Export
+			$routes->get('export', 'Adminpanel\Geo::observation_export');
 		});
 
 		// Geo Village
-		$routes->group('village', function($routes) {
-			$routes->get('', 'Adminpanel\Geo::village_index');
-			$routes->get('read/(:num)', 'Adminpanel\Geo::village_read/$1');
-			$routes->match(['get', 'post'], 'create', 'Adminpanel\Geo::village_create');
-			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Geo::village_update/$1');
-			$routes->get('delete/(:num)', 'Adminpanel\Geo::village_delete/$1');
-		});
+		$routes->get('village', 'Adminpanel\Geo::village_index');
 
-		// Data Subdistrict
-		$routes->group('subdistrict', function($routes) {
-			$routes->get('', 'Adminpanel\Geo::subdistrict_index');
-			$routes->get('read/(:num)', 'Adminpanel\Geo::subdistrict_read/$1');
-			$routes->match(['get', 'post'], 'create', 'Adminpanel\Geo::subdistrict_create');
-			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Geo::subdistrict_update/$1');
-			$routes->get('delete/(:num)', 'Adminpanel\Geo::subdistrict_delete/$1');
-		});
+		// Geo Subdistrict
+		$routes->get('subdistrict', 'Adminpanel\Geo::subdistrict_index');
 
 	});
 
@@ -278,11 +273,15 @@ $routes->group('administrator', function($routes) {
  * --------------------------------------------------------------------
  */
 
+	$routes->group('report', function($routes) {
+		// Report Graph
+		$routes->get('graph', 'Adminpanel\Report::graph_index');
 
-
+		// Report table
+		$routes->get('table', 'Adminpanel\Report::table_index');
+	});
 
 });
-
 
 
 /**

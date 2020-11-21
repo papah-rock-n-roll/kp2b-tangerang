@@ -1,15 +1,20 @@
 <?php namespace App\Models\Adminpanel\Geo;
 
+/**
+ * --------------------------------------------------------------------
+ *
+ * Geo Main
+ *
+ * --------------------------------------------------------------------
+ */
+
 use CodeIgniter\Model;
 use geoPHP;
 
 class M_geo extends Model
 {
-  public function __construct()
-  {
-    // init config database
-    $this->db = \Config\Database::connect();
-  }
+  public $table = 'v_observations';
+  public $primaryKey = 'obscode';
 
   // get kecamatan
   public function get_kecamatan(){

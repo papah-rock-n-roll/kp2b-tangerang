@@ -138,12 +138,12 @@ class M_geophp extends Model
   {
     // data sdcode ambil dari cache
     if (!empty($conditions['sdcode'])) {
-      $geoPublic = cache()->get('geojson.'.$conditions['sdcode'].'.cache');
+      $geoPublic = cache()->get('cache.'.$conditions['sdcode'].'.geojson');
     }
 
     // data vlcode ambil dari cache
     if (!empty($conditions['vlcode'])) {
-      $geoPublic = cache()->get('geojson.'.$conditions['vlcode'].'.cache');
+      $geoPublic = cache()->get('cache.'.$conditions['vlcode'].'.geojson');
     }
 
     if ($geoPublic == null) $geoPublic = [];

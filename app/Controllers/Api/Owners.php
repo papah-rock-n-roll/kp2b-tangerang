@@ -51,7 +51,26 @@ class Owners extends ResourceController
     }
   }
 
-  public function insert()
+  public function show($id = null)
+  {
+    $data = $this->model->find($id);
+
+    if(!empty($data)) {
+      return $this->respond($data);
+    }
+    else
+    {
+      $code = '404';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+      ];
+      return $this->respond($message, $code);
+    }
+  }
+
+  public function create()
   {
     $rules = $this->model->validationRules();
 
@@ -70,7 +89,51 @@ class Owners extends ResourceController
     $post = $this->model->insert($data);
 
     if($post) {
+      $code = '201';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+      ];
+      return $this->respond($message, $code);
+    }
+  }
+
+  public function update($id = null)
+  {
+    $rules = $this->model->validationRules($id);
+
+    if(! $this->validate($rules)) {
+      $code = '406';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+        'errors' => $this->validation->getErrors(),
+      ];
+      return $this->respond($message, $code);
+    }
+
+    $data = $this->request->getRawInput();
+    $post = $this->model->update($id, $data);
+
+    if($post) {
       $code = '202';
+      $this->response->setStatusCode($code);
+      $message = [
+        'status' => $code,
+        'message' => $this->response->getReason(),
+      ];
+      return $this->respond($message, $code);
+    }
+  }
+
+  public function delete($id = null)
+  {
+    $delete = $this->model->delete($id);
+
+    if($delete) {
+      $code = '200';
       $this->response->setStatusCode($code);
       $message = [
         'status' => $code,
