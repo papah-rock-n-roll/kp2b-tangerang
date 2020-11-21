@@ -47,7 +47,8 @@
     "Jarak dari sungai (m)","Jarak dari irigasi primer (m)","Lembaga pengelola air","Intensitas tanam","Index pertanaman (IP)",
     "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
     "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
-    "Penjualan panen","Surveyor","Update"]
+    "Penjualan panen","Surveyor","Update"];
+    var dataLayer;
 
     const template = {
       title: "Kode Petak: {FID}",
@@ -92,7 +93,7 @@
 
     const renderer = {
       type: "unique-value",
-      field: "areantatus",
+      field: dataLayer,
       legendOptions: {
         title: "Status lahan"
       },
@@ -138,6 +139,7 @@
       }
     });
 
+    // Function action layer petak
     function defineActions(event) {
       var item = event.item;
 
@@ -161,45 +163,68 @@
       }
     }
 
-    view.when(function () {
-      var popup = view.popup;
+    // Function Format char to Title Case
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
 
-      var searchWidget = new Search({
-        view: view,
-        includeDefaultSources: false
-      });
+    dataLayer = $("#layerData").val();
+    alert(dataLayer);
 
-      view.ui.add(searchWidget, {
-        position: "top-right"
-      });
-
-      view.ui.add(
-        new Fullscreen({
-          view: view,
-          element: viewDiv
-        }),
-        "top-right"
-      );
-
-      var track = new Track({
+    // Tombol Geolocation
+    view.ui.add(
+      new Track({
         view: view,
         useHeadingEnabled: false,
         goToLocationEnabled: false
-      });
-      view.ui.add(track, "top-left");
+      }), "top-left"
+    );
 
-      const basemapGallery = new BasemapGallery({
+    // Tombol Legenda
+    const legend = new Expand({
+      content: new Legend({
+        view: view
+      }),
+      view: view
+    });
+    view.ui.add(legend, "top-left");
+
+    // From Pencarian
+    var searchWidget = new Search({
+      view: view,
+      includeDefaultSources: false
+    });
+    view.ui.add(searchWidget, "top-right");
+
+    // Tombol Full Screen
+    view.ui.add(
+      new Fullscreen({
         view: view,
-        container: document.createElement("div")
-      });
+        element: viewDiv
+      }), "top-right"
+    );
 
-      view.ui.add(
-        new Expand({
-          view: view,
-          content: basemapGallery
-        }),
-        "bottom-left"
-      );
+    // Tombol Basemap
+    const basemapGallery = new BasemapGallery({
+      view: view,
+      container: document.createElement("div")
+    });
+
+    view.ui.add(
+      new Expand({
+        view: view,
+        content: basemapGallery
+      }),
+      "bottom-left"
+    );
+
+    view.when(function () {
+      var popup = view.popup;
 
       $.ajax({
         async : false,
@@ -210,16 +235,6 @@
           dataKec = JSON.parse(response);
         }
       });
-
-      // Format char to Title Case
-    	function toTitleCase(str) {
-          return str.replace(
-              /\w\S*/g,
-              function(txt) {
-                  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-              }
-          );
-      }
 
       // get List Desa
       function getDesa(sdcode = ''){
@@ -281,6 +296,7 @@
         <label>Pilih jenis data</label> \
         <select class="form-control" id="layerData"> \
           <option value="areantatus">Status lahan</option> \
+            <option value="landuse">Landuse</option> \
         </select> \
       </div> \
       <div class="form-group input-group-sm" id="kecForm"> \
@@ -359,14 +375,6 @@
           }
         }
       });
-
-      const legend = new Expand({
-        content: new Legend({
-          view: view
-        }),
-        view: view
-      });
-      view.ui.add(legend, "top-left");
 
     });
 

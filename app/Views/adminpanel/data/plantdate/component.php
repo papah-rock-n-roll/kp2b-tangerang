@@ -66,7 +66,7 @@
       <?= $validation->getError('monthharvest') ?>
       </div>
     </div>
-    
+
   </div>
 
   <div class="col-md-6">
@@ -80,8 +80,7 @@
         'minlength' => '1',
         'name' => 'varieties[]',
         'placeholder' => 'Enter Varietas',
-        'value' => old('varieties') == null ? $varieties : old('varieties'),
-        'required' => ''
+        'value' => old('varieties') == null ? $varieties : old('varieties')
       ];
       echo form_input($varieties_);
       ?>
