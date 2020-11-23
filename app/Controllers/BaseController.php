@@ -72,6 +72,7 @@ class BaseController extends Controller
 		
 		// Geo Panel
 		$this->M_geo = model('App\Models\Adminpanel\Geo\M_geo');
+		$this->M_obsgeo = model('App\Models\Adminpanel\Geo\M_obsgeo');
 
 	}
 

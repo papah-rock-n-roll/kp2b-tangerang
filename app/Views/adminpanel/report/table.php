@@ -4,7 +4,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<?= 'content' ?>
+<?= 'table content' ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>

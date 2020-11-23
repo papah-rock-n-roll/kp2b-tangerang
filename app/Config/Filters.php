@@ -19,14 +19,14 @@ class Filters extends BaseConfig
 	public $globals = [
 		'before' => [
 			'cors' => [
-				'except' => ['cli/*']
+				'except' => ['cli*','api/geo/info*','api/geo/kecamatan*','api/geo/desa*']
 			],
 			//'honeypot'
 		],
 		'after'  => [
 			'toolbar',
 			'cors' => [
-				'except' => ['cli/*']
+				'except' => ['cli*','api/geo/info*','api/geo/kecamatan*','api/geo/desa*']
 			],
 			//'honeypot'
 		],
@@ -46,7 +46,7 @@ class Filters extends BaseConfig
 			]
 		],
 		'auth' => ['before' => [
-			'api/subdist','api/farmer','api/owners','administrator/*'
+			'api/subdist*','api/farmer*','api/owners*','administrator/*'
 			]
 		],
 		'acts' => ['before' => ['administrator/*']],

@@ -17,7 +17,6 @@ class M_log extends M_access
 
   const DELETE = 'log/delete/';
 
-
   public function list()
   {
     $data = [
@@ -28,8 +27,7 @@ class M_log extends M_access
     echo view(self::VIEW.'list', $data);
   }
 
-  
-  public function delete_post($data)
+  public function delete_post($data, $ext = null)
   {
     switch ($data) {
 
@@ -38,7 +36,14 @@ class M_log extends M_access
         break;
 
       case 'cache':
-        return delete_files(WRITEPATH.'cache');
+        if (!empty($ext))
+        {
+          return array_map('unlink', glob(WRITEPATH .'cache/*.'. $ext));
+        }
+        else
+        {
+          return delete_files(WRITEPATH.'cache');
+        }
         break;
 
       case 'logs':
@@ -53,7 +58,6 @@ class M_log extends M_access
 
   }
 
-
   public function getlist()
   {
     $list = [
@@ -65,6 +69,5 @@ class M_log extends M_access
 
     return $list;
   }
-
 
 }

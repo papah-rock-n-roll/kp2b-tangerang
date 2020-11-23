@@ -54,7 +54,7 @@ class M_observation extends M_data
       $where = ['v_observations.farmcode' => $farm];
     }
 
-    // Jika Tidak null maka like ownernik - or like ownername = $_['GET'] keyword
+    // Jika Tidak null maka like obscode - or like ownername = $_['GET'] keyword
     if(!empty($keyword)) {
       $like = ['v_observations.obscode' => $keyword];
       $orLike = ['v_observations.ownername' => $keyword];
