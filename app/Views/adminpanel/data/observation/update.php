@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-      
+
       <div class="card-header">
         <h5 class="card-title">Update Petak</h5>
         <div class="card-tools">
@@ -42,7 +42,7 @@
               <select name="ownerid" class="form-control custom-select select2-ownercultivator" style="width: 100%;" required>';
                 <option value="<?= $ownerid ?>" selected="selected"><?= esc($ownername) ?></option>
               </select>
-              
+
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
               </div>
@@ -142,8 +142,7 @@
                   'min' => '1',
                   'max' => '1000000',
                   'placeholder' => 'Jarak dalam meter',
-                  'value' => old('distancefromriver') == null ? $v['distancefromriver'] : old('distancefromriver'),
-                  'required' => ''
+                  'value' => old('distancefromriver') == null ? $v['distancefromriver'] : old('distancefromriver')
                 ];
                 echo form_input($distancefromriver);
                 ?>
@@ -169,8 +168,7 @@
                   'min' => '1',
                   'man' => '1000000',
                   'placeholder' => 'Jarak dalam meter',
-                  'value' => old('distancefromIrgPre') == null ? $v['distancefromIrgPre'] : old('distancefromIrgPre'),
-                  'required' => ''
+                  'value' => old('distancefromIrgPre') == null ? $v['distancefromIrgPre'] : old('distancefromIrgPre')
                 ];
                 echo form_input($distancefromIrgPre);
                 ?>
@@ -244,8 +242,7 @@
                 'name' => 'pattrnnlant',
                 'minlength' => '1',
                 'placeholder' => 'Pola',
-                'value' => old('pattrnnlant') == null ? $v['pattrnnlant'] : old('pattrnnlant'),
-                'required' => ''
+                'value' => old('pattrnnlant') == null ? $v['pattrnnlant'] : old('pattrnnlant')
               ];
               echo form_input($pattrnnlant);
               ?>
@@ -357,8 +354,7 @@
                 'min' => '1',
                 'max' => '1000000',
                 'placeholder' => 'Enter Desimal..',
-                'value' => old('harvstmax') == null ? $v['harvstmax'] : old('harvstmax'),
-                'required' => ''
+                'value' => old('harvstmax') == null ? $v['harvstmax'] : old('harvstmax')
               ];
               echo form_input($harvstmax);
               ?>
@@ -401,8 +397,7 @@
                 'min' => '1',
                 'max' => '1000000',
                 'placeholder' => 'Enter Desimal..',
-                'value' => old('harvstmin') == null ? $v['harvstmin'] : old('harvstmin'),
-                'required' => ''
+                'value' => old('harvstmin') == null ? $v['harvstmin'] : old('harvstmin')
               ];
               echo form_input($harvstmin);
               ?>
@@ -507,9 +502,9 @@
         $.each(data.results, function (k,v) {
           items.push({
             'id': v.ownerid,
-            'text': v.ownername, 
+            'text': v.ownername,
             'items': {
-              'ownername': v.ownername, 
+              'ownername': v.ownername,
               'ownernik': v.ownernik ,
               },
           });
@@ -535,7 +530,7 @@
     if (data.loading) return data.text;
 
     var markup = $(
-      '<optgroup label="'+ data.items.ownername +'">' + 
+      '<optgroup label="'+ data.items.ownername +'">' +
         '<option class="nik"></option>' +
       '</optgroup>');
 
@@ -562,9 +557,9 @@
         $.each(data.results, function (k,v) {
           items.push({
             'id': v.farmcode,
-            'text': v.farmname, 
+            'text': v.farmname,
             'items': {
-              'farmname': v.farmname, 
+              'farmname': v.farmname,
               'farmhead': v.farmhead ,
               },
           });
@@ -590,7 +585,7 @@
     if (data.loading) return data.text;
 
     var markup = $(
-      '<optgroup label="'+ data.items.farmname +'">' + 
+      '<optgroup label="'+ data.items.farmname +'">' +
         '<option class="farmhead"></option>' +
       '</optgroup>');
 
@@ -617,9 +612,9 @@
         $.each(data.results, function (k,v) {
           items.push({
             'id': v.vlcode,
-            'text': v.vlname, 
+            'text': v.vlname,
             'items': {
-              'vlname': v.vlname, 
+              'vlname': v.vlname,
               'sdname': v.sdname ,
               },
           });
@@ -646,7 +641,7 @@
     if (data.loading) return data.text;
 
     var markup = $(
-      '<optgroup label="'+ data.items.vlname +'">' + 
+      '<optgroup label="'+ data.items.vlname +'">' +
         '<option class="sdname"></option>' +
       '</optgroup>');
 

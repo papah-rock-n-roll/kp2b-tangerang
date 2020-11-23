@@ -48,35 +48,6 @@
     "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
     "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
     "Penjualan panen","Surveyor","Update"];
-    var dataLayer;
-
-    const template = {
-      title: "Kode Petak: {FID}",
-      content: getDetail
-    };
-
-    function getDetail(feature) {
-      var obscode = feature.graphic.attributes.FID;
-      $.ajax({
-        async : false,
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        url : url_obs + '?obscode=' + obscode,
-        type : 'GET',
-        success : function(response){
-          dataObs = JSON.parse(response);
-        }
-      });
-      var div = document.createElement("div");
-      var divContent = '<table class="esri-widget__table"><tbody>';
-      for (var i = 0; i < dataHead.length; i++) {
-        divContent += '<tr><th class="esri-feature-fields__field-header">' + dataHead[i] + '</th> \
-        <td class="esri-feature-fields__field-data">' + Object.values(dataObs)[i] + '</td></tr>';
-      }
-      divContent += '</tbody></table>';
-      divContent += '<p class="mt-3">Update terkahir oleh: ' + dataObs.username + '. Tanggal ' + dataObs.timestamp + '</p>';
-      div.innerHTML = divContent;
-      return div;
-    }
 
     function createSymbol(color) {
       return {
@@ -89,11 +60,16 @@
       };
     }
 
+    const template = {
+      title: "Kode Petak: {FID}",
+      content: getDetail
+    };
+
     const colors = [ "red", "blue", "green", "yellow", "purple" ];
 
     const renderer = {
       type: "unique-value",
-      field: dataLayer,
+      field: "areantatus",
       legendOptions: {
         title: "Status lahan"
       },
@@ -139,6 +115,29 @@
       }
     });
 
+    function getDetail(feature) {
+      var obscode = feature.graphic.attributes.FID;
+      $.ajax({
+        async : false,
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        url : url_obs + '?obscode=' + obscode,
+        type : 'GET',
+        success : function(response){
+          dataObs = JSON.parse(response);
+        }
+      });
+      var div = document.createElement("div");
+      var divContent = '<table class="esri-widget__table"><tbody>';
+      for (var i = 0; i < dataHead.length; i++) {
+        divContent += '<tr><th class="esri-feature-fields__field-header">' + dataHead[i] + '</th> \
+        <td class="esri-feature-fields__field-data">' + Object.values(dataObs)[i] + '</td></tr>';
+      }
+      divContent += '</tbody></table>';
+      divContent += '<p class="mt-3">Update terkahir oleh: ' + dataObs.username + '. Tanggal ' + dataObs.timestamp + '</p>';
+      div.innerHTML = divContent;
+      return div;
+    }
+
     // Function action layer petak
     function defineActions(event) {
       var item = event.item;
@@ -163,68 +162,65 @@
       }
     }
 
-    // Function Format char to Title Case
-    function toTitleCase(str) {
-        return str.replace(
-            /\w\S*/g,
-            function(txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            }
-        );
-    }
-
-    dataLayer = $("#layerData").val();
-    alert(dataLayer);
-
-    // Tombol Geolocation
-    view.ui.add(
-      new Track({
-        view: view,
-        useHeadingEnabled: false,
-        goToLocationEnabled: false
-      }), "top-left"
-    );
-
-    // Tombol Legenda
-    const legend = new Expand({
-      content: new Legend({
-        view: view
-      }),
-      view: view
-    });
-    view.ui.add(legend, "top-left");
-
-    // From Pencarian
-    var searchWidget = new Search({
-      view: view,
-      includeDefaultSources: false
-    });
-    view.ui.add(searchWidget, "top-right");
-
-    // Tombol Full Screen
-    view.ui.add(
-      new Fullscreen({
-        view: view,
-        element: viewDiv
-      }), "top-right"
-    );
-
-    // Tombol Basemap
-    const basemapGallery = new BasemapGallery({
-      view: view,
-      container: document.createElement("div")
-    });
-
-    view.ui.add(
-      new Expand({
-        view: view,
-        content: basemapGallery
-      }),
-      "bottom-left"
-    );
-
     view.when(function () {
       var popup = view.popup;
+
+      // Function Format char to Title Case
+      function toTitleCase(str) {
+          return str.replace(
+              /\w\S*/g,
+              function(txt) {
+                  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+              }
+          );
+      }
+
+      // Tombol Geolocation
+      view.ui.add(
+        new Track({
+          view: view,
+          useHeadingEnabled: false,
+          goToLocationEnabled: false
+        }), "top-left"
+      );
+
+      // Tombol Legenda
+      const legend = new Expand({
+        content: new Legend({
+          view: view
+        }),
+        view: view
+      });
+      view.ui.add(legend, "top-left");
+
+      // From Pencarian
+      var searchWidget = new Search({
+        view: view,
+        includeDefaultSources: false
+      });
+      view.ui.add(searchWidget, "top-right");
+
+      // Tombol Full Screen
+      view.ui.add(
+        new Fullscreen({
+          view: view,
+          element: viewDiv
+        }), "top-right"
+      );
+
+      // Tombol Basemap
+      const basemapGallery = new BasemapGallery({
+        view: view,
+        container: document.createElement("div")
+      });
+
+      view.ui.add(
+        new Expand({
+          view: view,
+          content: basemapGallery
+        }),
+        "bottom-left"
+      );
 
       $.ajax({
         async : false,
@@ -292,11 +288,10 @@
         layerAdd.collapse();
       }
 
-      var kecDom = '<div class="form-group input-group-sm" id="dataForm"> \
+      var kecDom = '<div class="form-group input-group-sm" id="dataLayer"> \
         <label>Pilih jenis data</label> \
         <select class="form-control" id="layerData"> \
           <option value="areantatus">Status lahan</option> \
-            <option value="landuse">Landuse</option> \
         </select> \
       </div> \
       <div class="form-group input-group-sm" id="kecForm"> \
