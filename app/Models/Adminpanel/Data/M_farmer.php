@@ -182,7 +182,7 @@ class M_farmer extends M_data
   {
     return $this->insert($data);
   }
-  
+
   public function update_post($id, $data)
   {
     return $this->update($id, $data);
@@ -192,7 +192,7 @@ class M_farmer extends M_data
   {
     return $this->delete($id);
   }
-  
+
   public function getFarmExport($where = null, $like = null, $orLike = null, $paginate = 5, $page = 1)
   {
     $query = $this->select('farmcode, farmname, farmmobile, farmhead')
@@ -211,9 +211,12 @@ class M_farmer extends M_data
     $offset = $page * 10;
     $like = ['mstr_farmers.farmname' => $selected];
 
-    $countAll= $this->like($like, 'match', 'after')->countAll();
+    //$countAll= $this->like($like, 'match', 'after')->countAll();
+    // gw ganti di.. kalau pakai atas looping dia
+    $alldata = $this->like($like, 'match', 'after')->findAll();
+    $countAll = count($alldata);
     $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
- 
+
     $result = array(
       'total_count' => $countAll,
       'results' => $data,

@@ -6,7 +6,22 @@
 
 <?= $this->section('content') ?>
 
-<div id="viewDiv"></div>
+<div id="viewDiv">
+  <div class="modal fade" id="modal_petak">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Update Petak </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?= $this->endSection() ?>
 
@@ -233,7 +248,9 @@
         if (event.action.id === "edit-this") {
           var attributes = popup.viewModel.selectedFeature.attributes;
           var id = attributes.FID;
-          window.location.href = url_edtObs + "/" + id;
+          view.popup.close();
+          $('#modal_petak').modal('show');
+          //window.location.href = url_edtObs + "/" + id;
         }else if (event.action.id === "edit-cal") {
             var attributes = popup.viewModel.selectedFeature.attributes;
             var id = attributes.FID;

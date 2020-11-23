@@ -82,8 +82,8 @@
 
       </div>
       <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-sm btn-primary" onclick="createPost()">Simpan</button>
+        <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="createPost()">Confirm</button>
       </div>
     </div>
     <!-- /.modal-content -->
