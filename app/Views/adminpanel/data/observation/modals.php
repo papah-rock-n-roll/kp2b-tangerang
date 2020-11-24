@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
 
-        <?php echo form_open($action) ?>
+        <?php echo form_open() ?>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -26,9 +26,6 @@
                 ];
                 echo form_input($ownernik);
                 ?>
-                <div class="invalid-feedback">
-                  <?= $validation->getError('ownernik') ?>
-                </div>
               </div>
             </div>
 
@@ -47,9 +44,6 @@
                   ];
                   echo form_input($ownername);
                   ?>
-                  <div class="invalid-feedback">
-                    <?= $validation->getError('ownername') ?>
-                  </div>
               </div>
             </div>
           </div>
@@ -71,9 +65,6 @@
                 ];
                 echo form_textarea($owneraddress);
                 ?>
-                <div class="invalid-feedback">
-                  <?= $validation->getError('owneraddress') ?>
-                </div>
               </div>
             </div>
           </div>

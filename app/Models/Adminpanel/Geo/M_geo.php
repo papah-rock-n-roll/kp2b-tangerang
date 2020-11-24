@@ -156,24 +156,15 @@ class M_geo extends Model
 
     $row = $this->db->query($sql)->getRowArray();
 
-    $polygon = geoPHP::load($row['GEOM'],'wkt');
+    $geom = geoPHP::load($row['GEOM'],'wkt');
 
-    dd($polygon);
-    $area = $polygon->getArea();
-    $centroid = $polygon->getCentroid();
-    $centX = $centroid->getX();
-    $centY = $centroid->getY();
-    $centZ = $centroid->getZ();
-    $centM = $centroid->getM();
+    $json = $geom->out('json');
+    $features = json_decode($json, true);
 
-    //$json = $geom->out('json');
-    //$features = json_decode($json, true);
+    $result = json_encode($features, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
 
-    //$result = json_encode($features, JSON_NUMERIC_CHECK);
-    //$result = json_decode($result, true);
-
-    $t = ("This polygon ".$area." X=".$centX." Y=".$centY." Z=".$centY." M=".$centY);
-    return $t;
+    return $result;
   }
 
 

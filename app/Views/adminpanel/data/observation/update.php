@@ -284,9 +284,12 @@
             <div class="form-group">
               <label for="">Responden</label>
               <?php
-              $selected = old('respid') == null ? $v['respid'] : old('respid');
-              echo form_dropdown('respid', $respondens, $selected, ['class' => 'form-control form-control-sm custom-select select2-respo', 'style' => 'width: 100%;', 'required' => '']);
+              $respid = old('respid') == null ? $v['respid'] : old('respid');
+              $respname = old('respname') == null ? $v['respname'] : old('respname');
               ?>
+              <select name="vlcode" class="form-control form-control-sm custom-select select2-respo" style="width: 100%;" required>';
+                <option value="<?= $respid ?>" selected="selected"><?= esc($respname) ?></option>
+              </select>
               <div class="invalid-feedback">
                 <?= $validation->getError('respid') ?>
               </div>
@@ -692,11 +695,47 @@
     return markup;
   }
 
-  function formatDataSelection (data) {
-    return data.text;
-  }
+  $(".select2-respo").select2({
+    ajax: {
+      url: "/api/respondens",
+      dataType: 'json',
+      delay: 250,
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
 
-  $(".select2-respo").select2().on("select2:open", () => {
+        var items = [];
+        $.each(data.results, function (k,v) {
+          items.push({
+            'id': v.respid,
+            'text': v.respname,
+            'items': {
+              'respname': v.respname,
+              'mobileno': v.mobileno ,
+              },
+          });
+        });
+
+        return {
+          results: items,
+          pagination: {
+            more: (params.page * 10) < data.total_count
+          }
+        };
+      },
+      cache: true
+    },
+    escapeMarkup: function (markup) { return markup; },
+    placeholder: 'Pilih responden',
+    minimumInputLength: 1,
+    templateResult: formatDataRespo,
+    templateSelection: formatDataSelection
+  }).on("select2:open", () => {
     $(".select2-results:not(:has(a))")
       .prepend('<div class="select2-results__option"><div class="wrapper">' +
         '<a href="#" class="btn btn-block btn-sm btn-primary" data-toggle="modal" data-target="#modal_respo">+ Tambah responden</a>' +
@@ -706,6 +745,23 @@
   $('#modal_respo').on('shown.bs.modal', function () {
     $(".select2-respo").select2("close");
   });
+
+  function formatDataRespo(data) {
+    if (data.loading) return data.text;
+
+    var markup = $(
+      '<optgroup label="'+ data.items.respname +'">' +
+        '<option class="mobileno"></option>' +
+      '</optgroup>');
+
+    markup.find(".mobileno").text(data.items.mobileno);
+
+    return markup;
+  }
+
+  function formatDataSelection (data) {
+      return data.text;
+    }
 
 </script>
 

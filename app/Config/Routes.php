@@ -44,6 +44,7 @@ $routes->set404Override(function() {
  */
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
 	$routes->resource('geo');
+	$routes->resource('respondens');
 	$routes->resource('owners');
 	$routes->resource('farmer');
 	$routes->resource('subdist');

@@ -113,6 +113,32 @@ class M_responden extends M_data
     return $this->where('respid', $id)->orWhere('mobileno', $mobileno)->first();
   }
 
+  // Api responden - Remote Select2
+  public function getRemoteRespondens($selected, $page)
+  {
+    if(empty($selected)) $selected = '';
+    if(empty($page)) $page = 0;
+
+    $offset = $page * 10;
+    $like = ['mstr_respondens.respname' => $selected];
+
+    //$countAll = $this->like($like, 'match', 'after')->countAll();
+    // gw ganti di.. kalau pakai atas looping dia
+    $alldata = $this->like($like, 'match', 'after')->findAll();
+    $countAll = count($alldata);
+    $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
+
+    $result = array(
+      'total_count' => $countAll,
+      'results' => $data
+    );
+
+    $result = json_encode($result, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
+
+    return $result;
+  }
+
   public function validationRules($id = null)
   {
     return [

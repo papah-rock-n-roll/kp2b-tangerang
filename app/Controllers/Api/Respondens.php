@@ -2,31 +2,39 @@
 
 /**
  * --------------------------------------------------------------------
- * Show json farmer for remote select2
+ * Show json respondens for remote select2
  *
- * https://localhost/kp2b-tangerang/api/farmer |page null
+ * https://localhost/kp2b-tangerang/api/respondens |page null
  * 
  * 
- * https://localhost/kp2b-tangerang/api/farmer?q=abcd&page=1 |page 1 limit 10
+ * https://localhost/kp2b-tangerang/api/respondens?q=abcd&page=1 |page 1 limit 10
  *
  *
  * --------------------------------------------------------------------
  */
 
 use CodeIgniter\RESTful\ResourceController;
+use Config\Services;
 
-class Farmer extends ResourceController
+class Respondens extends ResourceController
 {
-  protected $modelName = 'App\Models\Adminpanel\Data\M_farmer';
+  protected $modelName = 'App\Models\Adminpanel\Data\M_responden';
   protected $format    = 'json';
   protected $request;
+
+  protected $validation;
+
+  public function __construct()
+  {
+    $this->validation = Services::validation();
+  }
 
   public function index()
   {
     $selected = $this->request->getGet('q');
     $page = $this->request->getGet('page');
 
-    $data = $this->model->getRemoteFarmer($selected, $page);
+    $data = $this->model->getRemoteRespondens($selected, $page);
 
     if(!empty($data)) {
       return $this->respond($data);

@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
 
-        <?php echo form_open($action) ?>
+        <?php echo form_open() ?>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -25,9 +25,6 @@
                 ];
                 echo form_input($respname);
                 ?>
-                <div class="invalid-feedback">
-                  <?= $validation->getError('farmhead') ?>
-                </div>
               </div>
             </div>
 
@@ -44,9 +41,6 @@
                   ];
                   echo form_input($mobileno);
                   ?>
-                  <div class="invalid-feedback">
-                    <?= $validation->getError('mobileno') ?>
-                  </div>
               </div>
             </div>
           </div>
