@@ -11,6 +11,9 @@
 use CodeIgniter\Model;
 use geoPHP;
 
+use Shapefile\ShapefileReader;
+use Shapefile\ShapefileWriter;
+
 class M_geo extends Model
 {
   public $table = 'v_observations';
@@ -94,7 +97,7 @@ class M_geo extends Model
       );
 
       $features = array();
-
+      
       foreach ($query as $row){
 
         $geom = geoPHP::load($row['GEOM'],'wkt');
@@ -130,82 +133,66 @@ class M_geo extends Model
   }
 
 
-// --------------------------------------------------------------------------
-
-
-  public function get_public($conditions = null) : Array
-  {
-    // data sdcode ambil dari cache
-    if (!empty($conditions['sdcode'])) {
-      $geoPublic = cache()->get('geojson.'.$conditions['sdcode'].'.cache');
-    }
-
-    // data vlcode ambil dari cache
-    if (!empty($conditions['vlcode'])) {
-      $geoPublic = cache()->get('geojson.'.$conditions['vlcode'].'.cache');
-    }
-
-    if ($geoPublic == null) $geoPublic = [];
-
-    return $geoPublic;
-  }
-
 /**
  * --------------------------------------------------------------------
  *
- * API raw input
+ * function
  *
  * --------------------------------------------------------------------
  */
 
-/*
-  public function postGeo($data)
+  public function get_observasion($obscode)
   {
-    return $this->insert($data);
-  }
-*/
+    $table = 'v_observations';
+    $id_field = $obscode;
+    $geom_field = 'obsshape';
+    $fields = 'obscode,respname,farmname,sdname,vlname,landuse,areantatus,broadnrea,
+    ownernik,ownername,cultivatorname,typeirigation,distancefromriver,distancefromIrgPre,
+    wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,other,
+    harvstmax,monthmax,harvstmin,monthmin,harvstsell';
 
-  public function putGeo($id, $data)
-  {
-    return $this->update($id, $data);
+    $sql = "SELECT {$id_field} AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields} 
+    FROM {$table} WHERE {$geom_field} IS NOT NULL AND obscode = {$id_field};";
+
+    $row = $this->db->query($sql)->getRowArray();
+
+    $polygon = geoPHP::load($row['GEOM'],'wkt');
+
+    dd($polygon);
+    $area = $polygon->getArea();
+    $centroid = $polygon->getCentroid();
+    $centX = $centroid->getX();
+    $centY = $centroid->getY();
+    $centZ = $centroid->getZ();
+    $centM = $centroid->getM();
+
+    //$json = $geom->out('json');
+    //$features = json_decode($json, true);
+
+    //$result = json_encode($features, JSON_NUMERIC_CHECK);
+    //$result = json_decode($result, true);
+
+    $t = ("This polygon ".$area." X=".$centX." Y=".$centY." Z=".$centY." M=".$centY);
+    return $t;
   }
 
-  public function validationRules($id = null)
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Shapefile
+ *
+ * --------------------------------------------------------------------
+ */
+
+  public static function writer_shapefile(string $pathfile)
   {
-    return [
-      'vlcode' => [
-        'label' => 'Kode Desa',
-        'rules' => 'required|max_length[10]|is_unique[observations_frmobservations.obscode,obscode,'.$id.']',
-        'errors' => [
-          'required' => 'Diperlukan {field}',
-          'is_unique' => 'Data {field} {value} Sudah Ada',
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'farmcode' => [
-        'label' => 'Kode Poktan',
-        'rules' => 'required|max_length[10]',
-        'errors' => [
-          'required' => 'Diperlukan {field}',
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'ownerid' => [
-        'label' => 'ID Pemilik',
-        'rules' => 'required|max_length[10]',
-        'errors' => [
-          'required' => 'Diperlukan {field}',
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'cultivatorid' => [
-        'label' => 'ID Penggarap',
-        'rules' => 'required|max_length[10]',
-        'errors' => [
-          'required' => 'Diperlukan {field}',
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-    ];
+    return new ShapefileWriter($pathfile);
   }
+
+  public static function reader_shapefile(string $pathfile)
+  {
+    return new ShapefileReader($pathfile);
+  }
+
 }

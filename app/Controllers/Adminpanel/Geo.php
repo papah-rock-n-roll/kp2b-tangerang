@@ -25,4 +25,38 @@ class Geo extends \App\Controllers\BaseController
     $this->M_obsgeo->list(null, $keyword, null, $paginate);
   }
 
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * Geo Observations - Upload Import - Export
+ *
+ * --------------------------------------------------------------------
+ */
+  public function observation_upload()
+  {
+    if($this->request->getMethod() === 'get')
+    {
+      $data['validation'] = $this->validation;
+
+      $this->M_obsgeo->upload_new($data);
+    }
+    else
+    {
+      $rules = $this->M_obsgeo->validationImport();
+      
+      if(! $this->validate($rules)) {
+        return redirect()->back()->withInput();
+      }
+
+      $file = $this->request->getFile('zip_file');
+      $this->M_obsgeo->upload_post($file);
+    }
+  }
+
+  public function observation_export($obscode)
+  {
+    $this->M_obsgeo->export($obscode);
+  }
+
 }

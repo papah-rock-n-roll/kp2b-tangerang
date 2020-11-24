@@ -58,7 +58,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 $routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) {
 
 	// Access log
-	$routes->cli('writable/delete/(:any)/(:any)', 'Access::writable_delete/$1/$2');
+	$routes->cli('writable/delete/(:any)', 'Access::writable_delete/$1');
+	$routes->cli('cache/delete/(:any)', 'Access::cache_delete/$1');
 
 	// Geo Public
 	$routes->cli('geo/cache/(:any)/(:any)', 'Geo::cache_geojson/$1/$2');
@@ -255,7 +256,7 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'upload', 'Adminpanel\Geo::observation_upload');
 			$routes->post('import', 'Adminpanel\Geo::observation_import');
 			// Export
-			$routes->get('export', 'Adminpanel\Geo::observation_export');
+			$routes->get('export/(:num)', 'Adminpanel\Geo::observation_export/$1');
 		});
 
 		// Geo Village

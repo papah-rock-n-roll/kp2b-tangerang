@@ -24,23 +24,25 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="">Import File SHP</label>
+      <label for="">Import File Zip</label>
       <div class="custom-file">
-        <?php $custom = $validation->hasError('shp_file') ? 'custom-file-label form-control is-invalid' : 'custom-file-label form-control' ?>
-        <label class="<?= esc($custom) ?>" for="shp_file">Choose file</label>
+        <?php $custom = $validation->hasError('zip_file') ? 'custom-file-label form-control is-invalid' : 'custom-file-label form-control' ?>
+        <label class="<?= esc($custom) ?>" for="zip_file">Choose file</label>
         <?php
         $import = [
-          'id' => 'shp_file',
+          'id' => 'zip_file',
           'class' => 'custom-file-input',
-          'name' => 'shp_file',
-          'accept' => '.xlx,.xlsx',
+          'name' => 'zip_file',
+          'multiple' => '',
+          'accept' => '.zip',
           'onchange' => 'filename()',
         ];
         echo form_upload($import);
         ?>
         <div class="invalid-feedback">
-        <?= $validation->getError('shp_file') ?>
+          <?= $validation->getError('zip_file') ?>
         </div>
+
       </div>
     </div>
   </div>
@@ -59,7 +61,7 @@
 <script>
 function filename() {
 
-  const file = document.querySelector('#shp_file');
+  const file = document.querySelector('#zip_file');
   const fileLabel = document.querySelector('.custom-file-label');
 
   fileLabel.textContent = file.files[0].name;
