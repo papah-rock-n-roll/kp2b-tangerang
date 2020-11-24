@@ -14,6 +14,7 @@
  */
 
 use CodeIgniter\RESTful\ResourceController;
+use Config\Services;
 
 class Observation extends ResourceController
 {
@@ -21,9 +22,23 @@ class Observation extends ResourceController
   protected $format    = 'json';
   protected $request;
 
+  protected $validation;
+
+  public function __construct()
+  {
+    $this->validation = Services::validation();
+  }
+
+
   public function index()
   {
-    
+    $code = '404';
+    $this->response->setStatusCode($code);
+    $message = [
+      'status' => $code,
+      'message' => $this->response->getReason(),
+    ];
+    return $this->respond($message, $code);
   }
 
   public function show($segment = null)

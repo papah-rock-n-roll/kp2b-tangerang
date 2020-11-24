@@ -324,22 +324,21 @@ class M_observation extends M_data
     return [
       'broadnrea' => [
         'label' => 'Broad Area',
-        'rules' => 'required|decimal',
+        'rules' => 'max_length[7]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromriver' => [
         'label' => 'Distance From River',
-        'rules' => 'decimal',
+        'rules' => 'max_length[7]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromIrgPre' => [
         'label' => 'Distance From Irrigation',
-        'rules' => 'decimal',
+        'rules' => 'max_length[7]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
