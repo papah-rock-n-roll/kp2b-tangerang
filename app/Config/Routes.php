@@ -48,6 +48,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 	$routes->resource('owners');
 	$routes->resource('farmer');
 	$routes->resource('subdist');
+	$routes->resource('observation');
 });
 
 /**

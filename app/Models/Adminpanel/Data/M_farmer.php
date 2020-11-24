@@ -228,6 +228,19 @@ class M_farmer extends M_data
     return $result;
   }
 
+  // Api farmer - Ajax geo update
+  public function getFarmerAjax($id = null)
+  {
+    // Data Observation By obscode
+    $farm = $this->getFarmer($id);
+
+    // function M_data By base value typeirigation, opt, saprotan
+    $farmer = parent::recursiveBase($farm);
+
+    return $farmer;
+  }
+
+
 
 /**
  * --------------------------------------------------------------------

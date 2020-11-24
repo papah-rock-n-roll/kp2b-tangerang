@@ -296,7 +296,7 @@
               <div class="form-group">
                 <label for="">Status Lahan</label>
                 <?php $status = old('areantatus') == null ? '' : old('areantatus') ?>
-                <select class="form-control form-control-sm select2-input" name="areantatus" style="width: 100%;" required>
+                <select class="form-control form-control-sm select2-input" id="areantatus" name="areantatus" style="width: 100%;" required>
                   <option <?= $status == 'MILIK' ? 'selected' : '' ?> >MILIK</option>
                   <option <?= $status == 'SEWA' ? 'selected' : '' ?> >SEWA</option>
                   <option <?= $status == 'GARAP' ? 'selected' : '' ?> >GARAP</option>
@@ -859,8 +859,19 @@
         if (event.action.id === "edit-this") {
           var attributes = popup.viewModel.selectedFeature.attributes;
           var id = attributes.FID;
+          $.ajax({
+            async : true,
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            type: "GET",
+            format: "json",
+            url: '/api/observation/ajax?id=' + id,
+            success: function(response){
+              data = JSON.parse(response);
+              console.log(data);
+            }
+          });
           view.popup.close();
-          $('#modal_petak').modal('show');
+          //$('#modal_petak').modal('show');
           //window.location.href = url_edtObs + "/" + id;
         }else if (event.action.id === "edit-cal") {
             var attributes = popup.viewModel.selectedFeature.attributes;
