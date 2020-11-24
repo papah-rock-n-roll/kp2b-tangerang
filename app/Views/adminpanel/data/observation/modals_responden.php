@@ -13,67 +13,40 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="">NIK</label>
+                <label for="">Nama responden</label>
                 <?php
-                $ownernik = [
+                $respname = [
                   'type' => 'text',
                   'class' => 'form-control form-control-sm',
-                  'name' => 'ownernik',
-                  'placeholder' => 'Masukkan NIK pemilik',
-                  'minlength' => '1',
-                  'value' => old('ownernik') == null ? '' : old('ownernik'),
+                  'name' => 'respname',
+                  'placeholder' => 'Masukkan nama responden',
+                  'minlength' => '5',
                   'required' => ''
                 ];
-                echo form_input($ownernik);
+                echo form_input($respname);
                 ?>
                 <div class="invalid-feedback">
-                  <?= $validation->getError('ownernik') ?>
+                  <?= $validation->getError('farmhead') ?>
                 </div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="">Nama</label>
+                <label for="">No tlp responden</label>
                   <?php
-                  $ownername = [
+                  $mobileno = [
                     'type' => 'text',
                     'class' => 'form-control form-control-sm',
-                    'name' => 'ownername',
-                    'placeholder' => 'Masukkan nama pemilik',
-                    'minlength' => '1',
-                    'value' => old('ownername') == null ? '' : old('ownername'),
-                    'required' => ''
+                    'name' => 'mobileno',
+                    'placeholder' => 'Masukkan no tlp responden',
+                    'minlength' => '5'
                   ];
-                  echo form_input($ownername);
+                  echo form_input($mobileno);
                   ?>
                   <div class="invalid-feedback">
-                    <?= $validation->getError('ownername') ?>
+                    <?= $validation->getError('mobileno') ?>
                   </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="">Alamat</label>
-                <?php
-                $owneraddress = [
-                  'class' => 'form-control form-control-sm',
-                  'cols' => '2',
-                  'rows' => '3',
-                  'name' => 'owneraddress',
-                  'minlength' => '1',
-                  'placeholder' => 'Masukkan alamat pemilik',
-                  'value' => old('owneraddress') == null ? '' : old('owneraddress'),
-                  'required' => ''
-                ];
-                echo form_textarea($owneraddress);
-                ?>
-                <div class="invalid-feedback">
-                  <?= $validation->getError('owneraddress') ?>
-                </div>
               </div>
             </div>
           </div>

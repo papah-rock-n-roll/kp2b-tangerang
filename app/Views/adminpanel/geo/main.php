@@ -6,7 +6,22 @@
 
 <?= $this->section('content') ?>
 
-<div id="viewDiv"></div>
+<div id="viewDiv">
+  <div class="modal fade" id="modal_petak">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Update Petak </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?= $this->endSection() ?>
 
@@ -66,6 +81,49 @@
       content: getDetail
     };
 
+    const renderer = {
+      type: "simple",
+      field: "FID",
+      symbol: {
+        type: "simple-fill",
+        color: "green",
+        outline: {
+          color: "white"
+        }
+      }
+    };
+
+    const labelClass = {
+      symbol: {
+        type: "text",
+        color: "yellow",
+        font: {
+          size: 9,
+          weight: "light"
+        }
+      },
+      labelPlacement: "above-center",
+      labelExpressionInfo: {
+        expression: "$feature.FID"
+      }
+    };
+
+    const map = new Map({
+      basemap: "gray-vector"
+    });
+
+    const view = new MapView({
+      container: "viewDiv",
+      center: [106.518852, -6.120213],
+      zoom: 10,
+      map: map,
+      popup: {
+        dockOptions: {
+          position: "bottom-right"
+        }
+      }
+    });
+
     function getDetail(feature) {
       var obscode = feature.graphic.attributes.FID;
       $.ajax({
@@ -88,34 +146,6 @@
       div.innerHTML = divContent;
       return div;
     }
-
-    const renderer = {
-      type: "simple",
-      field: "FID",
-      symbol: {
-        type: "simple-fill",
-        color: "green",
-        outline: {
-          color: "white"
-        }
-      }
-    };
-
-    const map = new Map({
-      basemap: "gray-vector"
-    });
-
-    const view = new MapView({
-      container: "viewDiv",
-      center: [106.518852, -6.120213],
-      zoom: 10,
-      map: map,
-      popup: {
-        dockOptions: {
-          position: "bottom-right"
-        }
-      }
-    });
 
     function defineActions(event) {
       var item = event.item;
@@ -218,7 +248,9 @@
         if (event.action.id === "edit-this") {
           var attributes = popup.viewModel.selectedFeature.attributes;
           var id = attributes.FID;
-          window.location.href = url_edtObs + "/" + id;
+          view.popup.close();
+          $('#modal_petak').modal('show');
+          //window.location.href = url_edtObs + "/" + id;
         }else if (event.action.id === "edit-cal") {
             var attributes = popup.viewModel.selectedFeature.attributes;
             var id = attributes.FID;
@@ -290,6 +322,7 @@
           url: url + "/info?table=v_observations&fid=obscode&shape=obsshape&sdcode=" + kec + "&vlcode=" + desa,
           copyright: "Dinas Pertanian Kab. Tangerang",
           popupTemplate: template,
+          labelingInfo: [labelClass],
           renderer: renderer,
           title: "Petak sawah",
           opacity: .75

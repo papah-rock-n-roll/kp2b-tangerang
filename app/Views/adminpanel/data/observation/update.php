@@ -8,24 +8,36 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-      
+
       <div class="card-header">
         <h5 class="card-title">Update Petak</h5>
-        <div class="card-tools">
-          <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal_create">
-            <i class="fas fa-file-alt"></i>
-          </button>
-          <?php
-            $modals = [
-              'id' => 'modal_create',
-              'size' => 'modal-lg',
-              'class' => 'bg-default',
-              'title' => 'Tambah',
-              ];
-            echo view('adminpanel/data/observation/modals', $modals);
-          ?>
-        </div>
       </div>
+
+      <?php
+        $modals = [
+          'id' => 'modal_create',
+          'size' => 'modal-md',
+          'class' => 'bg-default',
+          'title' => 'Tambah data pemilik / penggarap'
+          ];
+        echo view('adminpanel/data/observation/modals', $modals);
+
+        $modals = [
+          'id' => 'modal_poktan',
+          'size' => 'modal-md',
+          'class' => 'bg-default',
+          'title' => 'Tambah data poktan'
+          ];
+        echo view('adminpanel/data/observation/modals_poktan', $modals);
+
+        $modals = [
+          'id' => 'modal_respo',
+          'size' => 'modal-md',
+          'class' => 'bg-default',
+          'title' => 'Tambah responden'
+          ];
+        echo view('adminpanel/data/observation/modals_responden', $modals);
+      ?>
 
       <?php echo form_open($action) ?>
       <div class="card-body">
@@ -39,10 +51,10 @@
               $ownerid = old('ownerid') == null ? $v['ownerid'] : old('ownerid');
               $ownername = old('ownername') == null ? $v['ownername'] : old('ownername');
               ?>
-              <select name="ownerid" class="form-control custom-select select2-ownercultivator" style="width: 100%;" required>';
+              <select name="ownerid" class="form-control form-control-sm custom-select select2-ownercultivator" style="width: 100%;" required>';
                 <option value="<?= $ownerid ?>" selected="selected"><?= esc($ownername) ?></option>
               </select>
-              
+
               <div class="invalid-feedback">
                 <?= $validation->getError('ownerid') ?>
               </div>
@@ -54,7 +66,7 @@
               $cultivatorid = old('cultivatorid') == null ? $v['cultivatorid'] : old('cultivatorid');
               $cultivatorname = old('cultivatorname') == null ? $v['cultivatorname'] : old('cultivatorname');
               ?>
-              <select name="cultivatorid" class="form-control custom-select select2-ownercultivator" style="width: 100%;" required>';
+              <select name="cultivatorid" class="form-control form-control-sm custom-select select2-ownercultivator" style="width: 100%;" required>';
                 <option value="<?= $cultivatorid ?>" selected="selected"><?= esc($cultivatorname) ?></option>
               </select>
               <div class="invalid-feedback">
@@ -68,7 +80,7 @@
               $farmcode = old('farmcode') == null ? $v['farmcode'] : old('farmcode');
               $farmname = old('farmname') == null ? $v['farmname'] : old('farmname');
               ?>
-              <select name="farmcode" class="form-control custom-select select2-farmer" style="width: 100%;" required>';
+              <select name="farmcode" class="form-control form-control-sm custom-select select2-farmer" style="width: 100%;" required>';
                 <option value="<?= $farmcode ?>" selected="selected"><?= esc($farmname) ?></option>
               </select>
               <div class="invalid-feedback">
@@ -79,7 +91,7 @@
             <div class="form-group">
               <label for="">Status Lahan</label>
               <?php $status = old('areantatus') == null ? $v['areantatus'] : old('areantatus') ?>
-              <select class="form-control select2-input" name="areantatus" style="width: 100%;" required>
+              <select class="form-control form-control-sm select2-input" name="areantatus" style="width: 100%;" required>
                 <option <?= $status == 'MILIK' ? 'selected' : '' ?> >MILIK</option>
                 <option <?= $status == 'SEWA' ? 'selected' : '' ?> >SEWA</option>
                 <option <?= $status == 'GARAP' ? 'selected' : '' ?> >GARAP</option>
@@ -91,7 +103,7 @@
 
             <div class="form-group">
               <label for="">Luas Petak Lahan</label>
-              <div class="input-group">
+              <div class="input-group input-group-sm">
                 <?php
                 $broadnrea = [
                   'class' => $validation->hasError('broadnrea') ? 'form-control is-invalid' : 'form-control',
@@ -118,7 +130,7 @@
 
             <div class="form-group">
               <label for="">Jenis Irigasi</label>
-              <?php $valid = $validation->hasError('typeirigation') ? 'form-control is-invalid' : 'form-control' ?>
+              <?php $valid = $validation->hasError('typeirigation') ? 'form-control is-invalid' : 'form-control form-control-sm' ?>
               <select class="<?= $valid ?> select2-multi" name="typeirigation[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['typeirigation'] as $k_irig => $v_irig) : ?>
                   <option <?= $v_irig ?>><?= $k_irig ?></option>
@@ -131,10 +143,10 @@
 
             <div class="form-group">
               <label for="">Jarak Dari Sungai</label>
-              <div class="input-group">
+              <div class="input-group input-group-sm">
                 <?php
                 $distancefromriver = [
-                  'class' => $validation->hasError('distancefromriver') ? 'form-control is-invalid' : 'form-control',
+                  'class' => $validation->hasError('distancefromriver') ? 'form-control is-invalid' : 'form-control form-control-sm',
                   'type' => 'text',
                   'inputmode' => 'decimal',
                   'pattern' => '[-+]?[0-9]*[.,]?[0-9]+',
@@ -142,8 +154,7 @@
                   'min' => '1',
                   'max' => '1000000',
                   'placeholder' => 'Jarak dalam meter',
-                  'value' => old('distancefromriver') == null ? $v['distancefromriver'] : old('distancefromriver'),
-                  'required' => ''
+                  'value' => old('distancefromriver') == null ? $v['distancefromriver'] : old('distancefromriver')
                 ];
                 echo form_input($distancefromriver);
                 ?>
@@ -158,10 +169,10 @@
 
             <div class="form-group">
               <label for="">Jarak Dari Irigasi</label>
-              <div class="input-group">
+              <div class="input-group input-group-sm">
                 <?php
                 $distancefromIrgPre = [
-                  'class' => $validation->hasError('distancefromIrgPre') ? 'form-control is-invalid' : 'form-control',
+                  'class' => $validation->hasError('distancefromIrgPre') ? 'form-control is-invalid' : 'form-control form-control-sm',
                   'type' => 'text',
                   'inputmode' => 'decimal',
                   'pattern' => '[-+]?[0-9]*[.,]?[0-9]+',
@@ -169,8 +180,7 @@
                   'min' => '1',
                   'man' => '1000000',
                   'placeholder' => 'Jarak dalam meter',
-                  'value' => old('distancefromIrgPre') == null ? $v['distancefromIrgPre'] : old('distancefromIrgPre'),
-                  'required' => ''
+                  'value' => old('distancefromIrgPre') == null ? $v['distancefromIrgPre'] : old('distancefromIrgPre')
                 ];
                 echo form_input($distancefromIrgPre);
                 ?>
@@ -187,7 +197,7 @@
               <label for="">Lembaga Pengelolaan Air</label>
               <?php
               $wtrtreatnnst = [
-                'class' => $validation->hasError('wtrtreatnnst') ? 'form-control is-invalid' : 'form-control',
+                'class' => $validation->hasError('wtrtreatnnst') ? 'form-control is-invalid' : 'form-control form-control-sm',
                 'type' => 'input',
                 'name' => 'wtrtreatnnst',
                 'minlenght' => '1',
@@ -204,7 +214,7 @@
             <div class="form-group">
               <label for="">Intensitas Tanam</label>
               <?php $status = old('intensitynlan') == null ? $v['intensitynlan'] : old('intensitynlan') ?>
-              <select class="form-control select2-input" name="intensitynlan" style="width: 100%;" required>
+              <select class="form-control form-control-sm select2-input" name="intensitynlan" style="width: 100%;" required>
                 <option <?= $status == '1' ? 'selected' : '' ?> >1</option>
                 <option <?= $status == '2' ? 'selected' : '' ?> >2</option>
                 <option <?= $status == '2.5' ? 'selected' : '' ?> >2.5</option>
@@ -219,7 +229,7 @@
               <label for="">Indeks Pertanaman</label>
               <?php
               $indxnlant = [
-                'class' => $validation->hasError('indxnlant') ? 'form-control is-invalid' : 'form-control',
+                'class' => $validation->hasError('indxnlant') ? 'form-control is-invalid' : 'form-control form-control-sm',
                 'type' => 'number',
                 'name' => 'indxnlant',
                 'min' => '100',
@@ -239,13 +249,12 @@
               <label for="">Pola Tanam</label>
               <?php
               $pattrnnlant = [
-                'class' => $validation->hasError('pattrnnlant') ? 'form-control is-invalid' : 'form-control',
+                'class' => $validation->hasError('pattrnnlant') ? 'form-control is-invalid' : 'form-control form-control-sm',
                 'type' => 'input',
                 'name' => 'pattrnnlant',
                 'minlength' => '1',
                 'placeholder' => 'Pola',
-                'value' => old('pattrnnlant') == null ? $v['pattrnnlant'] : old('pattrnnlant'),
-                'required' => ''
+                'value' => old('pattrnnlant') == null ? $v['pattrnnlant'] : old('pattrnnlant')
               ];
               echo form_input($pattrnnlant);
               ?>
@@ -264,7 +273,7 @@
               $vlcode = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
               $vlname = old('vlname') == null ? $v['vlname'] : old('vlname');
               ?>
-              <select name="vlcode" class="form-control custom-select select2-subdist" style="width: 100%;" required>';
+              <select name="vlcode" class="form-control form-control-sm custom-select select2-subdist" style="width: 100%;" required>';
                 <option value="<?= $vlcode ?>" selected="selected"><?= esc($vlname) ?></option>
               </select>
               <div class="invalid-feedback">
@@ -276,7 +285,7 @@
               <label for="">Responden</label>
               <?php
               $selected = old('respid') == null ? $v['respid'] : old('respid');
-              echo form_dropdown('respid', $respondens, $selected, ['class' => 'custom-select select2', 'style' => 'width: 100%;', 'required' => '']);
+              echo form_dropdown('respid', $respondens, $selected, ['class' => 'form-control form-control-sm custom-select select2-respo', 'style' => 'width: 100%;', 'required' => '']);
               ?>
               <div class="invalid-feedback">
                 <?= $validation->getError('respid') ?>
@@ -285,7 +294,7 @@
 
             <div class="form-group">
               <label for="">Permasalahan OPT</label>
-              <?php $valid = $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control' ?>
+              <?php $valid = $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control form-control-sm' ?>
               <select class="<?= $valid ?> select2-multi" name="opt[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['opt'] as $k_opt => $v_opt) : ?>
                   <option <?= $v_opt ?>><?= $k_opt ?></option>
@@ -300,7 +309,7 @@
               <label for="">Permasalahan Air</label>
               <?php
               $wtr = [
-                'class' => $validation->hasError('wtr') ? 'form-control is-invalid' : 'form-control',
+                'class' => $validation->hasError('wtr') ? 'form-control is-invalid' : 'form-control form-control-sm',
                 'type' => 'input',
                 'name' => 'wtr',
                 'minlength' => '1',
@@ -316,7 +325,7 @@
 
             <div class="form-group">
               <label for="">Permasalahan Saprotan</label>
-              <?php $valid = $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control' ?>
+              <?php $valid = $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control form-control-sm' ?>
               <select class="<?= $valid ?> select2-multi" name="saprotan[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
                 <?php foreach($v['saprotan'] as $k_sap => $v_sap) : ?>
                   <option <?= $v_sap ?>><?= $k_sap ?></option>
@@ -331,7 +340,7 @@
               <label for="">Permasalahan Lainnya</label>
               <?php
               $other = [
-                'class' => $validation->hasError('other') ? 'form-control is-invalid' : 'form-control',
+                'class' => $validation->hasError('other') ? 'form-control is-invalid' : 'form-control form-control-sm',
                 'type' => 'input',
                 'name' => 'other',
                 'minlength' => '1',
@@ -347,30 +356,34 @@
 
             <div class="form-group">
               <label for="">Panen Terbanyak</label>
-              <?php
-              $harvstmax = [
-                'class' => $validation->hasError('harvstmax') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'text',
-                'inputmode' => 'decimal',
-                'pattern' => '[-+]?[0-9]*[.,]?[0-9]+',
-                'name' => 'harvstmax',
-                'min' => '1',
-                'max' => '1000000',
-                'placeholder' => 'Enter Desimal..',
-                'value' => old('harvstmax') == null ? $v['harvstmax'] : old('harvstmax'),
-                'required' => ''
-              ];
-              echo form_input($harvstmax);
-              ?>
-              <div class="invalid-feedback">
-                <?= $validation->getError('harvstmax') ?>
+              <div class="input-group input-group-sm">
+                <?php
+                $harvstmax = [
+                  'class' => $validation->hasError('harvstmax') ? 'form-control is-invalid' : 'form-control form-control-sm',
+                  'type' => 'text',
+                  'inputmode' => 'decimal',
+                  'pattern' => '[-+]?[0-9]*[.,]?[0-9]+',
+                  'name' => 'harvstmax',
+                  'min' => '1',
+                  'max' => '1000000',
+                  'placeholder' => 'Enter Desimal..',
+                  'value' => old('harvstmax') == null ? $v['harvstmax'] : old('harvstmax')
+                ];
+                echo form_input($harvstmax);
+                ?>
+                <div class="input-group-append">
+                  <span class="input-group-text">kwintal</span>
+                </div>
+                <div class="invalid-feedback">
+                  <?= $validation->getError('harvstmax') ?>
+                </div>
               </div>
             </div>
 
             <div class="form-group">
               <label for="">Bulan Panen Terbanyak</label>
               <?php $status = old('monthmax') == null ? $v['monthmax'] : old('monthmax') ?>
-              <select class="form-control select2" name="monthmax" style="width: 100%;" required>
+              <select class="form-control form-control-sm select2" name="monthmax" style="width: 100%;" required>
                 <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
                 <option <?= $status == 'FEBRUARI' ? 'selected' : '' ?>>FEBRUARI</option>
                 <option <?= $status == 'MARET' ? 'selected' : '' ?>>MARET</option>
@@ -391,30 +404,34 @@
 
             <div class="form-group">
               <label for="">Panen Terkecil</label>
-              <?php
-              $harvstmin = [
-                'class' => $validation->hasError('harvstmin') ? 'form-control is-invalid' : 'form-control',
-                'type' => 'text',
-                'inputmode' => 'decimal',
-                'pattern' => '[-+]?[0-9]*[.,]?[0-9]+',
-                'name' => 'harvstmin',
-                'min' => '1',
-                'max' => '1000000',
-                'placeholder' => 'Enter Desimal..',
-                'value' => old('harvstmin') == null ? $v['harvstmin'] : old('harvstmin'),
-                'required' => ''
-              ];
-              echo form_input($harvstmin);
-              ?>
-              <div class="invalid-feedback">
-                <?= $validation->getError('harvstmin') ?>
+              <div class="input-group input-group-sm">
+                <?php
+                $harvstmin = [
+                  'class' => $validation->hasError('harvstmin') ? 'form-control is-invalid' : 'form-control form-control-sm',
+                  'type' => 'text',
+                  'inputmode' => 'decimal',
+                  'pattern' => '[-+]?[0-9]*[.,]?[0-9]+',
+                  'name' => 'harvstmin',
+                  'min' => '1',
+                  'max' => '1000000',
+                  'placeholder' => 'Enter Desimal..',
+                  'value' => old('harvstmin') == null ? $v['harvstmin'] : old('harvstmin')
+                ];
+                echo form_input($harvstmin);
+                ?>
+                <div class="input-group-append">
+                  <span class="input-group-text">kwintal</span>
+                </div>
+                <div class="invalid-feedback">
+                  <?= $validation->getError('harvstmin') ?>
+                </div>
               </div>
             </div>
 
             <div class="form-group">
               <label for="">Bulan Panen Terkecil</label>
               <?php $status = old('monthmin') == null ? $v['monthmin'] : old('monthmin') ?>
-              <select class="form-control select2" name="monthmin" style="width: 100%;" required>
+              <select class="form-control form-control-sm select2" name="monthmin" style="width: 100%;" required>
                 <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
                 <option <?= $status == 'FEBRUARI' ? 'selected' : '' ?>>FEBRUARI</option>
                 <option <?= $status == 'MARET' ? 'selected' : '' ?>>MARET</option>
@@ -436,7 +453,7 @@
             <div class="form-group">
               <label for="">Penjualan Panen</label>
               <?php $status = old('harvstsell') == null ? $v['harvstsell'] : old('harvstsell') ?>
-              <select class="form-control select2-input" name="harvstsell" style="width: 100%;" required>
+              <select class="form-control form-control-sm select2-input" name="harvstsell" style="width: 100%;" required>
                 <option <?= $status == 'TIDAK DIJUAL' ? 'selected' : '' ?> >TIDAK DIJUAL</option>
                 <option <?= $status == 'PASAR' ? 'selected' : '' ?> >PASAR</option>
                 <option <?= $status == 'TENGKULAK' ? 'selected' : '' ?> >TENGKULAK</option>
@@ -449,7 +466,7 @@
             <div class="form-group">
               <label for="">Penggunaan Lahan</label>
               <?php $status = old('landuse') == null ? $v['landuse'] : old('landuse') ?>
-              <select class="form-control select2-input" name="landuse" style="width: 100%;" required>
+              <select class="form-control form-control-sm select2-input" name="landuse" style="width: 100%;" required>
                 <option <?= $status == 'Sawah' ? 'selected' : '' ?> >Sawah</option>
                 <option <?= $status == 'Non Sawah' ? 'selected' : '' ?> >Non Sawah</option>
                 <option <?= $status == 'Pemukiman' ? 'selected' : '' ?> >Pemukiman</option>
@@ -479,6 +496,8 @@
 
 <script>
 
+  var flg = 0;
+
   $('.select2').select2()
 
   $(".select2-input").select2({
@@ -507,9 +526,9 @@
         $.each(data.results, function (k,v) {
           items.push({
             'id': v.ownerid,
-            'text': v.ownername, 
+            'text': v.ownername,
             'items': {
-              'ownername': v.ownername, 
+              'ownername': v.ownername,
               'ownernik': v.ownernik ,
               },
           });
@@ -529,13 +548,22 @@
     minimumInputLength: 1,
     templateResult: formatDataOwnerCultivator,
     templateSelection: formatDataSelection
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))")
+      .prepend('<div class="select2-results__option"><div class="wrapper">' +
+        '<a href="#" class="btn btn-block btn-sm btn-primary" data-toggle="modal" data-target="#modal_create">+ Tambah pemilik/penggarap</a>' +
+      '</div></div>')
+  });
+
+  $('#modal_create').on('shown.bs.modal', function () {
+    $(".select2-ownercultivator").select2("close");
   });
 
   function formatDataOwnerCultivator (data) {
     if (data.loading) return data.text;
 
     var markup = $(
-      '<optgroup label="'+ data.items.ownername +'">' + 
+      '<optgroup label="'+ data.items.ownername +'">' +
         '<option class="nik"></option>' +
       '</optgroup>');
 
@@ -562,9 +590,9 @@
         $.each(data.results, function (k,v) {
           items.push({
             'id': v.farmcode,
-            'text': v.farmname, 
+            'text': v.farmname,
             'items': {
-              'farmname': v.farmname, 
+              'farmname': v.farmname,
               'farmhead': v.farmhead ,
               },
           });
@@ -584,13 +612,22 @@
     minimumInputLength: 1,
     templateResult: formatDataFarmer,
     templateSelection: formatDataSelection
+  }).on("select2:open", () => {
+    $(".select2-results:not(:has(a))")
+      .prepend('<div class="select2-results__option"><div class="wrapper">' +
+        '<a href="#" class="btn btn-block btn-sm btn-primary" data-toggle="modal" data-target="#modal_poktan">+ Tambah kelompok tani</a>' +
+      '</div></div>')
+  });
+
+  $('#modal_poktan').on('shown.bs.modal', function () {
+    $(".select2-farmer").select2("close");
   });
 
   function formatDataFarmer(data) {
     if (data.loading) return data.text;
 
     var markup = $(
-      '<optgroup label="'+ data.items.farmname +'">' + 
+      '<optgroup label="'+ data.items.farmname +'">' +
         '<option class="farmhead"></option>' +
       '</optgroup>');
 
@@ -617,9 +654,9 @@
         $.each(data.results, function (k,v) {
           items.push({
             'id': v.vlcode,
-            'text': v.vlname, 
+            'text': v.vlname,
             'items': {
-              'vlname': v.vlname, 
+              'vlname': v.vlname,
               'sdname': v.sdname ,
               },
           });
@@ -646,7 +683,7 @@
     if (data.loading) return data.text;
 
     var markup = $(
-      '<optgroup label="'+ data.items.vlname +'">' + 
+      '<optgroup label="'+ data.items.vlname +'">' +
         '<option class="sdname"></option>' +
       '</optgroup>');
 
@@ -658,6 +695,17 @@
   function formatDataSelection (data) {
     return data.text;
   }
+
+  $(".select2-respo").select2().on("select2:open", () => {
+    $(".select2-results:not(:has(a))")
+      .prepend('<div class="select2-results__option"><div class="wrapper">' +
+        '<a href="#" class="btn btn-block btn-sm btn-primary" data-toggle="modal" data-target="#modal_respo">+ Tambah responden</a>' +
+      '</div></div>')
+  });
+
+  $('#modal_respo').on('shown.bs.modal', function () {
+    $(".select2-respo").select2("close");
+  });
 
 </script>
 

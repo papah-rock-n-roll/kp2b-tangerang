@@ -129,15 +129,15 @@ class M_observation extends M_data
   {
     // Pisah Array OTP dan Saprotan menjadi string
     if(!empty($data['opt']))
-      $newData['opt'] = implode(',', $data['opt']); 
+      $newData['opt'] = implode(',', $data['opt']);
     else $newData['opt'] = '';
-    
-    if(!empty($data['saprotan'])) 
+
+    if(!empty($data['saprotan']))
       $newData['saprotan'] = implode(',', $data['saprotan']);
     else $newData['saprotan'] = '';
 
-    if(!empty($data['typeirigation'])) 
-      $newData['typeirigation'] = implode(',', $data['typeirigation']); 
+    if(!empty($data['typeirigation']))
+      $newData['typeirigation'] = implode(',', $data['typeirigation']);
     else $newData['typeirigation'] = '';
 
     // Ganti key Assoc pada $data dengan $newData yang sama OPT dan Saprotan
@@ -322,17 +322,15 @@ class M_observation extends M_data
       ],
       'distancefromriver' => [
         'label' => 'Distance From River',
-        'rules' => 'required|decimal',
+        'rules' => 'decimal',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromIrgPre' => [
         'label' => 'Distance From Irrigation',
-        'rules' => 'required|decimal',
+        'rules' => 'decimal',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
@@ -346,9 +344,8 @@ class M_observation extends M_data
       ],
       'pattrnnlant' => [
         'label' => 'Pattern',
-        'rules' => 'required|max_length[100]',
+        'rules' => 'max_length[100]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
@@ -389,15 +386,15 @@ class M_observation extends M_data
   {
     // Pisah String OTP dan Saprotan dengan delimiter (Koma) menjadi Array
     if(!empty($observation['opt']))
-      $opt = explode(',', $observation['opt']); 
+      $opt = explode(',', $observation['opt']);
     else $opt = [];
 
     if(!empty($observation['saprotan']))
-      $saprotan = explode(',', $observation['saprotan']); 
+      $saprotan = explode(',', $observation['saprotan']);
     else $saprotan = [];
 
     if(!empty($observation['typeirigation']))
-      $typeirigation = explode(',', $observation['typeirigation']); 
+      $typeirigation = explode(',', $observation['typeirigation']);
     else $typeirigation = [];
 
     // Ganti key Assoc berdasarkan Base dengan value ''

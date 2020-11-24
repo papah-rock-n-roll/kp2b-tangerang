@@ -19,14 +19,14 @@ class Filters extends BaseConfig
 	public $globals = [
 		'before' => [
 			'cors' => [
-				'except' => ['cli*','api/geo/info*','api/geo/kecamatan*','api/geo/desa*']
+				'except' => ['cli*','api/geo/info*','api/geo/obsdetail*','api/geo/kecamatan*','api/geo/desa*']
 			],
 			//'honeypot'
 		],
 		'after'  => [
 			'toolbar',
 			'cors' => [
-				'except' => ['cli*','api/geo/info*','api/geo/kecamatan*','api/geo/desa*']
+				'except' => ['cli*','api/geo/info*','api/geo/obsdetail*','api/geo/kecamatan*','api/geo/desa*']
 			],
 			//'honeypot'
 		],

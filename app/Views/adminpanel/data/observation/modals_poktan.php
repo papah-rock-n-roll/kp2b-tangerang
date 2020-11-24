@@ -13,42 +13,40 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="">NIK</label>
+                <label for="">Nama ketua Poktan</label>
                 <?php
-                $ownernik = [
+                $farmhead = [
                   'type' => 'text',
                   'class' => 'form-control form-control-sm',
-                  'name' => 'ownernik',
-                  'placeholder' => 'Masukkan NIK pemilik',
-                  'minlength' => '1',
-                  'value' => old('ownernik') == null ? '' : old('ownernik'),
+                  'name' => 'farmhead',
+                  'placeholder' => 'Masukkan nama ketua Poktan',
+                  'minlength' => '5',
                   'required' => ''
                 ];
-                echo form_input($ownernik);
+                echo form_input($farmhead);
                 ?>
                 <div class="invalid-feedback">
-                  <?= $validation->getError('ownernik') ?>
+                  <?= $validation->getError('farmhead') ?>
                 </div>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
-                <label for="">Nama</label>
+                <label for="">No kontak ketua Poktan</label>
                   <?php
-                  $ownername = [
+                  $farmmobile = [
                     'type' => 'text',
                     'class' => 'form-control form-control-sm',
-                    'name' => 'ownername',
-                    'placeholder' => 'Masukkan nama pemilik',
-                    'minlength' => '1',
-                    'value' => old('ownername') == null ? '' : old('ownername'),
+                    'name' => 'farmmobile',
+                    'placeholder' => 'Masukkan no kontak ketua Poktan',
+                    'minlength' => '5',
                     'required' => ''
                   ];
-                  echo form_input($ownername);
+                  echo form_input($farmmobile);
                   ?>
                   <div class="invalid-feedback">
-                    <?= $validation->getError('ownername') ?>
+                    <?= $validation->getError('farmmobile') ?>
                   </div>
               </div>
             </div>
@@ -57,22 +55,20 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="">Alamat</label>
+                <label for="">Nama poktan</label>
                 <?php
-                $owneraddress = [
+                $farmname = [
+                  'type' => 'text',
                   'class' => 'form-control form-control-sm',
-                  'cols' => '2',
-                  'rows' => '3',
-                  'name' => 'owneraddress',
-                  'minlength' => '1',
-                  'placeholder' => 'Masukkan alamat pemilik',
-                  'value' => old('owneraddress') == null ? '' : old('owneraddress'),
+                  'name' => 'farmname',
+                  'minlength' => '5',
+                  'placeholder' => 'Masukkan nama Poktan',
                   'required' => ''
                 ];
-                echo form_textarea($owneraddress);
+                echo form_input($farmname);
                 ?>
                 <div class="invalid-feedback">
-                  <?= $validation->getError('owneraddress') ?>
+                  <?= $validation->getError('farmname') ?>
                 </div>
               </div>
             </div>

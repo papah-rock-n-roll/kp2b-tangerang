@@ -208,9 +208,12 @@ class M_owner extends M_data
     $offset = $page * 10;
     $like = ['mstr_owners.ownername' => $selected];
 
-    $countAll = $this->like($like, 'match', 'after')->countAll();
+    //$countAll = $this->like($like, 'match', 'after')->countAll();
+    // gw ganti di.. kalau pakai atas looping dia
+    $alldata = $this->like($like, 'match', 'after')->findAll();
+    $countAll = count($alldata);
     $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
-    
+
     $result = array(
       'total_count' => $countAll,
       'results' => $data
