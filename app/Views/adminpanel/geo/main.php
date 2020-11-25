@@ -457,11 +457,14 @@
               </div>
 
               <div class="form-group">
-                <label for="">Responden</label>
+              <label for="">Responden</label>
                 <?php
-                $selected = old('respid') == null ? '' : old('respid');
-                echo form_dropdown('respid', '', $selected, ['class' => 'form-control form-control-sm custom-select select2-respo', 'style' => 'width: 100%;', 'required' => '']);
+                $respid = old('respid') == null ? '': old('respid');
+                $respname = old('respname') == null ? '' : old('respname');
                 ?>
+                <select name="respid" class="form-control form-control-sm custom-select select2-respo" style="width: 100%;" required>';
+                  <option value="<?= $respid ?>" selected="selected"><?= esc($respname) ?></option>
+                </select>
               </div>
 
               <div class="form-group">
@@ -871,7 +874,7 @@
             }
           });
           view.popup.close();
-          //$('#modal_petak').modal('show');
+          $('#modal_petak').modal('show');
           //window.location.href = url_edtObs + "/" + id;
         }else if (event.action.id === "edit-cal") {
             var attributes = popup.viewModel.selectedFeature.attributes;
@@ -1091,7 +1094,7 @@
 
     $(".select2-farmer").select2({
       ajax: {
-        url: "/api/farmer",
+        url: "/api/farmers",
         dataType: 'json',
         delay: 250,
         data: function (params) {

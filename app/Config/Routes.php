@@ -46,7 +46,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 	$routes->resource('geo');
 	$routes->resource('respondens');
 	$routes->resource('owners');
-	$routes->resource('farmer');
+	$routes->resource('farmers');
 	$routes->resource('subdist');
 	$routes->resource('observation');
 });
@@ -123,8 +123,17 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Access::management_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Access::management_delete/$1');
 			// REDIRECT MODULE PANEL
-			$routes->addRedirect('read', 'administrator/access/management');
-			$routes->addRedirect('update', 'administrator/access/management');
+			$routes->add('read', function() {
+				echo '<script>javascript:window.history.go(-2)</script>';
+			});
+
+			$routes->add('update', function() {
+				$uri = new \CodeIgniter\HTTP\URI(session('_ci_previous_url'));
+				$get = $uri->getQuery(['only' => ['post']]);
+				$pos = substr($get, strpos($get, '=') + 1);
+				$def = 2;
+				echo '<script>javascript:window.history.go(-'.($def += $pos).')</script>';
+			});
 		});
 
 		// Access Setting
@@ -173,11 +182,13 @@ $routes->group('administrator', function($routes) {
 
 		// Data Observation - Petak
 		$routes->group('observation', function($routes) {
-			$routes->get('', 'Adminpanel\Data::observation_index');
-			$routes->get('read/(:num)', 'Adminpanel\Data::observation_read/$1');
-			$routes->match(['get', 'post'], 'update/(:num)', 'Adminpanel\Data::observation_update/$1');
 
-			// TIDAK TERPAKAI
+			// Main route
+			$routes->get('', 'Adminpanel\Data::observation_index');
+			$routes->get('read/(:any)', 'Adminpanel\Data::observation_read/$1');
+			$routes->match(['get', 'post'], 'update/(:any)', 'Adminpanel\Data::observation_update/$1', ['as' => 'update']);
+
+			# TIDAK TERPAKAI
 			// $routes->match(['get', 'post'], 'create', 'Adminpanel\Data::observation_create');
 			// $routes->get('delete/(:num)', 'Adminpanel\Data::observation_delete/$1');
 
@@ -186,11 +197,22 @@ $routes->group('administrator', function($routes) {
 				$routes->post('import', 'Adminpanel\Data::observation_import');
 				// Export
 				$routes->get('export', 'Adminpanel\Data::observation_export');
+
 			// REDIRECT MODULE PANEL
+			$routes->add('read', function() {
+				echo '<script>javascript:window.history.go(-2)</script>';
+			});
+
+			$routes->add('update', function() {
+				$uri = new \CodeIgniter\HTTP\URI(session('_ci_previous_url'));
+				$get = $uri->getQuery(['only' => ['post']]);
+				$pos = substr($get, strpos($get, '=') + 1);
+				$def = 2;
+				echo '<script>javascript:window.history.go(-'.($def += $pos).')</script>';
+			});
+
 			$routes->addRedirect('create', 'administrator/data/observation');
 			$routes->addRedirect('delete', 'administrator/data/observation');			
-			$routes->addRedirect('read', 'administrator/data/observation');
-			$routes->addRedirect('update', 'administrator/data/observation');
 			$routes->addRedirect('plantdate', 'administrator/data/observation');
 
 			// Data Observation Plantdates
@@ -210,7 +232,13 @@ $routes->group('administrator', function($routes) {
 				// Export
 				$routes->get('export', 'Adminpanel\Data::owner_export');
 			// REDIRECT MODULE PANEL
-			$routes->addRedirect('update', 'administrator/data/owner');
+			$routes->add('update', function() {
+				$uri = new \CodeIgniter\HTTP\URI(session('_ci_previous_url'));
+				$get = $uri->getQuery(['only' => ['post']]);
+				$pos = substr($get, strpos($get, '=') + 1);
+				$def = 2;
+				echo '<script>javascript:window.history.go(-'.($def += $pos).')</script>';
+			});
 		});
 
 
@@ -226,7 +254,13 @@ $routes->group('administrator', function($routes) {
 				// Export
 				$routes->get('export', 'Adminpanel\Data::farmer_export');
 			// REDIRECT MODULE PANEL
-			$routes->addRedirect('update', 'administrator/data/farmer');
+			$routes->add('update', function() {
+				$uri = new \CodeIgniter\HTTP\URI(session('_ci_previous_url'));
+				$get = $uri->getQuery(['only' => ['post']]);
+				$pos = substr($get, strpos($get, '=') + 1);
+				$def = 2;
+				echo '<script>javascript:window.history.go(-'.($def += $pos).')</script>';
+			});
 		});
 
 
@@ -237,7 +271,13 @@ $routes->group('administrator', function($routes) {
 			$routes->match(['get', 'post'], 'update/(:any)', 'Adminpanel\Data::responden_update/$1');
 			$routes->get('delete/(:num)', 'Adminpanel\Data::responden_delete/$1');
 			// REDIRECT MODULE PANEL
-			$routes->addRedirect('update', 'administrator/data/responden');
+			$routes->add('update', function() {
+				$uri = new \CodeIgniter\HTTP\URI(session('_ci_previous_url'));
+				$get = $uri->getQuery(['only' => ['post']]);
+				$pos = substr($get, strpos($get, '=') + 1);
+				$def = 2;
+				echo '<script>javascript:window.history.go(-'.($def += $pos).')</script>';
+			});
 		});
 
 	});

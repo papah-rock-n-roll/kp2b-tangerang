@@ -75,6 +75,11 @@ class Access extends \App\Controllers\BaseController
 
   public function management_update($id)
   {
+    $uri = current_url();
+    $get = $this->request->uri->getQuery(['only' => ['post']]);
+
+    $get ?? 'post=1';
+
     if($this->request->getMethod() === 'get')
     {
       $module = $this->M_setting->getRoleModules();
@@ -82,7 +87,7 @@ class Access extends \App\Controllers\BaseController
       $data['roles'] = array('' => 'Choose Role') + array_column($module, 'rolename', 'roleid');
       $data['validation'] = $this->validation;
 
-      $this->M_management->update_new($id, $data);
+      $this->M_management->update_new($id, $data, $get);
     }
     else
     {
@@ -99,7 +104,12 @@ class Access extends \App\Controllers\BaseController
 
       if($post) {
         $this->session->setFlashdata('success', 'Update User '.$data['name'].' Successfully');
-        return redirect()->back();
+
+        $num = 1;
+        $counter = substr($get, strpos($get, '=') + 1);
+        if($counter < 1)
+          return redirect()->to($uri.'?post='.$num);
+        else return redirect()->to($uri.'?post='.$counter += $num);
       }
  
     }

@@ -111,7 +111,7 @@ class M_observation extends M_data
     return false;
   }
 
-  public function update_new($id, $data)
+  public function update_new($id, $data, $get)
   {
     // Data Observation By obscode
     $obs = $this->getObservation($id);
@@ -120,7 +120,7 @@ class M_observation extends M_data
     $observation = parent::recursiveBase($obs);
 
     $data += [
-      'action' => self::ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id.'?'.$get,
       'v' => $observation,
       'back' => self::BACK,
     ];
@@ -267,8 +267,10 @@ class M_observation extends M_data
 
     // function M_data By base value typeirigation, opt, saprotan
     $observation = parent::recursiveBase($obs);
+    $result = json_encode($observation, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
 
-    return $observation;
+    return $result;
   }
 
 

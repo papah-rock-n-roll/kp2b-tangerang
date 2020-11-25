@@ -109,10 +109,10 @@ class M_management extends M_access
     return $query;
   }
 
-  public function update_new($id, $data)
+  public function update_new($id, $data, $get)
   {
     $data += [
-      'action' => self::ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id.'?'.$get,
       'v' => $this->getUser($id),
       'back' => self::BACK,
     ];
