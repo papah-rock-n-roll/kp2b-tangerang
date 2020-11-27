@@ -113,7 +113,7 @@ $routes->group('administrator', function($routes) {
  */
 
 	$routes->group('access', function($routes) {
-	
+
 		// Access Management
 		$routes->group('management', function($routes) {
 			$routes->get('', 'Adminpanel\Access::management_index');
@@ -187,7 +187,7 @@ $routes->group('administrator', function($routes) {
 				$routes->get('export', 'Adminpanel\Data::observation_export');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('create', 'administrator/data/observation');
-			$routes->addRedirect('delete', 'administrator/data/observation');			
+			$routes->addRedirect('delete', 'administrator/data/observation');
 			$routes->addRedirect('read', 'administrator/data/observation');
 			$routes->addRedirect('update', 'administrator/data/observation');
 			$routes->addRedirect('plantdate', 'administrator/data/observation');
@@ -258,7 +258,10 @@ $routes->group('administrator', function($routes) {
 			$routes->post('import', 'Adminpanel\Geo::observation_import');
 			// Export
 			$routes->get('export/(:num)', 'Adminpanel\Geo::observation_export/$1');
+			// Obs detail ajax form
+			$routes->get('obs_ajax/(:num)', 'Adminpanel\Geo::observation_detail/$1');
 		});
+
 
 		// Geo Village
 		$routes->get('village', 'Adminpanel\Geo::village_index');

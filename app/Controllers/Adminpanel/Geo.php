@@ -10,7 +10,8 @@ class Geo extends \App\Controllers\BaseController
       'url_desa' => base_url('api/geo/desa'),
       'url_obs' => base_url('api/geo/obsdetail'),
       'url_edtObs' => base_url('administrator/data/observation/update/'),
-      'url_edtPlt' => base_url('administrator/data/observation/plantdate/')
+      'url_edtPlt' => base_url('administrator/data/observation/plantdate/'),
+      'url_obsDet' => base_url('administrator/geo/observation/obs_ajax')
 		];
     echo view('adminpanel/geo/main', $data);
   }
@@ -23,6 +24,11 @@ class Geo extends \App\Controllers\BaseController
 
     // fetch data dengan memanggil fungsi model obsgeo
     $this->M_obsgeo->list(null, $keyword, null, $paginate);
+  }
+
+  public function observation_detail($id)
+  {
+    $this->M_observation->getObsdetail($id);
   }
 
 
@@ -44,7 +50,7 @@ class Geo extends \App\Controllers\BaseController
     else
     {
       $rules = $this->M_obsgeo->validationImport();
-      
+
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
