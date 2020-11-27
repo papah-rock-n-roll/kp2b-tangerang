@@ -29,9 +29,6 @@ class M_observation extends M_data
   protected $table = 'v_observations';
   protected $primaryKey = 'obscode';
 
-  public $irigationbase = ['Sungai','Primer','Sekunder','Tersier'];
-  public $optbase = ['Burung','Walang Sangit','Wereng','Sundep'];
-  public $saprotanbase = ['Semprotan','Traktor'];
 
   public function list($farm = null, $keyword = null, $data, $paginate)
   {
@@ -120,19 +117,25 @@ class M_observation extends M_data
   public function create_post($data)
   {
     //return $this->insert($data);
-    return true;
+    return false;
+  }
+  
+  public function delete_post($id)
+  {
+    //return $this->delete($id);
+    return false;
   }
 
-  public function update_new($id, $data)
+  public function update_new($id, $data, $get)
   {
     // Data Observation By obscode
     $obs = $this->getObservation($id);
 
-    // function Observation By base value typeirigation, opt, saprotan
-    $observation = $this->recursiveBase($obs);
+    // function M_data By base value typeirigation, opt, saprotan
+    $observation = parent::recursiveBase($obs);
 
     $data += [
-      'action' => self::ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id.'?'.$get,
       'v' => $observation,
       'back' => self::BACK,
     ];
@@ -204,12 +207,6 @@ class M_observation extends M_data
     return $builder->update();
   }
 
-  public function delete_post($id)
-  {
-    //return $this->delete($id);
-    return true;
-  }
-
   public function upload_new($data)
   {
     $data += [
@@ -277,6 +274,21 @@ class M_observation extends M_data
   }
 
 
+  // Api observation - Ajax geo update
+  public function update_newAjax($id)
+  {
+    // Data Observation By obscode
+    $obs = $this->getObservation($id);
+
+    // function M_data By base value typeirigation, opt, saprotan
+    $observation = parent::recursiveBase($obs);
+    $result = json_encode($observation, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
+
+    return $result;
+  }
+
+
 /**
  * --------------------------------------------------------------------
  * Query
@@ -329,22 +341,21 @@ class M_observation extends M_data
     return [
       'broadnrea' => [
         'label' => 'Broad Area',
-        'rules' => 'required|decimal',
+        'rules' => 'max_length[7]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromriver' => [
         'label' => 'Distance From River',
-        'rules' => 'decimal',
+        'rules' => 'max_length[7]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromIrgPre' => [
         'label' => 'Distance From Irrigation',
-        'rules' => 'decimal',
+        'rules' => 'max_length[7]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
@@ -397,45 +408,6 @@ class M_observation extends M_data
  * Function
  * --------------------------------------------------------------------
  */
-  function recursiveBase($observation)
-  {
-    // Pisah String OTP dan Saprotan dengan delimiter (Koma) menjadi Array
-    if(!empty($observation['opt']))
-      $opt = explode(',', $observation['opt']);
-    else $opt = [];
-
-    if(!empty($observation['saprotan']))
-      $saprotan = explode(',', $observation['saprotan']);
-    else $saprotan = [];
-
-    if(!empty($observation['typeirigation']))
-      $typeirigation = explode(',', $observation['typeirigation']);
-    else $typeirigation = [];
-
-    // Ganti key Assoc berdasarkan Base dengan value ''
-    $optbase = array_fill_keys($this->optbase, '');
-    $saprotanbase = array_fill_keys($this->saprotanbase, '');
-    $irigationbase = array_fill_keys($this->irigationbase, '');
-
-    // Ganti key Assoc irigation berdasarkan Base dengan value Selected
-    $selected = array_fill_keys($typeirigation, 'selected');
-    $newObs['typeirigation'] = array_replace_recursive($irigationbase, $selected);
-
-    // Ganti key Assoc OPT berdasarkan Base dengan value Selected
-    $selected = array_fill_keys($opt, 'selected');
-    $newObs['opt'] = array_replace_recursive($optbase, $selected);
-
-    // Ganti key Assoc saprotan berdasarkan Base dengan value Selected
-    $selected = array_fill_keys($saprotan, 'selected');
-    $newObs['saprotan'] = array_replace_recursive($saprotanbase, $selected);
-
-    // Ganti key Assoc yang sama irigation, OPT, saprotan dengan value Selected
-    $observation = array_replace($observation, $newObs);
-
-    return $observation;
-  }
-
-
   function import($data)
   {
     $db = \Config\Database::connect();

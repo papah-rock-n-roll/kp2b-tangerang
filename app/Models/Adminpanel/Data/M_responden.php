@@ -73,10 +73,10 @@ class M_responden extends M_data
     return $this->insert($data);
   }
 
-  public function update_new($id, $data)
+  public function update_new($id, $data, $get)
   {
     $data += [
-      'action' => self::ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id.'?'.$get,
       'v' => $this->getResponden($id),
       'back' => self::BACK,
     ];
@@ -122,10 +122,7 @@ class M_responden extends M_data
     $offset = $page * 10;
     $like = ['mstr_respondens.respname' => $selected];
 
-    //$countAll = $this->like($like, 'match', 'after')->countAll();
-    // gw ganti di.. kalau pakai atas looping dia
-    $alldata = $this->like($like, 'match', 'after')->findAll();
-    $countAll = count($alldata);
+    $countAll = $this->like($like, 'match', 'after')->countAllResults();
     $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
 
     $result = array(

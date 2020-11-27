@@ -77,10 +77,10 @@ class M_farmer extends M_data
     echo view(self::VIEW.'create', $data);
   }
 
-  public function update_new($id, $data)
+  public function update_new($id, $data, $get)
   {
     $data += [
-      'action' => self::ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id.'?'.$get,
       'v' => $this->getFarmer($id),
       'back' => self::BACK,
     ];
@@ -211,10 +211,7 @@ class M_farmer extends M_data
     $offset = $page * 10;
     $like = ['mstr_farmers.farmname' => $selected];
 
-    //$countAll= $this->like($like, 'match', 'after')->countAll();
-    // gw ganti di.. kalau pakai atas looping dia
-    $alldata = $this->like($like, 'match', 'after')->findAll();
-    $countAll = count($alldata);
+    $countAll = $this->like($like, 'match', 'after')->countAllResults();
     $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
 
     $result = array(
@@ -227,6 +224,21 @@ class M_farmer extends M_data
 
     return $result;
   }
+
+  // Api farmer - Ajax geo update
+  public function getFarmerAjax($id = null)
+  {
+    // Data Observation By obscode
+    $farm = $this->getFarmer($id);
+
+    // function M_data By base value typeirigation, opt, saprotan
+    $farmer = parent::recursiveBase($farm);
+    $result = json_encode($farmer, JSON_NUMERIC_CHECK);
+    $result = json_decode($result, true);
+
+    return $result;
+  }
+
 
 
 /**

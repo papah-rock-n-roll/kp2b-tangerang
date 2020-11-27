@@ -577,7 +577,7 @@
 
   $(".select2-farmer").select2({
     ajax: {
-      url: "/api/farmer",
+      url: "/api/farmers",
       dataType: 'json',
       delay: 250,
       data: function (params) {

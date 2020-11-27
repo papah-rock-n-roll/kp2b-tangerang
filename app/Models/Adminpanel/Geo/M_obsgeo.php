@@ -165,7 +165,7 @@ class M_obsgeo extends M_geo
     $pathfile = WRITEPATH .'uploads/shapefile-export/'. $filename;
 
     $data = parent::get_observasion($obscode);
-
+    dd($data);
     try {
       // Open Shapefile
       $Shapefile = M_geo::writer_shapefile($pathfile);

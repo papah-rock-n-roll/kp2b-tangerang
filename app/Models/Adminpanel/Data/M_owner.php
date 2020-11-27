@@ -72,10 +72,10 @@ class M_owner extends M_data
     echo view(self::VIEW.'create', $data);
   }
 
-  public function update_new($id, $data)
+  public function update_new($id, $data, $get)
   {
     $data += [
-      'action' => self::ACTS.'update/'.$id,
+      'action' => self::ACTS.'update/'.$id.'?'.$get,
       'v' => $this->getOwner($id),
       'back' => self::BACK,
     ];
@@ -208,10 +208,7 @@ class M_owner extends M_data
     $offset = $page * 10;
     $like = ['mstr_owners.ownername' => $selected];
 
-    //$countAll = $this->like($like, 'match', 'after')->countAll();
-    // gw ganti di.. kalau pakai atas looping dia
-    $alldata = $this->like($like, 'match', 'after')->findAll();
-    $countAll = count($alldata);
+    $countAll = $this->like($like, 'match', 'after')->countAllResults();
     $data = $this->like($like, 'match', 'after')->findAll(10, $offset);
 
     $result = array(

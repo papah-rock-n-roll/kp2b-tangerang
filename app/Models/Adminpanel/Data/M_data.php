@@ -13,6 +13,9 @@ use PhpOffice\PhpSpreadsheet;
   
 class M_data extends Model
 {
+  public $irigationbase = ['Sungai','Primer','Sekunder','Tersier'];
+  public $optbase = ['Burung','Walang Sangit','Wereng','Sundep'];
+  public $saprotanbase = ['Semprotan','Traktor'];
 
   public function dashboard()
   {
@@ -109,6 +112,50 @@ class M_data extends Model
     $result = json_decode($result, true);
 
     return $result;
+  }
+
+
+/**
+ * --------------------------------------------------------------------
+ * Function
+ * --------------------------------------------------------------------
+ */
+  public function recursiveBase($observation)
+  {
+    // Pisah String OTP dan Saprotan dengan delimiter (Koma) menjadi Array
+    if(!empty($observation['opt']))
+      $opt = explode(',', $observation['opt']);
+    else $opt = [];
+
+    if(!empty($observation['saprotan']))
+      $saprotan = explode(',', $observation['saprotan']);
+    else $saprotan = [];
+
+    if(!empty($observation['typeirigation']))
+      $typeirigation = explode(',', $observation['typeirigation']);
+    else $typeirigation = [];
+
+    // Ganti key Assoc berdasarkan Base dengan value ''
+    $optbase = array_fill_keys($this->optbase, '');
+    $saprotanbase = array_fill_keys($this->saprotanbase, '');
+    $irigationbase = array_fill_keys($this->irigationbase, '');
+
+    // Ganti key Assoc irigation berdasarkan Base dengan value Selected
+    $selected = array_fill_keys($typeirigation, 'selected');
+    $newObs['typeirigation'] = array_replace_recursive($irigationbase, $selected);
+
+    // Ganti key Assoc OPT berdasarkan Base dengan value Selected
+    $selected = array_fill_keys($opt, 'selected');
+    $newObs['opt'] = array_replace_recursive($optbase, $selected);
+
+    // Ganti key Assoc saprotan berdasarkan Base dengan value Selected
+    $selected = array_fill_keys($saprotan, 'selected');
+    $newObs['saprotan'] = array_replace_recursive($saprotanbase, $selected);
+
+    // Ganti key Assoc yang sama irigation, OPT, saprotan dengan value Selected
+    $observation = array_replace($observation, $newObs);
+
+    return $observation;
   }
 
 

@@ -239,6 +239,17 @@
         if (event.action.id === "edit-this") {
           var attributes = popup.viewModel.selectedFeature.attributes;
           var id = attributes.FID;
+          $.ajax({
+            async : true,
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            type: "GET",
+            format: "json",
+            url: '/api/observation/ajax?id=' + id,
+            success: function(response){
+              data = JSON.parse(response);
+              console.log(data);
+            }
+          });
           view.popup.close();
           $('#modal_petak').modal('show');
           //window.location.href = url_edtObs + "/" + id;

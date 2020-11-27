@@ -4,18 +4,23 @@
  * --------------------------------------------------------------------
  * Show json farmer for remote select2
  *
- * https://localhost/kp2b-tangerang/api/farmer |page null
+ * https://localhost/kp2b-tangerang/api/farmers |page null
  * 
+ * https://localhost/kp2b-tangerang/api/farmers?q=abcd&page=1 |page 1 limit 10
+ *
  * 
- * https://localhost/kp2b-tangerang/api/farmer?q=abcd&page=1 |page 1 limit 10
- *
- *
+ * --------------------------------------------------------------------
+ * Show segment farmcode atau ajax farmcode
+ * 
+ * https://localhost/kp2b-tangerang/api/farmers/1 | show farmer
+ * 
+ * https://localhost/kp2b-tangerang/api/farmers/ajax?id=1 show extend farmer
  * --------------------------------------------------------------------
  */
 
 use CodeIgniter\RESTful\ResourceController;
 
-class Farmer extends ResourceController
+class Farmers extends ResourceController
 {
   protected $modelName = 'App\Models\Adminpanel\Data\M_farmer';
   protected $format    = 'json';
@@ -43,23 +48,52 @@ class Farmer extends ResourceController
     }
   }
 
-  public function show($id = null)
+  public function show($segment = null)
   {
-    $data = $this->model->find($id);
+    switch ($segment) {
 
-    if(!empty($data)) {
-      return $this->respond($data);
+      case 'ajax':
+
+        $id = $this->request->getGet('id');
+        $data = $this->model->getFarmerAjax($id);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }
+        else
+        {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+      break;
+
+      default:
+
+        $data = $this->model->find($segment);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }
+        else
+        {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
+      break;
+
     }
-    else
-    {
-      $code = '404';
-      $this->response->setStatusCode($code);
-      $message = [
-        'status' => $code,
-        'message' => $this->response->getReason(),
-      ];
-      return $this->respond($message, $code);
-    }
+    
   }
 
   public function create()
