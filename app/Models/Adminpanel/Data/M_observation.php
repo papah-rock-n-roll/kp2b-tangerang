@@ -71,6 +71,21 @@ class M_observation extends M_data
     echo view(self::VIEW.'list', $data);
   }
 
+  public function getObsdetail($id)
+  {
+    $obs = $this->getObservation($id);
+
+    // function Observation By base value typeirigation, opt, saprotan
+    $observation = $this->recursiveBase($obs);
+
+    $data = [
+      'action' => self::ACTS.'update/'.$id,
+      'v' => $observation
+    ];
+
+    echo view('adminpanel/geo/obs_ajax', $data);
+  }
+
   public function read($id)
   {
     $data = [
