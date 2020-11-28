@@ -149,7 +149,10 @@ $routes->group('administrator', function($routes) {
 		// Access Log
 		$routes->group('log', function($routes) {
 			$routes->get('', 'Adminpanel\Access::log_index');
+			$routes->get('read/(:any)', 'Adminpanel\Access::log_read/$1');
 			$routes->get('delete/(:any)', 'Adminpanel\Access::log_delete/$1');
+			// REDIRECT MODULE PANEL
+			$routes->addRedirect('read', 'administrator/access/log');
 		});
 
 	});

@@ -223,7 +223,26 @@ class Access extends \App\Controllers\BaseController
 
   public function log_index()
   { 
-    $this->M_log->list();
+    // $_['GET'] variabel watch - table - keyword - paginate
+    $watch = $this->request->getGet('watch');
+    $table = $this->request->getGet('table');
+    $keyword = $this->request->getGet('keyword');
+    $date = $this->request->getGet('date');
+    $paginate = $this->request->getGet('paginate');
+
+    // fetch data list dengan array column name - id
+    $list = $this->M_log->getWatch();
+    $data['watchs'] = array('' => 'Pilih watch') + array_column($list, 'name', 'name');
+    
+    $list = $this->M_log->getTable();
+    $data['tables'] = array('' => 'Pilih tabel') + array_column($list, 'name', 'name');
+
+    $this->M_log->list($watch, $table, $date, $keyword, $data, $paginate);
+  }
+
+  public function log_read($id)
+  {
+    $this->M_log->read($id);
   }
 
   public function log_delete($name)

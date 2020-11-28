@@ -12,7 +12,8 @@ class Link
       'bootstrap' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">',
       'select2bootstrap' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">',
       'adminlte' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.5/css/adminlte.min.css">',
-      'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">'
+      'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">',
+      'tempusdominus' => '',
     );
 
     $local = (object) array(
@@ -23,7 +24,8 @@ class Link
       'bootstrap' => '<link rel="stylesheet" href="'.base_url('themes/plugins/bootstrap/css/bootstrap.min.css').'">',
       'select2bootstrap' => '<link rel="stylesheet" href="'.base_url('themes/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css').'">',
       'adminlte' => '<link rel="stylesheet" href="'.base_url('themes/dist/css/adminlte.min.css').'">',
-      'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">'
+      'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">',
+      'tempusdominus' => '<link rel="stylesheet" href="'.base_url('themes/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css').'">',
     );
 
     if (ENVIRONMENT !== 'production')
@@ -45,7 +47,9 @@ class Link
       'jquery' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>',
       'bootstrap' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>',
       'select2' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>',
-      'adminlte' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.5/js/adminlte.min.js"></script>'
+      'adminlte' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.5/js/adminlte.min.js"></script>',
+      'moment' => '',
+      'tempusdominus' => '',
     );
 
     $local = (object) array(
@@ -54,7 +58,9 @@ class Link
       'jquery' => '<script src="'.base_url('themes/plugins/jquery/jquery.min.js').'"></script>',
       'bootstrap' => '<script src="'.base_url('themes/plugins/bootstrap/js/bootstrap.bundle.min.js').'"></script>',
       'select2' => '<script src="'.base_url('themes/plugins/select2/js/select2.full.min.js').'"></script>',
-      'adminlte' => '<script src="'.base_url('themes/dist/js/adminlte.min.js').'"></script>'
+      'adminlte' => '<script src="'.base_url('themes/dist/js/adminlte.min.js').'"></script>',
+      'moment' => '<script src="'.base_url('themes/plugins/moment/moment.min.js').'"></script>',
+      'tempusdominus' => '<script src="'.base_url('themes/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js').'"></script>',
     );
 
     if (ENVIRONMENT !== 'production')

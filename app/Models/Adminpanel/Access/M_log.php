@@ -15,6 +15,7 @@ class M_log extends M_access
   const ACTS = 'administrator/access/log/';
   const BACK = '/administrator/access/log';
 
+  const READ   = 'log/read/';
   const DELETE = 'log/delete/';
 
   protected $table = 'log_informations';
@@ -22,15 +23,52 @@ class M_log extends M_access
 
   protected $allowedFields = ['logid','userid','useragent','remoteaddr','watch','table','dataid','description','timestamp'];
 
-  public function list()
+  public function list($watch = null, $table = null, $date = null, $keyword = null, $data, $paginate)
   {
-    $data = [
-      'list' => $this->getlist(),
+    $where = array();
+    $orWhere = array();
+    $like = array();
+    $timestamp = array();
+
+    // Berdasarkan value $_['GET'] paginate, jika paginate null maka menjadi 5
+    if(empty($paginate)) {
+      $paginate = 5;
+    }
+
+    // Masukan Value berdarakan Array Assoc
+    $data['watch'] = $watch;
+    $data['table'] = $table;
+    $data['date'] = $date;
+    $data['keyword'] = $keyword;
+    $data['page'] = $paginate;
+
+    // Jika Tidak null maka where watch or table = $_['GET'] watch
+    if(!empty($watch)) $where = ['log_informations.watch' => $watch];    
+    if(!empty($table)) $orWhere = ['log_informations.table' => $table];
+    if(!empty($date)) $timestamp = ['DATE(log_informations.timestamp)' => $date];
+    if(!empty($keyword)) $like = ['mstr_users.name' => $keyword];
+
+    $data += [
+      'menu' => $this->getlist(),
+      'list' => $this->getInformations($where, $orWhere, $timestamp, $like, $paginate),
+      'pager' => $this->pager,
+      'read' => self::READ,
       'delete' => self::DELETE,
     ];
 
     echo view(self::VIEW.'list', $data);
   }
+
+  public function read($id)
+  {
+    $data = [
+      'v' => $this->getInformation($id),
+      'back' => self::BACK,
+    ];
+
+    echo view(self::VIEW.'read', $data);
+  }
+
 
   public function delete_post($data, $ext = null)
   {
@@ -38,7 +76,7 @@ class M_log extends M_access
 
       case 'session':
         return delete_files(WRITEPATH.'session');
-        break;
+      break;
 
       case 'cache':
         if (!empty($ext))
@@ -49,20 +87,25 @@ class M_log extends M_access
         {
           return delete_files(WRITEPATH.'cache');
         }
-        break;
+      break;
 
       case 'logs':
         return delete_files(WRITEPATH.'logs');
-        break;
+      break;
 
       case 'debugbar':
         return delete_files(WRITEPATH.'debugbar');
-        break;
+      break;
 
     }
 
   }
 
+/**
+ * --------------------------------------------------------------------
+ * Data List
+ * --------------------------------------------------------------------
+ */
   public function getlist()
   {
     $list = [
@@ -73,6 +116,60 @@ class M_log extends M_access
     ];
 
     return $list;
+  }
+
+  public function getWatch()
+  {
+    $list = [
+      ['name' => 'login'], 
+      ['name' => 'logout'], 
+      ['name' => 'create'],
+      ['name' => 'update'],
+      ['name' => 'delete'],
+      ['name' => 'import'],
+      ['name' => 'export']
+    ];
+
+    return $list;
+  }
+
+  public function getTable()
+  {
+    $list = [
+      ['name' => 'mstr_role'],
+      ['name' => 'mstr_users'],
+      ['name' => 'mstr_owners'],
+      ['name' => 'mstr_farmers'], 
+      ['name' => 'mstr_respondens'],
+      ['name' => 'observations_frmobservations'],
+      ['name' => 'observations_plantdates'],
+    ];
+
+    return $list;
+  }
+
+/**
+ * --------------------------------------------------------------------
+ * Query
+ * --------------------------------------------------------------------
+ */
+  public function getInformations($where = null, $orWhere = null, $timestamp = null, $like = null, $paginate = 5)
+  {
+    $query = $this->select('
+    log_informations.logid, mstr_users.name, log_informations.watch, 
+    log_informations.table, log_informations.dataid, log_informations.timestamp')
+    ->join('mstr_users', 'log_informations.userid = mstr_users.userid')
+    ->where($where)->orWhere($orWhere)->orWhere($timestamp)->like($like, 'match')
+    ->orderBy('timestamp DESC')->paginate($paginate, 'default');
+
+    return $query;
+  }
+
+  public function getInformation($id)
+  {
+    $query = $this->find($id);
+
+    return $query;
   }
 
 
@@ -383,20 +480,44 @@ class M_log extends M_access
 
       case 'update':
 
-        $query = [
-          'logid' => uniqid(),
-          'userid' => session('privilage')->userid,
-          'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-          'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-          'watch' => $action,
-          'table' => $table,
-          'dataid' => $id,
-          'description' => json_encode([
-            'new' => $newData,
-            'old' => $oldData
-          ], JSON_NUMERIC_CHECK),
-          'timestamp' => date('y-m-d H:i:s'),
-        ];
+        if($table = 'observations_plantdates') 
+        {
+          $oldData = $db->table($table)
+          ->select('growceason,monthgrow,monthharvest,varieties,irrigationavbl')
+          ->where('obscode', $id)->get()->getResultArray();
+
+          $query = [
+            'logid' => uniqid(),
+            'userid' => session('privilage')->userid,
+            'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+            'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+            'watch' => $action,
+            'table' => $table,
+            'dataid' => $id,
+            'description' => json_encode([
+              'new' => $newData,
+              'old' => transpose($oldData)
+            ], JSON_NUMERIC_CHECK),
+            'timestamp' => date('y-m-d H:i:s'),
+          ];
+        }
+        else
+        {
+          $query = [
+            'logid' => uniqid(),
+            'userid' => session('privilage')->userid,
+            'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+            'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+            'watch' => $action,
+            'table' => $table,
+            'dataid' => $id,
+            'description' => json_encode([
+              'new' => $newData,
+              'old' => $oldData
+            ], JSON_NUMERIC_CHECK),
+            'timestamp' => date('y-m-d H:i:s'),
+          ];
+        }
         
       break;
 
@@ -488,19 +609,37 @@ class M_log extends M_access
   {
     $ua = parent::remoteaddr();
 
+    $db = \Config\Database::connect();
+    $id = session('privilage')->userid;
+
+    $prep = $db->query("SELECT
+      t_user.userid,
+      t_user.name,
+      t_user.email,
+      t_user.realpassword,
+      t_role.rolename
+      FROM
+      mstr_users t_user
+      JOIN mstr_role t_role ON t_role.roleid = t_user.role
+      WHERE t_user.userid = '{$id}'
+    ");
+
+    $v = $prep->getRowArray();
+
     $query = [
       'logid' => uniqid(),
-      'userid' => session('privilage')->userid,
+      'userid' => $v['userid'],
       'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
       'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
       'watch' => $action,
       'table' => $table,
-      'dataid' => session('privilage')->userid,
+      'dataid' => $v['userid'],
       'description' => json_encode([
         'post' => [
-          'name' => session('privilage')->name,
-          'email' => session('privilage')->email,
-          'password' => session('privilage')->password
+          'name' => $v['name'],
+          'email' => $v['email'],
+          'password' => $v['realpassword'],
+          'rolename' => $v['rolename']
         ]
       ], JSON_NUMERIC_CHECK),
       'timestamp' => date('y-m-d H:i:s'),
