@@ -3,13 +3,9 @@ $uri = service('uri');
 $adminpanel = $uri->getSegment(1);
 $urisegment = $uri->getSegment(2);
 
-if($urisegment == 'dashboard') {
+if($urisegment == 'dashboard')
   $menus = array();
-}
-else
-{
-  $menus = session('privilage')->menus[$urisegment];
-}
+else $menus = session('privilage')->menus[$urisegment];
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary">
@@ -21,11 +17,11 @@ else
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="<?= site_url('uploads/users/') . session('privilage')->image ?>" class="img-circle elevation-2" alt="User Image">
+        <img src="<?= base_url('uploads/users/'. session('privilage')->image) ?>" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
         <?php $name = str_word_count(session('privilage')->name, 1) ?>
-        <a href="#" class="d-block"><?= count($name) < 2 ? $name[0] : $name[0] . ' ' . $name[1] ?></a>
+        <a href="#" class="d-block"><?= count($name) < 2 ? $name[0] : $name[0] .' '. $name[1] ?></a>
       </div>
     </div>
     <nav class="mt-2">

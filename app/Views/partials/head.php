@@ -1,4 +1,3 @@
-
 <?= \App\Libraries\Link::style()->fontawesome ?>
 <?= \App\Libraries\Link::style()->adminlte ?>
 <?= \App\Libraries\Link::style()->sourcesand ?>
@@ -17,15 +16,16 @@
     }
 }
 </style>
-<link rel="shortcut icon" type="image/png" href="<?php echo base_url('themes/dist') ?>/img/favicon.ico"/>
+<link rel="shortcut icon" type="image/png" href="<?= base_url('themes/dist/img/favicon.ico') ?>"/>
 <?php
 $uri = service('uri');
-if($uri->getTotalSegments() > 1) {
+if($uri->getTotalSegments() > 1) 
+{
   $title = $uri->getSegment(2) == '' ? ucfirst($uri->getSegment(1)) : ucfirst($uri->getSegment(1)). ' - ' .ucfirst($uri->getSegment(2));
 }
 else
 {
-  $title = $uri->getSegment(1) == '' ? ucfirst($uri->getAuthority(true)) : ucfirst($uri->getSegment(1));
+  $title = $uri->getSegment(1) == '' ? ucfirst($uri->getHost()) : ucfirst($uri->getSegment(1));
 }
 ?>
 <title><?= $title ?></title>

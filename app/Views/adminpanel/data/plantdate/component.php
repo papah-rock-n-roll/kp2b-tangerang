@@ -6,7 +6,7 @@
       <label for="">Musim</label>
       <?php
       $growceason_ = [
-        'class' => $validation->hasError('growceason') ? 'form-control is-invalid' : 'form-control',
+        'class' => $validation->hasError('growceason') ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm',
         'type' => 'number',
         'min' => '1',
         'max' => '5',
@@ -26,7 +26,7 @@
     <div class="form-group">
       <label for="">Bulan Tanam</label>
       <?php $status = old('monthgrow') == null ? $monthgrow : old('monthgrow') ?>
-      <select class="form-control select2" name="monthgrow[]" style="width: 100%;" required>
+      <select class="custom-select form-control form-control-sm select2" name="monthgrow[]" style="width: 100%;" required>
         <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
         <option <?= $status == 'FEBRUARI' ? 'selected' : '' ?>>FEBRUARI</option>
         <option <?= $status == 'MARET' ? 'selected' : '' ?>>MARET</option>
@@ -48,7 +48,7 @@
     <div class="form-group">
       <label for="">Bulan Panen</label>
       <?php $status = old('monthharvest') == null ? $monthharvest : old('monthharvest') ?>
-      <select class="form-control select2" name="monthharvest[]" style="width: 100%;" required>
+      <select class="custom-select form-control form-control-sm select2" name="monthharvest[]" style="width: 100%;" required>
         <option <?= $status == 'JANUARI' ? 'selected' : '' ?>>JANUARI</option>
         <option <?= $status == 'FEBRUARI' ? 'selected' : '' ?>>FEBRUARI</option>
         <option <?= $status == 'MARET' ? 'selected' : '' ?>>MARET</option>
@@ -75,7 +75,7 @@
       <label for="">Varietas</label>
       <?php
       $varieties_ = [
-        'class' => $validation->hasError('varieties') ? 'form-control is-invalid' : 'form-control',
+        'class' => $validation->hasError('varieties') ? 'form-control form-control-sm is-invalid' : 'form-control form-control-sm',
         'type' => 'input',
         'minlength' => '1',
         'name' => 'varieties[]',
@@ -91,7 +91,7 @@
 
     <div class="form-group">
       <label for="">Irigasi</label>
-      <select name="irrigationavbl[]" id="" class="custom-select" required>
+      <select name="irrigationavbl[]" class="custom-select form-control form-control-sm select2" required>
         <option value="">Pilih Irigasi</option>
         <?php $status = old('irrigationavbl') == null ? $irrigationavbl : old('irrigationavbl') ?>
         <option <?= $status == 'ADA' ? 'selected' : '' ?> value="ADA">ADA</option>
