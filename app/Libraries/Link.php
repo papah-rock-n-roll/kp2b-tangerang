@@ -26,7 +26,15 @@ class Link
       'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">'
     );
 
-    return $local;
+    if (ENVIRONMENT !== 'production')
+	  {
+      return $local;
+    }
+    else
+    {
+      return $public;
+    }
+
   }
 
   public static function script()
@@ -49,7 +57,15 @@ class Link
       'adminlte' => '<script src="'.base_url('themes/dist/js/adminlte.min.js').'"></script>'
     );
 
-    return $local;
+    if (ENVIRONMENT !== 'production')
+	  {
+      return $local;
+    }
+    else
+    {
+      return $public;
+    }
+
   }
 
 }

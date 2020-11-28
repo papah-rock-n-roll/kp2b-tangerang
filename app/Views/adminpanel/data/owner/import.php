@@ -24,6 +24,7 @@
         <h6>Data Exsist <strong>Ownerid</strong></h6>
         <p><small><?= $inDB ?></small></p>
       </div>
+      <input type="hidden" name="exsist" value="<?= $inDB ?>">
     <?php endif ?>
 
     <?php if($newdata = session()->getFlashdata('newdata')) : ?>
@@ -36,6 +37,7 @@
         <h6>New Data <strong>Ownerid</strong></h6>
         <p><small><?= $outDB ?></small></p>
       </div>
+      <input type="hidden" name="newdata" value="<?= $outDB ?>">
     <?php endif ?>
 
   </div>

@@ -2,11 +2,10 @@
 
 /**
  * --------------------------------------------------------------------
- * Show observation
+ * Show segment atau ajax observation
  *
  * https://localhost/kp2b-tangerang/api/observation/x
  *
- * Custom Info Fields
  *
  * https://localhost/kp2b-tangerang/api/observation/ajax?id=x
  *
@@ -14,6 +13,7 @@
  */
 
 use CodeIgniter\RESTful\ResourceController;
+use CodeIgniter\Events\Events;
 use Config\Services;
 
 class Observation extends ResourceController
@@ -21,13 +21,6 @@ class Observation extends ResourceController
   protected $modelName = 'App\Models\Adminpanel\Data\M_observation';
   protected $format    = 'json';
   protected $request;
-
-  protected $validation;
-
-  public function __construct()
-  {
-    $this->validation = Services::validation();
-  }
 
 
   public function index()
@@ -66,7 +59,7 @@ class Observation extends ResourceController
       break;
 
       default:
-
+  
         $data = $this->model->getObservation($segment);
 
         if(!empty($data)) {
@@ -99,12 +92,16 @@ class Observation extends ResourceController
       $message = [
         'status' => $code,
         'message' => $this->response->getReason(),
-        'errors' => $this->validation->getErrors(),
+        'errors' => Services::validation()->getErrors(),
       ];
       return $this->respond($message, $code);
     }
 
     $data = $this->request->getRawInput();
+
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','update','mstr_owners', $id, $data);
+    // ----------------------------    
     $post = $this->model->update_post($id, $data);
 
     if($post) {

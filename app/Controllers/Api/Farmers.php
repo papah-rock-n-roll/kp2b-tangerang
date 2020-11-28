@@ -19,6 +19,8 @@
  */
 
 use CodeIgniter\RESTful\ResourceController;
+use CodeIgniter\Events\Events;
+use Config\Services;
 
 class Farmers extends ResourceController
 {
@@ -26,6 +28,7 @@ class Farmers extends ResourceController
   protected $format    = 'json';
   protected $request;
 
+  
   public function index()
   {
     $selected = $this->request->getGet('q');
@@ -106,12 +109,15 @@ class Farmers extends ResourceController
       $message = [
         'status' => $code,
         'message' => $this->response->getReason(),
-        'errors' => $this->validation->getErrors(),
+        'errors' => Services::validation()->getErrors(),
       ];
       return $this->respond($message, $code);
     }
 
     $data = $this->request->getRawInput();
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','create','mstr_farmers', null, $data);
+    // ----------------------------    
     $post = $this->model->insert($data);
 
     if($post) {
@@ -135,12 +141,16 @@ class Farmers extends ResourceController
       $message = [
         'status' => $code,
         'message' => $this->response->getReason(),
-        'errors' => $this->validation->getErrors(),
+        'errors' => Services::validation()->getErrors(),
       ];
       return $this->respond($message, $code);
     }
 
     $data = $this->request->getRawInput();
+
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','update','mstr_owners', $id, $data);
+    // ----------------------------        
     $post = $this->model->update($id, $data);
 
     if($post) {
@@ -156,6 +166,9 @@ class Farmers extends ResourceController
 
   public function delete($id = null)
   {
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','delete','mstr_owners', $id, null);
+    // ----------------------------        
     $delete = $this->model->delete($id);
 
     if($delete) {

@@ -191,7 +191,7 @@ class Data extends \App\Controllers\BaseController
     {
       $get = $this->request->getPost();
       
-      $data = $this->transposeData($get);
+      $data = transpose($get);
       $post = $this->M_plantdate->plantdates_post($id, $data);
 
       if($post) {
@@ -573,28 +573,6 @@ class Data extends \App\Controllers\BaseController
       $this->session->setFlashdata('warning', 'Delete Name '.$data['respname'].' Successfully');
       return redirect()->back();
     }
-  }
-
-
-
-/**
- * --------------------------------------------------------------------
- *
- * Function
- *
- * --------------------------------------------------------------------
- */
-
-  function transposeData($data)
-  {
-    $retData = array();
-
-    foreach ($data as $row => $columns) {
-      foreach ($columns as $row2 => $column2) {
-        $retData[$row2][$row] = $column2;
-      }
-    }
-    return $retData;
   }
 
 }

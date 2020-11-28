@@ -2,7 +2,8 @@
 
 use CodeIgniter\Model;
 use App\Libraries\Role;
-  
+use App\Libraries\Agent;
+
 class M_auth extends Model
 {
   protected $table = "mstr_users";
@@ -45,6 +46,9 @@ class M_auth extends Model
         $menus = Role::modules($data['role']);
         $role = Role::actions($data['role']);
 
+        // ambil data user agent dan 3rd party whatsmyua.info - ipwhois.io
+        $ua = Agent::ua();
+
         // fetch data privilage kedalam session dengan format object stdclass
         $dataSession['privilage'] = (object) [
           'userid' => $data['userid'],
@@ -56,6 +60,7 @@ class M_auth extends Model
           'menus' => $menus,
           'acts' => $role['acts'],
           'disable' => $role['actions'],
+          'useragent' => $ua,
         ];
         session()->set($dataSession);
 

@@ -14,6 +14,7 @@
  */
 
 use CodeIgniter\RESTful\ResourceController;
+use CodeIgniter\Events\Events;
 use Config\Services;
 
 class Respondens extends ResourceController
@@ -22,12 +23,6 @@ class Respondens extends ResourceController
   protected $format    = 'json';
   protected $request;
 
-  protected $validation;
-
-  public function __construct()
-  {
-    $this->validation = Services::validation();
-  }
 
   public function index()
   {
@@ -80,12 +75,16 @@ class Respondens extends ResourceController
       $message = [
         'status' => $code,
         'message' => $this->response->getReason(),
-        'errors' => $this->validation->getErrors(),
+        'errors' => Services::validation()->getErrors(),
       ];
       return $this->respond($message, $code);
     }
 
     $data = $this->request->getRawInput();
+
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','create','mstr_respondens', null, $data);
+    // ----------------------------
     $post = $this->model->insert($data);
 
     if($post) {
@@ -95,7 +94,7 @@ class Respondens extends ResourceController
         'status' => $code,
         'message' => $this->response->getReason(),
       ];
-      return $this->respond($message, $code);
+      return $this->respond($message, $code, 'test');
     }
   }
 
@@ -109,12 +108,16 @@ class Respondens extends ResourceController
       $message = [
         'status' => $code,
         'message' => $this->response->getReason(),
-        'errors' => $this->validation->getErrors(),
+        'errors' => Services::validation()->getErrors(),
       ];
       return $this->respond($message, $code);
     }
 
     $data = $this->request->getRawInput();
+
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','update','mstr_respondens', $id, $data);
+    // ----------------------------
     $post = $this->model->update($id, $data);
 
     if($post) {
@@ -130,6 +133,9 @@ class Respondens extends ResourceController
 
   public function delete($id = null)
   {
+    // Log informations Ajax Events
+    Events::trigger('ajax_event','delete','mstr_respondens', $id, null);
+    // ----------------------------
     $delete = $this->model->delete($id);
 
     if($delete) {

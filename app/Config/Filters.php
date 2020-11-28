@@ -46,7 +46,7 @@ class Filters extends BaseConfig
 			]
 		],
 		'auth' => ['before' => [
-			'api/subdist*','api/farmer*','api/owners*','api/respondens*','administrator/*'
+			'api/subdist*','api/farmers*','api/owners*','api/respondens*','administrator/*'
 			]
 		],
 		'acts' => ['before' => ['administrator/*']],
