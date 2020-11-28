@@ -83,7 +83,8 @@ class M_plantdate extends M_data
   {
     foreach ($data as $k => $v) {
 
-      $uniq = uniqid().'-'.session('privilage')->userid;
+      $num = $k;
+      $uniq = uniqid() .'#'. session('privilage')->userid .'#'.++$num;
 
       $query = $this->query("CALL p_insertPlantdates(
         '{$k}',
