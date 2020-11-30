@@ -43,3 +43,23 @@ if (! function_exists('transpose'))
 			return $retData;
 		}
 }
+
+// ---------------------------------------------------------
+
+if (! function_exists('array_diff_recursive'))
+{
+	/**
+	 * 
+	 * Array Difference Recursive 2 Data
+	 * 
+	 */
+		function array_diff_recursive(Array $array1, Array $array2)
+		{
+			return array_map('unserialize', 
+				array_diff(
+					array_map('serialize', $array1), 
+					array_map('serialize', $array2)
+				)
+			);
+		}
+}

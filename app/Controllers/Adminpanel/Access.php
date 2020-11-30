@@ -251,7 +251,7 @@ class Access extends \App\Controllers\BaseController
     
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Files '.$name.' Successfully');
-      return redirect()->back();
+      return redirect()->to('/administrator/access/log');
     }
   }
 

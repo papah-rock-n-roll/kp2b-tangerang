@@ -155,8 +155,7 @@ class M_log extends M_access
  */
   public function getInformations($where = null, $orWhere = null, $timestamp = null, $like = null, $paginate = 5)
   {
-    $query = $this->select('
-    log_informations.logid, mstr_users.name, log_informations.watch, 
+    $query = $this->select('log_informations.logid, mstr_users.name, log_informations.watch, 
     log_informations.table, log_informations.dataid, log_informations.timestamp')
     ->join('mstr_users', 'log_informations.userid = mstr_users.userid')
     ->where($where)->orWhere($orWhere)->orWhere($timestamp)->like($like, 'match')
@@ -167,7 +166,11 @@ class M_log extends M_access
 
   public function getInformation($id)
   {
-    $query = $this->find($id);
+    $query = $this->select('mstr_users.name, mstr_users.email, mstr_users.image, 
+    log_informations.useragent, log_informations.remoteaddr, log_informations.watch, 
+    log_informations.table, log_informations.dataid, 
+    log_informations.description, log_informations.timestamp')
+    ->join('mstr_users', 'log_informations.userid = mstr_users.userid')->find($id);
 
     return $query;
   }
@@ -460,15 +463,18 @@ class M_log extends M_access
 
     $ua = parent::remoteaddr();
 
+    $query = [
+      'logid' => uniqid(),
+      'userid' => session('privilage')->userid,
+      'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+      'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+    ];
+
     switch ($action) {
 
       case 'create':
 
-        $query = [
-          'logid' => uniqid(),
-          'userid' => session('privilage')->userid,
-          'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-          'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+        $query += [
           'watch' => $action,
           'table' => $table,
           'dataid' => $v['numID'],
@@ -480,40 +486,34 @@ class M_log extends M_access
 
       case 'update':
 
-        if($table = 'observations_plantdates') 
+        if($table === 'observations_plantdates') 
         {
           $oldData = $db->table($table)
           ->select('growceason,monthgrow,monthharvest,varieties,irrigationavbl')
           ->where('obscode', $id)->get()->getResultArray();
 
-          $query = [
-            'logid' => uniqid(),
-            'userid' => session('privilage')->userid,
-            'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-            'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+          $oldData = transpose($oldData);
+
+          $query += [
             'watch' => $action,
             'table' => $table,
             'dataid' => $id,
             'description' => json_encode([
-              'new' => $newData,
-              'old' => transpose($oldData)
+              'new' => array_diff_recursive($newData, $oldData),
+              'old' => array_diff_recursive($oldData, $newData)
             ], JSON_NUMERIC_CHECK),
             'timestamp' => date('y-m-d H:i:s'),
           ];
         }
         else
         {
-          $query = [
-            'logid' => uniqid(),
-            'userid' => session('privilage')->userid,
-            'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-            'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+          $query += [
             'watch' => $action,
             'table' => $table,
             'dataid' => $id,
             'description' => json_encode([
-              'new' => $newData,
-              'old' => $oldData
+              'new' => array_diff_recursive($newData, $oldData),
+              'old' => array_diff_recursive($oldData, $newData)
             ], JSON_NUMERIC_CHECK),
             'timestamp' => date('y-m-d H:i:s'),
           ];
@@ -523,11 +523,7 @@ class M_log extends M_access
 
       case 'delete':
 
-        $query = [
-          'logid' => uniqid(),
-          'userid' => session('privilage')->userid,
-          'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-          'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+        $query += [
           'watch' => $action,
           'table' => $table,
           'dataid' => $id,
@@ -539,11 +535,7 @@ class M_log extends M_access
 
       case 'import':
 
-        $query = [
-          'logid' => uniqid(),
-          'userid' => session('privilage')->userid,
-          'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-          'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+        $query += [
           'watch' => $action,
           'table' => $table,
           'dataid' => $id,
@@ -555,11 +547,7 @@ class M_log extends M_access
 
       case 'export':
 
-        $query = [
-          'logid' => uniqid(),
-          'userid' => session('privilage')->userid,
-          'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-          'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+        $query += [
           'watch' => $action,
           'table' => $table,
           'dataid' => $id,
