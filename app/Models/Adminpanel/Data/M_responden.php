@@ -7,9 +7,9 @@
  *
  * --------------------------------------------------------------------
  */
-  
+
 class M_responden extends M_data
-{ 
+{
   const VIEW = 'adminpanel/data/responden/';
 
   const ACTS = 'administrator/data/responden/';
@@ -113,6 +113,11 @@ class M_responden extends M_data
     return $this->where('respid', $id)->orWhere('mobileno', $mobileno)->first();
   }
 
+  public function getbyName($respname)
+  {
+    return $this->where('respname', $respname)->first();
+  }
+
   // Api responden - Remote Select2
   public function getRemoteRespondens($selected, $page)
   {
@@ -148,14 +153,14 @@ class M_responden extends M_data
           ]
       ],
       'mobileno' => [
-        'label' => 'Phone',
-        'rules' => 'required|is_natural|max_length[15]',
+        'label' => 'No tlp',
+        'rules' => 'is_natural|max_length[15]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
+          'is_natural' => '{field} harus angka'
           ]
       ],
-    
+
     ];
 
   }

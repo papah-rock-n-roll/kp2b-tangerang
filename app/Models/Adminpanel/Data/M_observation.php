@@ -119,7 +119,7 @@ class M_observation extends M_data
     //return $this->insert($data);
     return false;
   }
-  
+
   public function delete_post($id)
   {
     //return $this->delete($id);

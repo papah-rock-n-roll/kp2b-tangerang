@@ -5,8 +5,8 @@
  * Show json respondens for remote select2
  *
  * https://localhost/kp2b-tangerang/api/respondens |page null
- * 
- * 
+ *
+ *
  * https://localhost/kp2b-tangerang/api/respondens?q=abcd&page=1 |page 1 limit 10
  *
  *
@@ -46,22 +46,43 @@ class Respondens extends ResourceController
     }
   }
 
-  public function show($id = null)
+  public function show($segment = null)
   {
-    $data = $this->model->find($id);
+    switch ($segment) {
 
-    if(!empty($data)) {
-      return $this->respond($data);
-    }
-    else
-    {
-      $code = '404';
-      $this->response->setStatusCode($code);
-      $message = [
-        'status' => $code,
-        'message' => $this->response->getReason(),
-      ];
-      return $this->respond($message, $code);
+      case 'check':
+
+        $respname = $this->request->getGet('respname');
+
+        $data = $this->model->getbyName($respname);
+
+        if(!empty($data)) {
+          echo "false";
+        }
+        else
+        {
+          echo "true";
+        }
+
+        break;
+
+      default:
+
+        $data = $this->model->find($segment);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }
+        else
+        {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
     }
   }
 

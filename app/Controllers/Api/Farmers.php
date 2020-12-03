@@ -5,15 +5,15 @@
  * Show json farmer for remote select2
  *
  * https://localhost/kp2b-tangerang/api/farmers |page null
- * 
+ *
  * https://localhost/kp2b-tangerang/api/farmers?q=abcd&page=1 |page 1 limit 10
  *
- * 
+ *
  * --------------------------------------------------------------------
  * Show segment farmcode atau ajax farmcode
- * 
+ *
  * https://localhost/kp2b-tangerang/api/farmers/1 | show farmer
- * 
+ *
  * https://localhost/kp2b-tangerang/api/farmers/ajax?id=1 show extend farmer
  * --------------------------------------------------------------------
  */
@@ -28,7 +28,7 @@ class Farmers extends ResourceController
   protected $format    = 'json';
   protected $request;
 
-  
+
   public function index()
   {
     $selected = $this->request->getGet('q');
@@ -54,6 +54,21 @@ class Farmers extends ResourceController
   public function show($segment = null)
   {
     switch ($segment) {
+
+      case 'check':
+
+        $farmname = $this->request->getGet('farmname');
+        $data = $this->model->getbyName($farmname);
+
+        if(!empty($data)) {
+          echo "false";
+        }
+        else
+        {
+          echo "true";
+        }
+
+        break;
 
       case 'ajax':
 
@@ -96,7 +111,7 @@ class Farmers extends ResourceController
       break;
 
     }
-    
+
   }
 
   public function create()
@@ -117,7 +132,7 @@ class Farmers extends ResourceController
     $data = $this->request->getRawInput();
     // Log informations Ajax Events
     Events::trigger('ajax_event','create','mstr_farmers', null, $data);
-    // ----------------------------    
+    // ----------------------------
     $post = $this->model->insert($data);
 
     if($post) {
@@ -150,7 +165,7 @@ class Farmers extends ResourceController
 
     // Log informations Ajax Events
     Events::trigger('ajax_event','update','mstr_owners', $id, $data);
-    // ----------------------------        
+    // ----------------------------
     $post = $this->model->update($id, $data);
 
     if($post) {
@@ -168,7 +183,7 @@ class Farmers extends ResourceController
   {
     // Log informations Ajax Events
     Events::trigger('ajax_event','delete','mstr_owners', $id, null);
-    // ----------------------------        
+    // ----------------------------
     $delete = $this->model->delete($id);
 
     if($delete) {

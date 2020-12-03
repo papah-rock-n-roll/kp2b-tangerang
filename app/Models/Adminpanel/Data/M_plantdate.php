@@ -7,7 +7,7 @@
  *
  * --------------------------------------------------------------------
  */
-  
+
 class M_plantdate extends M_data
 {
   const VIEW = 'adminpanel/data/plantdate/';
@@ -56,7 +56,7 @@ class M_plantdate extends M_data
       {
         // Ganti key Assoc berdasarkan Base fields dengan value ''
         $base = array_fill_keys($this->plantdateFields, '');
-        
+
         // fetch data kosong ke variable $temp
         $temp = array_fill_keys(array_keys($base), '');
 
@@ -96,10 +96,68 @@ class M_plantdate extends M_data
         '{$v['irrigationavbl']}',
         '{$id}')
       ");
-      
+
     }
 
     return $query;
+  }
+
+  public function getPlantdateDetail($id)
+  {
+    // round up nilai indxnlant
+    $indxnlant = $this->getObsIndexPlant($id) / 100;
+    $index = (int) ceil($indxnlant);
+    $plant = $this->getPlantdates($id);
+    $indxplant = count($plant);
+
+    // return setflashdata catch warning
+    if($index > 9) {
+      return true;
+    }
+    else
+    {
+      if(!empty($plant)) {
+
+        // jika nilai index baru lebih kecil dari data index lama
+        // trim plant sesuai nilai indexnlant
+        $plant = array_slice($plant, 0, $index);
+
+        // fetch data kosong ke variable $temp
+        $temp = array_fill_keys(array_keys($plant[0]), '');
+
+        // push data kosong ke variable $plan sesuai nilai Index Plant
+        for($i = count($plant); $i < $index; ++$i) {
+             array_push($plant, $temp);
+        }
+
+      }
+      // jika index plant kosong
+      else
+      {
+        // Ganti key Assoc berdasarkan Base fields dengan value ''
+        $base = array_fill_keys($this->plantdateFields, '');
+
+        // fetch data kosong ke variable $temp
+        $temp = array_fill_keys(array_keys($base), '');
+
+        // push data kosong ke variable $plan sesuai nilai Index Plant
+        for($i = count($plant); $i < $index; ++$i) {
+          array_push($plant, $temp);
+        }
+      }
+
+    }
+
+    $data = [
+      'kodepetak' => $id,
+      'action' => self::ACTS.'/'.$id,
+      'idxlama' => $indxplant,
+      'idxbaru' => $indxnlant,
+      'oldlist' => $this->getPlantdates($id),
+      'newlist' => $plant
+    ];
+
+    echo view('adminpanel/geo/plantdate_ajax', $data);
   }
 
   public function getObsIndexPlant($id)
@@ -113,7 +171,7 @@ class M_plantdate extends M_data
 
   public function getPlantdates($id)
   {
-    $query = $this->select('plantid,	growceason,	monthgrow,	monthharvest,	
+    $query = $this->select('plantid,	growceason,	monthgrow,	monthharvest,
     varieties,	irrigationavbl,	obscode');
 
     return $query->where('obscode', $id)->findAll();

@@ -1,37 +1,34 @@
 <?php
-  $modals = [
-    'id' => 'modal_create',
-    'size' => 'modal-md',
-    'class' => 'bg-default',
-    'title' => 'Tambah data pemilik / penggarap'
-    ];
-  echo view('adminpanel/data/observation/modals', $modals);
-
-  $modals = [
-    'id' => 'modal_poktan',
-    'size' => 'modal-md',
-    'class' => 'bg-default',
-    'title' => 'Tambah data poktan'
-    ];
-  echo view('adminpanel/data/observation/modals_poktan', $modals);
-
-  $modals = [
-    'id' => 'modal_respo',
-    'size' => 'modal-md',
-    'class' => 'bg-default',
-    'title' => 'Tambah responden'
-    ];
-  echo view('adminpanel/data/observation/modals_responden', $modals);
-
+  $attributes = ['id' => 'obsform'];
+  echo form_open(base_url('api/observation'), $attributes);
+?>
+<?php
   $ownerid = $v['ownerid'];
   $ownername = $v['ownername'];
   $cultivatorid = $v['cultivatorid'];
   $cultivatorname = $v['cultivatorname'];
-
 ?>
 
-<div class="row" style="width: calc(100% - -7px);">
+<div class="row overlay-wrapper" style="width: calc(100% - -7px);">
+
+  <div class="overlay justify-content-center align-items-center" style="display: none;">
+    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
   <div class="col-md-12"><!-- LEFT col-md-12 -->
+
+    <div class="form-group">
+      <label for="">Responden</label>
+      <?php
+      $respid = old('respid') == null ? $v['respid'] : old('respid');
+      $respname = old('respname') == null ? $v['respname'] : old('respname');
+      ?>
+      <select name="vlcode" class="form-control form-control-sm custom-select select2-respo" style="width: 100%;" required>
+        <option value="<?= $respid ?>" selected="selected"><?= esc($respname) ?></option>
+      </select>
+    </div>
 
     <div class="form-group">
       <label for="">Pemilik</label>
@@ -55,6 +52,17 @@
       ?>
       <select name="farmcode" class="form-control form-control-sm custom-select select2-farmer" style="width: 100%;" required>
         <option value="<?= $farmcode ?>" selected="selected"><?= esc($farmname) ?></option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="">Desa</label>
+      <?php
+      $vlcode = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
+      $vlname = old('vlname') == null ? $v['vlname'] : old('vlname');
+      ?>
+      <select name="vlcode" class="form-control form-control-sm custom-select select2-subdist" style="width: 100%;" required>
+        <option value="<?= $vlcode ?>" selected="selected"><?= esc($vlname) ?></option>
       </select>
     </div>
 
@@ -203,28 +211,6 @@
       ];
       echo form_input($pattrnnlant);
       ?>
-    </div>
-
-    <div class="form-group">
-      <label for="">Desa</label>
-      <?php
-      $vlcode = old('vlcode') == null ? $v['vlcode'] : old('vlcode');
-      $vlname = old('vlname') == null ? $v['vlname'] : old('vlname');
-      ?>
-      <select name="vlcode" class="form-control form-control-sm custom-select select2-subdist" style="width: 100%;" required>
-        <option value="<?= $vlcode ?>" selected="selected"><?= esc($vlname) ?></option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="">Responden</label>
-      <?php
-      $respid = old('respid') == null ? $v['respid'] : old('respid');
-      $respname = old('respname') == null ? $v['respname'] : old('respname');
-      ?>
-      <select name="vlcode" class="form-control form-control-sm custom-select select2-respo" style="width: 100%;" required>
-        <option value="<?= $respid ?>" selected="selected"><?= esc($respname) ?></option>
-      </select>
     </div>
 
     <div class="form-group">
@@ -384,12 +370,4 @@
   </div><!-- RIGHT col-md-12 -->
 </div><!-- ROW -->
 
-<?= \App\Libraries\Link::script()->jquery ?>
-<?= \App\Libraries\Link::script()->bootstrap ?>
-<?= \App\Libraries\Link::script()->select2 ?>
-
-<script>
-
-
-
-</script>
+<?php echo form_close() ?>

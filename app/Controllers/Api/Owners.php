@@ -5,8 +5,8 @@
  * Show json owners for remote select2
  *
  * https://localhost/kp2b-tangerang/api/owners |page null
- * 
- * 
+ *
+ *
  * https://localhost/kp2b-tangerang/api/owners?q=abcd&page=1 |page 1 limit 10
  *
  *
@@ -46,22 +46,43 @@ class Owners extends ResourceController
     }
   }
 
-  public function show($id = null)
+  public function show($segment = null)
   {
-    $data = $this->model->find($id);
+    switch ($segment) {
 
-    if(!empty($data)) {
-      return $this->respond($data);
-    }
-    else
-    {
-      $code = '404';
-      $this->response->setStatusCode($code);
-      $message = [
-        'status' => $code,
-        'message' => $this->response->getReason(),
-      ];
-      return $this->respond($message, $code);
+    case 'check':
+
+      $ownernik = $this->request->getGet('ownernik');
+      $data = $this->model->getbyNik($ownernik);
+
+      if(!empty($data)) {
+        echo "false";
+      }
+      else
+      {
+        echo "true";
+      }
+
+      break;
+
+    default:
+
+      $data = $this->model->find($segment);
+
+      if(!empty($data)) {
+        return $this->respond($data);
+      }
+      else
+      {
+        $code = '404';
+        $this->response->setStatusCode($code);
+        $message = [
+          'status' => $code,
+          'message' => $this->response->getReason(),
+        ];
+        return $this->respond($message, $code);
+      }
+
     }
   }
 
@@ -84,7 +105,7 @@ class Owners extends ResourceController
 
     // Log informations Ajax Events
     Events::trigger('ajax_event','create','mstr_owners', null, $data);
-    // ----------------------------    
+    // ----------------------------
     $post = $this->model->insert($data);
 
     if($post) {

@@ -1,108 +1,87 @@
 <div class="modal fade" id="<?= esc($id) ?>">
   <div class="modal-dialog <?= esc($size) ?>">
     <div class="modal-content <?= esc($class) ?>">
+
+      <div class="overlay justify-content-center align-items-center" style="display: none;">
+        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <?php
+        $attributes = ['id' => 'ownerform'];
+        echo form_open(base_url('api/owners'), $attributes);
+      ?>
+
       <div class="modal-header">
-        <h4 class="modal-title"><?= $title ?></h4>
+        <h6 class="modal-title"><?= $title ?></h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <div class="modal-body">
 
-        <?php echo form_open() ?>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="">NIK</label>
-                <?php
-                $ownernik = [
-                  'type' => 'text',
-                  'class' => 'form-control form-control-sm',
-                  'name' => 'ownernik',
-                  'placeholder' => 'Masukkan NIK pemilik',
-                  'minlength' => '1',
-                  'value' => old('ownernik') == null ? '' : old('ownernik'),
-                  'required' => ''
-                ];
-                echo form_input($ownernik);
-                ?>
-              </div>
-            </div>
+        <div class="form-group">
+          <?php
+          $ownernik = [
+            'type' => 'text',
+            'id' => 'ownernik',
+            'class' => 'form-control form-control-sm',
+            'maxlength' => "30",
+            'name' => 'ownernik',
+            'placeholder' => 'NIK pemilik/penggarap',
+            'value' => old('ownernik') == null ? '' : old('ownernik'),
+            'required' => ''
+          ];
+          echo form_input($ownernik);
+          ?>
+        </div>
 
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="">Nama</label>
-                  <?php
-                  $ownername = [
-                    'type' => 'text',
-                    'class' => 'form-control form-control-sm',
-                    'name' => 'ownername',
-                    'placeholder' => 'Masukkan nama pemilik',
-                    'minlength' => '1',
-                    'value' => old('ownername') == null ? '' : old('ownername'),
-                    'required' => ''
-                  ];
-                  echo form_input($ownername);
-                  ?>
-              </div>
-            </div>
-          </div>
+        <div class="form-group">
+            <?php
+            $ownername = [
+              'type' => 'text',
+              'id' => 'ownername',
+              'class' => 'form-control form-control-sm',
+              'maxlength' => "30",
+              'name' => 'ownername',
+              'placeholder' => 'Nama pemilik/penggarap',
+              'value' => old('ownername') == null ? '' : old('ownername'),
+              'required' => ''
+            ];
+            echo form_input($ownername);
+            ?>
+        </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="">Alamat</label>
-                <?php
-                $owneraddress = [
-                  'class' => 'form-control form-control-sm',
-                  'cols' => '2',
-                  'rows' => '3',
-                  'name' => 'owneraddress',
-                  'minlength' => '1',
-                  'placeholder' => 'Masukkan alamat pemilik',
-                  'value' => old('owneraddress') == null ? '' : old('owneraddress'),
-                  'required' => ''
-                ];
-                echo form_textarea($owneraddress);
-                ?>
-              </div>
-            </div>
-          </div>
-
-        <?php echo form_close() ?>
+        <div class="form-group mb-0">
+          <?php
+          $owneraddress = [
+            'id' => 'owneraddress',
+            'class' => 'form-control form-control-sm',
+            'maxlength' => "255",
+            'cols' => '2',
+            'rows' => '3',
+            'name' => 'owneraddress',
+            'placeholder' => 'Alamat pemilik/penggarap',
+            'value' => old('owneraddress') == null ? '' : old('owneraddress')
+          ];
+          echo form_textarea($owneraddress);
+          ?>
+        </div>
 
       </div>
+
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-sm btn-primary" onclick="createPost()">Simpan</button>
+        <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
       </div>
+
+      <?php echo form_close() ?>
+
     </div>
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
-<script>
-
-function createPost() {
-
-  $.ajaxSetup({
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'X-CSRF-KP2B': $('meta[name="X-CSRF-KP2B"]').attr('content')
-    },
-  })
-
-  $.ajax({
-    async : true,
-    url : '/api/owners',
-    type : 'GET',
-    success : function(data, status, response){
-      console.log(data)
-    }
-  });
-
-}
-
-</script>

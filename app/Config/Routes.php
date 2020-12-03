@@ -306,6 +306,8 @@ $routes->group('administrator', function($routes) {
 			$routes->get('export/(:num)', 'Adminpanel\Geo::observation_export/$1');
 			// Obs detail ajax form
 			$routes->get('obs_ajax/(:num)', 'Adminpanel\Geo::observation_detail/$1');
+			// Plandates detail ajax form
+			$routes->get('plantdate_ajax/(:num)', 'Adminpanel\Geo::plantdate_detail/$1');
 		});
 
 

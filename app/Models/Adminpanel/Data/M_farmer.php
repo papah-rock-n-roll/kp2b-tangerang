@@ -178,6 +178,12 @@ class M_farmer extends M_data
   {
     return $this->where('farmcode', $id)->first();
   }
+
+  public function getbyName($farmname)
+  {
+    return $this->where('farmname', $farmname)->first();
+  }
+
   public function create_post($data)
   {
     return $this->insert($data);
@@ -259,9 +265,8 @@ class M_farmer extends M_data
       ],
       'farmmobile' => [
         'label' => 'Phone',
-        'rules' => 'required|is_natural|max_length[15]',
+        'rules' => 'max_length[15]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],

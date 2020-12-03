@@ -97,7 +97,7 @@ class M_geo extends Model
       );
 
       $features = array();
-      
+
       foreach ($query as $row){
 
         $geom = geoPHP::load($row['GEOM'],'wkt');
@@ -151,7 +151,7 @@ class M_geo extends Model
     wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,other,
     harvstmax,monthmax,harvstmin,monthmin,harvstsell';
 
-    $sql = "SELECT {$id_field} AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields} 
+    $sql = "SELECT {$id_field} AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields}
     FROM {$table} WHERE {$geom_field} IS NOT NULL AND obscode = {$id_field};";
 
     $row = $this->db->query($sql)->getRowArray();

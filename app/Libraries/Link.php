@@ -14,6 +14,7 @@ class Link
       'adminlte' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.5/css/adminlte.min.css">',
       'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">',
       'tempusdominus' => '',
+      'toastr' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">',
     );
 
     $local = (object) array(
@@ -26,6 +27,7 @@ class Link
       'adminlte' => '<link rel="stylesheet" href="'.base_url('themes/dist/css/adminlte.min.css').'">',
       'sourcesand' => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">',
       'tempusdominus' => '<link rel="stylesheet" href="'.base_url('themes/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css').'">',
+      'toastr' => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">',
     );
 
     if (ENVIRONMENT !== 'production')
@@ -50,6 +52,8 @@ class Link
       'adminlte' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.5/js/adminlte.min.js"></script>',
       'moment' => '',
       'tempusdominus' => '',
+      'jqueryvalidation' => '<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>',
+      'toastr' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>'
     );
 
     $local = (object) array(
@@ -61,6 +65,8 @@ class Link
       'adminlte' => '<script src="'.base_url('themes/dist/js/adminlte.min.js').'"></script>',
       'moment' => '<script src="'.base_url('themes/plugins/moment/moment.min.js').'"></script>',
       'tempusdominus' => '<script src="'.base_url('themes/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js').'"></script>',
+      'jqueryvalidation' => '<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>',
+      'toastr' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>'
     );
 
     if (ENVIRONMENT !== 'production')

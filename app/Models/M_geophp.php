@@ -150,5 +150,5 @@ class M_geophp extends Model
 
     return $geoPublic;
   }
-  
+
 }

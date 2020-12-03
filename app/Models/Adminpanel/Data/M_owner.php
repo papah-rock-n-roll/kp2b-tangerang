@@ -174,6 +174,11 @@ class M_owner extends M_data
     return $this->where('ownerid', $id)->orWhere('ownernik', $nik)->first();
   }
 
+  public function getbyNik($nik)
+  {
+    return $this->where('ownernik', $nik)->first();
+  }
+
   public function create_post($data)
   {
     return $this->insert($data);
@@ -249,9 +254,8 @@ class M_owner extends M_data
       ],
       'owneraddress' => [
         'label' => 'Address',
-        'rules' => 'required|max_length[255]',
+        'rules' => 'max_length[255]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],

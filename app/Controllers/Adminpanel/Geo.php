@@ -11,7 +11,11 @@ class Geo extends \App\Controllers\BaseController
       'url_obs' => base_url('api/geo/obsdetail'),
       'url_edtObs' => base_url('administrator/data/observation/update/'),
       'url_edtPlt' => base_url('administrator/data/observation/plantdate/'),
-      'url_obsDet' => base_url('administrator/geo/observation/obs_ajax')
+      'url_obsDet' => base_url('administrator/geo/observation/obs_ajax'),
+      'url_pldDet' => base_url('administrator/geo/observation/plantdate_ajax'),
+      'url_nik' => base_url('api/owners/check'),
+      'url_farmname' => base_url('api/farmers/check'),
+      'url_respname' => base_url('api/respondens/check')
 		];
     echo view('adminpanel/geo/main', $data);
   }
@@ -29,6 +33,11 @@ class Geo extends \App\Controllers\BaseController
   public function observation_detail($id)
   {
     $this->M_observation->getObsdetail($id);
+  }
+
+  public function plantdate_detail($id)
+  {
+    $this->M_plantdate->getPlantdateDetail($id);
   }
 
 
