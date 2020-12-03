@@ -80,8 +80,21 @@
     <div class="card card-primary card-outline">
       <div class="card-body box-profile">
         <div class="text-center">
-          <p>Description</p>
+          <img class="profile-user-img img-fluid img-rounded"
+            src="<?= base_url('uploads/users/'.$v['image']) ?>"
+            alt="User profile picture">
         </div>
+        <h6 class="profile-username text-center">
+          <?= $v['name'] ?><br>
+          <small><?= $v['email'] ?></small>
+        </h6>
+
+        <p class="text-muted text-center">
+          <?= $v['table'] ?><br>
+          <span class="badge badge-primary"><?= strtoupper($v['watch']) ?> </span> - <span class="badge badge-warning">ID <?= $v['dataid'] ?></span><br>
+          <?= $v['timestamp'] ?>
+        </p>
+
         <?php $desc = json_decode($v['description'], true) ?>
 
         <ul class="list-group list-group-unbordered mb-3">

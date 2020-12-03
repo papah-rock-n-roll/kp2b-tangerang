@@ -152,7 +152,9 @@ $routes->group('administrator', function($routes) {
 			$routes->get('read/(:any)', 'Adminpanel\Access::log_read/$1');
 			$routes->get('delete/(:any)', 'Adminpanel\Access::log_delete/$1');
 			// REDIRECT MODULE PANEL
-			$routes->addRedirect('read', 'administrator/access/log');
+			$routes->add('read', function() {
+				echo '<script>javascript:window.history.go(-2)</script>';
+			});
 		});
 
 	});
