@@ -8,7 +8,7 @@
 
 <?= $this->section('content') ?>
 
-<div id="viewDiv" class="viewDiv">
+<div id="viewDiv">
   <div class="modal fade" id="modal_plantdates">
     <div class="modal-dialog modal-lg">
       <div class="modal-content"></div>
@@ -51,6 +51,7 @@
 
 <!-- ESRI SCRIPT -->
 <script>
+  toastr.options.target = '#viewDiv';
   require([
     "esri/Map",
     "esri/views/MapView",
@@ -774,7 +775,7 @@
               $("#obsform").find(".overlay").addClass('d-flex');
               $.ajax({
                   url: form.action,
-                  type: form.method,
+                  method: 'PUT',
                   data: $(form).serialize(),
                   success: function(response) {
                     valowner.resetForm();
