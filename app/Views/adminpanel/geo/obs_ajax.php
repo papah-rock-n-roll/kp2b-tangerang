@@ -25,7 +25,7 @@
       $respid = old('respid') == null ? $v['respid'] : old('respid');
       $respname = old('respname') == null ? $v['respname'] : old('respname');
       ?>
-      <select name="vlcode" class="form-control form-control-sm custom-select select2-respo" style="width: 100%;" required>
+      <select name="respid" class="form-control form-control-sm custom-select select2-respo" style="width: 100%;" required>
         <option value="<?= $respid ?>" selected="selected"><?= esc($respname) ?></option>
       </select>
     </div>

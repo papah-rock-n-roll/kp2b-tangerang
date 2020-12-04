@@ -773,13 +773,13 @@
             },
             submitHandler:function(form){
               $("#obsform").find(".overlay").addClass('d-flex');
+              var token = $('meta[name=X-CSRF-KP2B]').attr('content');
               $.ajax({
                   url: form.action,
+                  headers: { 'X-CSRF-KP2B': token },
                   method: 'PUT',
                   data: $(form).serialize(),
                   success: function(response) {
-                    valowner.resetForm();
-                    form.reset();
                     toastr.info('Data petak berhasil diupdate');
                     $("#obsform").find(".overlay").removeClass('d-flex');
                   },
