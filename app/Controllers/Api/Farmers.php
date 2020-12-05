@@ -164,7 +164,7 @@ class Farmers extends ResourceController
     $data = $this->request->getRawInput();
 
     // Log informations Ajax Events
-    Events::trigger('ajax_event','update','mstr_owners', $id, $data);
+    Events::trigger('ajax_event','update','mstr_farmers', $id, $data);
     // ----------------------------
     $post = $this->model->update($id, $data);
 
@@ -182,7 +182,7 @@ class Farmers extends ResourceController
   public function delete($id = null)
   {
     // Log informations Ajax Events
-    Events::trigger('ajax_event','delete','mstr_owners', $id, null);
+    Events::trigger('ajax_event','delete','mstr_farmers', $id, null);
     // ----------------------------
     $delete = $this->model->delete($id);
 

@@ -441,6 +441,8 @@ class M_log extends M_access
   {
     $db = \Config\Database::connect();
     $schema = $db->database;
+	
+	  helper('parse');
 
     if(empty($id)) 
     {
