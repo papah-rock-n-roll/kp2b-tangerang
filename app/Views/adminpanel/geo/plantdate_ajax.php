@@ -1,6 +1,6 @@
 <?php
   $attributes = ['id' => 'plantform'];
-  echo form_open(base_url('api/plantdates'), $attributes)
+  echo form_open(base_url('api/plantdates/'.$kodepetak), $attributes)
 ?>
 
 <div class="overlay justify-content-center align-items-center" style="display: none;">

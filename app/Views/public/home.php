@@ -42,6 +42,7 @@
     let editor, features;
     var dataKec = [], dataDesa = [], dataObs = [];
     var geojsonLayer;
+    var legendSymbol = [], defSymbol = [];
     var dataHead = ["Kode petak","Nama responden","Nama Kelompok Tani","Nama kecamatan","Nama desa","Landuse",
     "Status lahan","Luas petak (m<sup>2</sup>)","NIK pemilik","Nama pemilik","Nama penggarap","Tipe irigasi",
     "Jarak dari sungai (m)","Jarak dari irigasi primer (m)","Lembaga pengelola air","Intensitas tanam","Index pertanaman (IP)",
@@ -65,39 +66,36 @@
       content: getDetail
     };
 
-    const colors = [ "red", "blue", "green", "yellow", "purple" ];
+    const lLanduse = [
+      {
+        value: "Sawah",
+        symbol: createSymbol("#28a745"),
+        label: "Sawah"
+      }
+    ];
 
-    const renderer = {
-      type: "unique-value",
-      field: "areantatus",
-      legendOptions: {
-        title: "Status lahan"
+    const lStatus = [
+      {
+        value: "MILIK",
+        symbol: createSymbol("#28a745"),
+        label: "Milik"
       },
-      uniqueValueInfos: [
-        {
-          value: "MILIK",
-          symbol: createSymbol("#28a745"),
-          label: "Milik"
-        },
-        {
-          value: "SEWA",
-          symbol: createSymbol("#ffc107"),
-          label: "Sewa"
-        },
-        {
-          value: "GARAP",
-          symbol: createSymbol("#dc3545"),
-          label: "Garap"
-        },
-        {
-          value: "LAINNYA",
-          symbol: createSymbol("#17a2b8"),
-          label: "Lainnya"
-        }
-      ],
-      defaultSymbol: createSymbol("gray"),
-      defaultLabel: "Null"
-    };
+      {
+        value: "SEWA",
+        symbol: createSymbol("#ffc107"),
+        label: "Sewa"
+      },
+      {
+        value: "GARAP",
+        symbol: createSymbol("#dc3545"),
+        label: "Garap"
+      },
+      {
+        value: "LAINNYA",
+        symbol: createSymbol("#17a2b8"),
+        label: "Lainnya"
+      }
+    ];
 
     const map = new Map({
       basemap: "gray-vector"
@@ -272,6 +270,18 @@
       function updateLayer(data, kec, desa){
         map.layers.removeAll();
         popup.close();
+
+        const renderer = {
+          type: "unique-value",
+          field: $('#layerData option:selected').val(),
+          legendOptions: {
+            title: $('#layerData option:selected').text()
+          },
+          uniqueValueInfos: legendSymbol,
+          defaultSymbol: createSymbol("grey"),
+          defaultLabel: defSymbol
+        };
+
         geojsonLayer = new GeoJSONLayer({
           url: url + "/info?table=v_observations&fid=obscode&shape=obsshape&fields=" + data + "&sdcode=" + kec + "&vlcode=" + desa,
           copyright: "Dinas Pertanian Kab. Tangerang",
@@ -292,6 +302,7 @@
         <label>Pilih jenis data</label> \
         <select class="form-control" id="layerData"> \
           <option value="areantatus">Status lahan</option> \
+            <option value="landuse">Landuse</option> \
         </select> \
       </div> \
       <div class="form-group input-group-sm" id="kecForm"> \
@@ -327,14 +338,36 @@
 
       view.ui.add(layerAdd, "top-left");
 
+      legendSymbol = lStatus;
+      defSymbol = "Null Data";
+
       watchUtils.whenTrueOnce(layerAdd, 'expanded', function(){
+
+        on(dom.byId("layerData"), 'change', function(){
+          switch($('#layerData option:selected').val()) {
+
+            case 'areantatus':
+              legendSymbol = lStatus;
+              defSymbol = "Null Data";
+            break;
+
+            case 'landuse':
+              legendSymbol = lLanduse;
+              defSymbol = "Non Sawah";
+            break;
+
+          }
+        });
+
         on(dom.byId("layerKec"), 'change', function(){
           if(this.value == ''){$("#desaForm").hide();}else{$("#desaForm").show();}
           getDesa(this.value);
         });
+
         on(dom.byId("applyLayer"), 'click', function(){
           updateLayer($("#layerData").val(), $("#layerKec").val(), $("#layerDesa").val());
         });
+
       });
 
       var layerList = new LayerList({

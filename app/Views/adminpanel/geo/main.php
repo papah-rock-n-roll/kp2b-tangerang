@@ -137,6 +137,7 @@
         type: "simple-fill",
         color: "green",
         outline: {
+          width: 0.1,
           color: "white"
         }
       }

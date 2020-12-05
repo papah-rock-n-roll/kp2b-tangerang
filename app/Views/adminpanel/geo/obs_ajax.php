@@ -1,6 +1,6 @@
 <?php
   $attributes = ['id' => 'obsform', 'method' => 'PUT'];
-  echo form_open(base_url('api/observation').'/'.$v['obscode'], $attributes);
+  echo form_open(base_url('api/observation/'.$v['obscode']), $attributes);
 ?>
 <?php
   $ownerid = $v['ownerid'];
