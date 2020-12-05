@@ -49,6 +49,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 	$routes->resource('farmers');
 	$routes->resource('subdist');
 	$routes->resource('observation');
+	$routes->resource('plantdates');
 });
 
 /**

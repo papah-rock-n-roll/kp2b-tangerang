@@ -3,6 +3,8 @@
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
+
+use Config\Services;
  
 class Acts implements FilterInterface
 {
@@ -12,46 +14,102 @@ class Acts implements FilterInterface
     $acts = session('privilage')->acts;
     $segments = service('uri')->getSegments();
 
-    foreach ($acts as $action) {
+    $request = Services::request();
+    $response = Services::response();
 
-      switch ($action) {
+    if($request->isAJAX()) 
+    {
+      if($request->getMethod() === 'get')
+      {
+        if(in_array('read', $acts)) {
+          $code = '403';
+          $response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $response->getReason(),
+          ];
+          return $response->setJSON($message);
+        }
 
-        case 'create':
+      }
+      else
+      {
 
-          if(in_array('create', $segments)) {
-            return redirect()->back();
-          }
-
-          break;
-
-        case 'read':
-
-          if(in_array('read', $segments)) {
-            return redirect()->back();
-          }
-
-          break;
-
-        case 'update':
-
-          if(in_array('update', $segments)) {
-            return redirect()->back();
-          }
-
-          break;
-
-        case 'delete':
-
-          if(in_array('delete', $segments)) {
-            return redirect()->back();
-          }
-
-          break;
+        if(in_array('create', $acts)) {
+          $code = '403';
+          $response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $response->getReason(),
+          ];
+          return $response->setJSON($message);
+        }
+        elseif(in_array('update', $acts)) {
+          $code = '403';
+          $response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $response->getReason(),
+          ];
+          return $response->setJSON($message);
+        }
+        elseif(in_array('delete', $acts)) {
+          $code = '403';
+          $response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $response->getReason(),
+          ];
+          return $response->setJSON($message);
+        }
 
       }
 
     }
+    else
+    {
+      foreach ($acts as $action) {
 
+        switch ($action) {
+  
+          case 'create':
+  
+            if(in_array('create', $segments)) {
+              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+  
+          break;
+  
+          case 'read':
+  
+            if(in_array('read', $segments)) {
+              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+  
+          break;
+  
+          case 'update':
+  
+            if(in_array('update', $segments)) {
+              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+  
+          break;
+  
+          case 'delete':
+  
+            if(in_array('delete', $segments)) {
+              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+  
+          break;
+  
+        }
+  
+      }
+
+    }
+    
   }
 
   //--------------------------------------------------------------------

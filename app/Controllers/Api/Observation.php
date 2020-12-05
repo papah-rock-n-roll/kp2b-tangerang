@@ -25,7 +25,29 @@ class Observation extends ResourceController
 
   public function index()
   {
-    $code = '404';
+    $code = '403';
+    $this->response->setStatusCode($code);
+    $message = [
+      'status' => $code,
+      'message' => $this->response->getReason(),
+    ];
+    return $this->respond($message, $code);
+  }
+
+  public function create()
+  {
+    $code = '403';
+    $this->response->setStatusCode($code);
+    $message = [
+      'status' => $code,
+      'message' => $this->response->getReason(),
+    ];
+    return $this->respond($message, $code);
+  }
+
+  public function delete($id = null)
+  {
+    $code = '403';
     $this->response->setStatusCode($code);
     $message = [
       'status' => $code,
@@ -56,6 +78,7 @@ class Observation extends ResourceController
           ];
           return $this->respond($message, $code);
         }
+
       break;
 
       default:
@@ -100,7 +123,7 @@ class Observation extends ResourceController
     $data = $this->request->getRawInput();
 
     // Log informations Ajax Events
-    Events::trigger('ajax_event','update','mstr_owners', $id, $data);
+    Events::trigger('ajax_event','update','observations_frmobservations', $id, $data);
     // ----------------------------    
     $post = $this->model->update_post($id, $data);
 

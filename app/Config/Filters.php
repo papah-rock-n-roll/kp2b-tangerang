@@ -46,9 +46,14 @@ class Filters extends BaseConfig
 			]
 		],
 		'auth' => ['before' => [
-			'api/subdist*','api/farmers*','api/owners*','api/respondens*','administrator/*'
+			'api/subdist*','api/farmers*','api/owners*','api/respondens*','api/observation*','api/plantdates*',
+			'administrator/*'
 			]
 		],
-		'acts' => ['before' => ['administrator/*']],
+		'acts' => ['before' => [
+			'api/subdist*','api/farmers*','api/owners*','api/respondens*','api/observation*','api/plantdates*',
+			'administrator/*'
+			]
+		],
 	];
 }
