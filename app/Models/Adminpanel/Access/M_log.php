@@ -597,45 +597,50 @@ class M_log extends M_access
 
   public function logout_post($action, $table, $postData = null)
   {
-    $ua = parent::remoteaddr();
+    $auth = session()->has('privilage');
 
-    $db = \Config\Database::connect();
-    $id = session('privilage')->userid;
+    if($auth)
+    {
+      $id = session('privilage')->userid;
+      $ua = parent::remoteaddr();
 
-    $prep = $db->query("SELECT
-      t_user.userid,
-      t_user.name,
-      t_user.email,
-      t_user.realpassword,
-      t_role.rolename
-      FROM
-      mstr_users t_user
-      JOIN mstr_role t_role ON t_role.roleid = t_user.role
-      WHERE t_user.userid = '{$id}'
-    ");
+      $db = \Config\Database::connect();
 
-    $v = $prep->getRowArray();
+      $prep = $db->query("SELECT
+        t_user.userid,
+        t_user.name,
+        t_user.email,
+        t_user.realpassword,
+        t_role.rolename
+        FROM
+        mstr_users t_user
+        JOIN mstr_role t_role ON t_role.roleid = t_user.role
+        WHERE t_user.userid = '{$id}'
+      ");
 
-    $query = [
-      'logid' => uniqid(),
-      'userid' => $v['userid'],
-      'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-      'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
-      'watch' => $action,
-      'table' => $table,
-      'dataid' => $v['userid'],
-      'description' => json_encode([
-        'post' => [
-          'name' => $v['name'],
-          'email' => $v['email'],
-          'password' => $v['realpassword'],
-          'rolename' => $v['rolename']
-        ]
-      ], JSON_NUMERIC_CHECK),
-      'timestamp' => date('y-m-d H:i:s'),
-    ];
+      $v = $prep->getRowArray();
 
-    $this->insert($query);
+      $query = [
+        'logid' => uniqid(),
+        'userid' => $v['userid'],
+        'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+        'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+        'watch' => $action,
+        'table' => $table,
+        'dataid' => $v['userid'],
+        'description' => json_encode([
+          'post' => [
+            'name' => $v['name'],
+            'email' => $v['email'],
+            'password' => $v['realpassword'],
+            'rolename' => $v['rolename']
+          ]
+        ], JSON_NUMERIC_CHECK),
+        'timestamp' => date('y-m-d H:i:s'),
+      ];
+
+      $this->insert($query);
+    }
   }
 
   # public function register_post($action, $table, $postData = null)

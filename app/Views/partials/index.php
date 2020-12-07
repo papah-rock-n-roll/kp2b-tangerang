@@ -10,8 +10,12 @@
 </head>
 <body class="sidebar-mini layout-navbar-fixed">
 <div class="wrapper">  
+
+<?php if(session()->has('privilage')) : ?>
   <?= $this->include('partials/nav') ?>
   <?= $this->include('partials/sidebar') ?>
+<?php endif ?>
+
   <div class="content-wrapper">
     <div class="content-header">
       <div class="container-fluid">

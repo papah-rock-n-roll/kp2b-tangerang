@@ -12,6 +12,7 @@ class Acts implements FilterInterface
   {
     // Do something here
     $acts = session('privilage')->acts;
+    $nav = array_keys(session('privilage')->menus);
     $segments = service('uri')->getSegments();
 
     $request = Services::request();
@@ -21,7 +22,8 @@ class Acts implements FilterInterface
     {
       if($request->getMethod() === 'get')
       {
-        if(in_array('read', $acts)) {
+        if(in_array('read', $acts)) 
+        {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -32,10 +34,10 @@ class Acts implements FilterInterface
         }
 
       }
-      else
+      elseif($request->getMethod() === 'get')
       {
-
-        if(in_array('create', $acts)) {
+        if(in_array('create', $acts)) 
+        {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -44,7 +46,11 @@ class Acts implements FilterInterface
           ];
           return $response->setJSON($message);
         }
-        elseif(in_array('update', $acts)) {
+      }
+      elseif($request->getMethod() === 'put')
+      {
+        if(in_array('update', $acts)) 
+        {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -53,7 +59,11 @@ class Acts implements FilterInterface
           ];
           return $response->setJSON($message);
         }
-        elseif(in_array('delete', $acts)) {
+      }
+      elseif($request->getMethod() === 'delete')
+      {
+        if(in_array('delete', $acts)) 
+        {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -62,7 +72,6 @@ class Acts implements FilterInterface
           ];
           return $response->setJSON($message);
         }
-
       }
 
     }
@@ -106,6 +115,19 @@ class Acts implements FilterInterface
   
         }
   
+      }
+
+      // nav menu - role module
+      if(empty(array_intersect($nav, $segments))) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+      }
+
+      // custom segments
+      if(in_array('obs_ajax', $segments)) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+      }
+      elseif(in_array('plantdate_ajax', $segments)) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
       }
 
     }

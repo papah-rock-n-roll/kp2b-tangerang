@@ -4,8 +4,20 @@ $adminpanel = $uri->getSegment(1);
 $urisegment = $uri->getSegment(2);
 
 if($urisegment == 'dashboard')
+{
   $menus = array();
-else $menus = session('privilage')->menus[$urisegment];
+}
+else
+{
+  if(empty(array_intersect(array_keys(session('privilage')->menus), $uri->getSegments()))) 
+  {
+    $menus = array();
+  }
+  else
+  {
+    $menus = session('privilage')->menus[$urisegment];
+  }
+}
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary">
