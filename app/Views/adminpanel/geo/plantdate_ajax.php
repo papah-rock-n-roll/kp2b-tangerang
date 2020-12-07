@@ -1,8 +1,4 @@
-<?php
-  $attributes = ['id' => 'plantform'];
-  echo form_open(base_url('api/plantdates/'.$kodepetak), $attributes)
-?>
-
+<form action="<?php echo base_url('api/plantdates/'.$kodepetak); ?>" id="plantform" method="PUT" accept-charset="utf-8">
 <div class="overlay justify-content-center align-items-center" style="display: none;">
   <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
     <span class="sr-only">Loading...</span>
@@ -154,4 +150,4 @@
   <?php endif ?>
 </div>
 
-<?php echo form_close() ?>
+</form>

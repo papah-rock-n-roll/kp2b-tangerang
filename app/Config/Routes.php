@@ -79,6 +79,7 @@ $routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) 
 
 // Public Home
 $routes->get('/', 'Home::index');
+$routes->get('/maps', 'Home::maps');
 $routes->get('/data', 'Home::data');
 $routes->get('/chart', 'Home::chart');
 

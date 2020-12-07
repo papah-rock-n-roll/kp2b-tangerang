@@ -1,28 +1,30 @@
 <nav class="main-header navbar navbar-expand-sm navbar-light navbar-white">
-  <ul class="navbar-nav">
-    <a href="<?php echo base_url() ?>" class="navbar-brand">
-        <img src="<?php echo base_url('themes/dist') ?>/img/logo.png" alt="AdminLTE Logo" class="brand-image">
-        <span class="brand-text">KP2B <span class="font-weight-light">Kabupaten Tangerang</span></span>
-    </a>
-  </ul>
-  <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fas fa-th-large"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-          <a href="/login" class="dropdown-item">
-            <i class="fas fa-lock mr-2"></i> Login
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/data" class="dropdown-item">
-            <i class="fas fa-table mr-2"></i> Data
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="/chart" class="dropdown-item">
-            <i class="fas fa-chart-pie mr-2"></i> Chart
-          </a>
-        </div>
-      </li>
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMain" aria-controls="navbarsMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="fas fa-bars"></span>
+    </button>
+    <ul class="navbar-nav mr-auto ml-2">
+      <a href="<?php echo base_url() ?>" class="navbar-brand user-block">
+        <img src="<?php echo base_url('themes/dist') ?>/img/logo.png" alt="Logo Kab Tangerang">
+        <span class="username">KP2B </span>
+        <span class="font-weight-light text-sm description">Kabupaten Tangerang</span>
+      </a>
     </ul>
+    <div class="collapse navbar-collapse" id="navbarsMain">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item text-sm">
+          <a class="nav-link py-2" href="/">Home </a>
+        </li>
+        <li class="nav-item text-sm">
+          <a class="nav-link py-2" href="/maps">Peta</a>
+        </li>
+        <li class="nav-item text-sm">
+          <a class="nav-link py-2" href="/data">Data</a>
+        </li>
+        <li class="nav-item text-sm">
+          <a class="nav-link py-2" href="/chart" tabindex="-1">Chart</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>

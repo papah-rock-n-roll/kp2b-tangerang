@@ -1,7 +1,7 @@
 <?= $this->extend('public/partials/index') ?>
 
 <?= $this->section('link') ?>
-<style>html, body, #viewDiv {padding:0;margin:0;height:calc(100vh - 57px);width:100%;}</style>
+<style>html, body, #viewDiv {padding:0;margin:0;height:calc(100vh - 68px);width:100%;}</style>
 <?= \App\Libraries\Link::style()->arcgis ?>
 <?= \App\Libraries\Link::style()->select2 ?>
 <?= $this->endSection() ?>
@@ -136,7 +136,7 @@
       return div;
     }
 
-    // Function action layer petak
+    <!-- Function action layer petak -->
     function defineActions(event) {
       var item = event.item;
 
@@ -163,7 +163,7 @@
     view.when(function () {
       var popup = view.popup;
 
-      // Function Format char to Title Case
+      <!-- Function Format char to Title Case -->
       function toTitleCase(str) {
           return str.replace(
               /\w\S*/g,
@@ -173,7 +173,7 @@
           );
       }
 
-      // Tombol Geolocation
+      <!-- Tombol Geolocation -->
       view.ui.add(
         new Track({
           view: view,
@@ -182,7 +182,7 @@
         }), "top-left"
       );
 
-      // Tombol Legenda
+      <!-- Tombol Legenda -->
       const legend = new Expand({
         content: new Legend({
           view: view
@@ -191,14 +191,14 @@
       });
       view.ui.add(legend, "top-left");
 
-      // From Pencarian
+      <!-- From Pencarian -->
       var searchWidget = new Search({
         view: view,
         includeDefaultSources: false
       });
       view.ui.add(searchWidget, "top-right");
 
-      // Tombol Full Screen
+      <!-- Tombol Full Screen -->
       view.ui.add(
         new Fullscreen({
           view: view,
@@ -206,7 +206,7 @@
         }), "top-right"
       );
 
-      // Tombol Basemap
+      <!-- Tombol Basemap -->
       const basemapGallery = new BasemapGallery({
         view: view,
         container: document.createElement("div")
@@ -230,7 +230,7 @@
         }
       });
 
-      // get List Desa
+      <!-- get List Desa -->
       function getDesa(sdcode = ''){
         $.ajax({
           async : false,
@@ -249,7 +249,7 @@
         $('#layerDesa').html(desaDom);
       }
 
-      // update search layer source
+      <!-- update search layer source -->
       function updateSearchSource(){
         const sources = [
           {
@@ -266,7 +266,7 @@
         searchWidget.sources = sources;
       }
 
-      // Update layers
+      <!-- Update layers -->
       function updateLayer(data, kec, desa){
         map.layers.removeAll();
         popup.close();

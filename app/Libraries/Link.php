@@ -53,7 +53,8 @@ class Link
       'moment' => '',
       'tempusdominus' => '',
       'jqueryvalidation' => '<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>',
-      'toastr' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>'
+      'toastr' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>',
+      'particlesjs' => '<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>'
     );
 
     $local = (object) array(
@@ -66,7 +67,8 @@ class Link
       'moment' => '<script src="'.base_url('themes/plugins/moment/moment.min.js').'"></script>',
       'tempusdominus' => '<script src="'.base_url('themes/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js').'"></script>',
       'jqueryvalidation' => '<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>',
-      'toastr' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>'
+      'toastr' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>',
+      'particlesjs' => '<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>'
     );
 
     if (ENVIRONMENT !== 'production')
