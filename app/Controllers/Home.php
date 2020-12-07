@@ -6,6 +6,11 @@ class Home extends BaseController
 {
 	public function index()
 	{
+		echo view('welcome_message');
+	}
+
+	public function maps()
+	{
 		$data = [
       'url' => base_url('api/geo/'),
 			'url_kec' => base_url('api/geo/kecamatan'),
@@ -13,7 +18,7 @@ class Home extends BaseController
       'url_obs' => base_url('api/geo/obsdetail')
 		];
 
-		echo view('public/home', $data);
+		echo view('public/maps', $data);
 	}
 
 	public function data()

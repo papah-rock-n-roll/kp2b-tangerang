@@ -52,6 +52,10 @@
 <!-- ESRI SCRIPT -->
 <script>
   toastr.options.target = '#viewDiv';
+  var token = $('meta[name=X-CSRF-KP2B]').attr('content');
+  $.ajaxSetup({
+    headers: { 'X-CSRF-KP2B': token }
+  });
   require([
     "esri/Map",
     "esri/views/MapView",
@@ -86,7 +90,7 @@
     "Jarak dari sungai (m)","Jarak dari irigasi primer (m)","Lembaga pengelola air","Intensitas tanam","Index pertanaman (IP)",
     "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
     "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
-    "Penjualan panen","Surveyor","Update"]
+    "Penjualan panen","Surveyor","Update"];
 
     const editAttributes = {
       title: "Edit attributes",
@@ -137,6 +141,7 @@
         type: "simple-fill",
         color: "green",
         outline: {
+          width: 0.1,
           color: "white"
         }
       }
@@ -329,7 +334,7 @@
                   $("#modal_plantdates").find(".overlay").addClass('d-flex');
                   $.ajax({
                       url: form.action,
-                      type: form.method,
+                      method: 'PUT',
                       data: $(form).serialize(),
                       success: function(response) {
                         valplant.resetForm();
@@ -773,10 +778,8 @@
             },
             submitHandler:function(form){
               $("#obsform").find(".overlay").addClass('d-flex');
-              var token = $('meta[name=X-CSRF-KP2B]').attr('content');
               $.ajax({
                   url: form.action,
-                  headers: { 'X-CSRF-KP2B': token },
                   method: 'PUT',
                   data: $(form).serialize(),
                   success: function(response) {

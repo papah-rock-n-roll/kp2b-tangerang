@@ -7,7 +7,7 @@
  *
  * --------------------------------------------------------------------
  */
-  
+
 class M_log extends M_access
 {
   const VIEW = 'adminpanel/access/log/';
@@ -43,7 +43,7 @@ class M_log extends M_access
     $data['page'] = $paginate;
 
     // Jika Tidak null maka where watch or table = $_['GET'] watch
-    if(!empty($watch)) $where = ['log_informations.watch' => $watch];    
+    if(!empty($watch)) $where = ['log_informations.watch' => $watch];
     if(!empty($table)) $orWhere = ['log_informations.table' => $table];
     if(!empty($date)) $timestamp = ['DATE(log_informations.timestamp)' => $date];
     if(!empty($keyword)) $like = ['mstr_users.name' => $keyword];
@@ -109,8 +109,8 @@ class M_log extends M_access
   public function getlist()
   {
     $list = [
-      ['id' => 1,'name' => 'session'], 
-      ['id' => 2,'name' => 'cache'], 
+      ['id' => 1,'name' => 'session'],
+      ['id' => 2,'name' => 'cache'],
       ['id' => 3,'name' => 'logs'],
       ['id' => 4,'name' => 'debugbar']
     ];
@@ -121,8 +121,8 @@ class M_log extends M_access
   public function getWatch()
   {
     $list = [
-      ['name' => 'login'], 
-      ['name' => 'logout'], 
+      ['name' => 'login'],
+      ['name' => 'logout'],
       ['name' => 'create'],
       ['name' => 'update'],
       ['name' => 'delete'],
@@ -139,7 +139,7 @@ class M_log extends M_access
       ['name' => 'mstr_role'],
       ['name' => 'mstr_users'],
       ['name' => 'mstr_owners'],
-      ['name' => 'mstr_farmers'], 
+      ['name' => 'mstr_farmers'],
       ['name' => 'mstr_respondens'],
       ['name' => 'observations_frmobservations'],
       ['name' => 'observations_plantdates'],
@@ -155,7 +155,7 @@ class M_log extends M_access
  */
   public function getInformations($where = null, $orWhere = null, $timestamp = null, $like = null, $paginate = 5)
   {
-    $query = $this->select('log_informations.logid, mstr_users.name, log_informations.watch, 
+    $query = $this->select('log_informations.logid, mstr_users.name, log_informations.watch,
     log_informations.table, log_informations.dataid, log_informations.timestamp')
     ->join('mstr_users', 'log_informations.userid = mstr_users.userid')
     ->where($where)->orWhere($orWhere)->orWhere($timestamp)->like($like, 'match')
@@ -166,9 +166,9 @@ class M_log extends M_access
 
   public function getInformation($id)
   {
-    $query = $this->select('mstr_users.name, mstr_users.email, mstr_users.image, 
-    log_informations.useragent, log_informations.remoteaddr, log_informations.watch, 
-    log_informations.table, log_informations.dataid, 
+    $query = $this->select('mstr_users.name, mstr_users.email, mstr_users.image,
+    log_informations.useragent, log_informations.remoteaddr, log_informations.watch,
+    log_informations.table, log_informations.dataid,
     log_informations.description, log_informations.timestamp')
     ->join('mstr_users', 'log_informations.userid = mstr_users.userid')->find($id);
 
@@ -201,7 +201,7 @@ class M_log extends M_access
               $watch = 'create';
               $table = 'mstr_users';
               $this->create_post($watch, $table, $id, $data);
-            } 
+            }
             elseif($action == 'update') {
               $watch = 'update';
               $table = 'mstr_users';
@@ -221,7 +221,7 @@ class M_log extends M_access
               $watch = 'create';
               $table = 'mstr_role';
               $this->create_post($watch, $table, $id, $data);
-            } 
+            }
             elseif($action == 'update') {
               $watch = 'update';
               $table = 'mstr_role';
@@ -236,7 +236,7 @@ class M_log extends M_access
           break;
 
           # case 'log':
-            
+
           # break;
         }
 
@@ -273,7 +273,7 @@ class M_log extends M_access
               $watch = 'create';
               $table = 'observations_frmobservations';
               $this->create_post($watch, $table, $id, $data);
-            } 
+            }
             elseif($action == 'update') {
               $watch = 'update';
               $table = 'observations_frmobservations';
@@ -292,13 +292,13 @@ class M_log extends M_access
             elseif($action == 'import') {
               $watch = 'import';
               $table = 'observations_plantdates';
-              $this->create_post($watch, $table, $id, $data);             
-            } 
+              $this->create_post($watch, $table, $id, $data);
+            }
             elseif($action == 'export') {
               $watch = 'export';
               $table = 'observations_plantdates';
-              $this->create_post($watch, $table, $id, $data);             
-            }     
+              $this->create_post($watch, $table, $id, $data);
+            }
 
           break;
 
@@ -308,7 +308,7 @@ class M_log extends M_access
               $watch = 'create';
               $table = 'mstr_owners';
               $this->create_post($watch, $table, $id, $data);
-            } 
+            }
             elseif($action == 'update') {
               $watch = 'update';
               $table = 'mstr_owners';
@@ -322,14 +322,14 @@ class M_log extends M_access
             elseif($action == 'import') {
               $watch = 'import';
               $table = 'mstr_owners';
-              $this->create_post($watch, $table, $id, $data);             
-            } 
+              $this->create_post($watch, $table, $id, $data);
+            }
             elseif($action == 'export') {
               $watch = 'export';
               $table = 'mstr_owners';
-              $this->create_post($watch, $table, $id, $data);             
+              $this->create_post($watch, $table, $id, $data);
             }
-                      
+
           break;
 
           case 'farmer':
@@ -338,7 +338,7 @@ class M_log extends M_access
               $watch = 'create';
               $table = 'mstr_farmers';
               $this->create_post($watch, $table, $id, $data);
-            } 
+            }
             elseif($action == 'update') {
               $watch = 'update';
               $table = 'mstr_farmers';
@@ -347,18 +347,18 @@ class M_log extends M_access
             elseif($action == 'delete') {
               $watch = 'delete';
               $table = 'mstr_farmers';
-              $this->create_post($watch, $table, $id, $data);             
+              $this->create_post($watch, $table, $id, $data);
             }
             elseif($action == 'import') {
               $watch = 'import';
               $table = 'mstr_farmers';
-              $this->create_post($watch, $table, $id, $data);             
-            } 
+              $this->create_post($watch, $table, $id, $data);
+            }
             elseif($action == 'export') {
               $watch = 'export';
               $table = 'mstr_farmers';
-              $this->create_post($watch, $table, $id, $data);             
-            }        
+              $this->create_post($watch, $table, $id, $data);
+            }
 
           break;
 
@@ -368,7 +368,7 @@ class M_log extends M_access
               $watch = 'create';
               $table = 'mstr_respondens';
               $this->create_post($watch, $table, $id, $data);
-            } 
+            }
             elseif($action == 'update') {
               $watch = 'update';
               $table = 'mstr_respondens';
@@ -377,7 +377,7 @@ class M_log extends M_access
             elseif($action == 'delete') {
               $watch = 'delete';
               $table = 'mstr_respondens';
-              $this->create_post($watch, $table, $id, $data);              
+              $this->create_post($watch, $table, $id, $data);
             }
 
           break;
@@ -396,11 +396,11 @@ class M_log extends M_access
           break;
 
           case 'village':
-            
+
           break;
 
           case 'subdistrict':
-            
+
           break;
 
         }
@@ -418,7 +418,7 @@ class M_log extends M_access
           break;
 
           case 'table':
-            
+
           break;
 
         }
@@ -441,10 +441,9 @@ class M_log extends M_access
   {
     $db = \Config\Database::connect();
     $schema = $db->database;
-	
-	  helper('parse');
+    helper('parse');
 
-    if(empty($id)) 
+    if(empty($id))
     {
       $info = "SELECT AUTO_INCREMENT AS numID FROM information_schema.TABLES
       WHERE TABLE_SCHEMA = '{$schema}' AND TABLE_NAME = '{$table}'";
@@ -454,7 +453,7 @@ class M_log extends M_access
     }
     else
     {
-      $info = "SELECT COLUMN_NAME AS fieldID FROM information_schema.COLUMNS 
+      $info = "SELECT COLUMN_NAME AS fieldID FROM information_schema.COLUMNS
       WHERE TABLE_SCHEMA = '{$schema}' AND TABLE_NAME = '{$table}' AND
       ORDINAL_POSITION = 1";
 
@@ -488,7 +487,7 @@ class M_log extends M_access
 
       case 'update':
 
-        if($table === 'observations_plantdates') 
+        if($table === 'observations_plantdates')
         {
           $oldData = $db->table($table)
           ->select('growceason,monthgrow,monthharvest,varieties,irrigationavbl')
@@ -520,7 +519,7 @@ class M_log extends M_access
             'timestamp' => date('y-m-d H:i:s'),
           ];
         }
-        
+
       break;
 
       case 'delete':
@@ -532,7 +531,7 @@ class M_log extends M_access
           'description' => json_encode(['old' => $oldData], JSON_NUMERIC_CHECK),
           'timestamp' => date('y-m-d H:i:s'),
         ];
-        
+
       break;
 
       case 'import':
@@ -544,7 +543,7 @@ class M_log extends M_access
           'description' => json_encode(['post' => $postData], JSON_NUMERIC_CHECK),
           'timestamp' => date('y-m-d H:i:s'),
         ];
-        
+
       break;
 
       case 'export':
@@ -556,7 +555,7 @@ class M_log extends M_access
           'description' => json_encode(['get' => $postData], JSON_NUMERIC_CHECK),
           'timestamp' => date('y-m-d H:i:s'),
         ];
-        
+
       break;
 
     }

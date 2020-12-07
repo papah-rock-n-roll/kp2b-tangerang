@@ -1,11 +1,11 @@
 <?php namespace App\Filters;
- 
+
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 
 use Config\Services;
- 
+
 class Acts implements FilterInterface
 {
   public function before(RequestInterface $request, $arguments = null)
@@ -18,7 +18,7 @@ class Acts implements FilterInterface
     $request = Services::request();
     $response = Services::response();
 
-    if($request->isAJAX()) 
+    if($request->isAJAX())
     {
       if($request->getMethod() === 'get')
       {
@@ -34,10 +34,10 @@ class Acts implements FilterInterface
         }
 
       }
-      elseif($request->getMethod() === 'get')
+      elseif($request->getMethod() === 'post')
       {
-        if(in_array('create', $acts)) 
-        {
+
+        if(in_array('create', $acts)) {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -49,8 +49,7 @@ class Acts implements FilterInterface
       }
       elseif($request->getMethod() === 'put')
       {
-        if(in_array('update', $acts)) 
-        {
+        if(in_array('update', $acts)) {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -62,8 +61,7 @@ class Acts implements FilterInterface
       }
       elseif($request->getMethod() === 'delete')
       {
-        if(in_array('delete', $acts)) 
-        {
+        if(in_array('delete', $acts)) {
           $code = '403';
           $response->setStatusCode($code);
           $message = [
@@ -80,41 +78,41 @@ class Acts implements FilterInterface
       foreach ($acts as $action) {
 
         switch ($action) {
-  
+
           case 'create':
-  
+
             if(in_array('create', $segments)) {
               throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
-  
+
           break;
-  
+
           case 'read':
-  
+
             if(in_array('read', $segments)) {
               throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
-  
+
           break;
-  
+
           case 'update':
-  
+
             if(in_array('update', $segments)) {
               throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
-  
+
           break;
-  
+
           case 'delete':
-  
+
             if(in_array('delete', $segments)) {
               throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
-  
+
           break;
-  
+
         }
-  
+
       }
 
       // nav menu - role module
@@ -131,7 +129,7 @@ class Acts implements FilterInterface
       }
 
     }
-    
+
   }
 
   //--------------------------------------------------------------------
