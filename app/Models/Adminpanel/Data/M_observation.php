@@ -340,22 +340,22 @@ class M_observation extends M_data
   {
     return [
       'broadnrea' => [
-        'label' => 'Broad Area',
-        'rules' => 'max_length[7]',
+        'label' => 'Luas Area Petak',
+        'rules' => 'max_length[10]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromriver' => [
-        'label' => 'Distance From River',
-        'rules' => 'max_length[7]',
+        'label' => 'Jarak Dari Sungai',
+        'rules' => 'max_length[10]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'distancefromIrgPre' => [
-        'label' => 'Distance From Irrigation',
-        'rules' => 'max_length[7]',
+        'label' => 'Jarak Dari Irigasi',
+        'rules' => 'max_length[10]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
@@ -370,14 +370,21 @@ class M_observation extends M_data
       ],
       'pattrnnlant' => [
         'label' => 'Pattern',
-        'rules' => 'max_length[100]',
+        'rules' => 'max_length[60]',
+        'errors' => [
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
+      'wtr' => [
+        'label' => 'Air',
+        'rules' => 'max_length[60]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
       'other' => [
         'label' => 'Other',
-        'rules' => 'max_length[100]',
+        'rules' => 'max_length[60]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]

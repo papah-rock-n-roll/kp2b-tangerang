@@ -25,7 +25,8 @@ class M_farmer extends M_data
   protected $table = 'mstr_farmers';
   protected $primaryKey = 'farmcode';
 
-  protected $allowedFields = ['farmcode','farmname','farmmobile','farmhead'];
+  protected $allowedFields = ['farmcode','farmname','farmmobile','farmhead',
+  'typeirigation', 'intensitynlan', 'indxnlant', 'pattrnnlant', 'opt', 'wtr', 'saprotan'];
 
 
   public function list($farmer = null, $keyword = null, $paginate)
@@ -69,23 +70,97 @@ class M_farmer extends M_data
 
   public function create_new($data)
   {
+    // Ganti key Assoc berdasarkan Base dengan value ''
+    $optbase = array_fill_keys($this->optbase, '');
+    $saprotanbase = array_fill_keys($this->saprotanbase, '');
+    $irigationbase = array_fill_keys($this->irigationbase, '');
+
     $data += [
       'action' => self::ACTS.'create',
+      'typeirigation' => $irigationbase,
+      'opt' => $optbase,
+      'saprotan' => $saprotanbase,
       'back' => self::BACK,
     ];
 
     echo view(self::VIEW.'create', $data);
   }
 
+  public function create_post($data)
+  {
+    // Pisah Array OTP dan Saprotan menjadi string
+    if(!empty($data['opt']))
+      $newData['opt'] = implode(',', $data['opt']);
+    else $newData['opt'] = '';
+
+    if(!empty($data['saprotan']))
+      $newData['saprotan'] = implode(',', $data['saprotan']);
+    else $newData['saprotan'] = '';
+
+    if(!empty($data['typeirigation']))
+      $newData['typeirigation'] = implode(',', $data['typeirigation']);
+    else $newData['typeirigation'] = '';
+
+    // Ganti key Assoc pada $data dengan $newData yang sama OPT dan Saprotan
+    $data = array_replace($data, $newData);
+
+    // Fill null jika nilai ''
+    $v = array();
+    foreach ($data as $k => $val) {
+      if ($val == '') {
+        $val = null;
+      }
+      $v[$k] = $val;
+    }
+
+    return $this->insert($v);
+  }
+
   public function update_new($id, $data, $get)
   {
+    // Data Observation By obscode
+    $farm = $this->getFarmer($id);
+
+    // function M_data By base value typeirigation, opt, saprotan
+    $farmer = parent::recursiveBase($farm);
+
     $data += [
       'action' => self::ACTS.'update/'.$id.'?'.$get,
-      'v' => $this->getFarmer($id),
+      'v' => $farmer,
       'back' => self::BACK,
     ];
 
     echo view(self::VIEW.'update', $data);
+  }
+  
+  public function update_post($id, $data)
+  {
+    // Pisah Array OTP dan Saprotan menjadi string
+    if(!empty($data['opt']))
+      $newData['opt'] = implode(',', $data['opt']);
+    else $newData['opt'] = '';
+
+    if(!empty($data['saprotan']))
+      $newData['saprotan'] = implode(',', $data['saprotan']);
+    else $newData['saprotan'] = '';
+
+    if(!empty($data['typeirigation']))
+      $newData['typeirigation'] = implode(',', $data['typeirigation']);
+    else $newData['typeirigation'] = '';
+
+    // Ganti key Assoc pada $data dengan $newData yang sama OPT dan Saprotan
+    $data = array_replace($data, $newData);
+
+    // Fill null jika nilai ''
+    $v = array();
+    foreach ($data as $k => $val) {
+      if ($val == '') {
+        $val = null;
+      }
+      $v[$k] = $val;
+    }
+
+    return $this->update($id, $v);
   }
 
   public function upload_new($data)
@@ -184,16 +259,6 @@ class M_farmer extends M_data
     return $this->where('farmname', $farmname)->first();
   }
 
-  public function create_post($data)
-  {
-    return $this->insert($data);
-  }
-
-  public function update_post($id, $data)
-  {
-    return $this->update($id, $data);
-  }
-
   public function delete_post($id)
   {
     return $this->delete($id);
@@ -256,7 +321,7 @@ class M_farmer extends M_data
   {
     return [
       'farmname' => [
-        'label' => 'Farm Name',
+        'label' => 'Nama Poktan',
         'rules' => 'required|max_length[50]|is_unique[mstr_farmers.farmname,farmcode,'.$id.']',
         'errors' => [
           'required' => 'Diperlukan {field}',
@@ -271,14 +336,33 @@ class M_farmer extends M_data
           ]
       ],
       'farmhead' => [
-        'label' => 'Chief',
-        'rules' => 'required|max_length[25]',
+        'label' => 'Nama Ketua',
+        'rules' => 'max_length[25]',
         'errors' => [
-          'required' => 'Diperlukan {field}',
           'max_length' => '{field} Maximum {param} Character',
           ]
       ],
-
+      'indxnlant' => [
+        'label' => 'IP',
+        'rules' => 'max_length[3]|numeric',
+        'errors' => [
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
+      'pattrnnlant' => [
+        'label' => 'Pola',
+        'rules' => 'max_length[60]',
+        'errors' => [
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
+      'wtr' => [
+        'label' => 'Air',
+        'rules' => 'max_length[60]',
+        'errors' => [
+          'max_length' => '{field} Maximum {param} Character',
+          ]
+      ],
     ];
 
   }

@@ -1,4 +1,8 @@
 <?= $this->extend('partials/index') ?>
+<?= $this->section('link') ?>
+<?= \App\Libraries\Link::style()->select2 ?>
+<?= \App\Libraries\Link::style()->select2bootstrap ?>
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <div class="row">
@@ -19,7 +23,7 @@
           <?php
           $farmhead = [
             'type' => 'text',
-            'class' => $validation->hasError('farmhead') ? 'form-control is-invalid' : 'form-control',
+            'class' => $validation->hasError('farmhead') ? 'form-control is-invalid' : 'form-control form-control-sm',
             'name' => 'farmhead',
             'placeholder' => 'Masukkan nama ketua poktan',
             'minlength' => '1',
@@ -40,7 +44,7 @@
             <?php
             $farmmobile = [
               'type' => 'text',
-              'class' => $validation->hasError('farmmobile') ? 'form-control is-invalid' : 'form-control',
+              'class' => $validation->hasError('farmmobile') ? 'form-control is-invalid' : 'form-control form-control-sm',
               'name' => 'farmmobile',
               'placeholder' => 'Masukkan no kontak ketua poktan',
               'minlength' => '1',
@@ -63,7 +67,7 @@
           <?php
           $farmname = [
             'type' => 'text',
-            'class' => $validation->hasError('farmname') ? 'form-control is-invalid' : 'form-control',
+            'class' => $validation->hasError('farmname') ? 'form-control is-invalid' : 'form-control form-control-sm',
             'name' => 'farmname',
             'placeholder' => 'Masukkan nama Poktan',
             'minlength' => '1',
@@ -77,6 +81,126 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="callout callout-success">
+      <h5>Definisi Nilai Awal Poktan</h5>
+    </div>
+
+    <div class="row"><!-- Default Value -->
+
+      <div class="col-md-6"><!-- LEFT col-md-6 -->
+        <div class="form-group">
+          <label for="">Jenis Irigasi</label>
+          <?php $valid = $validation->hasError('typeirigation') ? 'form-control is-invalid' : 'form-control form-control-sm' ?>
+          <select class="<?= $valid ?> select2-multi" name="typeirigation[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
+            <?php foreach($v['typeirigation'] as $k_irig => $v_irig) : ?>
+              <option <?= $v_irig ?>><?= $k_irig ?></option>
+            <?php endforeach ?>
+          </select>
+          <div class="invalid-feedback">
+            <?= $validation->getError('typeirigation') ?>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">Intensitas Tanam</label>
+          <?php $status = old('intensitynlan') == null ? $v['intensitynlan'] : old('intensitynlan') ?>
+          <select class="form-control form-control-sm select2-input" name="intensitynlan" style="width: 100%;">
+            <option <?= $status == '1' ? 'selected' : '' ?> >1</option>
+            <option <?= $status == '2' ? 'selected' : '' ?> >2</option>
+            <option <?= $status == '2.5' ? 'selected' : '' ?> >2.5</option>
+            <option <?= $status == '3' ? 'selected' : '' ?> >3</option>
+          </select>
+          <div class="invalid-feedback">
+            <?= $validation->getError('intensitynlan') ?>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">Indeks Pertanaman</label>
+          <?php
+          $indxnlant = [
+            'class' => $validation->hasError('indxnlant') ? 'form-control is-invalid' : 'form-control form-control-sm',
+            'type' => 'number',
+            'name' => 'indxnlant',
+            'min' => '100',
+            'max' => '500',
+            'placeholder' => 'IP',
+            'value' => old('indxnlant') == null ? $v['indxnlant'] : old('indxnlant')
+          ];
+          echo form_input($indxnlant);
+          ?>
+          <div class="invalid-feedback">
+            <?= $validation->getError('indxnlant') ?>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="">Pola Tanam</label>
+          <?php
+          $pattrnnlant = [
+            'class' => $validation->hasError('pattrnnlant') ? 'form-control is-invalid' : 'form-control form-control-sm',
+            'type' => 'input',
+            'name' => 'pattrnnlant',
+            'minlength' => '1',
+            'placeholder' => 'Pola',
+            'value' => old('pattrnnlant') == null ? $v['pattrnnlant'] : old('pattrnnlant')
+          ];
+          echo form_input($pattrnnlant);
+          ?>
+          <div class="invalid-feedback">
+          <?= $validation->getError('pattrnnlant') ?>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6"><!-- RIGHT col-md-6 -->
+        <div class="form-group">
+          <label for="">Permasalahan OPT</label>
+          <?php $valid = $validation->hasError('opt') ? 'form-control is-invalid' : 'form-control form-control-sm' ?>
+          <select class="<?= $valid ?> select2-multi" name="opt[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
+            <?php foreach($v['opt'] as $k_opt => $v_opt) : ?>
+              <option <?= $v_opt ?>><?= $k_opt ?></option>
+            <?php endforeach ?>
+          </select>
+          <div class="invalid-feedback">
+            <?= $validation->getError('opt') ?>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">Permasalahan Air</label>
+          <?php
+          $wtr = [
+            'class' => $validation->hasError('wtr') ? 'form-control is-invalid' : 'form-control form-control-sm',
+            'type' => 'input',
+            'name' => 'wtr',
+            'minlength' => '1',
+            'placeholder' => 'Enter..',
+            'value' => old('wtr') == null ? $v['wtr'] : old('wtr')
+          ];
+          echo form_input($wtr);
+          ?>
+          <div class="invalid-feedback">
+          <?= $validation->getError('wtr') ?>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">Permasalahan Saprotan</label>
+          <?php $valid = $validation->hasError('saprotan') ? 'form-control is-invalid' : 'form-control form-control-sm' ?>
+          <select class="<?= $valid ?> select2-multi" name="saprotan[]" style="width: 100%;" multiple="multiple" data-placeholder="Select Module">
+            <?php foreach($v['saprotan'] as $k_sap => $v_sap) : ?>
+              <option <?= $v_sap ?>><?= $k_sap ?></option>
+            <?php endforeach ?>
+          </select>
+          <div class="invalid-feedback">
+            <?= $validation->getError('saprotan') ?>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -93,6 +217,21 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
+<?= \App\Libraries\Link::script()->select2 ?>
+
+<script>
+
+  $('.select2').select2()
+
+  $(".select2-input").select2({
+    tags: true
+  });
+
+  $(".select2-multi").select2({
+    tags: true
+  });
+
+</script>
 
 <?php
 if(! empty(session()->getFlashdata('success'))) {
