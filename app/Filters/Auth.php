@@ -36,27 +36,7 @@ class Auth implements FilterInterface
       return redirect('login');
 
     }
-    else
-    {
-      // X-API-KP2B: crypto-decrypt-email
-      $x_api = $request->getHeaderLine('X-API-KP2B');
-      $token = explode('#', Crypto::decrypt($x_api));
-      $email = session('privilage')->email;
-      $api = in_array($email, $token) != null ? true : false;
-        
-      // header X-API-KP2B di setiap request (setelah login)
-      if (! $api)
-      { 
-        $code = '401';
-        $response->setStatusCode($code);
-        $message = [
-          'status' => $code,
-          'message' => $response->getReason(),
-        ];
-        return $response->setJSON($message);
-      }
-      
-    }
+    
   }
 
   //--------------------------------------------------------------------
@@ -64,6 +44,27 @@ class Auth implements FilterInterface
   public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
   {
     // Do something here
+    $response = Services::response();
+
+    $auth = session()->has('privilage');
+
+    if ($auth) {
+
+      // filter actions berdasarkan role (setelah login)
+      // append header Access-Control-Allow-Methods di setiap response
+      $acts = session('privilage')->acts;
+      
+      if(empty(in_array('create', $acts))) {
+        $response->appendHeader('Access-Control-Allow-Methods', 'POST');
+      }
+      if(empty(in_array('update', $acts))) {
+        $response->appendHeader('Access-Control-Allow-Methods', 'PUT');
+      }
+      if(empty(in_array('delete', $acts))) {
+        $response->appendHeader('Access-Control-Allow-Methods', 'DELETE');
+      }
+
+    }
 
   }
 }

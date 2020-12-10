@@ -20,56 +20,64 @@ class Acts implements FilterInterface
 
     if($request->isAJAX())
     {
-      if($request->getMethod() === 'get')
-      {
-        if(in_array('read', $acts)) 
-        {
-          $code = '403';
-          $response->setStatusCode($code);
-          $message = [
-            'status' => $code,
-            'message' => $response->getReason(),
-          ];
-          return $response->setJSON($message);
-        }
+      switch ($request->getMethod()) {
 
-      }
-      elseif($request->getMethod() === 'post')
-      {
+        case 'get':
 
-        if(in_array('create', $acts)) {
-          $code = '403';
-          $response->setStatusCode($code);
-          $message = [
-            'status' => $code,
-            'message' => $response->getReason(),
-          ];
-          return $response->setJSON($message);
-        }
-      }
-      elseif($request->getMethod() === 'put')
-      {
-        if(in_array('update', $acts)) {
-          $code = '403';
-          $response->setStatusCode($code);
-          $message = [
-            'status' => $code,
-            'message' => $response->getReason(),
-          ];
-          return $response->setJSON($message);
-        }
-      }
-      elseif($request->getMethod() === 'delete')
-      {
-        if(in_array('delete', $acts)) {
-          $code = '403';
-          $response->setStatusCode($code);
-          $message = [
-            'status' => $code,
-            'message' => $response->getReason(),
-          ];
-          return $response->setJSON($message);
-        }
+          if(in_array('read', $acts)) {
+            $code = '403';
+            $response->setStatusCode($code);
+            $message = [
+              'status' => $code,
+              'message' => $response->getReason(),
+            ];
+            return $response->setJSON($message);
+          }
+
+        break;
+
+        case 'post':
+
+          if(in_array('create', $acts)) {
+            $code = '403';
+            $response->setStatusCode($code);
+            $message = [
+              'status' => $code,
+              'message' => $response->getReason(),
+            ];
+            return $response->setJSON($message);
+          }
+
+        break;
+
+        case 'put':
+
+          if(in_array('update', $acts)) {
+            $code = '403';
+            $response->setStatusCode($code);
+            $message = [
+              'status' => $code,
+              'message' => $response->getReason(),
+            ];
+            return $response->setJSON($message);
+          }
+
+        break;
+
+        case 'delete':
+
+          if(in_array('delete', $acts)) {
+            $code = '403';
+            $response->setStatusCode($code);
+            $message = [
+              'status' => $code,
+              'message' => $response->getReason(),
+            ];
+            return $response->setJSON($message);
+          }
+
+        break;
+
       }
 
     }
@@ -117,8 +125,17 @@ class Acts implements FilterInterface
 
       // nav menu - role module
       if(empty(array_intersect($nav, $segments))) {
-        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+
+        if(in_array('dashboard', $segments)) {
+          return true;
+        }
+        else
+        {
+          throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+        
       }
+      
 
       // custom segments
       if(in_array('obs_ajax', $segments)) {
