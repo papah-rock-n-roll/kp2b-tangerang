@@ -15,6 +15,7 @@
 <?= $this->section('script') ?>
 <?= \App\Libraries\Link::script()->select2 ?>
 <?= \App\Libraries\Link::script()->arcgis ?>
+
 <script>
   require([
     "esri/Map",
@@ -27,21 +28,20 @@
     "esri/widgets/BasemapGallery",
     "esri/widgets/Fullscreen",
     "esri/widgets/Search",
-    "esri/widgets/Editor",
     "esri/widgets/Legend",
     "dojo/dom-construct",
     "dojo/dom",
     "dojo/on",
     "esri/core/watchUtils"
-  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, Editor, Legend, domConstruct, dom, on, watchUtils) {
+  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, Legend, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
     const url_desa = "<?= $url_desa ?>";
     const url_obs = "<?= $url_obs ?>";
     let editor, features;
-    var dataKec = [], dataDesa = [], dataObs = [];
     var geojsonLayer;
+    var layerAdd;
     var legendSymbol = [], defSymbol = [];
     var dataHead = ["Kode petak","Nama responden","Nama Kelompok Tani","Nama kecamatan","Nama desa","Landuse",
     "Status lahan","Luas petak (m<sup>2</sup>)","NIK pemilik","Nama pemilik","Nama penggarap","Tipe irigasi",
@@ -49,6 +49,36 @@
     "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
     "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
     "Penjualan panen","Surveyor","Update"];
+
+    const template = {
+      title: "Kode Petak: {FID}",
+      content: getDetail
+    };
+
+    <!-- Get Form observation -->
+    function getDetail(feature) {
+      var obscode = feature.graphic.attributes.FID;
+      var div = document.createElement("div");
+
+      $.ajax({
+        type : 'GET',
+        dataType: "html",
+        url : url_obs + '?obscode=' + obscode,
+        success : function(response){
+          var dataObs = JSON.parse(response);
+          var divContent = '<table class="esri-widget__table"><tbody>';
+          for (var i = 0; i < dataHead.length; i++) {
+            divContent += '<tr><th class="esri-feature-fields__field-header">' + dataHead[i] + '</th> \
+            <td class="esri-feature-fields__field-data">' + Object.values(dataObs)[i] + '</td></tr>';
+          }
+          divContent += '</tbody></table>';
+          divContent += '<p class="mt-3 text-xs">Update terkahir oleh: ' + dataObs.username + '.<br>Tanggal ' + dataObs.timestamp + '</p>';
+          div.innerHTML = divContent;
+        }
+      });
+
+      return div;
+    }
 
     function createSymbol(color) {
       return {
@@ -60,11 +90,6 @@
         }
       };
     }
-
-    const template = {
-      title: "Kode Petak: {FID}",
-      content: getDetail
-    };
 
     const lLanduse = [
       {
@@ -113,30 +138,7 @@
       }
     });
 
-    function getDetail(feature) {
-      var obscode = feature.graphic.attributes.FID;
-      $.ajax({
-        async : false,
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        url : url_obs + '?obscode=' + obscode,
-        type : 'GET',
-        success : function(response){
-          dataObs = JSON.parse(response);
-        }
-      });
-      var div = document.createElement("div");
-      var divContent = '<table class="esri-widget__table"><tbody>';
-      for (var i = 0; i < dataHead.length; i++) {
-        divContent += '<tr><th class="esri-feature-fields__field-header">' + dataHead[i] + '</th> \
-        <td class="esri-feature-fields__field-data">' + Object.values(dataObs)[i] + '</td></tr>';
-      }
-      divContent += '</tbody></table>';
-      divContent += '<p class="mt-3">Update terkahir oleh: ' + dataObs.username + '. Tanggal ' + dataObs.timestamp + '</p>';
-      div.innerHTML = divContent;
-      return div;
-    }
-
-    <!-- Function action layer petak -->
+    <!-- Action layer petak -->
     function defineActions(event) {
       var item = event.item;
 
@@ -173,7 +175,15 @@
           );
       }
 
-      <!-- Tombol Geolocation -->
+      <!-- Tombol Full Screen -->
+      view.ui.add(
+        new Fullscreen({
+          view: view,
+          element: viewDiv
+        }), "top-left"
+      );
+
+      <!-- Tombol Geo location -->
       view.ui.add(
         new Track({
           view: view,
@@ -182,15 +192,6 @@
         }), "top-left"
       );
 
-      <!-- Tombol Legenda -->
-      const legend = new Expand({
-        content: new Legend({
-          view: view
-        }),
-        view: view
-      });
-      view.ui.add(legend, "top-left");
-
       <!-- From Pencarian -->
       var searchWidget = new Search({
         view: view,
@@ -198,13 +199,15 @@
       });
       view.ui.add(searchWidget, "top-right");
 
-      <!-- Tombol Full Screen -->
-      view.ui.add(
-        new Fullscreen({
-          view: view,
-          element: viewDiv
-        }), "top-right"
-      );
+      <!-- Tombol Legenda -->
+      const legend = new Expand({
+        content: new Legend({
+          view: view
+        }),
+        view: view,
+        expandTooltip: "Legend"
+      });
+      view.ui.add(legend, "bottom-right");
 
       <!-- Tombol Basemap -->
       const basemapGallery = new BasemapGallery({
@@ -215,38 +218,145 @@
       view.ui.add(
         new Expand({
           view: view,
-          content: basemapGallery
+          content: basemapGallery,
+          expandTooltip: "Change basemap",
         }),
         "bottom-left"
       );
 
+      <!-- get List Kecamatan -->
       $.ajax({
-        async : false,
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
         url : url_kec,
         type : 'GET',
         success : function(response){
-          dataKec = JSON.parse(response);
+          var dataKec = response;
+
+          var kecDom = '<div class="form-group input-group-sm" id="dataLayer"> \
+            <label>Pilih jenis data</label> \
+            <select class="form-control" id="layerData"> \
+              <option value="areantatus">Status lahan</option> \
+                <option value="landuse">Landuse</option> \
+            </select> \
+          </div> \
+          <div class="form-group input-group-sm" id="kecForm"> \
+            <label>Pilih kecamatan</label> \
+            <select class="form-control" id="layerKec"> \
+              <option value="">Semua kecamatan</option>';
+              for (var i = 0; i < dataKec.length; i++) {
+                var opt = '<option value="' + dataKec[i].sdcode + '"> ' + toTitleCase(dataKec[i].sdname) + ' </option>';
+                kecDom = kecDom + opt;
+            	}
+            kecDom = kecDom + '</select> \
+          </div> \
+          <div class="form-group input-group-sm" id="desaForm" style="display: none;"> \
+            <label>Pilih desa</label> \
+            <select class="form-control" id="layerDesa"> \
+              <option value="">Semua desa</option> \
+            </select> \
+          </div> \
+          <div class="form-group input-group-sm" id="layerForm"><button id="applyLayer" type="submit" class="btn btn-block btn-sm btn-primary">Apply</button></div>';
+
+          var node = domConstruct.create("div", {
+            className: "esri-layer-list esri-widget esri-widget--panel",
+            innerHTML: kecDom
+          });
+
+          layerAdd = new Expand({
+            view: view,
+            expanded: false,
+            expandIconClass: "esri-icon-maps",
+            expandTooltip: "Tambah layer petak",
+            content: node
+           });
+
+          view.ui.add(layerAdd, "top-left");
+
+          legendSymbol = lStatus;
+          defSymbol = "Null Data";
+
+          watchUtils.whenTrueOnce(layerAdd, 'expanded', function(){
+
+            on(dom.byId("layerData"), 'change', function(){
+              switch($('#layerData option:selected').val()) {
+
+                case 'areantatus':
+                  legendSymbol = lStatus;
+                  defSymbol = "Null Data";
+                break;
+
+                case 'landuse':
+                  legendSymbol = lLanduse;
+                  defSymbol = "Non Sawah";
+                break;
+
+              }
+            });
+
+            on(dom.byId("layerKec"), 'change', function(){
+              if(this.value == ''){$("#desaForm").hide();}else{$("#desaForm").show();}
+              getDesa(this.value);
+            });
+
+            on(dom.byId("applyLayer"), 'click', function(){
+              updateLayer($("#layerData").val(), $("#layerKec").val(), $("#layerDesa").val());
+            });
+
+          });
+
+          <!-- Layer list widget -->
+          var layerList = new LayerList({
+            view: view,
+            listItemCreatedFunction: defineActions
+          });
+
+          view.ui.add(
+            new Expand({
+              view: view,
+              content: layerList,
+              expandTooltip: "Layer list"
+            }),
+            "top-left"
+          );
+
+          layerList.on("trigger-action", function (event) {
+
+            var id = event.action.id;
+
+            if (id === "full-extent") {
+              view.goTo(geojsonLayer.fullExtent).catch(function (error) {
+                if (error.name != "AbortError") {
+                  console.error(error);
+                }
+              });
+            } else if (id === "increase-opacity") {
+              if (geojsonLayer.opacity < 1) {
+                geojsonLayer.opacity += 0.25;
+              }
+            } else if (id === "decrease-opacity") {
+              if (geojsonLayer.opacity > 0) {
+                geojsonLayer.opacity -= 0.25;
+              }
+            }
+          });
+
         }
       });
 
       <!-- get List Desa -->
       function getDesa(sdcode = ''){
         $.ajax({
-          async : false,
-          headers: {'X-Requested-With': 'XMLHttpRequest'},
           url : url_desa + '?sdcode=' + sdcode,
           type : 'GET',
           success : function(response){
-            dataDesa = JSON.parse(response);
+            var dataDesa = JSON.parse(response);
+            var desaDom = '<option value="">Semua desa</option>';
+            for (var i = 0; i < dataDesa.length; i++) {
+              var optDesa = '<option value="' + dataDesa[i].vlcode + '"> ' + toTitleCase(dataDesa[i].vlname) + ' </option>';
+              desaDom = desaDom + optDesa;
+            }
+            $('#layerDesa').html(desaDom);
           }
         });
-        var desaDom = '<option value="">Semua desa</option>';
-        for (var i = 0; i < dataDesa.length; i++) {
-          var optDesa = '<option value="' + dataDesa[i].vlcode + '"> ' + toTitleCase(dataDesa[i].vlname) + ' </option>';
-          desaDom = desaDom + optDesa;
-        }
-        $('#layerDesa').html(desaDom);
       }
 
       <!-- update search layer source -->
@@ -297,112 +407,6 @@
         updateSearchSource();
         layerAdd.collapse();
       }
-
-      var kecDom = '<div class="form-group input-group-sm" id="dataLayer"> \
-        <label>Pilih jenis data</label> \
-        <select class="form-control" id="layerData"> \
-          <option value="areantatus">Status lahan</option> \
-            <option value="landuse">Landuse</option> \
-        </select> \
-      </div> \
-      <div class="form-group input-group-sm" id="kecForm"> \
-        <label>Pilih kecamatan</label> \
-        <select class="form-control" id="layerKec"> \
-          <option value="">Semua kecamatan</option>';
-          for (var i = 0; i < dataKec.length; i++) {
-            var opt = '<option value="' + dataKec[i].sdcode + '"> ' + toTitleCase(dataKec[i].sdname) + ' </option>';
-            kecDom = kecDom + opt;
-        	}
-        kecDom = kecDom + '</select> \
-      </div> \
-      <div class="form-group input-group-sm" id="desaForm" style="display: none;"> \
-        <label>Pilih desa</label> \
-        <select class="form-control" id="layerDesa"> \
-          <option value="">Semua desa</option> \
-        </select> \
-      </div> \
-      <div class="form-group input-group-sm" id="layerForm"><button id="applyLayer" type="submit" class="btn btn-block btn-sm btn-primary">Apply</button></div>';
-
-      var node = domConstruct.create("div", {
-        className: "esri-layer-list esri-widget esri-widget--panel",
-        innerHTML: kecDom
-      });
-
-      const layerAdd = new Expand({
-        view: view,
-        expanded: false,
-        expandIconClass: "esri-icon-collection",
-        expandTooltip: "Add layer",
-        content: node
-       });
-
-      view.ui.add(layerAdd, "top-left");
-
-      legendSymbol = lStatus;
-      defSymbol = "Null Data";
-
-      watchUtils.whenTrueOnce(layerAdd, 'expanded', function(){
-
-        on(dom.byId("layerData"), 'change', function(){
-          switch($('#layerData option:selected').val()) {
-
-            case 'areantatus':
-              legendSymbol = lStatus;
-              defSymbol = "Null Data";
-            break;
-
-            case 'landuse':
-              legendSymbol = lLanduse;
-              defSymbol = "Non Sawah";
-            break;
-
-          }
-        });
-
-        on(dom.byId("layerKec"), 'change', function(){
-          if(this.value == ''){$("#desaForm").hide();}else{$("#desaForm").show();}
-          getDesa(this.value);
-        });
-
-        on(dom.byId("applyLayer"), 'click', function(){
-          updateLayer($("#layerData").val(), $("#layerKec").val(), $("#layerDesa").val());
-        });
-
-      });
-
-      var layerList = new LayerList({
-        view: view,
-        listItemCreatedFunction: defineActions
-      });
-
-      view.ui.add(
-        new Expand({
-          view: view,
-          content: layerList
-        }),
-        "top-left"
-      );
-
-      layerList.on("trigger-action", function (event) {
-
-        var id = event.action.id;
-
-        if (id === "full-extent") {
-          view.goTo(geojsonLayer.fullExtent).catch(function (error) {
-            if (error.name != "AbortError") {
-              console.error(error);
-            }
-          });
-        } else if (id === "increase-opacity") {
-          if (geojsonLayer.opacity < 1) {
-            geojsonLayer.opacity += 0.25;
-          }
-        } else if (id === "decrease-opacity") {
-          if (geojsonLayer.opacity > 0) {
-            geojsonLayer.opacity -= 0.25;
-          }
-        }
-      });
 
     });
 

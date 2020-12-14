@@ -4,6 +4,7 @@ use CodeIgniter\Controller;
 
 class Home extends BaseController
 {
+
 	public function index()
 	{
 		echo view('welcome_message');
@@ -23,7 +24,10 @@ class Home extends BaseController
 
 	public function data()
 	{
-		echo view('public/data');
+		$data = [
+      'kec' => $this->M_geophp->get_kecamatan()
+		];
+		echo view('public/data', $data);
 	}
 
 	public function chart()

@@ -19,11 +19,11 @@ class M_geophp extends Model
 
   // get kecamatan
   public function get_kecamatan(){
-    $sql = "SELECT `v_observations`.`sdcode`, `v_observations`.`sdname` FROM `v_observations` GROUP BY `v_observations`.`sdcode`, `v_observations`.`sdname`;";
+    $sql = "SELECT sdcode, CONCAT ('Kecamatan ', f_tcase(sdname)) AS sdname FROM v_observations GROUP BY sdcode, sdname;";
     $query = $this->db->query($sql);
     if(!empty($query)){
       $rows = $query->getResultArray();
-      return json_encode($rows);
+      return json_decode(json_encode($rows));
     }
   }
 

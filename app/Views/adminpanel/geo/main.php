@@ -67,12 +67,11 @@
     "esri/widgets/BasemapGallery",
     "esri/widgets/Fullscreen",
     "esri/widgets/Search",
-    "esri/widgets/Editor",
     "dojo/dom-construct",
     "dojo/dom",
     "dojo/on",
     "esri/core/watchUtils"
-  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, Editor, domConstruct, dom, on, watchUtils) {
+  ], function (Map, MapView, GeoJSONLayer, GroupLayer, LayerList, Track, Expand, BasemapGallery, Fullscreen, Search, domConstruct, dom, on, watchUtils) {
 
     const url = "<?= $url ?>";
     const url_kec = "<?= $url_kec ?>";
@@ -291,7 +290,9 @@
 
               $('#modal_plantdates').find(".modal-content").html(div);
               $('#modal_plantdates').modal('show');
-              $('select.select2').select2();
+              $('select.select2').select2({
+                dropdownParent: $('#viewDiv')
+              });
 
               var valplant = $("#plantform").validate({
                 rules: {
@@ -440,7 +441,7 @@
         url : url_kec,
         type : 'GET',
         success : function(response){
-          dataKec = JSON.parse(response);
+          var dataKec = response;
 
           var kecDom = '<div class="form-group input-group-sm" id="kecForm"> \
             <label>Pilih kecamatan</label> \
