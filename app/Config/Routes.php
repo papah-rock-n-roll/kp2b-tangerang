@@ -19,8 +19,10 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override('App\Errors::show404');
 $routes->setAutoRoute(false);
+
+// Would execute the show404 method of the App\Errors class
+$routes->set404Override('App\Errors::show404');
 
 // Will display a custom view
 $routes->set404Override(function() {

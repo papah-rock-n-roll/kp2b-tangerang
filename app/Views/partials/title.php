@@ -1,6 +1,6 @@
 <?php
 $uri = service('uri');
-if ($uri->getSegments() > 2) 
+if ($uri->getTotalSegments() > 2) 
 {
   $title = $uri->getSegment(3) == '' ? ucfirst($uri->getSegment(2)) : ucfirst($uri->getSegment(3));
 }

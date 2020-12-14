@@ -370,13 +370,13 @@ class Data extends \App\Controllers\BaseController
     }
     else
     {
-      $rules = $this->M_owner->validationRules();
+      $rules = $this->M_farmer->validationRules();
 
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
 
-      $data = $this->request->getPost();
+      $data = $this->request->getVar();
       $post = $this->M_farmer->create_post($data);
 
       if($post) {
@@ -401,13 +401,13 @@ class Data extends \App\Controllers\BaseController
     }
     else
     {
-      $rules = $this->M_owner->validationRules($id);
+      $rules = $this->M_farmer->validationRules($id);
 
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
 
-      $data = $this->request->getPost();
+      $data = $this->request->getVar();
       $post = $this->M_farmer->update_post($id, $data);
 
       if($post) {
@@ -425,7 +425,7 @@ class Data extends \App\Controllers\BaseController
 
   public function farmer_delete($id)
   {
-    $data = $this->M_farmer->getOwner($id);
+    $data = $this->M_farmer->getFarmer($id);
     $delete = $this->M_farmer->delete_post($id);
 
     if($delete) {

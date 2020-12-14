@@ -62,22 +62,26 @@ class M_access extends Model
 
   public function remoteaddr()
   {
-    $ua = session('privilage')->useragent->ua;
-    $whatsmyua = session('privilage')->useragent->whatsmyua[2] ?? [];
-    $ipwhois = session('privilage')->useragent->ipwhois ?? [];
-
-    $remoteaddr = [
-      'ct' => $ipwhois['city'] ?? '',
-      'lat' => $ipwhois['latitude'] ?? '',
-      'lon' => $ipwhois['longitude'] ?? '',
-      'isp' => $ipwhois['isp'] ?? '',
-      'os' => $whatsmyua['os']['os'] ?? [],
-      'device' => $whatsmyua['device'] ?? [],
-    ];
-
-    $data = ['useragent' => $ua, 'remoteaddr' => $remoteaddr];
-
-    return $data;
+    if(session()->has('privilage'))
+    {
+      $ua = session('privilage')->useragent->ua;
+      $whatsmyua = session('privilage')->useragent->whatsmyua[2] ?? [];
+      $ipwhois = session('privilage')->useragent->ipwhois ?? [];
+  
+      $remoteaddr = [
+        'ct' => $ipwhois['city'] ?? '',
+        'lat' => $ipwhois['latitude'] ?? '',
+        'lon' => $ipwhois['longitude'] ?? '',
+        'isp' => $ipwhois['isp'] ?? '',
+        'os' => $whatsmyua['os']['os'] ?? [],
+        'device' => $whatsmyua['device'] ?? [],
+      ];
+  
+      $data = ['useragent' => $ua, 'remoteaddr' => $remoteaddr];
+  
+      return $data;
+    }
+    
   }
 
 }

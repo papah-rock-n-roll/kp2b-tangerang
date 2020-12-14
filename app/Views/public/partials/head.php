@@ -23,7 +23,7 @@ if($uri->getTotalSegments() > 1) {
 }
 else
 {
-  $title = $uri->getSegment(1) == '' ? ucfirst($uri->getAuthority(true)) : ucfirst($uri->getSegment(1));
+  $title = $uri->getSegment(1) == '' ? ucfirst($uri->getHost()) : ucfirst($uri->getSegment(1));
 }
 ?>
 <title><?= $title ?></title>
