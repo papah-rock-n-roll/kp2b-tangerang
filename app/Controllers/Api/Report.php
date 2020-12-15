@@ -56,9 +56,8 @@ class Report extends ResourceController
 
       case 'lj':
         $sdcode = $this->request->getGet('sdcode');
-        $group = $this->request->getGet('group');
 
-        $data = $this->model->lj($sdcode, $group);
+        $data = $this->model->lj($sdcode);
 
         if(!empty($data)) {
           return $this->respond($data);
@@ -76,27 +75,83 @@ class Report extends ResourceController
 
       break;
 
-        case 'pp':
-          $sdcode = $this->request->getGet('sdcode');
-          $group = $this->request->getGet('group');
+      case 'pp':
+        $sdcode = $this->request->getGet('sdcode');
 
-          $data = $this->model->pp($sdcode, $group);
+        $data = $this->model->pp($sdcode);
 
-          if(!empty($data)) {
-            return $this->respond($data);
-          }
-          else
-          {
-            $code = '404';
-            $this->response->setStatusCode($code);
-            $message = [
-              'status' => $code,
-              'message' => $this->response->getReason(),
-            ];
-            return $this->respond($message, $code);
-          }
+        if(!empty($data)) {
+          return $this->respond($data);
+        }
+        else
+        {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
 
-        break;
+      break;
+
+      case 'pt':
+        $sdcode = $this->request->getGet('sdcode');
+
+        $data = $this->model->pt($sdcode);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }else{
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
+      break;
+
+      case 'kt':
+        $sdcode = $this->request->getGet('sdcode');
+
+        $data = $this->model->kt($sdcode);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }else{
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
+      break;
+
+      case 'kp':
+        $sdcode = $this->request->getGet('sdcode');
+
+        $data = $this->model->kp($sdcode);
+
+        if(!empty($data)) {
+          return $this->respond($data);
+        }else{
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
+      break;
 
     }
 

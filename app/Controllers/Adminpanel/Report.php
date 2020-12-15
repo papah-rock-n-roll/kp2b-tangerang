@@ -1,10 +1,13 @@
 <?php namespace App\Controllers\Adminpanel;
- 
+
 class Report extends \App\Controllers\BaseController
 {
   public function index()
   {
-    echo view('adminpanel/report/main');
+		$data = [
+      'kec' => $this->M_geophp->get_kecamatan()
+		];
+    echo view('adminpanel/report/main', $data);
   }
 
   public function graph_index()

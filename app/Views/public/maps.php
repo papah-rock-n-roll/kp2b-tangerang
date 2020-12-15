@@ -199,16 +199,6 @@
       });
       view.ui.add(searchWidget, "top-right");
 
-      <!-- Tombol Legenda -->
-      const legend = new Expand({
-        content: new Legend({
-          view: view
-        }),
-        view: view,
-        expandTooltip: "Legend"
-      });
-      view.ui.add(legend, "bottom-right");
-
       <!-- Tombol Basemap -->
       const basemapGallery = new BasemapGallery({
         view: view,
@@ -223,6 +213,16 @@
         }),
         "bottom-left"
       );
+
+      <!-- Tombol Legenda -->
+      const legend = new Expand({
+        content: new Legend({
+          view: view
+        }),
+        view: view,
+        expandTooltip: "Legend"
+      });
+      view.ui.add(legend, "bottom-left");
 
       <!-- get List Kecamatan -->
       $.ajax({

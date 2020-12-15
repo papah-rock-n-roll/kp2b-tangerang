@@ -20,20 +20,18 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
           <div class="form-group input-group-sm">
             <label for="data">Pilih Jenis Data</label>
             <select class="custom-select rounded-0" id="data">
               <option value="lj">Luas dan jumlah petak sawah</option>
               <option value="pp">Jumlah petani dan penggarap</option>
-              <option value="sa">Summary data administratif</option>
-              <option value="kt">Kelompok Tani</option>
-              <option value="kt">Kalender tanam</option>
+              <option value="pt">Kelompok Tani</option>
+              <option value="kt">Kalender tanam (ha)</option>
+              <option value="kp">Kalender panen (ha)</option>
             </select>
           </div>
         </div>
-      </div>
-      <div class="row">
         <div class="col-md-6">
           <div class="form-group input-group-sm">
             <label for="data">Level data</label>
@@ -42,15 +40,6 @@
               <?php foreach($kec as $value) : ?>
                 <option value="<?= $value->sdcode ?>"><?= $value->sdname ?></option>
               <?php endforeach ?>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group input-group-sm">
-            <label for="data">Group Data</label>
-            <select class="custom-select rounded-0" id="group">
-              <option value="0">Kecamatan</option>
-              <option value="1">Desa</option>
             </select>
           </div>
         </div>
@@ -116,20 +105,71 @@
       switch (dataType){
 
         case 'lj':
-          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-striped table-bordered" width="100%"><thead>' +
-              '<tr><th rowspan="2" class="align-middle">Kode</th><th rowspan="2" class="align-middle">Kecamatan</th><th colspan="2" class="text-center">Luas</th><th colspan="2" class="text-center">Jumlah Petak</th></tr>' +
+          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead>' +
+              '<tr><th rowspan="2" class="align-middle">Kode</th><th rowspan="2" class="align-middle">Administratif</th><th colspan="2" class="text-center">Luas</th><th colspan="2" class="text-center">Jumlah Petak</th></tr>' +
               '<tr><th>Sawah</th><th>Non Sawah</th><th>Sawah</th><th>Non Sawah</th></tr>' +
           '</thead></table></div></div>';
           return htmlDiv;
         break;
 
         case 'pp':
-          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-striped table-bordered" width="100%"><thead><tr>' +
+          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead><tr>' +
               '<th>Kode</th>' +
               '<th>Administratif</th>' +
               '<th>Petani Pemilik</th>' +
               '<th>Petani Penggarap</th>' +
               '<th>Tidak teridentifikasi</th>' +
+          '</tr></thead></table></div></div>';
+          return htmlDiv;
+        break;
+
+        case 'pt':
+          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead><tr>' +
+              '<th>Kode</th>' +
+              '<th>Administratif</th>' +
+              '<th>Jumlah Poktan</th>' +
+              '<th>Jumlah Petani Pemilik</th>' +
+              '<th>Jumlah Petani Penggarap</th>' +
+          '</tr></thead></table></div></div>';
+          return htmlDiv;
+        break;
+
+        case 'kt':
+          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead><tr>' +
+              '<th>Kode</th>' +
+              '<th>Administratif</th>' +
+              '<th>1</th>' +
+              '<th>2</th>' +
+              '<th>3</th>' +
+              '<th>4</th>' +
+              '<th>5</th>' +
+              '<th>6</th>' +
+              '<th>7</th>' +
+              '<th>8</th>' +
+              '<th>9</th>' +
+              '<th>10</th>' +
+              '<th>11</th>' +
+              '<th>12</th>' +
+          '</tr></thead></table></div></div>';
+          return htmlDiv;
+        break;
+
+        case 'kp':
+          htmlDiv = '<div class="row"><div class="col-md-12"><table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead><tr>' +
+              '<th>Kode</th>' +
+              '<th>Administratif</th>' +
+              '<th>1</th>' +
+              '<th>2</th>' +
+              '<th>3</th>' +
+              '<th>4</th>' +
+              '<th>5</th>' +
+              '<th>6</th>' +
+              '<th>7</th>' +
+              '<th>8</th>' +
+              '<th>9</th>' +
+              '<th>10</th>' +
+              '<th>11</th>' +
+              '<th>12</th>' +
           '</tr></thead></table></div></div>';
           return htmlDiv;
         break;
@@ -141,7 +181,7 @@
 
     }
 
-    function domChart(dataType, dataGroup) {
+    function domChart(dataType) {
 
       switch (dataType){
 
@@ -155,7 +195,28 @@
 
         case 'pp':
           htmlDiv = '<div class="row mb-5">' +
-            '<div class="col-lg-6 contPP"><canvas id="chartPP"></canvas></div>' +
+            '<div class="col contPP"><canvas id="chartPP"></canvas></div>' +
+          '</div>';
+          return htmlDiv;
+        break;
+
+        case 'pt':
+          htmlDiv = '<div class="row mb-5">' +
+            '<div class="col contPT"><canvas id="chartPT"></canvas></div>' +
+          '</div>';
+          return htmlDiv;
+        break;
+
+        case 'kt':
+          htmlDiv = '<div class="row mb-5">' +
+            '<div class="col contKT"><canvas id="chartKT"></canvas></div>' +
+          '</div>';
+          return htmlDiv;
+        break;
+
+        case 'kp':
+          htmlDiv = '<div class="row mb-5">' +
+            '<div class="col contKP"><canvas id="chartKP"></canvas></div>' +
           '</div>';
           return htmlDiv;
         break;
@@ -214,6 +275,102 @@
           return opt;
         break;
 
+        case 'pt':
+          columns = [
+            { "data": "code" },
+            { "data": "label" },
+            { "data": "poktan", render: $.fn.dataTable.render.number( '.', ',', 0 ) },
+            { "data": "pemilik", render: $.fn.dataTable.render.number( '.', ',', 0 ) },
+            { "data": "penggarap", render: $.fn.dataTable.render.number( '.', ',', 0 ) }
+          ];
+          columnDefs =  [
+            { targets: 2, className: 'text-right' },
+            { targets: 3, className: 'text-right' },
+            { targets: 4, className: 'text-right' }
+          ];
+          order = [0, 'asc'];
+          opt.push(columns);
+          opt.push(columnDefs);
+          opt.push(order);
+          return opt;
+        break;
+
+        case 'kt':
+          columns = [
+            { "data": "code" },
+            { "data": "label" },
+            { "data": "1", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "2", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "3", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "4", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "5", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "6", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "7", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "8", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "9", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "10", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "11", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "12", render: $.fn.dataTable.render.number( '.', ',', 2 ) }
+          ];
+          columnDefs =  [
+            { targets: 2, className: 'text-right' },
+            { targets: 3, className: 'text-right' },
+            { targets: 4, className: 'text-right' },
+            { targets: 5, className: 'text-right' },
+            { targets: 6, className: 'text-right' },
+            { targets: 7, className: 'text-right' },
+            { targets: 8, className: 'text-right' },
+            { targets: 9, className: 'text-right' },
+            { targets: 10, className: 'text-right' },
+            { targets: 11, className: 'text-right' },
+            { targets: 12, className: 'text-right' },
+            { targets: 13, className: 'text-right' }
+          ];
+          order = [0, 'asc'];
+          opt.push(columns);
+          opt.push(columnDefs);
+          opt.push(order);
+          return opt;
+        break;
+
+        case 'kp':
+          columns = [
+            { "data": "code" },
+            { "data": "label" },
+            { "data": "1", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "2", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "3", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "4", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "5", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "6", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "7", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "8", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "9", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "10", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "11", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+            { "data": "12", render: $.fn.dataTable.render.number( '.', ',', 2 ) }
+          ];
+          columnDefs =  [
+            { targets: 2, className: 'text-right' },
+            { targets: 3, className: 'text-right' },
+            { targets: 4, className: 'text-right' },
+            { targets: 5, className: 'text-right' },
+            { targets: 6, className: 'text-right' },
+            { targets: 7, className: 'text-right' },
+            { targets: 8, className: 'text-right' },
+            { targets: 9, className: 'text-right' },
+            { targets: 10, className: 'text-right' },
+            { targets: 11, className: 'text-right' },
+            { targets: 12, className: 'text-right' },
+            { targets: 13, className: 'text-right' }
+          ];
+          order = [0, 'asc'];
+          opt.push(columns);
+          opt.push(columnDefs);
+          opt.push(order);
+          return opt;
+        break;
+
         default:
           return opt;
 
@@ -221,117 +378,59 @@
 
     }
 
-    function optChart(chartType, dataGroup, obj) {
+    function optChart(chartType, obj) {
       var opt = [];
 
       switch (chartType){
 
         case 'luas':
 
-          var labels = obj.map(function(e) {
-            return e.label;
-          });
-
-          var dataSource = obj.map(function(e) {
-            return e.luas;
-          });
-
-          if( dataGroup == 0 ){
-
-            var type = 'pie';
-
-            var legend = {
-              position: "right",
-              labels: {
-                boxWidth: 15
-              }
-            }
-
-            var coloR = [];
-            for (var i in dataSource) {
-              coloR.push(dynamicColors());
-            }
-
-            var tooltips = {callbacks: {
-              label: function(tooltipItem, data) {
-                let label = data.labels[tooltipItem.index];
-                let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                let sum = 0;
-                let dataArr = data.datasets[0].data;
-                dataArr.map(data => {
-                  sum = sum + parseInt(data);
-                });
-                let percentage = number_format((val * 100 / sum), 2) + "%";
-                return label + ': ' + number_format(val, 2) + ' ha (' + percentage + ')';
-              }
-            }};
-
-            var label = {
-              value: {
-                align: 'end',
-                textAlign: 'center',
-                formatter: function(value, ctx) {
-                  let val_number = number_format(value, 2);
-                  let sum = 0;
-                  let dataArr = ctx.chart.data.datasets[0].data;
-                  dataArr.map(data => {
-                    sum = sum + parseInt(data);
-                  });
-                  let percentage = number_format((value * 100 / sum), 2) + "%";
-                  return val_number + " ha\n(" + percentage + ")";
-                }
-              }
-            };
-
-            $(".contLuas").css("height", '300px');
-
-          }else{
-
-            var type = 'horizontalBar';
-
-            var legend = {
-              position: "bottom",
-              labels: {
-                boxWidth: 15
-              }
-            }
-
-            var coloR = "#28a745";
-
-            var tooltips = {callbacks: {
-              label: function(tooltipItem, data) {
-                let label = data.datasets[tooltipItem.datasetIndex].label;
-                let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                return label + ': ' + number_format(val, 2) + ' ha';
-              }
-            }};
-
-            var label = {
-              value: {
-                align: 'end',
-                textAlign: 'center',
-                formatter: function(value, ctx) {
-                  let val_number = number_format(value, 2);
-                  return val_number + " ha";
-                }
-              }
-            };
-
-            $(".contLuas").css("height", (100 + (obj.length * 25)) + 'px');
-
-          }
-
           var title = "Luas petak sawah";
+          var type = 'horizontalBar';
+          var legend = {
+            position: "bottom",
+            labels: { boxWidth: 15 }
+          };
+
+          var labels = obj.map(function(e) { return e.label; });
+          var sawah = obj.map(function(e) { return e.luas1; });
+          var nonSawah = obj.map(function(e) { return e.luas2; });
 
           var data = {
             labels: labels,
             datasets: [{
-              label: title,
-              data: dataSource,
-              backgroundColor: coloR,
+              label: "Sawah",
+              data: sawah,
+              backgroundColor: "#28a745",
+              borderColor: 'rgba(255, 255, 255)'
+            },{
+              label: "Non Sawah",
+              data: nonSawah,
+              backgroundColor: "#adb5bd",
               borderColor: 'rgba(255, 255, 255)'
             }]
           };
+
+          var tooltips = {callbacks: {
+            label: function(tooltipItem, data) {
+              let label = data.datasets[tooltipItem.datasetIndex].label;
+              let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+              return label + ': ' + number_format(val, 2) + ' ha';
+            }
+          }};
+
+          var label = {
+            value: {
+              align: 'end',
+              textAlign: 'center',
+              formatter: function(value, ctx) {
+                let val_number = number_format(value, 2);
+                return val_number + " ha";
+              }
+            }
+          };
+
+          $(".contLuas").css("height", (100 + (obj.length * 60)) + 'px');
 
           opt.push(type);
           opt.push(data);
@@ -346,110 +445,52 @@
 
         case 'jumlah':
 
-          var labels = obj.map(function(e) {
-            return e.label;
-          });
-
-          var dataSource = obj.map(function(e) {
-            return e.jumlah;
-          });
-
-          if( dataGroup == 0 ){
-
-            var type = 'pie';
-
-            var legend = {
-              position: "right",
-              labels: {
-                boxWidth: 15
-              }
-            }
-
-            var coloR = [];
-            for (var i in dataSource) {
-              coloR.push(dynamicColors());
-            }
-
-            var tooltips = {callbacks: {
-              label: function(tooltipItem, data) {
-                let label = data.labels[tooltipItem.index];
-                let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                let sum = 0;
-                let dataArr = data.datasets[0].data;
-                dataArr.map(data => {
-                  sum = sum + parseInt(data);
-                });
-                let percentage = number_format((val * 100 / sum), 2) + "%";
-                return label + ': ' + number_format(val, 0) + ' (' + percentage + ')';
-              }
-            }};
-
-            var label = {
-              value: {
-                align: 'end',
-                textAlign: 'center',
-                formatter: function(value, ctx) {
-                  let val_number = number_format(value, 0);
-                  let sum = 0;
-                  let dataArr = ctx.chart.data.datasets[0].data;
-                  dataArr.map(data => {
-                    sum = sum + parseInt(data);
-                  });
-                  let percentage = number_format((value * 100 / sum), 2) + "%";
-                  return val_number + "\n(" + percentage + ")";
-                }
-              }
-            };
-
-            $(".contLuas").css("height", '300px');
-
-          }else{
-
-            var type = 'horizontalBar';
-
-            var legend = {
-              position: "bottom",
-              labels: {
-                boxWidth: 15
-              }
-            }
-
-            var coloR = "#28a745";
-
-            var tooltips = {callbacks: {
-              label: function(tooltipItem, data) {
-                let label = data.datasets[tooltipItem.datasetIndex].label;
-                let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                return label + ': ' + number_format(val, 0);
-              }
-            }};
-
-            var label = {
-              value: {
-                align: 'end',
-                textAlign: 'center',
-                formatter: function(value, ctx) {
-                  let val_number = number_format(value, 0);
-                  return val_number;
-                }
-              }
-            };
-
-            $(".contLuas").css("height", (100 + (obj.length * 25)) + 'px');
-
-          }
-
           var title = "Jumlah petak sawah";
+          var type = 'horizontalBar';
+          var legend = {
+            position: "bottom",
+            labels: { boxWidth: 15 }
+          };
+
+          var labels = obj.map(function(e) { return e.label; });
+          var sawah = obj.map(function(e) { return e.jmlh1; });
+          var nonSawah = obj.map(function(e) { return e.jmlh2; });
 
           var data = {
             labels: labels,
             datasets: [{
-              label: title,
-              data: dataSource,
-              backgroundColor: coloR,
+              label: "Sawah",
+              data: sawah,
+              backgroundColor: "#28a745",
+              borderColor: 'rgba(255, 255, 255)'
+            },{
+              label: "Non Sawah",
+              data: nonSawah,
+              backgroundColor: "#adb5bd",
               borderColor: 'rgba(255, 255, 255)'
             }]
           };
+
+          var tooltips = {callbacks: {
+            label: function(tooltipItem, data) {
+              let label = data.datasets[tooltipItem.datasetIndex].label;
+              let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+              return label + ': ' + number_format(val, 0);
+            }
+          }};
+
+          var label = {
+            value: {
+              align: 'end',
+              textAlign: 'center',
+              formatter: function(value, ctx) {
+                let val_number = number_format(value, 0);
+                return val_number;
+              }
+            }
+          };
+
+          $(".contLuas").css("height", (100 + (obj.length * 60)) + 'px');
 
           opt.push(type);
           opt.push(data);
@@ -465,36 +506,16 @@
         case 'pp':
 
           var title = "Jumlah petani";
-
-          var type = 'horizontalBar';
-
+          var type = 'bar';
           var legend = {
             position: "bottom",
-            labels: {
-              boxWidth: 15
-            }
-          }
+            labels: { boxWidth: 15 }
+          };
 
-          var labels = obj.map(function(e) {
-            return e.label;
-          });
-
-          var dataPemilik = obj.map(function(e) {
-            return e.pemilik;
-          });
-
-          var dataPenggarap = obj.map(function(e) {
-            return e.penggarap;
-          });
-
-          var dataNull = obj.map(function(e) {
-            return e.kosong;
-          });
-
-          var coloR = [];
-          for (var i in dataSource) {
-            coloR.push(dynamicColors());
-          }
+          var labels = obj.map(function(e) { return e.label; });
+          var dataPemilik = obj.map(function(e) { return e.pemilik; });
+          var dataPenggarap = obj.map(function(e) { return e.penggarap; });
+          var dataNull = obj.map(function(e) { return e.kosong; });
 
           var data = {
             labels: labels,
@@ -535,7 +556,73 @@
             }
           };
 
-          $(".contPP").css("height", (100 + (obj.length * 90)) + 'px');
+          $(".contPP").css("height", '400px');
+
+          opt.push(type);
+          opt.push(data);
+          opt.push(title);
+          opt.push(legend);
+          opt.push(tooltips);
+          opt.push(label);
+
+          return opt;
+
+        break;
+
+        case 'pt':
+
+          var title = "Jumlah Poktan dan Petani";
+          var type = 'bar';
+          var legend = {
+            position: "bottom",
+            labels: { boxWidth: 15 }
+          };
+
+          var labels = obj.map(function(e) { return e.label; });
+          var dataPoktan = obj.map(function(e) { return e.poktan; });
+          var dataPemilik = obj.map(function(e) { return e.pemilik; });
+          var dataPenggarap = obj.map(function(e) { return e.penggarap; });
+
+          var data = {
+            labels: labels,
+            datasets: [{
+              label: "Jumlah Poktan",
+              data: dataPoktan,
+              backgroundColor: "#adb5bd",
+              borderColor: 'rgba(255, 255, 255)'
+            },{
+              label: "Jumlah Petani Pemilik",
+              data: dataPemilik,
+              backgroundColor: "#28a745",
+              borderColor: 'rgba(255, 255, 255)'
+            },{
+              label: "Jumlah Petani Penggarap",
+              data: dataPenggarap,
+              backgroundColor: "#ffc107",
+              borderColor: 'rgba(255, 255, 255)'
+            }]
+          };
+
+          var tooltips = {callbacks: {
+            label: function(tooltipItem, data) {
+              let label = data.datasets[tooltipItem.datasetIndex].label;
+              let val = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+              return label + ': ' + number_format(val, 0);
+            }
+          }};
+
+          var label = {
+            value: {
+              align: 'end',
+              textAlign: 'center',
+              formatter: function(value, ctx) {
+                let val_number = number_format(value, 0);
+                return val_number;
+              }
+            }
+          };
+
+          $(".contPT").css("height", '400px');
 
           opt.push(type);
           opt.push(data);
@@ -583,20 +670,25 @@
 
     }
 
-    function buildChart(dataType, dataGroup, obj){
+    function buildChart(dataType, obj){
       switch (dataType){
 
         case 'lj':
-          opt = optChart('luas', dataGroup, obj);
+          opt = optChart('luas', obj);
           createChart('chartLuas', opt);
 
-          opt = optChart('jumlah', dataGroup, obj);
+          opt = optChart('jumlah', obj);
           createChart('ChartJumlah', opt);
         break;
 
         case 'pp':
-          opt = optChart('pp', dataGroup, obj);
+          opt = optChart('pp', obj);
           createChart('chartPP', opt);
+        break;
+
+        case 'pt':
+          opt = optChart('pt', obj);
+          createChart('chartPT', opt);
         break;
 
         default:
@@ -605,14 +697,13 @@
       }
     }
 
-    function buildResult(dataType, dataLevel, dataGroup) {
+    function buildResult(dataType, dataLevel) {
 
       $.ajax({
         type : "GET",
         url : "<?php echo base_url('api/report/'); ?>/" + dataType,
         data : {
-          "sdcode" : dataLevel,
-          "group" : dataGroup
+          "sdcode" : dataLevel
         },
         dataType: "json",
         beforeSend: function(){
@@ -623,8 +714,12 @@
           if (!("error" in obj)) {
 
             <!-- Chart -->
-            $('.result').html(domChart(dataType, dataGroup));
-            buildChart(dataType, dataGroup, obj);
+            if(dataType != 'kt' && dataType != 'kp'){
+              $('.result').html(domChart(dataType));
+              buildChart(dataType, obj);
+            }else{
+              $('.result').html("");
+            }
 
             <!-- Data Table -->
             $('.result').append(domTable(dataType));
@@ -655,29 +750,20 @@
 
           }
           else {
-            $(".result").html('<h6 class="text-center">Report belum tersedia</h6>');
+            $(".result").html('<h6 class="text-center">Data belum tersedia</h6>');
           }
 
         },
         error: function (obj, textstatus) {
-          $(".result").html('<h6 class="text-center">Report belum tersedia</h6>');
+          $(".result").html('<h6 class="text-center">Data belum tersedia</h6>');
         }
       });
     }
 
-    $( "#level" ).change(function() {
-      if($(this).val() == ''){
-        $( "#group" ).html('<option value="0">Kecamatan</option><option value="1">Desa</option>');
-      }else{
-        $( "#group" ).html('<option value="1">Desa</option>');
-      }
-    });
-
     $("#buildResult").click(function(){
       dataType = $('#data option:selected').val();
       dataLevel = $('#level option:selected').val();
-      dataGroup = $('#group option:selected').val();
-      buildResult(dataType, dataLevel, dataGroup);
+      buildResult(dataType, dataLevel);
     });
 
   });
