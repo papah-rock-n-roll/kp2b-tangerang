@@ -163,7 +163,7 @@ class M_setting extends M_access
   public function database_export($filename)
   {
     $folder = WRITEPATH .'uploads/databases';
-    $file = $folder .'/'. $filename;
+    $file = $this->compress_zip($folder, $filename);
 
     // Log informations Watch Events
     Events::trigger('watch_event','export','mstr_role', null, ['db_filename' => $filename]);
@@ -182,6 +182,7 @@ class M_setting extends M_access
   public function database_file_dir()
   {
     $folder = WRITEPATH .'uploads/databases';
+    array_map('unlink', glob($folder .'/*.zip'));
 
     if (! file_exists($folder)) {
       mkdir($folder, 0777, true);
@@ -263,6 +264,26 @@ class M_setting extends M_access
       $zip->close();
 
       return true;
+    } 
+    else 
+    {
+      return false;
+    }
+  }
+
+  function compress_zip($pathfile, $filename)
+  {
+    $zip = new ZipArchive;
+    $realfilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+    $file = fopen($pathfile .'/'. $realfilename .'.zip', 'a+');
+    fclose($file);
+
+    if ($zip->open($pathfile .'/'. $realfilename .'.zip') === TRUE)
+    {
+      $zip->addFile($pathfile .'/'. $filename, $filename);
+      $zip->close();
+
+      return $pathfile .'/'. $realfilename .'.zip';
     } 
     else 
     {

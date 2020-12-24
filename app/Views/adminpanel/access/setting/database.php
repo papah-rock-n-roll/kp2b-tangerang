@@ -112,23 +112,33 @@
             <td><?= date('Y-m-d H:i:s', esc($v['date'])) ?></td>
             <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-info btn-sm" title="Load - <?= esc($v['name']) ?>" onclick="window.location.href='<?= $load . $v['name'] ?>'">
+              <button type="button" class="btn btn-info btn-sm" title="Load - <?= esc($v['name']) ?>" data-toggle="modal" data-target="#modal_<?= $no ?>_load">
               <i class="fa fa-edit"></i></button>
               <button type="button" class="btn btn-primary btn-sm" title="Export - <?= esc($v['name']) ?>" onclick="window.location.href='<?= $export . $v['name'] ?>'">
               <i class="fa fa-download"></i></button>
-              <button type="button" class="btn btn-warning btn-sm" title="Delete - <?= esc($v['name']) ?>" data-toggle="modal" data-target="#modal_<?= $no ?>">
+              <button type="button" class="btn btn-warning btn-sm" title="Delete - <?= esc($v['name']) ?>" data-toggle="modal" data-target="#modal_<?= $no ?>_delete">
               <i class="fa fa-trash-alt"></i></button>
             </div>
             <?php
-              $modals = [
-                'id' => 'modal_'.$no,
+              $modals_1 = [
+                'id' => 'modal_'.$no.'_load',
+                'size' => 'modal-sm',
+                'class' => 'bg-info',
+                'title' => 'Restore',
+                'bodytext' => 'Anda Yakin Ingin restore database <br>'. esc($v['name']),
+                'action' => esc($load . $v['name']),
+                ];
+              echo view('events/modals', $modals_1);
+
+              $modals_2 = [
+                'id' => 'modal_'.$no.'_delete',
                 'size' => 'modal-sm',
                 'class' => 'bg-warning',
                 'title' => 'Delete',
                 'bodytext' => 'Anda Yakin Ingin Menghapus <br>'. esc($v['name']),
                 'action' => esc($delete . $v['name']),
                 ];
-              echo view('events/modals', $modals);
+              echo view('events/modals', $modals_2);
             ?>
             </td>
           </tr>

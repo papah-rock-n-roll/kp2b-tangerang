@@ -594,6 +594,18 @@ public function event_post($watch, $table, $idData = null, $postData = null)
 
     break;
 
+    case 'read':
+
+      $query += [
+        'watch' => $watch,
+        'table' => $table,
+        'dataid' => $idData,
+        'description' => json_encode(['new' => $postData], JSON_NUMERIC_CHECK),
+        'timestamp' => date('y-m-d H:i:s'),
+      ];
+
+    break;
+
     case 'update':
 
     break;
