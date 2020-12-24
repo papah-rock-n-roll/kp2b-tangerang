@@ -8,6 +8,9 @@
  * --------------------------------------------------------------------
  */
 
+use ZipArchive;
+use CodeIgniter\Events\Events;
+
 class M_setting extends M_access
 {
   const VIEW = 'adminpanel/access/setting/';
@@ -18,6 +21,13 @@ class M_setting extends M_access
   const CREATE = 'setting/create';
   const UPDATE = 'setting/update/';
   const DELETE = 'setting/delete/';
+
+  const DATABASE = 'setting/database';
+  const UNLINK = '/administrator/access/setting/database/';
+  const DUMP = '/administrator/access/setting/database-dump';
+  const LOAD = '/administrator/access/setting/database-load/';
+  const IMPORT = '/administrator/access/setting/database-import';
+  const EXPORT = '/administrator/access/setting/database-export/';
 
 
   protected $table = 'mstr_role';
@@ -34,6 +44,7 @@ class M_setting extends M_access
       'create' => self::CREATE,
       'update' => self::UPDATE,
       'delete' => self::DELETE,
+      'database' => self::DATABASE,
     ];
     echo view(self::VIEW.'list', $data);
   }
@@ -88,6 +99,98 @@ class M_setting extends M_access
     return $this->delete($id);
   }
 
+  public function database_list($data)
+  {
+    $data += [
+      'list' => $this->database_file_dir(),
+      'dump' => self::DUMP,
+      'load' => self::LOAD,
+      'import' => self::IMPORT,
+      'export' => self::EXPORT,
+      'delete' => self::UNLINK,
+      'back' => self::BACK,
+    ];
+    echo view(self::VIEW.'database', $data);
+  }
+
+  public function database_dump($filename)
+  {
+    $db = \Config\Database::connect();
+    $folder = WRITEPATH .'uploads\databases';
+    $file = $folder .'\\'. $filename;
+    exec("mysqldump -h {$db->hostname} --port={$db->port} -u {$db->username} --password={$db->password} {$db->database} > {$file}");
+
+    // Log informations Watch Events
+    Events::trigger('watch_event','create','mstr_role', null, ['db_filename' => $filename]);
+
+    return true;
+  }
+
+  public function database_restore($filename)
+  {
+    $db = \Config\Database::connect();
+    $folder = WRITEPATH .'uploads\databases';
+    $file = $folder .'\\'. $filename;
+
+    exec("mysql -h {$db->hostname} --port={$db->port} -u {$db->username} --password={$db->password} {$db->database} < {$file}");
+
+    // Log informations Watch Events
+    Events::trigger('watch_event','read','mstr_role', null, ['db_filename' => $filename]);
+
+    return true;
+  }
+
+  public function database_import($file)
+  {
+    $pathfile = WRITEPATH .'uploads/databases';
+    $filename = $file->getName();
+    $file->move($pathfile, $filename);
+
+    $extract = $this->extract_zip($pathfile, $filename);
+
+    if($extract)
+    {
+      unlink($pathfile .'/'. $filename);
+
+      // Log informations Watch Events
+      Events::trigger('watch_event','import','mstr_role', null, ['db_filename' => $filename]);
+
+      return true;
+    }
+
+  }
+
+  public function database_export($filename)
+  {
+    $folder = WRITEPATH .'uploads/databases';
+    $file = $folder .'/'. $filename;
+
+    // Log informations Watch Events
+    Events::trigger('watch_event','export','mstr_role', null, ['db_filename' => $filename]);
+
+    return $file;
+  }
+
+  public function database_unlink($filename)
+  {
+    // Log informations Watch Events
+    Events::trigger('watch_event','delete','mstr_role', null, ['db_filename' => $filename]);
+
+    return unlink(WRITEPATH .'uploads/databases/'. $filename);
+  }
+
+  public function database_file_dir()
+  {
+    $folder = WRITEPATH .'uploads/databases';
+
+    if (! file_exists($folder)) {
+      mkdir($folder, 0777, true);
+    }
+
+    return get_dir_file_info($folder);
+  }
+
+
   public function getRoles()
   {
     return $this->findAll();
@@ -104,6 +207,12 @@ class M_setting extends M_access
     return $query->findAll();
   }
 
+  
+/**
+ * --------------------------------------------------------------------
+ * Validation
+ * --------------------------------------------------------------------
+ */
 
   public function validationRules($id = null)
   {
@@ -121,6 +230,44 @@ class M_setting extends M_access
         'rules' => 'required',
       ],
     ];
+  }
+
+  public function validationImport()
+  {
+    return [
+      'zip_file' => [
+        'label' => 'Import File',
+        'rules' => 'uploaded[zip_file]|ext_in[zip_file,zip]|max_size[zip_file,40000]',
+        'errors' => [
+            'ext_in' => '{field} hanya berextensi file .zip',
+            'max_size' => '{field} Maksimal {param}',
+            'uploaded' => 'File zip Belum dipilih'
+          ]
+      ],
+    ];
+  }
+
+  
+/**
+ * --------------------------------------------------------------------
+ * Function
+ * --------------------------------------------------------------------
+ */
+
+  function extract_zip($pathfile, $filename)
+  {
+    $zip = new ZipArchive;
+    if ($zip->open($pathfile .'/'. $filename) === TRUE)
+    {
+      $zip->extractTo($pathfile);
+      $zip->close();
+
+      return true;
+    } 
+    else 
+    {
+      return false;
+    }
   }
 
 }

@@ -131,7 +131,7 @@ Events::on('post_system', function()
 
 /**
 	* --------------------------------------------------------------------
-	* Events Adminpanel - Method Post | Model M_log
+	* Events Adminpanel - Method Post, Get | Model M_log
 	* --------------------------------------------------------------------
  	* 
 	*/
@@ -182,4 +182,16 @@ Events::on('post_controller_constructor', function()
 Events::on('ajax_event', function($action, $table, $id = null, $data = null) {
 	$logs = new \App\Models\Adminpanel\Access\M_log;
 	$logs->create_post($action, $table, $id, $data);
+});
+
+
+/**
+	* --------------------------------------------------------------------
+	* Events Submodule - Watch | Model M_log
+	* --------------------------------------------------------------------
+ 	* 
+	*/
+Events::on('watch_event', function($watch, $table, $idData = null, $postData = null) {
+	$logs = new \App\Models\Adminpanel\Access\M_log;
+	$logs->event_post($watch, $table, $idData, $postData);
 });

@@ -1,6 +1,24 @@
 <?= $this->extend('partials/index') ?>
 <?= $this->section('content') ?>
 <div class="row">
+  <div class="col-12 col-sm-6 col-md-3">
+    <div class="info-box">
+      <span class="info-box-icon bg-gray elevation-1"><i class="fas fa-cog"></i></span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">Database</span>
+        <span class="info-box-number">
+          <button type="button" class="tmb-read btn btn-info btn-sm" title="Manage" onclick="window.location.href='<?= $database ?>'">
+          <i class="fa fa-eye"></i></button>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+</div>
+
+<div class="row">
 <div class="col-lg-12">
 
 <div class="card">

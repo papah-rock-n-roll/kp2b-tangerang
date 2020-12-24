@@ -124,6 +124,7 @@ class M_log extends M_access
       ['name' => 'login'],
       ['name' => 'logout'],
       ['name' => 'create'],
+      ['name' => 'read'],
       ['name' => 'update'],
       ['name' => 'delete'],
       ['name' => 'import'],
@@ -431,7 +432,6 @@ class M_log extends M_access
 
   }
 
-
 /**
  * --------------------------------------------------------------------
  * Prosedur create log information adminpanel
@@ -562,6 +562,83 @@ class M_log extends M_access
 
     $this->insert($query);
   }
+
+
+/**
+ * --------------------------------------------------------------------
+ * Prosedur event log adminpanel submodule
+ * --------------------------------------------------------------------
+ */
+public function event_post($watch, $table, $idData = null, $postData = null)
+{
+  $ua = parent::remoteaddr();
+
+  $query = [
+    'logid' => uniqid(),
+    'userid' => session('privilage')->userid,
+    'useragent' => json_encode($ua['useragent'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+    'remoteaddr' => json_encode($ua['remoteaddr'], JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES),
+  ];
+
+  switch ($watch) {
+
+    case 'create':
+
+      $query += [
+        'watch' => $watch,
+        'table' => $table,
+        'dataid' => $idData,
+        'description' => json_encode(['new' => $postData], JSON_NUMERIC_CHECK),
+        'timestamp' => date('y-m-d H:i:s'),
+      ];
+
+    break;
+
+    case 'update':
+
+    break;
+
+    case 'delete':
+
+      $query += [
+        'watch' => $watch,
+        'table' => $table,
+        'dataid' => $idData,
+        'description' => json_encode(['old' => $postData], JSON_NUMERIC_CHECK),
+        'timestamp' => date('y-m-d H:i:s'),
+      ];
+
+    break;
+
+    case 'import':
+
+      $query += [
+        'watch' => $watch,
+        'table' => $table,
+        'dataid' => $idData,
+        'description' => json_encode(['post' => $postData], JSON_NUMERIC_CHECK),
+        'timestamp' => date('y-m-d H:i:s'),
+      ];
+
+    break;
+
+    case 'export':
+
+      $query += [
+        'watch' => $watch,
+        'table' => $table,
+        'dataid' => $idData,
+        'description' => json_encode(['get' => $postData], JSON_NUMERIC_CHECK),
+        'timestamp' => date('y-m-d H:i:s'),
+      ];
+
+    break;
+
+  }
+
+  $this->insert($query);
+}
+
 
 /**
  * --------------------------------------------------------------------

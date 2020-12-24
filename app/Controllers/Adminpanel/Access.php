@@ -212,6 +212,75 @@ class Access extends \App\Controllers\BaseController
     }
   }
 
+/**
+ * --------------------------------------------------------------------
+ *
+ * Access Setting - Database
+ *
+ * --------------------------------------------------------------------
+ */
+  public function database($file = null)
+  {
+    if(empty($file))
+    {
+      $data['validation'] = $this->validation;
+      $this->M_setting->database_list($data);
+    }
+    else
+    {
+      $delete = $this->M_setting->database_unlink($file);
+
+      if($delete) {
+        $this->session->setFlashdata('warning', 'Delete Name '.$file.' Successfully');
+        return redirect()->to('/administrator/access/setting/database');
+      }
+
+    }
+  }
+
+  public function database_dump()
+  {
+    $filename = $this->request->getPost('filename');
+    $post = $this->M_setting->database_dump($filename);
+
+    if($post) {
+      $this->session->setFlashdata('success', 'Dump Database '.$filename.' Successfully');
+      return redirect()->to('/administrator/access/setting/database');
+    }
+  }
+
+  public function database_load($filename)
+  {
+    $post = $this->M_setting->database_restore($filename);
+
+    if($post) {
+      $this->session->setFlashdata('success', 'Restore Database '.$filename.' Successfully');
+      return redirect()->to('/administrator/access/setting/database');
+    }
+  }
+
+  public function database_import()
+  {
+    $rules = $this->M_setting->validationImport();
+
+    if(! $this->validate($rules)) {
+      return redirect()->back()->withInput();
+    }
+
+    $file = $this->request->getFile('zip_file');
+    $this->M_setting->database_import($file);
+    
+    $this->session->setFlashdata('info', 'Import File Name '.$file->getName().' Successfully');
+    return redirect()->back();
+  }
+
+  public function database_export($file)
+  {
+    $path = $this->M_setting->database_export($file);
+
+    return $this->response->download($path, null);
+  }
+
 
 /**
  * --------------------------------------------------------------------

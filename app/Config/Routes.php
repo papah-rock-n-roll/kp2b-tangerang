@@ -67,6 +67,10 @@ $routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) 
 	$routes->cli('writable/delete/(:any)', 'Access::writable_delete/$1');
 	$routes->cli('cache/delete/(:any)', 'Access::cache_delete/$1');
 
+	// Access setting
+	$routes->cli('database/dump/(:any)', 'Access::database_dump/$1');
+	$routes->cli('database/restore/(:any)', 'Access::database_restore/$1');
+
 	// Geo Public
 	$routes->cli('geo/cache/(:any)/(:any)', 'Geo::cache_geojson/$1/$2');
 	$routes->cli('geo/cache/kecamatan', 'Geo::kecamatan_geojson');
@@ -149,6 +153,14 @@ $routes->group('administrator', function($routes) {
 			$routes->get('delete/(:num)', 'Adminpanel\Access::setting_delete/$1');
 			// REDIRECT MODULE PANEL
 			$routes->addRedirect('update', 'administrator/access/management');
+
+			// Access Setting Database
+			$routes->get('database', 'Adminpanel\Access::database');
+			$routes->get('database/(:any)', 'Adminpanel\Access::database/$1');
+			$routes->post('database-import', 'Adminpanel\Access::database_import');
+			$routes->get('database-export/(:any)', 'Adminpanel\Access::database_export/$1');
+			$routes->post('database-dump', 'Adminpanel\Access::database_dump');
+			$routes->get('database-load/(:any)', 'Adminpanel\Access::database_load/$1');
 		});
 
 		// Access Log
