@@ -69,6 +69,20 @@ class Geo extends \App\Controllers\BaseController
     }
   }
 
+  public function observation_import()
+  {
+    $post = $this->request->getPost();
+    $shape = $this->request->getVar('chk_shape') == null ? 0 : 1;
+    $dbf = $this->request->getVar('chk_dbf') == null ? 0 : 1;
+    
+    $import = $this->M_obsgeo->import($post, $shape, $dbf);
+
+    if($import) {
+      $this->session->setFlashdata('import', 'Import Observation Successfully');
+      return redirect()->to('/administrator/geo/observation');
+    }
+  }
+
   public function observation_export($obscode)
   {
     $this->M_obsgeo->export($obscode);

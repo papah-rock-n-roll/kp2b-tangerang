@@ -54,6 +54,22 @@
 
 
 <?= $this->section('script') ?>
+<?php
+if(! empty(session()->getFlashdata('import'))) {
+  $toast = [
+  'class' => 'bg-info',
+  'autohide' => 'true',
+  'delay' => '10000',
+  'title' => 'Import',
+  'subtitle' => '',
+  'body' => session()->getFlashdata('import'),
+  'icon' => 'icon fas fa-check',
+  'image' => '',
+  'imageAlt' => '',
+  ];
+  echo view('events/toasts', $toast);
+}
+?>
 
 <script type="text/javascript">
 

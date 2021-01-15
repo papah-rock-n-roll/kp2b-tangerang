@@ -6,7 +6,7 @@
 <div class="card">
 <?php echo form_open_multipart($action) ?>
   <div class="card-header">
-    <h5 class="card-title"><i class="fas fa-upload"></i> Import</h5>
+    <h5 class="card-title"><i class="fas fa-upload"></i> Upload</h5>
     <div class="card-tools">
     <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i>
     </button>
@@ -18,7 +18,7 @@
       <p>Primary Key "<strong>obscode, obsshape</strong>"</p>
     </div>
     <div class="form-group">
-      <label for="">Tata Cara Import</label>
+      <label for="">Tata Cara Upload</label>
       <div>
         <img src="/themes/dist/img/sample-import-shp.png" alt="Thumbnail" class="img-fluid">
       </div>

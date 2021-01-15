@@ -9,6 +9,7 @@
  */
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
+use Shapefile\Geometry\Point;
 use Shapefile\Geometry\Polygon;
 
 use ZipArchive;
@@ -22,6 +23,7 @@ class M_obsgeo extends M_geo
   const BACK = '/administrator/geo/observation';
 
   const UPLOAD = 'observation/upload';
+  const IMPORT = 'observation/import';
   const EXPORT = 'observation/export';
 
   public function list($village = null, $keyword = null, $data, $paginate)
@@ -51,21 +53,6 @@ class M_obsgeo extends M_geo
       'export' => self::EXPORT,
     ];
     echo view(self::VIEW.'list', $data);
-  }
-
-
-/**
- * --------------------------------------------------------------------
- * Query
- * --------------------------------------------------------------------
- */
-  public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
-  {
-    $query = $this->select('obscode, sdname, vlname, farmname, ownername, cultivatorname')
-    ->where($where)->like($like)->orLike($orLike)
-    ->orderBy('obscode ASC');
-
-    return $query->paginate($paginate, 'default');
   }
 
   public function upload_new($data)
@@ -104,17 +91,16 @@ class M_obsgeo extends M_geo
           continue;
         }
 
-        // Print Geometry as an Array
-        # print_r($Geometry->getArray());
+        if(! empty($Geometry->getWKT())) {
+          $type_shape = $Shapefile->getShapeType(Shapefile::FORMAT_STR);
+          $chk_shape = true;
+        }
 
-        // Print Geometry as WKT
-        # print_r($Geometry->getWKT());
+        if(! empty($Geometry->getDataArray())) {
+          $chk_dbf = true;
+          $dbf = $Geometry->getDataArray();
+        }
 
-        // Print Geometry as GeoJSON
-        # print_r($Geometry->getGeoJSON());
-
-        // Print DBF data
-         print_r($Geometry->getDataArray());
       }
 
     } catch (ShapefileException $e) {
@@ -122,9 +108,54 @@ class M_obsgeo extends M_geo
       echo "Error Type: " . $e->getErrorType()
       . "\nMessage: " . $e->getMessage()
       . "\nDetails: " . $e->getDetails();
+      
     }
 
+    $fields = array();
+    $fields_kv = array();
+
+    // Fill 'null' jika nilai ''
+    foreach($dbf as $k => $v) {
+      $fields[] = $k;
+
+      if($v == '') $fields_kv[] = $k .' = NULL';
+      else $fields_kv[] = $k .' = '. $v;
+    }
+
+    $data = [
+      'v' => [
+        'chk_shape' => $chk_shape, 
+        'chk_dbf' => $chk_dbf,
+        'type_shape' => $type_shape,
+        'str_fields' => implode(",\n", $fields_kv),
+        'path' => $newPath . $realfilename .'.shp',
+        'filename' => $realfilename .'.shp',
+      ],
+      'dbf' => $dbf,
+      'fields' => $fields,
+      'action' => self::ACTS.'import',
+      'back' => self::BACK,
+    ];
+
+    echo view(self::VIEW.'compare', $data);
+
   }
+
+
+/**
+ * --------------------------------------------------------------------
+ * Query
+ * --------------------------------------------------------------------
+ */
+
+public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
+{
+  $query = $this->select('obscode, sdname, vlname, farmname, ownername, cultivatorname')
+  ->where($where)->like($like)->orLike($orLike)
+  ->orderBy('obscode ASC');
+
+  return $query->paginate($paginate, 'default');
+}
 
 
 /**
@@ -151,21 +182,164 @@ class M_obsgeo extends M_geo
 
 /**
  * --------------------------------------------------------------------
- * Import shapefile
+ * Import - Export shapefile
  * --------------------------------------------------------------------
  */
-  public function import()
+  public function import($post, $chk_shape, $chk_dbf)
   {
+    $Shapefile = M_geo::reader_shapefile($post['path']);
 
+    try {
+
+      while ($Geometry = $Shapefile->fetchRecord()) {
+        // Skip the record if marked as "deleted"
+        if ($Geometry->isDeleted()) {
+          continue;
+        }
+        
+        $shape = $Geometry->getWKT();
+        $dbf = $Geometry->getDataArray();
+
+      }
+
+    } catch (ShapefileException $e) {
+      // Print detailed error information
+      echo "Error Type: " . $e->getErrorType()
+      . "\nMessage: " . $e->getMessage()
+      . "\nDetails: " . $e->getDetails();
+      
+    }
+
+    // Fill 'null' jika nilai ''
+    $v = array();
+    foreach ($dbf as $k => $val) {
+      if ($val == '') {
+        $val = null;
+      }
+      $v[$k] = $val;
+    }
+
+    // procedure compare field - post
+    $dbf = $v;
+
+    $id = $dbf[$post['obscode']];
+    $db = \Config\Database::connect();
+
+    // select table field id berdasarkan field nama
+    $data['ownerid'] = $db->table('mstr_owners')->select('ownerid')->where('ownername', $dbf[$post['ownername']])->get()->getRow()->ownerid ?? '';
+    $data['cultivatorid'] = $db->table('mstr_owners')->select('ownerid')->where('ownername', $dbf[$post['cultivatorname']])->get()->getRow()->ownerid ?? '';
+    $data['farmcode'] = $db->table('mstr_farmers')->select('farmcode')->where('farmname', $dbf[$post['farmname']])->get()->getRow()->farmcode ?? '';
+    $data['respid'] = $db->table('mstr_respondens')->select('respid')->where('respname', $dbf[$post['respname']])->get()->getRow()->respid ?? '';
+
+    $data['typeirigation'] = parent::import_str_replace($dbf[$post['typeirigation']]) ?? '';
+    $data['opt'] = parent::import_str_replace($dbf[$post['opt']]) ?? '';
+    $data['saprotan'] = parent::import_str_replace($dbf[$post['saprotan']]) ?? '';
+    $data['harvstmax'] = parent::import_str_replace($dbf[$post['harvstmax']]) ?? '';
+    $data['harvstmin'] = parent::import_str_replace($dbf[$post['harvstmin']]) ?? '';
+
+    // procedure plantdates
+    $index = (int) ceil($dbf[$post['indxnlant']]) / 100;
+
+    $no = 1;
+    for ($i = 0; $i < $index; $i++) {
+      $data['plantdates'][] = [
+        'growceason' => $dbf[$post['growceason']],  
+        'monthgrow' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['monthgrow']])[0], '_', true) .'_'. $no]),
+        'monthharvest' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['monthharvest']])[0], '_', true) .'_'. $no]),
+        'varieties' => $dbf[strstr(array_keys($dbf, $dbf[$post['varieties']])[0], '_', true) .'_'. $no],
+        'irrigationavbl' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['irrigationavbl']])[0], '_', true) .'_'. $no]),
+      ];
+    
+      $no++;
+    }
+
+    // Fill '1' jika nilai null = 'NO DATA'
+    $v = array();
+    foreach ($data as $k => $val) {
+      if ($val == '') {
+        $val = 1;
+      }
+      $v[$k] = $val;
+    }
+
+    if($chk_shape == 1) {
+      $db->query("UPDATE lppbmis.observations_frmshape 
+      SET shape = ST_GeomFromText('{$shape}') 
+      WHERE obsshape = {$id}");
+    }
+
+    if($chk_dbf == 1) {
+
+      $obs = $db->table('observations_frmobservations');
+
+      $query2 = [
+        'areantatus' => strtoupper($dbf[$post['areantatus']]),
+        'broadnrea' => $dbf[$post['broadnrea']],
+        'distancefromriver' => $dbf[$post['distancefromriver']],
+        'distancefromIrgPre' => $dbf[$post['distancefromIrgPre']],
+        'wtrtreatnnst' => $dbf[$post['wtrtreatnnst']],
+        'intensitynlan' => $dbf[$post['intensitynlan']],
+        'indxnlant' => $index * 100,
+        'typeirigation' => $v['typeirigation'],
+        'opt' => $v['opt'],
+        'saprotan' => $v['saprotan'],
+        'pattrnnlant' => $dbf[$post['pattrnnlant']],
+        'wtr' => $dbf[$post['wtr']],
+        'other' => $dbf[$post['other']],
+        'harvstmax' => $v['harvstmax'],     
+        'harvstmin' => $v['harvstmin'],
+        'monthmax' => $dbf[$post['monthmax']],
+        'monthmin' => $dbf[$post['monthmin']],
+        'harvstsell' => $dbf[$post['harvstsell']],
+        'vlcode' => $dbf[$post['vlcode']],
+        'farmcode' => $v['farmcode'],
+        'ownerid' => $v['ownerid'],
+        'cultivatorid' => $v['cultivatorid'],
+        'respid' => $v['respid'],
+        'userid' => session('privilage')->userid,
+        'timestamp' => date('y-m-d H:i:s')
+      ];
+
+      $obs->set($query2);
+      $obs->where('obscode', $id);
+      $obs->update();
+    
+      foreach ($v['plantdates'] as $k => $val) {
+
+        $num = $k;
+        $uniq = uniqid() .'#'. session('privilage')->userid .'#'.++$num;
+
+        $this->query("CALL p_insertPlantdates(
+          '{$k}',
+          '{$uniq}',
+          '{$val['growceason']}',
+          '{$val['monthgrow']}',
+          '{$val['monthharvest']}',
+          '{$val['varieties']}',
+          '{$val['irrigationavbl']}',
+          '{$id}')
+        ");
+      }
+    }
+
+    $path = explode('/', $post['path']);
+    $filename = array_pop($path);
+    $dir = (implode('\\', $path)) .'\\';
+
+    return delete_files($dir, true);
   }
+
+  // --------------------------------------------------------------------
 
   public function export($obscode)
   {
     $filename = 'petak-'.$obscode;
     $pathfile = WRITEPATH .'uploads/shapefile-export/'. $filename;
 
-    $data = parent::get_observasion($obscode);
-    dd($data);
+    $data = parent::get_observation($obscode);
+
+    dd($data->getBBox());
+
     try {
       // Open Shapefile
       $Shapefile = M_geo::writer_shapefile($pathfile);
@@ -178,14 +352,14 @@ class M_obsgeo extends M_geo
       $Shapefile->addCharField('DESC', 25);
       
       // Write some records (let's pretend we have an array of coordinates)
-      foreach ($data as $i => $coords) {
-          // Create a Point Geometry
-          $Point = new Polygon($coords['x'], $coords['m']);
-          // Set its data
-          $Point->setData('ID', $i);
-          $Point->setData('DESC', "Point number $i");
-          // Write the record to the Shapefile
-          $Shapefile->writeRecord($Point);
+      foreach ($data['coordinates'][0] as $i => $coords) {
+        // Create a Point Geometry
+        $Point = new Polygon($coords[0], $coords[1]);
+        // Set its data
+        $Point->setData('ID', $i);
+        $Point->setData('DESC', "Point number $i");
+        // Write the record to the Shapefile
+        $Shapefile->writeRecord($Point);
       }
       
       // Finalize and close files to use them

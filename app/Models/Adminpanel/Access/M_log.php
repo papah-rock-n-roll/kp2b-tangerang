@@ -292,12 +292,12 @@ class M_log extends M_access
             }
             elseif($action == 'import') {
               $watch = 'import';
-              $table = 'observations_plantdates';
+              $table = 'observations_frmobservations';
               $this->create_post($watch, $table, $id, $data);
             }
             elseif($action == 'export') {
               $watch = 'export';
-              $table = 'observations_plantdates';
+              $table = 'observations_frmobservations';
               $this->create_post($watch, $table, $id, $data);
             }
 
@@ -393,7 +393,18 @@ class M_log extends M_access
         switch ($menu) {
 
           case 'observation':
-
+/**
+|            if($action == 'import') {
+|              $watch = 'import';
+|              $table = 'observations_frmobservations';
+|              $this->create_post($watch, $table, $id, $data);
+|            }
+|            elseif($action == 'export') {
+|              $watch = 'export';
+|              $table = 'observations_frmobservations';
+|              $this->create_post($watch, $table, $id, $data);
+|            }
+*/
           break;
 
           case 'village':

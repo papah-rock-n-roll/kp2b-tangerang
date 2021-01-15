@@ -141,7 +141,7 @@ class M_geo extends Model
  * --------------------------------------------------------------------
  */
 
-  public function get_observasion($obscode)
+  public function get_observation($obscode)
   {
     $table = 'v_observations';
     $id_field = $obscode;
@@ -164,7 +164,15 @@ class M_geo extends Model
     $result = json_encode($features, JSON_NUMERIC_CHECK);
     $result = json_decode($result, true);
 
-    return $result;
+    return $geom;
+  }
+
+  public function import_str_replace($string)
+  {
+    // Hilangkan value 'dan' menjadi koma
+    $search = array('/, dan /', '/ dan /',  '/, /', '| kwintal/ha|');
+    $replace = array(',', ',', ',', '');
+    return preg_replace($search, $replace, $string);
   }
 
 
