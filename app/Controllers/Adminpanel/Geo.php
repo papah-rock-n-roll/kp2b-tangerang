@@ -85,7 +85,9 @@ class Geo extends \App\Controllers\BaseController
 
   public function observation_export($obscode)
   {
-    $this->M_obsgeo->export($obscode);
+    $path = $this->M_obsgeo->export($obscode);
+
+    return $this->response->download($path, null);
   }
 
 }

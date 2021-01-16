@@ -143,28 +143,59 @@ class M_geo extends Model
 
   public function get_observation($obscode)
   {
-    $table = 'v_observations';
-    $id_field = $obscode;
+    $table_1 = 'v_observations';
+    $table_2 = 'observations_plantdates';
+
     $geom_field = 'obsshape';
-    $fields = 'obscode,respname,farmname,sdname,vlname,landuse,areantatus,broadnrea,
-    ownernik,ownername,cultivatorname,typeirigation,distancefromriver,distancefromIrgPre,
-    wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,other,
-    harvstmax,monthmax,harvstmin,monthmin,harvstsell';
 
-    $sql = "SELECT {$id_field} AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields}
-    FROM {$table} WHERE {$geom_field} IS NOT NULL AND obscode = {$id_field};";
+    $fields_1 = 'obscode,respname,farmcode,farmname,sdcode,sdname,vlcode,vlname,landuse,
+    areantatus,broadnrea,ownernik,ownername,cultivatornik,cultivatorname,typeirigation,
+    distancefromriver,distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,
+    opt,wtr,saprotan,other,harvstmax,monthmax,harvstmin,monthmin,harvstsell';
 
-    $row = $this->db->query($sql)->getRowArray();
+    $fields_2 = 'growceason,monthgrow,monthharvest,varieties,irrigationavbl';
 
-    $geom = geoPHP::load($row['GEOM'],'wkt');
+    $query1 = "SELECT {$obscode} AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields_1}
+    FROM {$table_1} WHERE {$geom_field} IS NOT NULL AND obscode = {$obscode};";
 
-    $json = $geom->out('json');
-    $features = json_decode($json, true);
+    $query2 = "SELECT {$fields_2} FROM {$table_2} WHERE obscode = {$obscode};";
 
-    $result = json_encode($features, JSON_NUMERIC_CHECK);
-    $result = json_decode($result, true);
+    $obs = $this->db->query($query1)->getResultArray();
+    $plant = transpose($this->db->query($query2)->getResultArray());
 
-    return $geom;
+    $info_fields = explode(',', preg_replace('/\s+/', '', ($fields_1 .','. $fields_2)));
+
+    $geojson = array(
+      'name' => 'Layer Petak '. $obscode,
+      'features' => array()
+    );
+
+    $data[] = $obs[0] + $plant;
+
+    foreach ($data as $row) {
+
+      $geom = geoPHP::load($row['GEOM'],'wkt');
+
+      $properties['FID'] = $row['FID'];
+      for ($x = 0; $x < count($info_fields); $x++){
+        $properties[$info_fields[$x]] = $row[$info_fields[$x]];
+      }
+
+      $polygon = array(
+        'type' => 'Feature',
+        'bbox' => $geom->getBBox(),
+        'properties' => $properties,
+        'wkt' => $geom->asText(),
+        'area' => $geom->getArea(),
+        'id' => $row['FID']
+      );
+
+      array_push($geojson['features'], $polygon);
+    }
+
+    $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
+
+    return json_decode($result, true);
   }
 
   public function import_str_replace($string)
