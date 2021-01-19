@@ -290,14 +290,6 @@
     <div class="row">
       <div class="col-lg-6"><!-- LEFT -->
         <div class="form-group">
-          <label for="">Musim - growceason DB</label>
-          <select class="form-control custom-select select2" name="growceason" style="width: 100%;" data-placeholder="OBJECTID">
-            <?php foreach($fields as $v_field) : ?>
-              <option <?= $v_field ?>><?= $v_field ?></option>
-            <?php endforeach ?>
-          </select>
-        </div>      
-        <div class="form-group">
           <label for="">Bulan Tanam - monthgrow DB</label>
           <select class="form-control custom-select select2" name="monthgrow" style="width: 100%;" data-placeholder="OBJECTID">
             <?php foreach($fields as $v_field) : ?>

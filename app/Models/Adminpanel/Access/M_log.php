@@ -97,6 +97,10 @@ class M_log extends M_access
         return delete_files(WRITEPATH.'debugbar');
       break;
 
+      case 'uploads':
+        return delete_files(WRITEPATH.'uploads', true);
+      break;
+
     }
 
   }

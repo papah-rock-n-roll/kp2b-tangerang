@@ -3,7 +3,7 @@
 /**
  * --------------------------------------------------------------------
  *
- * Geo Observation
+ * Geo villages
  *
  * --------------------------------------------------------------------
  */
@@ -13,7 +13,7 @@ use Shapefile\ShapefileException;
 use Shapefile\Geometry\Polygon;
 
 
-class M_obsgeo extends M_geo
+class M_vlgeo extends M_geo
 {
   const VIEW = 'adminpanel/geo/observation/';
 
@@ -246,7 +246,11 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
     $no = 1;
     for ($i = 0; $i < $index; $i++) {
       $data['plantdates'][] = [
-        'growceason' => $no,
+        'growceason' => 
+        ucfirst($dbf[strstr(array_keys($dbf, $dbf[$post['monthgrow']])[0], '_', true) .'_'. $no])
+        .' - '. 
+        ucfirst($dbf[strstr(array_keys($dbf, $dbf[$post['monthharvest']])[0], '_', true) .'_'. $no]), 
+
         'monthgrow' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['monthgrow']])[0], '_', true) .'_'. $no]),
         'monthharvest' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['monthharvest']])[0], '_', true) .'_'. $no]),
         'varieties' => $dbf[strstr(array_keys($dbf, $dbf[$post['varieties']])[0], '_', true) .'_'. $no],

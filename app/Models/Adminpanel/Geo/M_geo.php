@@ -10,6 +10,7 @@
 
 use CodeIgniter\Model;
 use geoPHP;
+use ZipArchive;
 
 use Shapefile\ShapefileReader;
 use Shapefile\ShapefileWriter;
@@ -204,6 +205,51 @@ class M_geo extends Model
     $search = array('/, dan /', '/ dan /',  '/, /', '| kwintal/ha|');
     $replace = array(',', ',', ',', '');
     return preg_replace($search, $replace, $string);
+  }
+
+  function extract_zip($pathfile, $filename, $folderName)
+  {
+    $zip = new ZipArchive;
+
+    if ($zip->open($pathfile .'/'. $filename) === TRUE)
+    {
+      $zip->extractTo($pathfile .'/'. $folderName);
+      $zip->close();
+
+      return true;
+    } 
+    else 
+    {
+      return false;
+    }
+  }
+
+  function compress_zip($pathfile, $filename)
+  {
+    $zip = new ZipArchive;
+    $realfilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+    $file = fopen($pathfile .'/'. $realfilename .'.zip', 'a+');
+    fclose($file);
+
+    if ($zip->open($pathfile .'/'. $realfilename .'.zip') === TRUE)
+    {
+      $files = directory_map($pathfile);
+
+      foreach($files as $file) {
+
+        if($file == $realfilename .'.zip') continue;
+        else $zip->addFile($pathfile .'/'. $file, $file);
+        
+      }
+
+      $zip->close();
+
+      return $pathfile .'/'. $realfilename .'.zip';
+    } 
+    else 
+    {
+      return false;
+    }
   }
 
 
