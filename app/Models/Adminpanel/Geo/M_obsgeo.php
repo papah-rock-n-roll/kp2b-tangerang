@@ -85,8 +85,6 @@ class M_obsgeo extends M_geo
     }
 
     $Shapefile = M_geo::reader_shapefile($newPath . $realfilename .'.shp');
-
-    dd($Shapefile);
     
     try {
 
@@ -358,6 +356,8 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       
       // Set shape type
       $Shapefile->setShapeType(Shapefile::SHAPE_TYPE_POLYGON);
+      $Shapefile->setPRJ('GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]');
+      $Shapefile->setCharset('UTF-8');
 
       // Create field structure
       $Shapefile->addNumericField('OBJECTID', 10, 0);

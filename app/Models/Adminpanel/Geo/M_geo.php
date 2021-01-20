@@ -171,7 +171,15 @@ class M_geo extends Model
       'features' => array()
     );
 
-    $data[] = $obs[0] + $plant;
+    if(!empty($query2))
+    {
+      $data[] = $obs[0] + $plant;
+    }
+    else
+    {
+      $plant = [];
+      $data[] = $obs[0] + $plant;
+    }
 
     foreach ($data as $row) {
 
@@ -195,9 +203,6 @@ class M_geo extends Model
     }
 
     $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
-
-    d($geom);
-    dd(json_decode($result, true));
 
     return json_decode($result, true);
   }
