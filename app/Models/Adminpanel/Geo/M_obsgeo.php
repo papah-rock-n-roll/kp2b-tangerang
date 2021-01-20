@@ -85,6 +85,8 @@ class M_obsgeo extends M_geo
     }
 
     $Shapefile = M_geo::reader_shapefile($newPath . $realfilename .'.shp');
+
+    dd($Shapefile);
     
     try {
 

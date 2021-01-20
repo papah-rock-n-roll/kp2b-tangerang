@@ -70,7 +70,7 @@ class M_log extends M_access
   }
 
 
-  public function delete_post($data, $ext = null)
+  public function delete_post($data, $param = null)
   {
     switch ($data) {
 
@@ -79,9 +79,9 @@ class M_log extends M_access
       break;
 
       case 'cache':
-        if (!empty($ext))
+        if (!empty($param))
         {
-          return array_map('unlink', glob(WRITEPATH .'cache/*.'. $ext));
+          return array_map('unlink', glob(WRITEPATH .'cache/*.'. $param));
         }
         else
         {
@@ -98,7 +98,14 @@ class M_log extends M_access
       break;
 
       case 'uploads':
-        return delete_files(WRITEPATH.'uploads', true);
+        if (!empty($param))
+        {
+          return delete_files(WRITEPATH.'uploads\\'. $param .'\\', true);
+        }
+        else
+        {
+          return delete_files(WRITEPATH.'uploads', true);
+        }
       break;
 
     }

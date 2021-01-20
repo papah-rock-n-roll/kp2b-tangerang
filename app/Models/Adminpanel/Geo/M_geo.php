@@ -196,6 +196,9 @@ class M_geo extends Model
 
     $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
 
+    d($geom);
+    dd(json_decode($result, true));
+
     return json_decode($result, true);
   }
 

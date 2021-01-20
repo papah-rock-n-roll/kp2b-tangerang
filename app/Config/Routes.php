@@ -66,6 +66,7 @@ $routes->group('cli', ['namespace' => 'App\Controllers\Cli'], function($routes) 
 	// Access log
 	$routes->cli('writable/delete/(:any)', 'Access::writable_delete/$1');
 	$routes->cli('cache/delete/(:any)', 'Access::cache_delete/$1');
+	$routes->cli('uploads/delete/(:any)', 'Access::uploads_delete/$1');
 
 	// Access setting
 	$routes->cli('database/dump/(:any)', 'Access::database_dump/$1');
