@@ -33,7 +33,8 @@ class M_setting extends M_access
   protected $table = 'mstr_role';
   protected $primaryKey = 'roleid';
 
-  protected $allowedFields = ['rolename','rolemodules','create','read','update','delete'];
+  protected $allowedFields = ['rolename','rolemodules',
+  'create','read','update','delete','import','export'];
 
   protected $rolebase = ['access','user','data','geo','report'];
 

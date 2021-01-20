@@ -190,6 +190,8 @@ class Access extends \App\Controllers\BaseController
         'read' => $this->request->getVar('read') == null ? 0 : 1,
         'update' => $this->request->getVar('update') == null ? 0 : 1,
         'delete' => $this->request->getVar('delete') == null ? 0 : 1,
+        'import' => $this->request->getVar('import') == null ? 0 : 1,
+        'export' => $this->request->getVar('export') == null ? 0 : 1,
       );
       $post = $this->M_setting->update_post($id, $data);
 

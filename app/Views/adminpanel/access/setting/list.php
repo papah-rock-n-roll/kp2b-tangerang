@@ -43,6 +43,8 @@
           <th style="width: 5%">Read</th>
           <th style="width: 5%">Update</th>
           <th style="width: 5%">Delete</th>
+          <th style="width: 5%">Import</th>
+          <th style="width: 5%">Export</th>
           <th style="width: 5%">Action</th>
         </tr>
       </thead>
@@ -59,6 +61,8 @@
             <td><?= esc($v['read']) ?></td>
             <td><?= esc($v['update']) ?></td>
             <td><?= esc($v['delete']) ?></td>
+            <td><?= esc($v['import']) ?></td>
+            <td><?= esc($v['export']) ?></td>
             <td>
             <div class="btn-group">
               <button type="button" class="tmb-update btn btn-info btn-sm" title="Edit - <?= esc($v['rolename']) ?>" onclick="window.location.href='<?= $update . $v['roleid'] ?>'">
