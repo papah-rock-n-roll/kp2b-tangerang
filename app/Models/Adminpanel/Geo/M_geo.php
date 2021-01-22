@@ -137,11 +137,10 @@ class M_geo extends Model
 /**
  * --------------------------------------------------------------------
  *
- * function
+ * M_obsgeo - Observation Petak
  *
  * --------------------------------------------------------------------
  */
-
   public function get_observation($obscode)
   {
     $table_1 = 'v_observations';
@@ -152,9 +151,9 @@ class M_geo extends Model
     $fields_1 = 'obscode,respname,farmcode,farmname,sdcode,sdname,vlcode,vlname,landuse,
     areantatus,broadnrea,ownernik,ownername,cultivatornik,cultivatorname,typeirigation,
     distancefromriver,distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,
-    opt,wtr,saprotan,other,harvstmax,monthmax,harvstmin,monthmin,harvstsell';
+    opt,wtr,saprotan,other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,username,timestamp';
 
-    $fields_2 = 'growceason,monthgrow,monthharvest,varieties,irrigationavbl';
+    $fields_2 = 'monthgrow,monthharvest,varieties,irrigationavbl';
 
     $query1 = "SELECT {$obscode} AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields_1}
     FROM {$table_1} WHERE {$geom_field} IS NOT NULL AND obscode = {$obscode};";
@@ -164,22 +163,29 @@ class M_geo extends Model
     $obs = $this->db->query($query1)->getResultArray();
     $plant = transpose($this->db->query($query2)->getResultArray());
 
-    $info_fields = explode(',', preg_replace('/\s+/', '', ($fields_1 .','. $fields_2)));
+    $data = array();
 
+    if(!empty($plant))
+    {
+      foreach($obs as $v) {
+        $data[] = $v + $plant;
+      }
+    }
+    else
+    {
+      $tmp = explode(',', $fields_2);
+      $plant = array_fill_keys($tmp, array(null));
+
+      foreach($obs as $v) {
+        $data[] = $v + $plant;
+      }
+    }
+
+    $info_fields = explode(',', preg_replace('/\s+/', '', ($fields_1 .','. $fields_2)));
     $geojson = array(
       'name' => 'Layer Petak '. $obscode,
       'features' => array()
     );
-
-    if(!empty($query2))
-    {
-      $data[] = $obs[0] + $plant;
-    }
-    else
-    {
-      $plant = [];
-      $data[] = $obs[0] + $plant;
-    }
 
     foreach ($data as $row) {
 
@@ -195,7 +201,6 @@ class M_geo extends Model
         'bbox' => $geom->getBBox(),
         'properties' => $properties,
         'wkt' => $geom->asText(),
-        'area' => $geom->getArea(),
         'id' => $row['FID']
       );
 
@@ -206,6 +211,190 @@ class M_geo extends Model
 
     return json_decode($result, true);
   }
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * M_vlgeo - Observation Desa
+ *
+ * --------------------------------------------------------------------
+ */
+  public function get_observation_village($vlcode)
+  {
+    $table_1 = 'v_observations';
+    $table_2 = 'observations_plantdates';
+
+    $geom_field = 'obsshape';
+
+    $fields_1 = 'obscode,respname,farmcode,farmname,sdcode,sdname,vlcode,vlname,landuse,
+    areantatus,broadnrea,ownernik,ownername,cultivatornik,cultivatorname,typeirigation,
+    distancefromriver,distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,
+    opt,wtr,saprotan,other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,username,timestamp';
+
+    $fields_2 = 'monthgrow,monthharvest,varieties,irrigationavbl';
+
+    $query  = $this->db->query("SELECT obscode AS FID 
+    FROM {$table_1} 
+    WHERE vlcode = {$vlcode}")->getResultArray();
+
+    $fid = array_column($query, 'FID');
+    $data = array();
+
+    foreach($fid as $obscode) {
+
+      $query1 = "SELECT obscode AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields_1}
+      FROM {$table_1} WHERE {$geom_field} IS NOT NULL AND obscode = {$obscode};";
+
+      $query2 = "SELECT {$fields_2} FROM {$table_2} WHERE obscode = {$obscode};";
+
+      $obs = $this->db->query($query1)->getResultArray();
+      $plant = transpose($this->db->query($query2)->getResultArray());
+
+      if(!empty($plant))
+      {
+        foreach($obs as $v) {
+          $data[] = $v + $plant;
+        }
+      }
+      else
+      {
+        $tmp = explode(',', $fields_2);
+        $plant = array_fill_keys($tmp, array(null));
+
+        foreach($obs as $v) {
+          $data[] = $v + $plant;
+        }
+      }
+    }
+
+    $info_fields = explode(',', preg_replace('/\s+/', '', ($fields_1 .','. $fields_2)));
+    $geojson = array(
+      'name' => 'Layer Desa '. $vlcode,
+      'features' => array()
+    );
+
+    foreach ($data as $row) {
+
+      $geom = geoPHP::load($row['GEOM'],'wkt');
+
+      $properties['FID'] = $row['FID'];
+      for ($x = 0; $x < count($info_fields); $x++){
+        $properties[$info_fields[$x]] = $row[$info_fields[$x]];
+      }
+
+      $polygon = array(
+        'type' => 'Feature',
+        'bbox' => $geom->getBBox(),
+        'properties' => $properties,
+        'wkt' => $geom->asText(),
+        'id' => $row['FID']
+      );
+
+      array_push($geojson['features'], $polygon);
+    }
+
+    $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
+
+    return json_decode($result, true);
+  }
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * M_sdgeo - Observation Desa
+ *
+ * --------------------------------------------------------------------
+ */
+  public function get_observation_subdistrict($sdcode)
+  {
+    $table_1 = 'v_observations';
+    $table_2 = 'observations_plantdates';
+
+    $geom_field = 'obsshape';
+
+    $fields_1 = 'obscode,respname,farmcode,farmname,sdcode,sdname,vlcode,vlname,landuse,
+    areantatus,broadnrea,ownernik,ownername,cultivatornik,cultivatorname,typeirigation,
+    distancefromriver,distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,
+    opt,wtr,saprotan,other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,username,timestamp';
+
+    $fields_2 = 'monthgrow,monthharvest,varieties,irrigationavbl';
+
+    $query  = $this->db->query("SELECT obscode AS FID 
+    FROM {$table_1} 
+    WHERE sdcode = {$sdcode}")->getResultArray();
+
+    $fid = array_column($query, 'FID');
+
+    $data = array();
+
+    foreach($fid as $obscode) {
+
+      $query1 = "SELECT obscode AS FID, ST_AsText({$geom_field}) AS GEOM, {$fields_1}
+      FROM {$table_1} WHERE {$geom_field} IS NOT NULL AND obscode = {$obscode};";
+
+      $query2 = "SELECT {$fields_2} FROM {$table_2} WHERE obscode = {$obscode};";
+
+      $obs = $this->db->query($query1)->getResultArray();
+      $plant = transpose($this->db->query($query2)->getResultArray());
+
+      if(!empty($plant))
+      {
+        foreach($obs as $v) {
+          $data[] = $v + $plant;
+        }
+      }
+      else
+      {
+        $tmp = explode(',', $fields_2);
+        $plant = array_fill_keys($tmp, array(null));
+
+        foreach($obs as $v) {
+          $data[] = $v + $plant;
+        }
+      }
+    }
+
+    $info_fields = explode(',', preg_replace('/\s+/', '', ($fields_1 .','. $fields_2)));
+    $geojson = array(
+      'name' => 'Layer Kecamatan '. $sdcode,
+      'features' => array()
+    );
+
+    foreach ($data as $row) {
+
+      $geom = geoPHP::load($row['GEOM'],'wkt');
+
+      $properties['FID'] = $row['FID'];
+      for ($x = 0; $x < count($info_fields); $x++){
+        $properties[$info_fields[$x]] = $row[$info_fields[$x]];
+      }
+
+      $polygon = array(
+        'type' => 'Feature',
+        'bbox' => $geom->getBBox(),
+        'properties' => $properties,
+        'wkt' => $geom->asText(),
+        'id' => $row['FID']
+      );
+
+      array_push($geojson['features'], $polygon);
+    }
+
+    $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
+
+    return json_decode($result, true);
+  }
+
+
+/**
+ * --------------------------------------------------------------------
+ *
+ * function
+ *
+ * --------------------------------------------------------------------
+ */
 
   public function import_str_replace($string)
   {
@@ -249,7 +438,6 @@ class M_geo extends Model
         else $zip->addFile($pathfile .'/'. $file, $file);
         
       }
-
       $zip->close();
 
       return $pathfile .'/'. $realfilename .'.zip';

@@ -330,12 +330,25 @@ $routes->group('administrator', function($routes) {
 			$routes->get('plantdate_ajax/(:num)', 'Adminpanel\Geo::plantdate_detail/$1');
 		});
 
-
 		// Geo Village
-		$routes->get('village', 'Adminpanel\Geo::village_index');
+		$routes->group('village', function($routes) {
+			$routes->get('', 'Adminpanel\Geo::observation_village_index');
+			// Upload - Import
+			$routes->match(['get', 'post'], 'upload', 'Adminpanel\Geo::observation_village_upload');
+			$routes->post('import', 'Adminpanel\Geo::observation_village_import');
+			// Export
+			$routes->get('export/(:num)', 'Adminpanel\Geo::observation_village_export/$1');
+		});
 
 		// Geo Subdistrict
-		$routes->get('subdistrict', 'Adminpanel\Geo::subdistrict_index');
+		$routes->group('subdistrict', function($routes) {
+			$routes->get('', 'Adminpanel\Geo::observation_subdistrict_index');
+			// Upload - Import
+			$routes->match(['get', 'post'], 'upload', 'Adminpanel\Geo::observation_subdistrict_upload');
+			$routes->post('import', 'Adminpanel\Geo::observation_subdistrict_import');
+			// Export
+			$routes->get('export/(:num)', 'Adminpanel\Geo::observation_subdistrict_export/$1');
+		});
 
 	});
 

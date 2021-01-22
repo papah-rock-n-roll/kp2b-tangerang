@@ -13,16 +13,16 @@ use Shapefile\ShapefileException;
 use Shapefile\Geometry\Polygon;
 
 
-class M_vlgeo extends M_geo
+class M_sdgeo extends M_geo
 {
-  const VIEW = 'adminpanel/geo/village/';
+  const VIEW = 'adminpanel/geo/subdistrict/';
 
-  const ACTS = 'administrator/geo/village/';
-  const BACK = '/administrator/geo/village';
+  const ACTS = 'administrator/geo/subdistrict/';
+  const BACK = '/administrator/geo/subdistrict';
 
-  const UPLOAD = 'village/upload';
-  const IMPORT = 'village/import';
-  const EXPORT = 'village/export';
+  const UPLOAD = 'subdistrict/upload';
+  const IMPORT = 'subdistrict/import';
+  const EXPORT = 'subdistrict/export';
 
   public function list($param = null, $keyword = null, $data, $paginate)
   {
@@ -41,8 +41,8 @@ class M_vlgeo extends M_geo
 
     // Jika Tidak null maka like vlname = $_['GET'] keyword
     if(!empty($keyword)) {
-      $like = ['v_observations.vlname' => $keyword];
-      $orLike = ['v_observations.vlcode' => $keyword];
+      $like = ['v_observations.sdname' => $keyword];
+      $orLike = ['v_observations.sdcode' => $keyword];
     }
 
     $data += [
@@ -154,9 +154,9 @@ class M_vlgeo extends M_geo
 
 public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
 {
-  $query = $this->select('vlcode, sdname, vlname')->distinct()
+  $query = $this->select('sdcode, sdname')->distinct()
   ->where($where)->like($like)->orLike($orLike)
-  ->orderBy('vlcode ASC');
+  ->orderBy('sdcode ASC');
 
   return $query->paginate($paginate, 'default');
 }
@@ -340,9 +340,9 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
   // --------------------------------------------------------------------
 
-  public function export($vlcode)
+  public function export($sdcode)
   {
-    $filename = 'Kode Desa-'.$vlcode;
+    $filename = 'Kode Kecamatan-'.$sdcode;
     $dir = WRITEPATH .'uploads/shapefile-export';
 
     if (! file_exists($dir)) {
@@ -353,7 +353,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
     $pathfile = $dir .'/'. $filename;
 
-    $data = parent::get_observation_village($vlcode);
+    $data = parent::get_observation_subdistrict($sdcode);
 
     try {
       // Open Shapefile

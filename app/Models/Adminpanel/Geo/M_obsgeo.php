@@ -24,7 +24,7 @@ class M_obsgeo extends M_geo
   const IMPORT = 'observation/import';
   const EXPORT = 'observation/export';
 
-  public function list($village = null, $keyword = null, $data, $paginate)
+  public function list($param = null, $keyword = null, $data, $paginate)
   {
     $where = array();
     $like = array();
@@ -360,54 +360,52 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       $Shapefile->setCharset('UTF-8');
 
       // Create field structure
-      $Shapefile->addNumericField('OBJECTID', 10, 0);
+      $Shapefile->addNumericField('KD_PETAK', 10, 0);
       $Shapefile->addFloatField('LUAS', 18, 11);
-      $Shapefile->addCharField('LANDUSE', 50, 0);
+      $Shapefile->addCharField('STS_LHN', 30, 0);
       $Shapefile->addCharField('PEMILIK', 50, 0);
       $Shapefile->addCharField('PENGGARAP', 50, 0);
-      $Shapefile->addCharField('POKTAN', 50, 0);
+      $Shapefile->addCharField('NIK_PMK', 50, 0);
+      $Shapefile->addCharField('NIK_PGR', 50, 0);
       $Shapefile->addCharField('IRIGASI', 50, 0);
-      $Shapefile->addFloatField('IP', 18, 11);
+      $Shapefile->addFloatField('JRK_SNG', 7, 2);
+      $Shapefile->addFloatField('JRK_IRG', 7, 2);
+      $Shapefile->addFloatField('IT', 3, 1);
+      $Shapefile->addCharField('LMBG_AIR', 50, 0);
+      $Shapefile->addCharField('POKTAN', 50, 0);
+      $Shapefile->addCharField('ID_POKTAN', 50, 0);
+      $Shapefile->addNumericField('IP', 5, 0);
+      $Shapefile->addCharField('NM_KEC', 50, 0);
+      $Shapefile->addCharField('NM_DESA', 50, 0);
+      $Shapefile->addCharField('KD_DESA', 50, 0);
+      $Shapefile->addCharField('PP_OPT', 100, 0);
+      $Shapefile->addCharField('PP_AIR', 200, 0);
+      $Shapefile->addCharField('PP_SPRTN', 100, 0);
+      $Shapefile->addCharField('PP_LAIN', 200, 0);
+      $Shapefile->addCharField('PL_TNM', 50, 0);
+      $Shapefile->addCharField('PJL_PNN', 50, 0);
+      $Shapefile->addCharField('PNN_MAX', 50, 0);
+      $Shapefile->addCharField('PNN_MIN', 50, 0);
+      $Shapefile->addCharField('BLN_MAX', 50, 0);
+      $Shapefile->addCharField('BLN_MIN', 50, 0);
+      $Shapefile->addCharField('LANDUSE', 50, 0);
+      $Shapefile->addCharField('DSC_LAND', 50, 0);
       $Shapefile->addCharField('BT_1', 50, 0);
       $Shapefile->addCharField('BT_2', 50, 0);
       $Shapefile->addCharField('BT_3', 50, 0);
       $Shapefile->addCharField('VAR_1', 50, 0);
       $Shapefile->addCharField('VAR_2', 50, 0);
       $Shapefile->addCharField('VAR_3', 50, 0);
-      $Shapefile->addCharField('NM_KEC', 50, 0);
-      $Shapefile->addCharField('NM_DESA', 50, 0);
-      $Shapefile->addCharField('STS_LHN', 50, 0);
-      $Shapefile->addCharField('PP_OPT', 100, 0);
-      $Shapefile->addCharField('PP_AIR', 100, 0);
-      $Shapefile->addCharField('PP_SPRTN', 100, 0);
-      $Shapefile->addCharField('PP_LAIN', 100, 0);
-      $Shapefile->addCharField('PL_TNM', 50, 0);
-      $Shapefile->addCharField('PJL_PNN', 50, 0);
-      $Shapefile->addCharField('PNN_MAX', 50, 0);
-      $Shapefile->addCharField('PNN_MIN', 50, 0);
-      $Shapefile->addCharField('KD_DESA', 50, 0);
-      $Shapefile->addCharField('KD_PTK', 50, 0);
-      $Shapefile->addCharField('NM_RESPON', 50, 0);
-      $Shapefile->addCharField('HP_RESPON', 50, 0);
-      $Shapefile->addCharField('ID_POKTAN', 50, 0);
-      $Shapefile->addCharField('NIK_PMK', 50, 0);
-      $Shapefile->addCharField('NIK_PGR', 50, 0);
-      $Shapefile->addCharField('JRK_SNG', 50, 0);
-      $Shapefile->addCharField('JRK_IRG', 50, 0);
-      $Shapefile->addCharField('LMBG_AIR', 50, 0);
-      $Shapefile->addCharField('IT', 50, 0);
       $Shapefile->addCharField('BP_1', 50, 0);
       $Shapefile->addCharField('BP_2', 50, 0);
       $Shapefile->addCharField('BP_3', 50, 0);
       $Shapefile->addCharField('IRG_1', 50, 0);
       $Shapefile->addCharField('IRG_2', 50, 0);
       $Shapefile->addCharField('IRG_3', 50, 0);
+      $Shapefile->addCharField('NM_RESPON', 50, 0);
+      $Shapefile->addCharField('HP_RESPON', 50, 0);
       $Shapefile->addCharField('NM_SRY', 50, 0);
-      $Shapefile->addCharField('TGL_SRY', 50, 0);
-      $Shapefile->addCharField('BLN_MAX', 50, 0);
-      $Shapefile->addCharField('BLN_MIN', 50, 0);
-      $Shapefile->addFloatField('SHAPE_AREA', 18, 11);
-      $Shapefile->addNumericField('LIST', 5, 0);
+      $Shapefile->addDateField('TGL_SRY');
 
       // Write some records (let's pretend we have an array of coordinates)
       foreach ($data['features'] as $i => $k) {
@@ -417,56 +415,54 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         $Point->initFromWKT($k['wkt']);
 
         // Set its data
-        $Point->setData('OBJECTID', $k['properties']['obscode']);
+        $Point->setData('KD_PETAK', $k['properties']['obscode']);
         $Point->setData('LUAS', $k['properties']['broadnrea']);
-        $Point->setData('LANDUSE', $k['properties']['landuse']);
+        $Point->setData('STS_LHN', $k['properties']['areantatus']);
         $Point->setData('PEMILIK', $k['properties']['ownername']);
         $Point->setData('PENGGARAP', $k['properties']['cultivatorname']);
-        $Point->setData('POKTAN', $k['properties']['farmname']);
+        $Point->setData('NIK_PMK', $k['properties']['ownernik']);
+        $Point->setData('NIK_PGR', $k['properties']['cultivatornik']);
         $Point->setData('IRIGASI', $k['properties']['typeirigation']);
+        $Point->setData('JRK_SNG', $k['properties']['distancefromriver']);
+        $Point->setData('JRK_IRG', $k['properties']['distancefromIrgPre']);
+        $Point->setData('IT', $k['properties']['intensitynlan']);
+        $Point->setData('LMBG_AIR', $k['properties']['wtrtreatnnst']);
+        $Point->setData('POKTAN', $k['properties']['farmname']);
+        $Point->setData('ID_POKTAN', $k['properties']['farmcode']);
         $Point->setData('IP', $k['properties']['indxnlant']);
-
-        $no = 1;
-        $index = (int) ceil($k['properties']['indxnlant']) / 100;
-
-        for($i = 0; $i < $index; $i++) {
-
-          $Point->setData('BT_'. $no, $k['properties']['monthgrow'][$i]);
-          $Point->setData('BP_'. $no, $k['properties']['monthharvest'][$i]);
-          $Point->setData('VAR_'. $no, $k['properties']['varieties'][$i]);
-          $Point->setData('IRG_'. $no, $k['properties']['irrigationavbl'][$i]);
-
-          $no++;
-        }
-        
         $Point->setData('NM_KEC', $k['properties']['sdname']);
         $Point->setData('NM_DESA', $k['properties']['vlname']);
-        $Point->setData('STS_LHN', $k['properties']['areantatus']);
+        $Point->setData('KD_DESA', $k['properties']['vlcode']);
         $Point->setData('PP_OPT', $k['properties']['opt']);
         $Point->setData('PP_AIR', $k['properties']['wtr']);
         $Point->setData('PP_SPRTN', $k['properties']['saprotan']);
         $Point->setData('PP_LAIN', $k['properties']['other']);
         $Point->setData('PL_TNM', $k['properties']['pattrnnlant']);
         $Point->setData('PJL_PNN', $k['properties']['harvstsell']);
-        $Point->setData('PNN_MAX', $k['properties']['harvstmax'] .' kwintal/ha');
-        $Point->setData('PNN_MIN', $k['properties']['harvstmin'] .' kwintal/ha');
-        $Point->setData('KD_DESA', $k['properties']['vlcode']);
-        $Point->setData('KD_PTK', $k['properties']['obscode']);
-        $Point->setData('NM_RESPON', $k['properties']['respname']);
-        $Point->setData('HP_RESPON', '');
-        $Point->setData('ID_POKTAN', $k['properties']['farmcode']);
-        $Point->setData('NIK_PMK', $k['properties']['ownernik']);
-        $Point->setData('NIK_PGR', $k['properties']['cultivatornik']);
-        $Point->setData('JRK_SNG', $k['properties']['distancefromriver']);
-        $Point->setData('JRK_IRG', $k['properties']['distancefromIrgPre']);
-        $Point->setData('LMBG_AIR', $k['properties']['wtrtreatnnst']);
-        $Point->setData('IT', $k['properties']['intensitynlan']);
-        $Point->setData('NM_SRY', '');
-        $Point->setData('TGL_SRY', '');
+        $Point->setData('PNN_MAX', $k['properties']['harvstmax']);
+        $Point->setData('PNN_MIN', $k['properties']['harvstmin']);
         $Point->setData('BLN_MAX', $k['properties']['monthmax']);
         $Point->setData('BLN_MIN', $k['properties']['monthmin']);
-        $Point->setData('SHAPE_AREA', $k['area']);
-        $Point->setData('LIST', 1);
+        $Point->setData('LANDUSE', $k['properties']['landuse']);
+        $Point->setData('DSC_LAND', '');
+
+        $no = 1;
+        $index = count($k['properties']['monthgrow']);
+
+        for($x = 0; $x < $index; $x++) {
+
+          $Point->setData('BT_'. $no, $k['properties']['monthgrow'][$x]);
+          $Point->setData('BP_'. $no, $k['properties']['monthharvest'][$x]);
+          $Point->setData('VAR_'. $no, $k['properties']['varieties'][$x]);
+          $Point->setData('IRG_'. $no, $k['properties']['irrigationavbl'][$x]);
+
+          $no++;
+        }
+        
+        $Point->setData('NM_RESPON', $k['properties']['respname']);
+        $Point->setData('HP_RESPON', '');       
+        $Point->setData('NM_SRY', $k['properties']['username']);
+        $Point->setData('TGL_SRY', $k['properties']['timestamp']);
 
         // Write the record to the Shapefile
         $Shapefile->writeRecord($Point);
