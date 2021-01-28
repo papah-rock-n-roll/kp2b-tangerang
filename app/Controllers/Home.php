@@ -16,7 +16,8 @@ class Home extends BaseController
       'url' => base_url('api/geo/'),
 			'url_kec' => base_url('api/geo/kecamatan'),
       'url_desa' => base_url('api/geo/desa'),
-      'url_obs' => base_url('api/geo/obsdetail')
+      'url_obs' => base_url('api/geo/obsdetail'),
+      'url_datalayer' => base_url('api/geo/datalayer')
 		];
 
 		echo view('public/maps', $data);
@@ -33,6 +34,11 @@ class Home extends BaseController
 	public function chart()
 	{
 		echo view('public/chart');
+	}
+
+	public function buff()
+	{
+		echo view('public/buff');
 	}
 
 

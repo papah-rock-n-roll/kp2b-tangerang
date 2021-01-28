@@ -52,13 +52,81 @@ class M_geophp extends Model
 
   // get desa
   public function get_obs_detail($obscode){
-    $sql = "SELECT obscode,respname,farmname,sdname,vlname,landuse,areantatus,broadnrea,
+    $sql = "SELECT obscode,respname,farmname,sdname,vlname,landuse,areantatus,TRUNCATE(broadnrea, 2) AS broadnrea,
       ownernik,ownername,cultivatorname,typeirigation,distancefromriver,
       distancefromIrgPre,wtrtreatnnst,intensitynlan,indxnlant,pattrnnlant,opt,wtr,saprotan,
       other,harvstmax,monthmax,harvstmin,monthmin,harvstsell,username,timestamp
       FROM v_observations WHERE obscode = {$obscode};";
     $query = $this->db->query($sql)->getRowArray();
     return json_encode($query);
+  }
+
+  // get data layer
+  public function get_data_layer($datalayer){
+    if($datalayer == 'desa'){
+      $sql = "SELECT `mstr_villages`.`vlcode` AS `FID`, ST_AsText(`mstr_villages`.`vlshape`) AS `GEOM`,
+        f_tcase(CONCAT('Desa ', `mstr_villages`.`vlname`, ' - ', 'Kecamatan ', `mstr_subdistricts`.`sdname`)) AS `LABEL`
+      FROM `mstr_villages` INNER JOIN `mstr_subdistricts` ON `mstr_subdistricts`.`sdcode` = `mstr_villages`.`sdcode`;";
+      $name = "Batas Desa";
+    }else if($datalayer == 'kec'){
+      $sql = "SELECT `mstr_subdistricts`.`sdcode` AS `FID`, ST_AsText(`mstr_subdistricts`.`sdshape`) AS `GEOM`,
+        f_tcase(CONCAT('Kecamatan ', `mstr_subdistricts`.`sdname`)) AS `LABEL`
+      FROM `mstr_subdistricts`;";
+      $name = "Batas Kecamatan";
+    }else if($datalayer == 'kp2b'){
+      $sql = "SELECT `kp2b`.`FID`, ST_AsText(`kp2b`.`SHAPE`) AS `GEOM`, `kp2b`.`namobj` AS `LABEL` FROM `kp2b`;";
+      $name = "Batas KP2B";
+    }
+
+    $query = $this->db->query($sql)->getResultArray();
+
+    if(!empty($query)){
+
+      $crs = array(
+        'type' => 'name',
+        'properties' => [
+          'name' => 'urn:ogc:def:crs:OGC:1.3:CRS84'
+        ]
+      );
+
+      $geojson = array(
+        'type' => 'FeatureCollection',
+        'name' => $name,
+        'crs' => $crs,
+        'features' => array()
+      );
+
+      $features = array();
+
+      foreach ($query as $row){
+
+        $geom = geoPHP::load($row['GEOM'],'wkt');
+        $json = $geom->out('json');
+        $features = json_decode($json);
+
+        $properties['FID'] = $row['FID'];
+        $properties['LABEL'] = $row['LABEL'];
+
+        $polygon = array(
+          'type' => 'Feature',
+          'id' => $row['FID'],
+          'properties' => $properties,
+          'geometry' => $features
+        );
+
+        array_push($geojson['features'], $polygon);
+
+      }
+
+      $result = json_encode($geojson ,JSON_NUMERIC_CHECK);
+
+    } else {
+
+      return false;
+
+    }
+
+    return json_decode($result, true);
   }
 
   // geojson converter
@@ -112,9 +180,9 @@ class M_geophp extends Model
 
         $polygon = array(
           'type' => 'Feature',
+          'id' => $row['FID'],
           'properties' => $properties,
-          'geometry' => $features,
-          'id' => $row['FID']
+          'geometry' => $features
         );
 
         array_push($geojson['features'], $polygon);

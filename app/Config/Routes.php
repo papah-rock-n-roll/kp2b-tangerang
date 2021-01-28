@@ -53,6 +53,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 	$routes->resource('observation');
 	$routes->resource('plantdates');
 	$routes->resource('report');
+	$routes->resource('datalayer');
 });
 
 /**
@@ -89,6 +90,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/maps', 'Home::maps');
 $routes->get('/data', 'Home::data');
 $routes->get('/chart', 'Home::chart');
+$routes->get('/buff', 'Home::buff');
 
 // Auth login
 $routes->get('/login', 'Auth::index');

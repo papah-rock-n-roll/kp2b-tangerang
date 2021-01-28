@@ -85,7 +85,7 @@ class M_obsgeo extends M_geo
     }
 
     $Shapefile = M_geo::reader_shapefile($newPath . $realfilename .'.shp');
-    
+
     try {
 
       while ($Geometry = $Shapefile->fetchRecord()) {
@@ -111,7 +111,7 @@ class M_obsgeo extends M_geo
       echo "Error Type: " . $e->getErrorType()
       . "\nMessage: " . $e->getMessage()
       . "\nDetails: " . $e->getDetails();
-      
+
     }
 
     $fields = array();
@@ -127,7 +127,7 @@ class M_obsgeo extends M_geo
 
     $data = [
       'v' => [
-        'chk_shape' => $chk_shape, 
+        'chk_shape' => $chk_shape,
         'chk_dbf' => $chk_dbf,
         'type_shape' => $type_shape,
         'str_fields' => implode(",\n", $fields_kv),
@@ -166,7 +166,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
  * Validation
  * --------------------------------------------------------------------
  */
-  
+
   public function validationImport()
   {
     return [
@@ -199,7 +199,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         if ($Geometry->isDeleted()) {
           continue;
         }
-        
+
         $shape = $Geometry->getWKT();
         $dbf = $Geometry->getDataArray();
 
@@ -210,7 +210,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       echo "Error Type: " . $e->getErrorType()
       . "\nMessage: " . $e->getMessage()
       . "\nDetails: " . $e->getDetails();
-      
+
     }
 
     // Fill 'null' jika nilai ''
@@ -252,7 +252,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         'varieties' => $dbf[strstr(array_keys($dbf, $dbf[$post['varieties']])[0], '_', true) .'_'. $no],
         'irrigationavbl' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['irrigationavbl']])[0], '_', true) .'_'. $no]),
       ];
-    
+
       $no++;
     }
 
@@ -266,8 +266,8 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
     }
 
     if($chk_shape == 1) {
-      $db->query("UPDATE lppbmis.observations_frmshape 
-      SET shape = ST_GeomFromText('{$shape}') 
+      $db->query("UPDATE lppbmis.observations_frmshape
+      SET shape = ST_GeomFromText('{$shape}')
       WHERE obsshape = {$id}");
     }
 
@@ -289,7 +289,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         'pattrnnlant' => $dbf[$post['pattrnnlant']],
         'wtr' => $dbf[$post['wtr']],
         'other' => $dbf[$post['other']],
-        'harvstmax' => $v['harvstmax'],     
+        'harvstmax' => $v['harvstmax'],
         'harvstmin' => $v['harvstmin'],
         'monthmax' => $dbf[$post['monthmax']],
         'monthmin' => $dbf[$post['monthmin']],
@@ -306,7 +306,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       $obs->set($query2);
       $obs->where('obscode', $id);
       $obs->update();
-    
+
       foreach ($v['plantdates'] as $k => $val) {
 
         $num = $k;
@@ -353,7 +353,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
     try {
       // Open Shapefile
       $Shapefile = M_geo::writer_shapefile($pathfile);
-      
+
       // Set shape type
       $Shapefile->setShapeType(Shapefile::SHAPE_TYPE_POLYGON);
 
@@ -436,7 +436,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
           $no++;
         }
-        
+
         $Point->setData('NM_KEC', $k['properties']['sdname']);
         $Point->setData('NM_DESA', $k['properties']['vlname']);
         $Point->setData('STS_LHN', $k['properties']['areantatus']);
@@ -469,10 +469,13 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         // Write the record to the Shapefile
         $Shapefile->writeRecord($Point);
       }
-      
+
+      // Set Projection
+      $Shapefile->setPRJ('GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]');
+
       // Finalize and close files to use them
       $Shapefile = null;
-  
+
     } catch (ShapefileException $e) {
         // Print detailed error information
         echo "Error Type: " . $e->getErrorType()
@@ -484,5 +487,5 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
     return $file;
   }
-  
+
 }
