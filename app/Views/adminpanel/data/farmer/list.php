@@ -50,8 +50,8 @@
           <div class="dropdown-menu" role="menu">
             <a class="tmb-create dropdown-item" href="<?= esc($create) ?>">Tambah <i class="fas fa-file-alt float-right p-1"></i></a>
             <div class="dropdown-divider"></div>
-            <a class="tmb-read dropdown-item" id="export">Export <i class="fas fa-download float-right p-1"></i></a>
-            <a class="tmb-update dropdown-item" href="<?= esc($import) ?>">Import <i class="fas fa-upload float-right p-1"></i></a>
+            <a class="tmb-export dropdown-item" id="export">Export <i class="fas fa-download float-right p-1"></i></a>
+            <a class="tmb-import dropdown-item" href="<?= esc($import) ?>">Import <i class="fas fa-upload float-right p-1"></i></a>
           </div>
         </div>
         <button type="button" class="btn btn-default btn-sm" data-card-widget="collapse"><i class="fas fa-minus"></i></button>

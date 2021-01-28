@@ -49,22 +49,37 @@
 
     <div class="form-group">
       <label for="">Action</label>
-      <div class="form-check">
-        <input class="form-check-input" name="create" type="checkbox" value="1">
-        <label class="form-check-label">Create</label>
+      <div class="row">
+        <div class="col-md-6"><!-- LEFT -->
+          <div class="form-check">
+            <input class="form-check-input" name="create" type="checkbox" value="1">
+            <label class="form-check-label">Create</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" name="read" type="checkbox" value="1">
+            <label class="form-check-label">Read</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" name="update" type="checkbox" value="1">
+            <label class="form-check-label">Update</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" name="delete" type="checkbox" value="1">
+            <label class="form-check-label">Delete</label>
+          </div>
+        </div>
+        <div class="col-md-6"><!-- RIGHT -->
+          <div class="form-check">
+            <input class="form-check-input" name="import" type="checkbox" value="1">
+            <label class="form-check-label">Import</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" name="export" type="checkbox" value="1">
+            <label class="form-check-label">Export</label>
+          </div>
+        </div>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" name="read" type="checkbox" value="1">
-        <label class="form-check-label">Read</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" name="update" type="checkbox" value="1">
-        <label class="form-check-label">Update</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" name="delete" type="checkbox" value="1">
-        <label class="form-check-label">Delete</label>
-      </div>
+      
     </div>
 
   </div>   

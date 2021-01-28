@@ -3,7 +3,7 @@
 /**
  * --------------------------------------------------------------------
  *
- * Geo Observation
+ * Geo villages
  *
  * --------------------------------------------------------------------
  */
@@ -13,16 +13,16 @@ use Shapefile\ShapefileException;
 use Shapefile\Geometry\Polygon;
 
 
-class M_obsgeo extends M_geo
+class M_sdgeo extends M_geo
 {
-  const VIEW = 'adminpanel/geo/observation/';
+  const VIEW = 'adminpanel/geo/subdistrict/';
 
-  const ACTS = 'administrator/geo/observation/';
-  const BACK = '/administrator/geo/observation';
+  const ACTS = 'administrator/geo/subdistrict/';
+  const BACK = '/administrator/geo/subdistrict';
 
-  const UPLOAD = 'observation/upload';
-  const IMPORT = 'observation/import';
-  const EXPORT = 'observation/export';
+  const UPLOAD = 'subdistrict/upload';
+  const IMPORT = 'subdistrict/import';
+  const EXPORT = 'subdistrict/export';
 
   public function list($param = null, $keyword = null, $data, $paginate)
   {
@@ -39,9 +39,10 @@ class M_obsgeo extends M_geo
     $data['keyword'] = $keyword;
     $data['page'] = $paginate;
 
-    // Jika Tidak null maka like obscode = $_['GET'] keyword
+    // Jika Tidak null maka like vlname = $_['GET'] keyword
     if(!empty($keyword)) {
-      $like = ['v_observations.obscode' => $keyword];
+      $like = ['v_observations.sdname' => $keyword];
+      $orLike = ['v_observations.sdcode' => $keyword];
     }
 
     $data += [
@@ -85,7 +86,7 @@ class M_obsgeo extends M_geo
     }
 
     $Shapefile = M_geo::reader_shapefile($newPath . $realfilename .'.shp');
-
+    
     try {
 
       while ($Geometry = $Shapefile->fetchRecord()) {
@@ -111,7 +112,7 @@ class M_obsgeo extends M_geo
       echo "Error Type: " . $e->getErrorType()
       . "\nMessage: " . $e->getMessage()
       . "\nDetails: " . $e->getDetails();
-
+      
     }
 
     $fields = array();
@@ -127,7 +128,7 @@ class M_obsgeo extends M_geo
 
     $data = [
       'v' => [
-        'chk_shape' => $chk_shape,
+        'chk_shape' => $chk_shape, 
         'chk_dbf' => $chk_dbf,
         'type_shape' => $type_shape,
         'str_fields' => implode(",\n", $fields_kv),
@@ -153,9 +154,9 @@ class M_obsgeo extends M_geo
 
 public function getObservations($where = null, $like = null, $orLike = null, $paginate = 5)
 {
-  $query = $this->select('obscode, sdname, vlname, farmname, ownername, cultivatorname')
+  $query = $this->select('sdcode, sdname')->distinct()
   ->where($where)->like($like)->orLike($orLike)
-  ->orderBy('obscode ASC');
+  ->orderBy('sdcode ASC');
 
   return $query->paginate($paginate, 'default');
 }
@@ -166,7 +167,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
  * Validation
  * --------------------------------------------------------------------
  */
-
+  
   public function validationImport()
   {
     return [
@@ -199,7 +200,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         if ($Geometry->isDeleted()) {
           continue;
         }
-
+        
         $shape = $Geometry->getWKT();
         $dbf = $Geometry->getDataArray();
 
@@ -210,7 +211,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       echo "Error Type: " . $e->getErrorType()
       . "\nMessage: " . $e->getMessage()
       . "\nDetails: " . $e->getDetails();
-
+      
     }
 
     // Fill 'null' jika nilai ''
@@ -246,13 +247,17 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
     $no = 1;
     for ($i = 0; $i < $index; $i++) {
       $data['plantdates'][] = [
-        'growceason' => $no,
+        'growceason' => 
+        ucfirst($dbf[strstr(array_keys($dbf, $dbf[$post['monthgrow']])[0], '_', true) .'_'. $no])
+        .' - '. 
+        ucfirst($dbf[strstr(array_keys($dbf, $dbf[$post['monthharvest']])[0], '_', true) .'_'. $no]), 
+
         'monthgrow' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['monthgrow']])[0], '_', true) .'_'. $no]),
         'monthharvest' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['monthharvest']])[0], '_', true) .'_'. $no]),
         'varieties' => $dbf[strstr(array_keys($dbf, $dbf[$post['varieties']])[0], '_', true) .'_'. $no],
         'irrigationavbl' => strtoupper($dbf[strstr(array_keys($dbf, $dbf[$post['irrigationavbl']])[0], '_', true) .'_'. $no]),
       ];
-
+    
       $no++;
     }
 
@@ -266,8 +271,8 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
     }
 
     if($chk_shape == 1) {
-      $db->query("UPDATE lppbmis.observations_frmshape
-      SET shape = ST_GeomFromText('{$shape}')
+      $db->query("UPDATE lppbmis.observations_frmshape 
+      SET shape = ST_GeomFromText('{$shape}') 
       WHERE obsshape = {$id}");
     }
 
@@ -289,7 +294,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         'pattrnnlant' => $dbf[$post['pattrnnlant']],
         'wtr' => $dbf[$post['wtr']],
         'other' => $dbf[$post['other']],
-        'harvstmax' => $v['harvstmax'],
+        'harvstmax' => $v['harvstmax'],     
         'harvstmin' => $v['harvstmin'],
         'monthmax' => $dbf[$post['monthmax']],
         'monthmin' => $dbf[$post['monthmin']],
@@ -306,7 +311,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       $obs->set($query2);
       $obs->where('obscode', $id);
       $obs->update();
-
+    
       foreach ($v['plantdates'] as $k => $val) {
 
         $num = $k;
@@ -335,9 +340,9 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
   // --------------------------------------------------------------------
 
-  public function export($obscode)
+  public function export($sdcode)
   {
-    $filename = 'Petak-'.$obscode;
+    $filename = 'Kode Kecamatan-'.$sdcode;
     $dir = WRITEPATH .'uploads/shapefile-export';
 
     if (! file_exists($dir)) {
@@ -348,12 +353,12 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
     $pathfile = $dir .'/'. $filename;
 
-    $data = parent::get_observation($obscode);
+    $data = parent::get_observation_subdistrict($sdcode);
 
     try {
       // Open Shapefile
       $Shapefile = M_geo::writer_shapefile($pathfile);
-
+      
       // Set shape type
       $Shapefile->setShapeType(Shapefile::SHAPE_TYPE_POLYGON);
       $Shapefile->setPRJ('GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]');
@@ -430,20 +435,6 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
         $Point->setData('POKTAN', $k['properties']['farmname']);
         $Point->setData('ID_POKTAN', $k['properties']['farmcode']);
         $Point->setData('IP', $k['properties']['indxnlant']);
-
-        $no = 1;
-        $index = (int) ceil($k['properties']['indxnlant']) / 100;
-
-        for($i = 0; $i < $index; $i++) {
-
-          $Point->setData('BT_'. $no, $k['properties']['monthgrow'][$i]);
-          $Point->setData('BP_'. $no, $k['properties']['monthharvest'][$i]);
-          $Point->setData('VAR_'. $no, $k['properties']['varieties'][$i]);
-          $Point->setData('IRG_'. $no, $k['properties']['irrigationavbl'][$i]);
-
-          $no++;
-        }
-
         $Point->setData('NM_KEC', $k['properties']['sdname']);
         $Point->setData('NM_DESA', $k['properties']['vlname']);
         $Point->setData('KD_DESA', $k['properties']['vlcode']);
@@ -472,22 +463,19 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
           $no++;
         }
-
+        
         $Point->setData('NM_RESPON', $k['properties']['respname']);
-        $Point->setData('HP_RESPON', '');
+        $Point->setData('HP_RESPON', '');       
         $Point->setData('NM_SRY', $k['properties']['username']);
         $Point->setData('TGL_SRY', $k['properties']['timestamp']);
 
         // Write the record to the Shapefile
         $Shapefile->writeRecord($Point);
       }
-
-      // Set Projection
-      $Shapefile->setPRJ('GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]');
-
+      
       // Finalize and close files to use them
       $Shapefile = null;
-
+  
     } catch (ShapefileException $e) {
         // Print detailed error information
         echo "Error Type: " . $e->getErrorType()
@@ -499,5 +487,5 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
 
     return $file;
   }
-
+  
 }

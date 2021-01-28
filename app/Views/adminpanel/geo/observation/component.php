@@ -32,8 +32,8 @@
         </li>
       </ul>
 
-      <a href="<?= $import ?>" class="btn btn-sm btn-warning btn-block"><b>Import</b></a>
-      <a href="<?= $export .'/'. $obscode ?>" class="btn btn-sm btn-primary btn-block"><b>Export</b></a>
+      <a href="<?= $import ?>" class="tmb-import btn btn-sm btn-warning btn-block"><b>Import</b></a>
+      <a href="<?= $export .'/'. $obscode ?>" class="tmb-export btn btn-sm btn-primary btn-block"><b>Export</b></a>
     </div>
     <!-- /.card-body -->
   </div>

@@ -11,6 +11,8 @@
  * 
  *  :\> php public\index.php cli cache delete *.cache
  * 
+ *  :\> php public\index.php cli uploads delete folder
+ * 
  * 
  *  :\> php public\index.php cli database dump path_file_name
  * 
@@ -30,6 +32,11 @@ class Access extends \App\Controllers\BaseController
   public function cache_delete(string $ext = null)
   {
     $this->M_log->delete_post('cache', $ext);
+  }
+
+  public function uploads_delete(string $folder = null)
+  {
+    $this->M_log->delete_post('uploads', $folder);
   }
 
   public function database_dump(string $path = null)

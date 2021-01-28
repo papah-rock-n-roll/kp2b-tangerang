@@ -55,7 +55,7 @@ class Role
   {
     $db = \Config\Database::connect();
 
-    $query = "SELECT `create`,`read`,`update`,`delete` FROM mstr_role WHERE roleid = {$roleid}";
+    $query = "SELECT `create`,`read`,`update`,`delete`,`import`,`export` FROM mstr_role WHERE roleid = {$roleid}";
     $data = $db->query($query)->getRowArray();
 
     // fetch acts sesuai role action

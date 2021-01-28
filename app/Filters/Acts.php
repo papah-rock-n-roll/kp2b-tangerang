@@ -119,6 +119,22 @@ class Acts implements FilterInterface
 
           break;
 
+          case 'import':
+
+            if(in_array('import', $segments)) {
+              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+
+          break;
+
+          case 'export':
+
+            if(in_array('export', $segments)) {
+              throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+
+          break;
+
         }
 
       }
