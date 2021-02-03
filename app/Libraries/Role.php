@@ -1,5 +1,5 @@
 <?php namespace App\Libraries;
- 
+
 class Role
 {
   public static function modules($roleid)
@@ -22,8 +22,8 @@ class Role
         'account' => 'akun'
       ],
       'data' => [
-        'observation' => 'petak', 
-        'owner' => 'pemilik', 
+        'observation' => 'petak',
+        'owner' => 'pemilik',
         'farmer' => 'poktan',
         'responden'=> 'responden'
       ],
@@ -32,10 +32,7 @@ class Role
         'village' => 'desa',
         'subdistrict' => 'kecamatan',
       ],
-      'report' => [
-        'graph' => 'grafik',
-        'table' => 'tabel'
-      ],
+      'report' => [],
     );
 
     // Trim menus sesuai rolemodules
@@ -61,8 +58,8 @@ class Role
     // fetch acts sesuai role action
     $acts = array();
     foreach($data as $k => $v) {
-      if($v == 1) { 
-        next($data); 
+      if($v == 1) {
+        next($data);
       } else {
         $acts[] = $k;
       }

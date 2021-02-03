@@ -2,6 +2,10 @@
 
 <?= $this->section('link') ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css">
+<?= \App\Libraries\Link::style()->datatable4 ?>
+<?= \App\Libraries\Link::style()->datatableResponsive4 ?>
+<?= \App\Libraries\Link::style()->datatableBtn4 ?>
+<?= \App\Libraries\Link::style()->chartjs ?>
 <style>
   #viewDiv {padding:0;margin:0;height:calc(100vh - 68px);width:100%;position:relative;}
   #feature-node{position:relative;top:0;width:100%;height:100%;max-width:650px}
@@ -27,6 +31,21 @@
 <?= $this->section('script') ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
+<?= \App\Libraries\Link::script()->datatable ?>
+<?= \App\Libraries\Link::script()->datatable4 ?>
+<?= \App\Libraries\Link::script()->datatableResponsive ?>
+<?= \App\Libraries\Link::script()->datatableResponsive4 ?>
+<?= \App\Libraries\Link::script()->datatableBtn ?>
+<?= \App\Libraries\Link::script()->datatableBtn4 ?>
+<?= \App\Libraries\Link::script()->btnFlash ?>
+<?= \App\Libraries\Link::script()->jszip ?>
+<?= \App\Libraries\Link::script()->pdfmake ?>
+<?= \App\Libraries\Link::script()->vfsFont ?>
+<?= \App\Libraries\Link::script()->html5Btn ?>
+<?= \App\Libraries\Link::script()->btnPrint ?>
+<?= \App\Libraries\Link::script()->btncolVis ?>
+<?= \App\Libraries\Link::script()->chartjs ?>
+<?= \App\Libraries\Link::script()->chartjslabel ?>
 
 <?= \App\Libraries\Link::script()->select2 ?>
 <?= \App\Libraries\Link::script()->arcgis ?>
@@ -63,17 +82,18 @@
     const url_desa = "<?= $url_desa ?>";
     const url_obs = "<?= $url_obs ?>";
     const url_datalayer = "<?= $url_datalayer ?>";
+    const url_info = "<?= $url_info ?>";
     let editor, features;
     var geojsonLayer, geojsonDesa, geojsonKec, geojsonKp2b, geojsonSawah;
     var layerAdd, dataAdd;
     var legendSymbol = [], defLabel = [];
-    var dataHead = ["Kode petak","Nama responden","Nama Kelompok Tani","Nama kecamatan","Nama desa","Landuse",
+    var dataHead = ["Kode petak","Nama responden","Nama Kelompok Tani","Nama kecamatan","Nama desa/kelurahan","Landuse",
     "Status lahan","Luas petak (m<sup>2</sup>)","NIK pemilik","Nama pemilik","Nama penggarap","Tipe irigasi",
     "Jarak dari sungai (m)","Jarak dari irigasi primer (m)","Lembaga pengelola air","Intensitas tanam","Index pertanaman (IP)",
     "Pola tanam","Permasalahan OPT","Permasalahan air","Permasalahan saprotan","Permasalahan lain",
     "Panen terbanyak (kuintal)","Bulan panen terbanyak","Panen terkecil (kuintal)","Bulan panen terkecil",
     "Penjualan panen","Surveyor","Update"];
-    var copyright = "Dinas Pertanian dan Ketahanan Pangan Kabupaten Tangerang"
+    var copyright = "Dinas Pertanian dan Ketahanan Pangan Kabupaten Tangerang";
 
     const template = {
       title: "Kode Petak: {FID}",
@@ -250,8 +270,8 @@
     <!-- Sidebar Info -->
     const graphic = {
       popupTemplate: {
-        title: "Data Information",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tristique urna tortor, et tempus nibh facilisis vel. Proin est massa, tristique sed hendrerit ac, facilisis sed erat. Ut commodo arcu in pharetra congue. Etiam vitae magna enim. Morbi in libero in lacus mattis ornare. Sed a eros sit amet felis interdum elementum. Pellentesque facilisis volutpat justo, a mollis lectus malesuada sit amet. Proin ornare lacus metus, non auctor nisi consequat sit amet. Donec finibus porttitor massa, in sagittis quam rhoncus quis. Phasellus pellentesque purus eget ultricies consequat. Praesent non venenatis nisi. Suspendisse potenti. Nullam vitae enim semper ante vehicula vehicula lobortis nec urna. Praesent feugiat interdum auctor. Maecenas in turpis nec velit euismod placerat id non ante. Sed consectetur fringilla nunc nec ullamcorper. Ut pharetra, massa vitae semper porta, orci ante porta tortor, sed consequat mauris purus sed arcu. Suspendisse eget libero vel metus porttitor tristique eu id orci. Sed interdum aliquet luctus. Vivamus nisi tellus, finibus ut libero non, accumsan dignissim mauris. Nulla varius tellus mauris, at rhoncus dolor placerat a. In tellus ipsum, placerat scelerisque suscipit quis, condimentum accumsan ante. Integer fringilla odio auctor, lobortis justo in, interdum nulla. Mauris at consectetur magna. Donec luctus urna sed tortor gravida elementum. Aenean sit amet purus a felis accumsan semper. Duis et lectus congue lacus pulvinar dignissim fringilla pellentesque ex. Sed at dolor a elit laoreet malesuada vel nec augue. Duis porttitor quis urna sed interdum. Aliquam erat volutpat. Curabitur vitae sollicitudin dui. Donec molestie lorem vehicula, porttitor risus eget, molestie nisi. Quisque nec nibh vel felis cursus mattis eu in metus. Phasellus congue, quam in lobortis porttitor, erat dolor elementum lorem, quis imperdiet enim tortor volutpat augue. Fusce rhoncus velit in nibh volutpat aliquet. Integer maximus arcu eget dignissim volutpat. Cras posuere quis risus at posuere. Vestibulum a turpis efficitur, euismod augue in, porta purus. Nunc sollicitudin mi vel nunc ultrices interdum. Nam volutpat posuere turpis. Aenean ac euismod mi. Phasellus nec urna malesuada, commodo ex quis, elementum turpis. Donec neque sapien, efficitur et pulvinar non, sollicitudin vel metus. In nec euismod justo, at euismod felis. Phasellus eget ipsum sed neque ullamcorper ullamcorper sit amet at ex. Praesent volutpat ultrices posuere. Vestibulum molestie ultrices est. Aenean semper, massa quis tincidunt hendrerit, ex ex viverra mi, vitae vestibulum purus ex vitae dolor. Cras euismod, ligula vitae vehicula fringilla, risus mauris semper metus, sit amet mattis ipsum dui et velit."
+        title: "Informasi Data",
+        content: "Belum ada informasi. Silahkan pilih jenis data pada panel layer data."
       }
     };
     const feature = new Feature({
@@ -267,7 +287,7 @@
     infoBtn.setAttribute("data-widget", "control-sidebar");
     infoBtn.addEventListener('click', function(evt){
       console.log("clicked");
-    })
+    });
     view.ui.add(infoBtn, "top-right");
 
     <!-- Action layer petak -->
@@ -298,7 +318,7 @@
       }else{
         domClass.remove('loadingDiv', 'visible');
       }
-    })
+    });
 
     view.when(function () {
       var popup = view.popup;
@@ -670,6 +690,75 @@
         };
       }
 
+      <!-- Get information -->
+      function getInfo(data, kec, desa) {
+        var div = document.createElement("div");
+        $.ajax({
+          type : 'GET',
+          dataType: "json",
+          beforeSend: function(){
+            $("#info-container .esri-feature__main-container").html('<div class="text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>');
+          },
+          url : url_info + '?type=' + data + '&sdcode=' + kec + '&vlcode=' + desa,
+          success : function(obj, textstatus){
+
+            var titleC = $("#info-container .esri-feature__title");
+            var mainC = $("#info-container .esri-feature__main-container");
+            var titleInfo = $('#layerData option:selected').text();
+
+            if (!("error" in obj)) {
+
+              mainC.html('<table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead>' +
+                  '<tr><th class="align-middle">'+titleInfo+'</th><th class="align-middle">Jumlah Petak</th><th class="align-middle">Luas Petak (ha)</th><th class="align-middle">Produktivitas (ton/ha)</th></tr>' +
+              '</thead></table>');
+
+              var opt = [];
+              columns = [
+                { "data": "field" },
+                { "data": "petak", render: $.fn.dataTable.render.number( '.', ',', 0 ) },
+                { "data": "luas", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+                { "data": "produksi" }
+              ];
+              columnDefs =  [
+                { targets: 1, className: 'text-right' },
+                { targets: 2, className: 'text-right' },
+                { targets: 3, className: 'text-left' }
+              ];
+              order = [0, 'asc'];
+              opt.push(columns);
+              opt.push(columnDefs);
+              opt.push(order);
+
+              var dataTable = $("#table-result").DataTable( {
+                data: obj,
+                "searching": false,
+                "paging": false,
+                "info": false,
+                "responsive": false,
+                "autoWidth": false,
+                "columns": opt[0],
+                "columnDefs": opt[1],
+                "order": opt[3]
+              });
+
+              titleC.html(titleInfo);
+
+            } else {
+
+              mainC.html('<h6 class="text-center">Data belum tersedia</h6>');
+
+            }
+
+          },
+          error: function (obj, textstatus) {
+
+            mainC.html('<h6 class="text-center">Data belum tersedia</h6>');
+
+          }
+        });
+
+      }
+
       function updateLayer(data, kec, desa){
         map.layers.remove(geojsonLayer);
         popup.close();
@@ -683,6 +772,7 @@
         });
 
         renderLayers(data);
+        getInfo(data, kec, desa);
 
         geojsonLayer.queryExtent().then(function(results){
           view.goTo(results.extent);

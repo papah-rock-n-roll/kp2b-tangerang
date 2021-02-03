@@ -135,7 +135,7 @@
             <?= $validation->getError('indxnlant') ?>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="">Pola Tanam</label>
           <?php
@@ -221,7 +221,7 @@
 
 <script>
 
-  $('.select2').select2()
+  $('.select2').select2();
 
   $(".select2-input").select2({
     tags: true

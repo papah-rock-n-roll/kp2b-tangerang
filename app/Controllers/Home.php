@@ -17,7 +17,8 @@ class Home extends BaseController
 			'url_kec' => base_url('api/geo/kecamatan'),
       'url_desa' => base_url('api/geo/desa'),
       'url_obs' => base_url('api/geo/obsdetail'),
-      'url_datalayer' => base_url('api/geo/datalayer')
+      'url_datalayer' => base_url('api/geo/datalayer'),
+      'url_info' => base_url('api/geo/datainfo')
 		];
 
 		echo view('public/maps', $data);

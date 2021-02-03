@@ -17,7 +17,7 @@
     <?php echo form_open($action) ?>
     <div class="form-group">
       <label for="">Role Name</label>
-      <?php 
+      <?php
       $rolename = [
         'type' => 'text',
         'class' => $validation->hasError('rolename') ? 'form-control is-invalid' : 'form-control',
@@ -45,7 +45,7 @@
         <?= $validation->getError('rolemodules') ?>
       </div>
     </div>
-    
+
     <div class="form-group">
       <label for="">Action</label>
         <div class="row">
@@ -56,17 +56,17 @@
               <label class="form-check-label">Create</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" name="read" type="checkbox" value="1" 
+              <input class="form-check-input" name="read" type="checkbox" value="1"
               <?= $read = $v['read'] ? 'checked' : '' ?> >
               <label class="form-check-label">Read</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" name="update" type="checkbox" value="1" 
+              <input class="form-check-input" name="update" type="checkbox" value="1"
               <?= $update = $v['update'] ? 'checked' : '' ?> >
               <label class="form-check-label">Update</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" name="delete" type="checkbox" value="1" 
+              <input class="form-check-input" name="delete" type="checkbox" value="1"
               <?= $delete = $v['delete'] ? 'checked' : '' ?> >
               <label class="form-check-label">Delete</label>
             </div>
@@ -74,26 +74,26 @@
 
           <div class="col-md-6"><!-- RIGHT -->
             <div class="form-check">
-              <input class="form-check-input" name="import" type="checkbox" value="1" 
+              <input class="form-check-input" name="import" type="checkbox" value="1"
               <?= $import = $v['import'] ? 'checked' : '' ?> >
               <label class="form-check-label">Import</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" name="export" type="checkbox" value="1" 
+              <input class="form-check-input" name="export" type="checkbox" value="1"
               <?= $export = $v['export'] ? 'checked' : '' ?> >
               <label class="form-check-label">Export</label>
             </div>
           </div>
 
         </div>
-    </div>      
-  </div> 
+    </div>
+  </div>
   <div class="card-footer">
     <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
     <button type="submit" class="btn btn-primary">Simpan</button>
   </div>
   <?php echo form_close() ?>
-  
+
 </div>
 
 </div>
@@ -104,9 +104,7 @@
 <?= \App\Libraries\Link::script()->select2 ?>
 <script>
   $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
+    $('.select2').select2();
   });
 </script>
 

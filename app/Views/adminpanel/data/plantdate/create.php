@@ -41,7 +41,7 @@
           </thead>
           <tbody>
           <?php if(empty($oldlist)) : ?>
-            <tr><td colspan="6"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
+            <tr><td colspan="6"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
           <?php else : ?>
             <?php foreach($oldlist as $k => $v) : ?>
               <tr>
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <?php if(empty($newlist)) : ?> 
+    <?php if(empty($newlist)) : ?>
 
       <div class="card">
         <div class="card-header">
@@ -75,8 +75,8 @@
       </div>
 
     <?php else : ?>
-    
-      <?php echo form_open($action) ?>  
+
+      <?php echo form_open($action) ?>
 
         <div class="card">
           <div class="card-header d-flex p-0">
@@ -104,8 +104,8 @@
                 </div>
               <?php endforeach ?>
             </div>
-          </div>      
-     
+          </div>
+
           <div class="card-footer">
             <button type="button" class="btn btn-sm btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
             <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
@@ -125,16 +125,16 @@
 
 <script>
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    changeSelect()
+    changeSelect();
 })
 
 function changeSelect() {
-  $('select.select2').select2()
+  $('select.select2').select2();
 }
 
 $("form input").on("invalid", function() {
   let tab = $(this).closest('.tab-pane').attr('id');
-  $('.nav-item a[href="#' + tab + '"]').tab('show')
+  $('.nav-item a[href="#' + tab + '"]').tab('show');
 });
 
 </script>

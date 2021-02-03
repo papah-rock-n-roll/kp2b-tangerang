@@ -22,7 +22,7 @@ class M_report extends Model{
 
     // Level kecamatan
     if(!empty($sdcode)){
-      $sql = "SELECT vlcode AS code, CONCAT ('Desa ', f_tcase(vlname)) AS label,
+      $sql = "SELECT vlcode AS code, f_tcase(vlname) AS label,
         SUM(luas1) AS luas1, SUM(luas2) AS luas2,
         SUM(jmlh1) AS jmlh1, SUM(jmlh2) AS jmlh2
       FROM (
@@ -47,7 +47,7 @@ class M_report extends Model{
 
     }else{
 
-      $sql = "SELECT sdcode AS code, CONCAT ('Kecamatan ', f_tcase(sdname)) AS label,
+      $sql = "SELECT sdcode AS code, f_tcase(sdname) AS label,
         SUM(luas1) AS luas1, SUM(luas2) AS luas2,
         SUM(jmlh1) AS jmlh1, SUM(jmlh2) AS jmlh2
       FROM (
@@ -82,7 +82,7 @@ class M_report extends Model{
     if(!empty($sdcode)){
 
       // Level kecamatan
-      $sql = "SELECT vlcode AS code, CONCAT ('Desa ', f_tcase(vlname)) AS label, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap, SUM(kosong) AS kosong
+      $sql = "SELECT vlcode AS code, f_tcase(vlname) AS label, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap, SUM(kosong) AS kosong
       FROM (SELECT sdcode, sdname, vlcode, vlname, COUNT(DISTINCT ownernik) AS pemilik, 0 AS penggarap, 0 AS kosong
         FROM v_observations
         WHERE ownernik <> 1 AND ownernik = cultivatornik AND landuse = 'Sawah'
@@ -124,7 +124,7 @@ class M_report extends Model{
     }else{
 
       // Level kabupaten
-      $sql = "SELECT sdcode AS code, CONCAT ('Kecamatan ', f_tcase(sdname)) AS label, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap, SUM(kosong) AS kosong FROM
+      $sql = "SELECT sdcode AS code, f_tcase(sdname) AS label, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap, SUM(kosong) AS kosong FROM
         (SELECT sdcode, sdname, vlcode, vlname, COUNT(DISTINCT ownernik) AS pemilik, 0 AS penggarap, 0 AS kosong
         FROM v_observations
         WHERE ownernik <> 1 AND ownernik = cultivatornik AND landuse = 'Sawah'
@@ -174,7 +174,7 @@ class M_report extends Model{
     if(!empty($sdcode)){
 
       // Level kecamatan
-      $sql = "SELECT vlcode AS code, CONCAT ('Desa ', f_tcase(vlname)) AS label, COUNT(DISTINCT farmcode) AS poktan, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap
+      $sql = "SELECT vlcode AS code, f_tcase(vlname) AS label, COUNT(DISTINCT farmcode) AS poktan, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap
       FROM (SELECT sdcode, sdname, vlcode, vlname, farmcode, 0 AS pemilik, 0 AS penggarap
         FROM v_observations
         WHERE farmcode <> 1
@@ -198,7 +198,7 @@ class M_report extends Model{
     }else{
 
       // Level kabupaten
-      $sql = "SELECT sdcode AS code, CONCAT ('Kecamatan ', f_tcase(sdname)) AS label, COUNT(DISTINCT farmcode) AS poktan, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap
+      $sql = "SELECT sdcode AS code, f_tcase(sdname) AS label, COUNT(DISTINCT farmcode) AS poktan, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap
       FROM (SELECT sdcode, sdname, vlcode, vlname, farmcode, 0 AS pemilik, 0 AS penggarap
         FROM v_observations
         WHERE farmcode <> 1
@@ -231,7 +231,7 @@ class M_report extends Model{
     if(!empty($sdcode)){
 
       // Level kecamatan
-      $sql = "SELECT vlcode AS code, CONCAT ('Desa ', f_tcase(vlname)) AS label,
+      $sql = "SELECT vlcode AS code, f_tcase(vlname) AS label,
         `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`
       FROM v_g_plantdates
       WHERE sdcode = '{$sdcode}'";
@@ -239,7 +239,7 @@ class M_report extends Model{
     }else{
 
       // Level kabupaten
-      $sql = "SELECT sdcode AS code, CONCAT ('Kecamatan ', f_tcase(sdname)) AS label,
+      $sql = "SELECT sdcode AS code, f_tcase(sdname) AS label,
         SUM(`1`) AS `1`, SUM(`2`) AS `2`, SUM(`3`) AS `3`, SUM(`4`) AS `4`, SUM(`5`) AS `5`, SUM(`6`) AS `6`,
         SUM(`7`) AS `7`, SUM(`8`) AS `8`, SUM(`9`) AS `9`, SUM(`10`) AS `10`, SUM(`11`) AS `11`, SUM(`12`) AS `12`
       FROM v_g_plantdates
@@ -258,7 +258,7 @@ class M_report extends Model{
     if(!empty($sdcode)){
 
       // Level kecamatan
-      $sql = "SELECT vlcode AS code, CONCAT ('Desa ', f_tcase(vlname)) AS label,
+      $sql = "SELECT vlcode AS code, f_tcase(vlname) AS label,
         `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`
       FROM v_h_plantdates
       WHERE sdcode = '{$sdcode}'";
@@ -266,7 +266,7 @@ class M_report extends Model{
     }else{
 
       // Level kabupaten
-      $sql = "SELECT sdcode AS code, CONCAT ('Kecamatan ', f_tcase(sdname)) AS label,
+      $sql = "SELECT sdcode AS code, f_tcase(sdname) AS label,
         SUM(`1`) AS `1`, SUM(`2`) AS `2`, SUM(`3`) AS `3`, SUM(`4`) AS `4`, SUM(`5`) AS `5`, SUM(`6`) AS `6`,
         SUM(`7`) AS `7`, SUM(`8`) AS `8`, SUM(`9`) AS `9`, SUM(`10`) AS `10`, SUM(`11`) AS `11`, SUM(`12`) AS `12`
       FROM v_h_plantdates

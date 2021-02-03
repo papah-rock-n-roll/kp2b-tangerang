@@ -501,7 +501,7 @@
 
   var flg = 0;
 
-  $('.select2').select2()
+  $('.select2').select2();
 
   $(".select2-input").select2({
     tags: true

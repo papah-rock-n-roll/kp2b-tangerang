@@ -160,7 +160,7 @@ if(! empty(session()->getFlashdata('import'))) {
     var keyword = $("#keyword").val();
     var paginate = $("#paginate").val();
     window.location.replace("?paginate="+ paginate +"&keyword="+ keyword);
-  }
+  };
 
   $("#filterSubmit").click(function() {
     filter();

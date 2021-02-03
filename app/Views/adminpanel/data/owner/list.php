@@ -72,7 +72,7 @@
       </thead>
       <tbody>
       <?php if(empty($list)) : ?>
-      <tr><td colspan="4"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>      
+      <tr><td colspan="4"><h3>Belum ada data</h3><p>Silahkan menambahkan data terlebih dahulu.</p></td></tr>
       <?php else : ?>
       <?php foreach($list as $k => $v) : ?>
         <tr>
@@ -120,7 +120,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
-<?php 
+<?php
 if(! empty(session()->getFlashdata('warning'))) {
   $toast = [
   'class' => 'bg-warning',
@@ -158,7 +158,7 @@ if(! empty(session()->getFlashdata('import'))) {
     var keyword = $("#keyword").val();
     var paginate = $("#paginate").val();
     window.location.replace("?paginate="+ paginate +"&keyword="+ keyword);
-  }
+  };
 
   $("#filterSubmit").click(function() {
     filter();

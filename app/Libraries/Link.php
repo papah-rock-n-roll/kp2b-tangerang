@@ -96,7 +96,7 @@ class Link
       'datatable' => '<script src="'.base_url('themes/plugins/datatable/js/jquery.dataTables.min.js').'"></script>',
       'datatable4' => '<script src="'.base_url('themes/plugins/datatable/js/dataTables.bootstrap4.min.js').'"></script>',
       'datatableResponsive' => '<script src="'.base_url('themes/plugins/datatable/js/dataTables.responsive.min.js').'"></script>',
-      'datatableResponsive4' => '<script src="'.base_url('themes/pluginsdatatable/js/responsive.bootstrap4.min.js').'"></script>',
+      'datatableResponsive4' => '<script src="'.base_url('themes/plugins/datatable/js/responsive.bootstrap4.min.js').'"></script>',
       'columnfixed' => '<script src="'.base_url('themes/plugins/datatable/js/dataTables.fixedColumns.min.js').'"></script>',
       'datatableBtn' => '<script src="'.base_url('themes/plugins/datatable/js/dataTables.buttons.min.js').'"></script>',
       'datatableBtn4' => '<script src="'.base_url('themes/plugins/datatable/js/buttons.bootstrap4.min.js').'"></script>',

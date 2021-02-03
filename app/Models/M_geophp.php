@@ -19,7 +19,7 @@ class M_geophp extends Model
 
   // get kecamatan
   public function get_kecamatan(){
-    $sql = "SELECT sdcode, CONCAT ('Kecamatan ', f_tcase(sdname)) AS sdname FROM v_observations GROUP BY sdcode, sdname;";
+    $sql = "SELECT `sdcode`, `sdname` FROM `v_observations` GROUP BY `sdcode`, `sdname`;";
     $query = $this->db->query($sql);
     if(!empty($query)){
       $rows = $query->getResultArray();
@@ -65,12 +65,12 @@ class M_geophp extends Model
   public function get_data_layer($datalayer){
     if($datalayer == 'desa'){
       $sql = "SELECT `mstr_villages`.`vlcode` AS `FID`, ST_AsText(`mstr_villages`.`vlshape`) AS `GEOM`,
-        f_tcase(CONCAT('Desa ', `mstr_villages`.`vlname`, ' - ', 'Kecamatan ', `mstr_subdistricts`.`sdname`)) AS `LABEL`
+        f_tcase(CONCAT(`mstr_villages`.`vlname`, ' - ', `mstr_subdistricts`.`sdname`)) AS `LABEL`
       FROM `mstr_villages` INNER JOIN `mstr_subdistricts` ON `mstr_subdistricts`.`sdcode` = `mstr_villages`.`sdcode`;";
       $name = "Batas Desa";
     }else if($datalayer == 'kec'){
       $sql = "SELECT `mstr_subdistricts`.`sdcode` AS `FID`, ST_AsText(`mstr_subdistricts`.`sdshape`) AS `GEOM`,
-        f_tcase(CONCAT('Kecamatan ', `mstr_subdistricts`.`sdname`)) AS `LABEL`
+        f_tcase(`mstr_subdistricts`.`sdname`) AS `LABEL`
       FROM `mstr_subdistricts`;";
       $name = "Batas Kecamatan";
     }else if($datalayer == 'kp2b'){
@@ -196,6 +196,37 @@ class M_geophp extends Model
     }
 
     return json_decode($result, true);
+  }
+
+  // get information
+  public function get_data_info($dataType, $sdcode, $vlcode){
+    if(!empty($vlcode)){
+      $sql = "SELECT `v_observations`.`{$dataType}` AS `field`,
+        COUNT(`v_observations`.`obscode`) AS `petak`,
+        SUM(`v_observations`.`broadnrea`) / 10000 AS `luas`,
+        CONCAT(FORMAT(MIN(`v_observations`.`harvstmin`) / 10, 2), '-', FORMAT(MAX(`v_observations`.`harvstmax`) / 10, 2)) AS `produksi`
+      FROM `v_observations`
+      WHERE `v_observations`.`vlcode` = {$vlcode}
+      GROUP BY `v_observations`.`{$dataType}`;";
+    }else if(!empty($sdcode)){
+      $sql = "SELECT `v_observations`.`{$dataType}` AS `field`,
+        COUNT(`v_observations`.`obscode`) AS `petak`,
+        SUM(`v_observations`.`broadnrea`) / 10000 AS `luas`,
+        CONCAT(FORMAT(MIN(`v_observations`.`harvstmin`) / 10, 2), '-', FORMAT(MAX(`v_observations`.`harvstmax`) / 10, 2)) AS `produksi`
+      FROM `v_observations`
+      WHERE `v_observations`.`sdcode` = {$sdcode}
+      GROUP BY `v_observations`.`{$dataType}`;";
+    }else{
+      $sql = "SELECT `v_observations`.`{$dataType}` AS `field`,
+        COUNT(`v_observations`.`obscode`) AS `petak`,
+        SUM(`v_observations`.`broadnrea`) / 10000 AS `luas`,
+        CONCAT(FORMAT(MIN(`v_observations`.`harvstmin`) / 10, 2), '-', FORMAT(MAX(`v_observations`.`harvstmax`) / 10, 2)) AS `produksi`
+      FROM `v_observations`
+      GROUP BY `v_observations`.`{$dataType}`;";
+    }
+
+    $query = $this->db->query($sql)->getResultArray();
+    return json_encode($query);
   }
 
 

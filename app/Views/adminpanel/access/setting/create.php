@@ -16,7 +16,7 @@
   <?php echo form_open($action) ?>
     <div class="form-group">
       <label for="">Role Name</label>
-      <?php 
+      <?php
       $rolename = [
         'type' => 'text',
         'class' => $validation->hasError('rolename') ? 'form-control is-invalid' : 'form-control',
@@ -79,10 +79,10 @@
           </div>
         </div>
       </div>
-      
+
     </div>
 
-  </div>   
+  </div>
   <div class="card-footer">
     <button type="button" class="btn btn-secondary" onclick="window.location.href='<?= esc($back) ?>'">Back</button>
     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -98,9 +98,7 @@
 <?= \App\Libraries\Link::script()->select2 ?>
 <script>
   $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
+    $('.select2').select2();
   });
 </script>
 

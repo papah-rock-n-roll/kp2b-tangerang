@@ -54,6 +54,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) 
 	$routes->resource('plantdates');
 	$routes->resource('report');
 	$routes->resource('datalayer');
+	$routes->resource('datainfo');
 });
 
 /**

@@ -153,6 +153,26 @@ class Geo extends ResourceController
 
       break;
 
+      case 'datainfo':
+
+        $dataType = $this->request->getGet('type');
+        $sdcode = $this->request->getGet('sdcode');
+        $vlcode = $this->request->getGet('vlcode');
+        $data = $this->model->get_data_info($dataType, $sdcode, $vlcode);
+        if(!empty($data)) {
+          return $this->respond($data);
+        } else {
+          $code = '404';
+          $this->response->setStatusCode($code);
+          $message = [
+            'status' => $code,
+            'message' => $this->response->getReason(),
+          ];
+          return $this->respond($message, $code);
+        }
+
+      break;
+
 
     // ----------------------------------------------------
 
