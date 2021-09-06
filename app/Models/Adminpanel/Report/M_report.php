@@ -177,20 +177,20 @@ class M_report extends Model{
       $sql = "SELECT vlcode AS code, f_tcase(vlname) AS label, COUNT(DISTINCT farmcode) AS poktan, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap
       FROM (SELECT sdcode, sdname, vlcode, vlname, farmcode, 0 AS pemilik, 0 AS penggarap
         FROM v_observations
-        WHERE farmcode <> 1
+        WHERE farmcode <> 1 AND farmname <> 'NI' AND farmname <> 'NO DATA' AND farmname <> 'NON POKTAN'
 
         UNION ALL
 
         SELECT sdcode, sdname, vlcode, vlname, farmcode, COUNT(DISTINCT ownerid) AS pemilik, 0 AS penggarap
         FROM v_observations
-        WHERE ownerid <> 1
+        WHERE ownerid <> 1 AND farmname <> 'NI' AND farmname <> 'NO DATA' AND farmname <> 'NON POKTAN'
         GROUP BY sdcode, sdname, vlcode, vlname, farmcode
 
         UNION ALL
 
         SELECT sdcode, sdname, vlcode, vlname, farmcode, 0 AS pemilik, COUNT(DISTINCT cultivatorid) AS penggarap
         FROM v_observations
-        WHERE cultivatorid <> 1
+        WHERE cultivatorid <> 1 AND farmname <> 'NI' AND farmname <> 'NO DATA' AND farmname <> 'NON POKTAN'
         GROUP BY sdcode, sdname, vlcode, vlname, farmcode) AS v
       WHERE sdcode = '{$sdcode}'
       GROUP BY vlcode, vlname;";
@@ -201,20 +201,20 @@ class M_report extends Model{
       $sql = "SELECT sdcode AS code, f_tcase(sdname) AS label, COUNT(DISTINCT farmcode) AS poktan, SUM(pemilik) AS pemilik, SUM(penggarap) AS penggarap
       FROM (SELECT sdcode, sdname, vlcode, vlname, farmcode, 0 AS pemilik, 0 AS penggarap
         FROM v_observations
-        WHERE farmcode <> 1
+        WHERE farmcode <> 1 AND farmname <> 'NI' AND farmname <> 'NO DATA' AND farmname <> 'NON POKTAN'
 
         UNION ALL
 
         SELECT sdcode, sdname, vlcode, vlname, farmcode, COUNT(DISTINCT ownerid) AS pemilik, 0 AS penggarap
         FROM v_observations
-        WHERE ownerid <> 1
+        WHERE ownerid <> 1 AND farmname <> 'NI' AND farmname <> 'NO DATA' AND farmname <> 'NON POKTAN'
         GROUP BY sdcode, sdname, vlcode, vlname, farmcode
 
         UNION ALL
 
         SELECT sdcode, sdname, vlcode, vlname, farmcode, 0 AS pemilik, COUNT(DISTINCT cultivatorid) AS penggarap
         FROM v_observations
-        WHERE cultivatorid <> 1
+        WHERE cultivatorid <> 1 AND farmname <> 'NI' AND farmname <> 'NO DATA' AND farmname <> 'NON POKTAN' 
         GROUP BY sdcode, sdname, vlcode, vlname, farmcode) AS v
       GROUP BY sdcode, sdname";
 

@@ -204,7 +204,9 @@ class M_geophp extends Model
       $sql = "SELECT `v_observations`.`{$dataType}` AS `field`,
         COUNT(`v_observations`.`obscode`) AS `petak`,
         SUM(`v_observations`.`broadnrea`) / 10000 AS `luas`,
-        CONCAT(FORMAT(MIN(`v_observations`.`harvstmin`) / 10, 2), '-', FORMAT(MAX(`v_observations`.`harvstmax`) / 10, 2)) AS `produksi`
+        MIN(`v_observations`.`harvstmin`) / 10 AS `min`,
+        MAX(`v_observations`.`harvstmax`) / 10 AS `max`,
+        (AVG(`v_observations`.`harvstmin` + `v_observations`.`harvstmax`) / 2) / 10 AS `avg`
       FROM `v_observations`
       WHERE `v_observations`.`vlcode` = {$vlcode}
       GROUP BY `v_observations`.`{$dataType}`;";
@@ -212,7 +214,9 @@ class M_geophp extends Model
       $sql = "SELECT `v_observations`.`{$dataType}` AS `field`,
         COUNT(`v_observations`.`obscode`) AS `petak`,
         SUM(`v_observations`.`broadnrea`) / 10000 AS `luas`,
-        CONCAT(FORMAT(MIN(`v_observations`.`harvstmin`) / 10, 2), '-', FORMAT(MAX(`v_observations`.`harvstmax`) / 10, 2)) AS `produksi`
+        MIN(`v_observations`.`harvstmin`) / 10 AS `min`,
+        MAX(`v_observations`.`harvstmax`) / 10 AS `max`,
+        (AVG(`v_observations`.`harvstmin` + `v_observations`.`harvstmax`) / 2) / 10 AS `avg`
       FROM `v_observations`
       WHERE `v_observations`.`sdcode` = {$sdcode}
       GROUP BY `v_observations`.`{$dataType}`;";
@@ -220,7 +224,9 @@ class M_geophp extends Model
       $sql = "SELECT `v_observations`.`{$dataType}` AS `field`,
         COUNT(`v_observations`.`obscode`) AS `petak`,
         SUM(`v_observations`.`broadnrea`) / 10000 AS `luas`,
-        CONCAT(FORMAT(MIN(`v_observations`.`harvstmin`) / 10, 2), '-', FORMAT(MAX(`v_observations`.`harvstmax`) / 10, 2)) AS `produksi`
+        MIN(`v_observations`.`harvstmin`) / 10 AS `min`,
+        MAX(`v_observations`.`harvstmax`) / 10 AS `max`,
+        (AVG(`v_observations`.`harvstmin` + `v_observations`.`harvstmax`) / 2) / 10 AS `avg`
       FROM `v_observations`
       GROUP BY `v_observations`.`{$dataType}`;";
     }

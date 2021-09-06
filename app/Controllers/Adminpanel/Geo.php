@@ -74,7 +74,7 @@ class Geo extends \App\Controllers\BaseController
     $post = $this->request->getPost();
     $shape = $this->request->getVar('chk_shape') == null ? 0 : 1;
     $dbf = $this->request->getVar('chk_dbf') == null ? 0 : 1;
-    
+
     $import = $this->M_obsgeo->import($post, $shape, $dbf);
 
     if($import) {
@@ -134,7 +134,7 @@ class Geo extends \App\Controllers\BaseController
     $post = $this->request->getPost();
     $shape = $this->request->getVar('chk_shape') == null ? 0 : 1;
     $dbf = $this->request->getVar('chk_dbf') == null ? 0 : 1;
-    
+
     $import = $this->M_vlgeo->import($post, $shape, $dbf);
 
     if($import) {
@@ -194,7 +194,7 @@ class Geo extends \App\Controllers\BaseController
     $post = $this->request->getPost();
     $shape = $this->request->getVar('chk_shape') == null ? 0 : 1;
     $dbf = $this->request->getVar('chk_dbf') == null ? 0 : 1;
-    
+
     $import = $this->M_sdgeo->import($post, $shape, $dbf);
 
     if($import) {

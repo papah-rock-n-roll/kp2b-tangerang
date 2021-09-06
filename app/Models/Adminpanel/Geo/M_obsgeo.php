@@ -360,7 +360,7 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       $Shapefile->setCharset('UTF-8');
 
       // Create field structure
-      $Shapefile->addNumericField('KD_PETAK', 10, 0);
+      $Shapefile->addNumericField('KD_PETAK', 15, 0);
       $Shapefile->addFloatField('LUAS', 18, 11);
       $Shapefile->addCharField('STS_LHN', 30, 0);
       $Shapefile->addCharField('PEMILIK', 50, 0);
@@ -410,76 +410,72 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       // Write some records (let's pretend we have an array of coordinates)
       foreach ($data['features'] as $i => $k) {
 
-        // Create a Point Geometry
-        $Point = new Polygon();
-        $Point->initFromWKT($k['wkt']);
+        // Create a Polygon Geometry
+        $Polygon = new Polygon();
+
+        $featurex = json_encode($k['geometry'] ,JSON_NUMERIC_CHECK);
+        $Polygon->initFromGeoJSON($featurex);
 
         // Set its data
-        $Point->setData('KD_PETAK', $k['properties']['obscode']);
-        $Point->setData('LUAS', $k['properties']['broadnrea']);
-        $Point->setData('STS_LHN', $k['properties']['areantatus']);
-        $Point->setData('PEMILIK', $k['properties']['ownername']);
-        $Point->setData('PENGGARAP', $k['properties']['cultivatorname']);
-        $Point->setData('NIK_PMK', $k['properties']['ownernik']);
-        $Point->setData('NIK_PGR', $k['properties']['cultivatornik']);
-        $Point->setData('IRIGASI', $k['properties']['typeirigation']);
-        $Point->setData('JRK_SNG', $k['properties']['distancefromriver']);
-        $Point->setData('JRK_IRG', $k['properties']['distancefromIrgPre']);
-        $Point->setData('IT', $k['properties']['intensitynlan']);
-        $Point->setData('LMBG_AIR', $k['properties']['wtrtreatnnst']);
-        $Point->setData('POKTAN', $k['properties']['farmname']);
-        $Point->setData('ID_POKTAN', $k['properties']['farmcode']);
-        $Point->setData('IP', $k['properties']['indxnlant']);
+        $Polygon->setData('KD_PETAK', $k['properties']['obscode']);
+        $Polygon->setData('LUAS', $k['properties']['broadnrea']);
+        $Polygon->setData('STS_LHN', $k['properties']['areantatus']);
+        $Polygon->setData('PEMILIK', $k['properties']['ownername']);
+        $Polygon->setData('PENGGARAP', $k['properties']['cultivatorname']);
+        $Polygon->setData('NIK_PMK', $k['properties']['ownernik']);
+        $Polygon->setData('NIK_PGR', $k['properties']['cultivatornik']);
+        $Polygon->setData('IRIGASI', $k['properties']['typeirigation']);
+        $Polygon->setData('JRK_SNG', $k['properties']['distancefromriver']);
+        $Polygon->setData('JRK_IRG', $k['properties']['distancefromIrgPre']);
+        $Polygon->setData('IT', $k['properties']['intensitynlan']);
+        $Polygon->setData('LMBG_AIR', $k['properties']['wtrtreatnnst']);
+        $Polygon->setData('POKTAN', $k['properties']['farmname']);
+        $Polygon->setData('ID_POKTAN', $k['properties']['farmcode']);
+        $Polygon->setData('IP', $k['properties']['indxnlant']);
+        $Polygon->setData('NM_KEC', $k['properties']['sdname']);
+        $Polygon->setData('NM_DESA', $k['properties']['vlname']);
+        $Polygon->setData('KD_DESA', $k['properties']['vlcode']);
+        $Polygon->setData('PP_OPT', $k['properties']['opt']);
+        $Polygon->setData('PP_AIR', $k['properties']['wtr']);
+        $Polygon->setData('PP_SPRTN', $k['properties']['saprotan']);
+        $Polygon->setData('PP_LAIN', $k['properties']['other']);
+        $Polygon->setData('PL_TNM', $k['properties']['pattrnnlant']);
+        $Polygon->setData('PJL_PNN', $k['properties']['harvstsell']);
+        $Polygon->setData('PNN_MAX', $k['properties']['harvstmax']);
+        $Polygon->setData('PNN_MIN', $k['properties']['harvstmin']);
+        $Polygon->setData('BLN_MAX', $k['properties']['monthmax']);
+        $Polygon->setData('BLN_MIN', $k['properties']['monthmin']);
+        $Polygon->setData('LANDUSE', $k['properties']['landuse']);
+        $Polygon->setData('DSC_LAND', '');
 
-        $no = 1;
-        $index = (int) ceil($k['properties']['indxnlant']) / 100;
-
-        for($i = 0; $i < $index; $i++) {
-
-          $Point->setData('BT_'. $no, $k['properties']['monthgrow'][$i]);
-          $Point->setData('BP_'. $no, $k['properties']['monthharvest'][$i]);
-          $Point->setData('VAR_'. $no, $k['properties']['varieties'][$i]);
-          $Point->setData('IRG_'. $no, $k['properties']['irrigationavbl'][$i]);
-
-          $no++;
-        }
-
-        $Point->setData('NM_KEC', $k['properties']['sdname']);
-        $Point->setData('NM_DESA', $k['properties']['vlname']);
-        $Point->setData('KD_DESA', $k['properties']['vlcode']);
-        $Point->setData('PP_OPT', $k['properties']['opt']);
-        $Point->setData('PP_AIR', $k['properties']['wtr']);
-        $Point->setData('PP_SPRTN', $k['properties']['saprotan']);
-        $Point->setData('PP_LAIN', $k['properties']['other']);
-        $Point->setData('PL_TNM', $k['properties']['pattrnnlant']);
-        $Point->setData('PJL_PNN', $k['properties']['harvstsell']);
-        $Point->setData('PNN_MAX', $k['properties']['harvstmax']);
-        $Point->setData('PNN_MIN', $k['properties']['harvstmin']);
-        $Point->setData('BLN_MAX', $k['properties']['monthmax']);
-        $Point->setData('BLN_MIN', $k['properties']['monthmin']);
-        $Point->setData('LANDUSE', $k['properties']['landuse']);
-        $Point->setData('DSC_LAND', '');
-
-        $no = 1;
         $index = count($k['properties']['monthgrow']);
+        for($x = 0; $x <= 2; $x++) {
 
-        for($x = 0; $x < $index; $x++) {
+          if ($x < $index) {
+            $BT_X = $k['properties']['monthgrow'][$x];
+            $BP_X = $k['properties']['monthharvest'][$x];
+            $VAR_X = $k['properties']['varieties'][$x];
+            $IRG_X = $k['properties']['irrigationavbl'][$x];
+          }else{
+            $BT_X = "";
+            $BP_X = "";
+            $VAR_X = "";
+            $IRG_X = "";
+          }
 
-          $Point->setData('BT_'. $no, $k['properties']['monthgrow'][$x]);
-          $Point->setData('BP_'. $no, $k['properties']['monthharvest'][$x]);
-          $Point->setData('VAR_'. $no, $k['properties']['varieties'][$x]);
-          $Point->setData('IRG_'. $no, $k['properties']['irrigationavbl'][$x]);
-
-          $no++;
+          $Polygon->setData('BT_'. ($x + 1), $BT_X);
+          $Polygon->setData('BP_'. ($x + 1), $BP_X);
+          $Polygon->setData('VAR_'. ($x + 1), $VAR_X);
+          $Polygon->setData('IRG_'. ($x + 1), $IRG_X);
         }
 
-        $Point->setData('NM_RESPON', $k['properties']['respname']);
-        $Point->setData('HP_RESPON', '');
-        $Point->setData('NM_SRY', $k['properties']['username']);
-        $Point->setData('TGL_SRY', $k['properties']['timestamp']);
+        $Polygon->setData('NM_RESPON', $k['properties']['respname']);
+        $Polygon->setData('HP_RESPON', '');
+        $Polygon->setData('NM_SRY', $k['properties']['username']);
+        $Polygon->setData('TGL_SRY', $k['properties']['timestamp']);
 
         // Write the record to the Shapefile
-        $Shapefile->writeRecord($Point);
+        $Shapefile->writeRecord($Polygon);
       }
 
       // Set Projection

@@ -8,7 +8,8 @@
 <?= \App\Libraries\Link::style()->chartjs ?>
 <style>
   #viewDiv {padding:0;margin:0;height:calc(100vh - 68px);width:100%;position:relative;}
-  #feature-node{position:relative;top:0;width:100%;height:100%;max-width:650px}
+  #feature-node{position:relative;top:0;width:100%;height:100%}
+  .esri-view .esri-view-user-storage{overflow:inherit !important;}
   .visible {display:block !important;}
   .loading {position:absolute;top:15px;left:60px;background-color:#929292;color:white;display:none;padding:5px 8px;border-radius:3px;opacity:0.9;}
 </style>
@@ -709,7 +710,8 @@
             if (!("error" in obj)) {
 
               mainC.html('<table id="table-result" class="table table-sm table-striped table-bordered" width="100%"><thead>' +
-                  '<tr><th class="align-middle">'+titleInfo+'</th><th class="align-middle">Jumlah Petak</th><th class="align-middle">Luas Petak (ha)</th><th class="align-middle">Produktivitas (ton/ha)</th></tr>' +
+                  '<tr><th class="align-middle" rowspan="2">'+titleInfo+'</th><th class="align-middle" rowspan="2">Jumlah Petak</th><th class="align-middle" rowspan="2">Luas Petak (ha)</th><th class="align-middle" colspan="3">Produktivitas (ton/ha)</th></tr>' +
+                  '<tr><th class="align-middle">Min</th><th class="align-middle">Max</th><th class="align-middle">Avg</th></tr>' +
               '</thead></table>');
 
               var opt = [];
@@ -717,12 +719,16 @@
                 { "data": "field" },
                 { "data": "petak", render: $.fn.dataTable.render.number( '.', ',', 0 ) },
                 { "data": "luas", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
-                { "data": "produksi" }
+                { "data": "min", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+                { "data": "max", render: $.fn.dataTable.render.number( '.', ',', 2 ) },
+                { "data": "avg", render: $.fn.dataTable.render.number( '.', ',', 2 ) }
               ];
               columnDefs =  [
                 { targets: 1, className: 'text-right' },
                 { targets: 2, className: 'text-right' },
-                { targets: 3, className: 'text-left' }
+                { targets: 3, className: 'text-right' },
+                { targets: 4, className: 'text-right' },
+                { targets: 5, className: 'text-right' }
               ];
               order = [0, 'asc'];
               opt.push(columns);
@@ -817,17 +823,33 @@
         };
 
         const rendererKp2b = {
-          type: "simple",
-          symbol: {
-            type: "simple-fill",
-            color: "green",
-            style: "solid",
-            outline: {
-              color: "white",
-              width: 0.5
-            }
-          },
+          type: "unique-value",
           field: "LABEL",
+          defaultSymbol: { type: "simple-fill" },
+          defaultLabel: "Lainnya",
+          uniqueValueInfos: [{
+            value: "KP2B",
+            symbol: {
+              type: "simple-fill",
+              color: "green",
+              style: "solid",
+              outline: {
+                color: "white",
+                width: 0.5
+              }
+            }
+          },{
+            value: "Agropolitan",
+            symbol: {
+              type: "simple-fill",
+              color: "rgba(0, 123, 255, 1)",
+              style: "solid",
+              outline: {
+                color: "white",
+                width: 0.5
+              }
+            }
+          }],
           legendOptions: titleLayers
         };
 

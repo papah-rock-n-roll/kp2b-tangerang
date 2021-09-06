@@ -117,8 +117,8 @@ class M_setting extends M_access
   public function database_dump($filename)
   {
     $db = \Config\Database::connect();
-    $folder = WRITEPATH .'uploads\databases';
-    $file = $folder .'\\'. $filename;
+    $folder = WRITEPATH .'uploads/databases';
+    $file = $folder .'/'. $filename;
     exec("mysqldump -h {$db->hostname} --port={$db->port} -u {$db->username} --password={$db->password} {$db->database} > {$file}");
 
     // Log informations Watch Events
@@ -209,7 +209,7 @@ class M_setting extends M_access
     return $query->findAll();
   }
 
-  
+
 /**
  * --------------------------------------------------------------------
  * Validation
@@ -249,7 +249,7 @@ class M_setting extends M_access
     ];
   }
 
-  
+
 /**
  * --------------------------------------------------------------------
  * Function
@@ -265,8 +265,8 @@ class M_setting extends M_access
       $zip->close();
 
       return true;
-    } 
-    else 
+    }
+    else
     {
       return false;
     }
@@ -285,8 +285,8 @@ class M_setting extends M_access
       $zip->close();
 
       return $pathfile .'/'. $realfilename .'.zip';
-    } 
-    else 
+    }
+    else
     {
       return false;
     }

@@ -190,6 +190,8 @@ class M_geo extends Model
     foreach ($data as $row) {
 
       $geom = geoPHP::load($row['GEOM'],'wkt');
+      $json = $geom->out('json');
+      $features = json_decode($json);
 
       $properties['FID'] = $row['FID'];
       for ($x = 0; $x < count($info_fields); $x++){
@@ -198,9 +200,8 @@ class M_geo extends Model
 
       $polygon = array(
         'type' => 'Feature',
-        'bbox' => $geom->getBBox(),
         'properties' => $properties,
-        'wkt' => $geom->asText(),
+        'geometry' => $features,
         'id' => $row['FID']
       );
 
@@ -234,8 +235,8 @@ class M_geo extends Model
 
     $fields_2 = 'monthgrow,monthharvest,varieties,irrigationavbl';
 
-    $query  = $this->db->query("SELECT obscode AS FID 
-    FROM {$table_1} 
+    $query  = $this->db->query("SELECT obscode AS FID
+    FROM {$table_1}
     WHERE vlcode = {$vlcode}")->getResultArray();
 
     $fid = array_column($query, 'FID');
@@ -270,6 +271,7 @@ class M_geo extends Model
 
     $info_fields = explode(',', preg_replace('/\s+/', '', ($fields_1 .','. $fields_2)));
     $geojson = array(
+      'type' => 'FeatureCollection',
       'name' => 'Layer Desa '. $vlcode,
       'features' => array()
     );
@@ -277,6 +279,8 @@ class M_geo extends Model
     foreach ($data as $row) {
 
       $geom = geoPHP::load($row['GEOM'],'wkt');
+      $json = $geom->out('json');
+      $features = json_decode($json);
 
       $properties['FID'] = $row['FID'];
       for ($x = 0; $x < count($info_fields); $x++){
@@ -285,9 +289,8 @@ class M_geo extends Model
 
       $polygon = array(
         'type' => 'Feature',
-        'bbox' => $geom->getBBox(),
         'properties' => $properties,
-        'wkt' => $geom->asText(),
+        'geometry' => $features,
         'id' => $row['FID']
       );
 
@@ -321,8 +324,8 @@ class M_geo extends Model
 
     $fields_2 = 'monthgrow,monthharvest,varieties,irrigationavbl';
 
-    $query  = $this->db->query("SELECT obscode AS FID 
-    FROM {$table_1} 
+    $query  = $this->db->query("SELECT obscode AS FID
+    FROM {$table_1}
     WHERE sdcode = {$sdcode}")->getResultArray();
 
     $fid = array_column($query, 'FID');
@@ -365,6 +368,8 @@ class M_geo extends Model
     foreach ($data as $row) {
 
       $geom = geoPHP::load($row['GEOM'],'wkt');
+      $json = $geom->out('json');
+      $features = json_decode($json);
 
       $properties['FID'] = $row['FID'];
       for ($x = 0; $x < count($info_fields); $x++){
@@ -373,9 +378,8 @@ class M_geo extends Model
 
       $polygon = array(
         'type' => 'Feature',
-        'bbox' => $geom->getBBox(),
         'properties' => $properties,
-        'wkt' => $geom->asText(),
+        'geometry' => $features,
         'id' => $row['FID']
       );
 
@@ -414,8 +418,8 @@ class M_geo extends Model
       $zip->close();
 
       return true;
-    } 
-    else 
+    }
+    else
     {
       return false;
     }
@@ -436,13 +440,13 @@ class M_geo extends Model
 
         if($file == $realfilename .'.zip') continue;
         else $zip->addFile($pathfile .'/'. $file, $file);
-        
+
       }
       $zip->close();
 
       return $pathfile .'/'. $realfilename .'.zip';
-    } 
-    else 
+    }
+    else
     {
       return false;
     }
