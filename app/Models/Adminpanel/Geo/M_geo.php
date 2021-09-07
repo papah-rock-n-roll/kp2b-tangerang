@@ -429,10 +429,10 @@ class M_geo extends Model
   {
     $zip = new ZipArchive;
     $realfilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-    $file = fopen($pathfile .'/'. $realfilename .'.zip', 'a+');
+    $file = fopen(FCPATH .'/uploads/shapefile-export' .'/'. $realfilename .'.zip', 'a+');
     fclose($file);
 
-    if ($zip->open($pathfile .'/'. $realfilename .'.zip') === TRUE)
+    if ($zip->open(FCPATH .'/uploads/shapefile-export' .'/'. $realfilename .'.zip') === TRUE)
     {
       $files = directory_map($pathfile);
 
@@ -444,7 +444,7 @@ class M_geo extends Model
       }
       $zip->close();
 
-      return $pathfile .'/'. $realfilename .'.zip';
+      return FCPATH .'/uploads/shapefile-export' .'/'. $realfilename .'.zip';
     }
     else
     {
