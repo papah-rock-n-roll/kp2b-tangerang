@@ -87,7 +87,8 @@ class Geo extends \App\Controllers\BaseController
   {
     $path = $this->M_obsgeo->export($obscode);
 
-    return $this->response->download($path, null);
+    return redirect()->to(base_url() .'/uploads/shapefile-export' .'/'. basename($path));
+    //return $this->response->download($path, null);
   }
 
 
@@ -147,7 +148,8 @@ class Geo extends \App\Controllers\BaseController
   {
     $path = $this->M_vlgeo->export($vlcode);
 
-    return $this->response->download($path, null);
+    return redirect()->to(base_url() .'/uploads/shapefile-export' .'/'. basename($path));
+    //return $this->response->download($path, null);
   }
 
 
@@ -207,7 +209,8 @@ class Geo extends \App\Controllers\BaseController
   {
     $path = $this->M_sdgeo->export($sdcode);
 
-    return $this->response->download($path, null);
+    return redirect()->to(base_url() .'/uploads/shapefile-export' .'/'. basename($path));
+    //return $this->response->download($path, null);
   }
 
 }
