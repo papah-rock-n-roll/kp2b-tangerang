@@ -276,15 +276,15 @@ class M_setting extends M_access
   {
     $zip = new ZipArchive;
     $realfilename = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-    $file = fopen($pathfile .'/'. $realfilename .'.zip', 'a+');
+    $file = fopen(FCPATH .'/uploads/databases' .'/'. $realfilename .'.zip', 'a+');
     fclose($file);
 
-    if ($zip->open($pathfile .'/'. $realfilename .'.zip') === TRUE)
+    if ($zip->open(FCPATH .'/uploads/databases' .'/'. $realfilename .'.zip') === TRUE)
     {
       $zip->addFile($pathfile .'/'. $filename, $filename);
       $zip->close();
 
-      return $pathfile .'/'. $realfilename .'.zip';
+      return FCPATH .'/uploads/databases' .'/'. $realfilename .'.zip';
     }
     else
     {

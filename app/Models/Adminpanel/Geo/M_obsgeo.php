@@ -11,6 +11,7 @@
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\Geometry\Polygon;
+use Shapefile\Geometry\MultiPolygon;
 
 
 class M_obsgeo extends M_geo
@@ -349,7 +350,6 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
     $pathfile = $dir .'/'. $filename;
 
     $data = parent::get_observation($obscode);
-
     try {
       // Open Shapefile
       $Shapefile = M_geo::writer_shapefile($pathfile);
@@ -411,8 +411,11 @@ public function getObservations($where = null, $like = null, $orLike = null, $pa
       foreach ($data['features'] as $i => $k) {
 
         // Create a Polygon Geometry
-        $Polygon = new Polygon();
-
+        if($k['geometry']['type'] == 'Polygon'){
+          $Polygon = new Polygon();
+        }else if($k['geometry']['type'] == 'MultiPolygon'){
+          $Polygon = new MultiPolygon();
+        }
         $featurex = json_encode($k['geometry'] ,JSON_NUMERIC_CHECK);
         $Polygon->initFromGeoJSON($featurex);
 

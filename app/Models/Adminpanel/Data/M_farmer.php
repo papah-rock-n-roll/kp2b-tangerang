@@ -132,7 +132,7 @@ class M_farmer extends M_data
 
     echo view(self::VIEW.'update', $data);
   }
-  
+
   public function update_post($id, $data)
   {
     // Pisah Array OTP dan Saprotan menjadi string
@@ -341,28 +341,7 @@ class M_farmer extends M_data
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
-      ],
-      'indxnlant' => [
-        'label' => 'IP',
-        'rules' => 'max_length[3]|numeric',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'pattrnnlant' => [
-        'label' => 'Pola',
-        'rules' => 'max_length[60]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'wtr' => [
-        'label' => 'Air',
-        'rules' => 'max_length[60]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
+      ]
     ];
 
   }
@@ -461,7 +440,7 @@ class M_farmer extends M_data
 
       $row++;
     }
-
+    ob_end_clean();
     // panggil static function writer xlsx "M_data"
     $response = \Config\Services::response();
     $writer = M_data::writer_sheet($spreadsheet);
@@ -470,7 +449,12 @@ class M_farmer extends M_data
 
     $response
     ->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    ->setHeader('Content-Disposition', 'attachment;filename="'.$filename.'"');
+    ->setHeader('Content-Disposition', 'attachment;filename="'.$filename.'"')
+    ->setHeader('Cache-Control', 'max-age=0')
+    ->setHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT')
+    ->setHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
+    ->setHeader('Cache-Control', 'cache, must-revalidate')
+    ->setHeader('Pragma', 'public');
 
     $writer->save('php://output');
   }

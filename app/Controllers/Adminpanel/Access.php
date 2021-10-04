@@ -1,5 +1,5 @@
 <?php namespace App\Controllers\Adminpanel;
- 
+
 class Access extends \App\Controllers\BaseController
 {
 
@@ -69,7 +69,7 @@ class Access extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Create User '.$data['name'].' Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -99,7 +99,7 @@ class Access extends \App\Controllers\BaseController
 
       $file = $this->request->getFile('image');
       $data = $this->request->getPost();
-      
+
       $post = $this->M_management->update_post($file, $id, $data);
 
       if($post) {
@@ -111,7 +111,7 @@ class Access extends \App\Controllers\BaseController
           return redirect()->to($uri.'?post='.$num);
         else return redirect()->to($uri.'?post='.$counter += $num);
       }
- 
+
     }
   }
 
@@ -119,7 +119,7 @@ class Access extends \App\Controllers\BaseController
   {
     $data = $this->M_management->getUser($id);
     $delete = $this->M_management->delete_post($id, $data);
-    
+
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Name '.$data['name'].' Successfully');
       return redirect()->back();
@@ -136,12 +136,12 @@ class Access extends \App\Controllers\BaseController
  */
 
   public function setting_index()
-  { 
+  {
     $this->M_setting->list();
   }
 
   public function setting_create()
-  { 
+  {
     if($this->request->getMethod() === 'get')
     {
       $data['validation'] = $this->validation;
@@ -199,7 +199,7 @@ class Access extends \App\Controllers\BaseController
         $this->session->setFlashdata('success', 'Update Role '.$data['rolename'].' Successfully');
         return redirect()->back();
       }
- 
+
     }
   }
 
@@ -207,7 +207,7 @@ class Access extends \App\Controllers\BaseController
   {
     $data = $this->M_setting->getRole($id);
     $delete = $this->M_setting->delete_post($id);
-    
+
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Name '.$data['rolename'].' Successfully');
       return redirect()->back();
@@ -271,7 +271,7 @@ class Access extends \App\Controllers\BaseController
 
     $file = $this->request->getFile('zip_file');
     $this->M_setting->database_import($file);
-    
+
     $this->session->setFlashdata('info', 'Import File Name '.$file->getName().' Successfully');
     return redirect()->back();
   }
@@ -279,8 +279,8 @@ class Access extends \App\Controllers\BaseController
   public function database_export($file)
   {
     $path = $this->M_setting->database_export($file);
-
-    return $this->response->download($path, null);
+    return redirect()->to(base_url() .'/uploads/databases' .'/'. basename($path));
+    //return $this->response->download($path, null);
   }
 
 
@@ -293,7 +293,7 @@ class Access extends \App\Controllers\BaseController
  */
 
   public function log_index()
-  { 
+  {
     // $_['GET'] variabel watch - table - keyword - paginate
     $watch = $this->request->getGet('watch');
     $table = $this->request->getGet('table');
@@ -304,7 +304,7 @@ class Access extends \App\Controllers\BaseController
     // fetch data list dengan array column name - id
     $list = $this->M_log->getWatch();
     $data['watchs'] = array('' => 'Pilih watch') + array_column($list, 'name', 'name');
-    
+
     $list = $this->M_log->getTable();
     $data['tables'] = array('' => 'Pilih tabel') + array_column($list, 'name', 'name');
 
@@ -319,7 +319,7 @@ class Access extends \App\Controllers\BaseController
   public function log_delete($name)
   {
     $delete = $this->M_log->delete_post($name);
-    
+
     if($delete) {
       $this->session->setFlashdata('warning', 'Delete Files '.$name.' Successfully');
       return redirect()->to('/administrator/access/log');

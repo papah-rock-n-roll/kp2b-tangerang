@@ -191,8 +191,7 @@
         'min' => '100',
         'max' => '500',
         'placeholder' => 'IP',
-        'value' => old('indxnlant') == null ? $v['indxnlant'] : old('indxnlant'),
-        'required' => ''
+        'value' => old('indxnlant') == null ? $v['indxnlant'] : old('indxnlant')
       ];
       echo form_input($indxnlant);
       ?>

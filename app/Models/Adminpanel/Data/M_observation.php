@@ -341,55 +341,11 @@ class M_observation extends M_data
     return [
       'broadnrea' => [
         'label' => 'Luas Area Petak',
-        'rules' => 'max_length[10]',
+        'rules' => 'max_length[20]',
         'errors' => [
           'max_length' => '{field} Maximum {param} Character',
           ]
-      ],
-      'distancefromriver' => [
-        'label' => 'Jarak Dari Sungai',
-        'rules' => 'max_length[10]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'distancefromIrgPre' => [
-        'label' => 'Jarak Dari Irigasi',
-        'rules' => 'max_length[10]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'indxnlant' => [
-        'label' => 'Index Plantation',
-        'rules' => 'required|max_length[3]|numeric',
-        'errors' => [
-          'required' => 'Diperlukan {field}',
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'pattrnnlant' => [
-        'label' => 'Pattern',
-        'rules' => 'max_length[60]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'wtr' => [
-        'label' => 'Air',
-        'rules' => 'max_length[60]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-      'other' => [
-        'label' => 'Other',
-        'rules' => 'max_length[60]',
-        'errors' => [
-          'max_length' => '{field} Maximum {param} Character',
-          ]
-      ],
-
+      ]
     ];
 
   }
@@ -537,7 +493,7 @@ class M_observation extends M_data
 
       $row++;
     }
-
+    ob_end_clean();
     // panggil static function writer xlsx "M_data"
     $response = \Config\Services::response();
     $writer = M_data::writer_sheet($spreadsheet);
@@ -546,7 +502,12 @@ class M_observation extends M_data
 
     $response
     ->setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    ->setHeader('Content-Disposition', 'attachment;filename="'.$filename.'"');
+    ->setHeader('Content-Disposition', 'attachment;filename="'.$filename.'"')
+    ->setHeader('Cache-Control', 'max-age=0')
+    ->setHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT')
+    ->setHeader('Last-Modified', gmdate('D, d M Y H:i:s') . ' GMT')
+    ->setHeader('Cache-Control', 'cache, must-revalidate')
+    ->setHeader('Pragma', 'public');
 
     $writer->save('php://output');
   }

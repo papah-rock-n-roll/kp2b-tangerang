@@ -102,7 +102,7 @@ class Data extends \App\Controllers\BaseController
 
       if($post) {
         $this->session->setFlashdata('success', 'Update Observation Successfully');
-        
+
         $num = 1;
         $counter = substr($get, strpos($get, '=') + 1);
         if($counter < 1)
@@ -132,7 +132,7 @@ class Data extends \App\Controllers\BaseController
     else
     {
       $rules = $this->M_observation->validationImport();
-      
+
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
@@ -148,7 +148,10 @@ class Data extends \App\Controllers\BaseController
     $import = $this->M_observation->import($data);
 
     if($import) {
-      $this->session->setFlashdata('import', 'Import Observation Successfully');
+      $this->session->setFlashdata('import', 'Import Petak Berhasil');
+      return redirect()->to('/administrator/data/observation');
+    }else{
+      $this->session->setFlashdata('import', 'Import Petak Berhasil');
       return redirect()->to('/administrator/data/observation');
     }
 
@@ -190,7 +193,7 @@ class Data extends \App\Controllers\BaseController
     else
     {
       $get = $this->request->getPost();
-      
+
       $data = transpose($get);
       $post = $this->M_plantdate->plantdates_post($id, $data);
 
@@ -270,7 +273,7 @@ class Data extends \App\Controllers\BaseController
 
       if($post) {
         $this->session->setFlashdata('success', 'Update Owner Successfully');
-        
+
         $num = 1;
         $counter = substr($get, strpos($get, '=') + 1);
         if($counter < 1)
@@ -311,7 +314,7 @@ class Data extends \App\Controllers\BaseController
     else
     {
       $rules = $this->M_owner->validationImport();
-      
+
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
@@ -327,7 +330,10 @@ class Data extends \App\Controllers\BaseController
     $import = $this->M_owner->import($data);
 
     if($import) {
-      $this->session->setFlashdata('import', 'Import Owner Successfully');
+      $this->session->setFlashdata('import', 'Import Pemilik Berhasil');
+      return redirect()->to('/administrator/data/owner');
+    }else{
+      $this->session->setFlashdata('import', 'Import Pemilik Berhasil');
       return redirect()->to('/administrator/data/owner');
     }
 
@@ -339,7 +345,7 @@ class Data extends \App\Controllers\BaseController
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
     $page = $this->request->getGet('page');
-    
+
     // fetch data dengan memanggil fungsi model observation
     $this->M_owner->export(null, $keyword, $paginate, $page);
   }
@@ -412,7 +418,7 @@ class Data extends \App\Controllers\BaseController
 
       if($post) {
         $this->session->setFlashdata('success', 'Update Farm Successfully');
-        
+
         $num = 1;
         $counter = substr($get, strpos($get, '=') + 1);
         if($counter < 1)
@@ -453,7 +459,7 @@ class Data extends \App\Controllers\BaseController
     else
     {
       $rules = $this->M_farmer->validationImport();
-      
+
       if(! $this->validate($rules)) {
         return redirect()->back()->withInput();
       }
@@ -469,7 +475,10 @@ class Data extends \App\Controllers\BaseController
     $import = $this->M_farmer->import($data);
 
     if($import) {
-      $this->session->setFlashdata('import', 'Import Farmer Successfully');
+      $this->session->setFlashdata('import', 'Import Kelompok Tani Berhasil');
+      return redirect()->to('/administrator/data/farmer');
+    }else{
+      $this->session->setFlashdata('import', 'Import Kelompok Tani Berhasil');
       return redirect()->to('/administrator/data/farmer');
     }
 
@@ -481,7 +490,7 @@ class Data extends \App\Controllers\BaseController
     $keyword = $this->request->getGet('keyword');
     $paginate = $this->request->getGet('paginate');
     $page = $this->request->getGet('page');
-    
+
     // fetch data dengan memanggil fungsi model observation
     $this->M_farmer->export(null, $keyword, $paginate, $page);
   }
@@ -553,7 +562,7 @@ class Data extends \App\Controllers\BaseController
 
       if($post) {
         $this->session->setFlashdata('success', 'Update Responden Successfully');
-        
+
         $num = 1;
         $counter = substr($get, strpos($get, '=') + 1);
         if($counter < 1)
